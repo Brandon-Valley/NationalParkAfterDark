@@ -177,7 +177,7 @@
       right: 12px;
       z-index: 4;
       display: grid;
-      grid-template-columns: repeat(5, 1fr);
+      grid-template-columns: repeat(4, 1fr);
       gap: 7px;
       pointer-events: none;
     }
@@ -448,74 +448,6 @@
 
     .overlay.active { display: grid; }
 
-    .parktok-frame {
-      width: min(390px, 92vw);
-      aspect-ratio: 9 / 16;
-      max-height: 88dvh;
-      border-radius: 8px;
-      background: #101414;
-      border: 1px solid rgba(255,255,255,.22);
-      box-shadow: var(--shadow);
-      overflow: hidden;
-      position: relative;
-      display: grid;
-      grid-template-rows: 1fr auto;
-    }
-
-    .parktok-visual {
-      position: relative;
-      background-size: cover;
-      background-position: center;
-      display: flex;
-      align-items: end;
-      padding: 16px;
-    }
-
-    .parktok-visual::after {
-      content: "";
-      position: absolute;
-      inset: 0;
-      background: linear-gradient(180deg, rgba(0,0,0,.05), rgba(0,0,0,.82));
-    }
-
-    .parktok-copy {
-      position: relative;
-      z-index: 1;
-      width: 100%;
-    }
-
-    .parktok-title {
-      font-size: 25px;
-      line-height: 1.05;
-      font-weight: 950;
-      text-wrap: balance;
-      text-shadow: 0 5px 18px rgba(0,0,0,.7);
-    }
-
-    .parktok-meta {
-      display: flex;
-      gap: 10px;
-      margin-top: 10px;
-      color: var(--muted);
-      font-weight: 800;
-      font-size: 13px;
-    }
-
-    .comments {
-      padding: 12px;
-      background: rgba(0,0,0,.82);
-      display: grid;
-      gap: 7px;
-      font-size: 13px;
-      line-height: 1.25;
-    }
-
-    .comment {
-      padding: 7px 8px;
-      border-radius: 8px;
-      background: rgba(255,255,255,.08);
-    }
-
     .gallery-grid {
       display: grid;
       grid-template-columns: repeat(2, 1fr);
@@ -634,22 +566,11 @@
     <section id="setupScreen" class="screen">
       <div class="setup">
         <div class="setup-card">
-          <h2>Creator Check-In</h2>
-          <p class="tagline">Ranger June needs your badge name and your least defensible content strategy.</p>
+          <h2>Check-In</h2>
           <label for="playerName">Name</label>
-          <input id="playerName" maxlength="24" placeholder="Your trail name">
-          <label for="archetype">Creator archetype</label>
-          <select id="archetype">
-            <option>Nature Meme Lord</option>
-            <option>Travel Vlogger</option>
-            <option>Hot Park Facts Educator</option>
-            <option>Chaotic Ranger Intern</option>
-            <option>Birdwatching Baddie</option>
-            <option>Geology Girlie / Geo Goblin</option>
-            <option>Leave No Trace Flirt</option>
-          </select>
+          <input id="playerName" maxlength="24" placeholder="Name" required>
           <div class="setup-actions">
-            <button class="primary" id="beginBtn">Enter Viral Vista</button>
+            <button class="primary" id="beginBtn">Begin</button>
             <button class="ghost" id="backStartBtn">Back</button>
           </div>
         </div>
@@ -670,7 +591,7 @@
           <button class="icon-btn" id="saveBtn" title="Save">S</button>
           <button class="icon-btn" id="loadBtn" title="Load">L</button>
           <button class="icon-btn" id="galleryBtn" title="Gallery">G</button>
-          <button class="icon-btn" id="audioBtn" title="Sound on">♪</button>
+          <button class="icon-btn" id="audioBtn" title="Sound on">M</button>
           <button class="text-btn" id="resetBtn">Reset</button>
         </div>
       </header>
@@ -688,18 +609,6 @@
           <div class="line" id="lineText"></div>
           <div class="choices" id="choices"></div>
         </section>
-      </div>
-    </section>
-
-    <section id="parkTokOverlay" class="overlay">
-      <div class="parktok-frame">
-        <div class="parktok-visual" id="parkTokVisual">
-          <div class="parktok-copy">
-            <div class="parktok-title" id="parkTokTitle"></div>
-            <div class="parktok-meta" id="parkTokMeta"></div>
-          </div>
-        </div>
-        <div class="comments" id="parkTokComments"></div>
       </div>
     </section>
 
@@ -723,8 +632,7 @@
 
     const defaultState = {
       playerName: "Creator",
-      archetype: "Nature Meme Lord",
-      sceneId: "cold_open_tiktok_montage",
+      sceneId: "cold_open_intro",
       lineIndex: 0,
       selectedRoute: null,
       affection: {
@@ -812,117 +720,26 @@
       algorithmReveal: { title: "Algorithm Ranger Glitch", image: "assets/cg/cg_algorithm_ranger_reveal.png" }
     };
 
-    const parkTokMoments = {
-      coldOpen: {
-        title: "POV: Public lands, private thoughts, posted with the worst possible caption.",
-        image: "assets/backgrounds/bg_lodge_exterior_sunset.png",
-        likes: "482K",
-        shares: "62K",
-        comments: [
-          "is this a conservation campaign or a cry for help",
-          "leave no trace except the emotional damage",
-          "the visitor center did NOT prepare me"
-        ]
-      },
-      yellowstoneIntro: {
-        title: "POV: He says keep your distance, then looks at you like a restricted thermal feature.",
-        image: "assets/cg/cg_yellowstone_steam_boardwalk.png",
-        likes: "711K",
-        shares: "91K",
-        comments: [
-          "why is the geyser looking at me like that",
-          "the boardwalk stays ON during romance",
-          "this is educational, I swear"
-        ]
-      },
-      yosemiteIntro: {
-        title: "When he says respect the geology and then serves face.",
-        image: "assets/cg/cg_yosemite_waterfall_turn.png",
-        likes: "544K",
-        shares: "44K",
-        comments: [
-          "glacial erosion did NOT need to go this hard",
-          "he brought a reflector for emotional emergencies",
-          "i too would become a hanging valley"
-        ]
-      },
-      acadiaIntro: {
-        title: "He woke up at 4:30 AM with coffee and emotional stability.",
-        image: "assets/cg/cg_acadia_sunrise_coffee.png",
-        likes: "603K",
-        shares: "57K",
-        comments: [
-          "short king of the eastern seaboard",
-          "sunrise being mandatory is somehow working",
-          "i would become a tide pool for him"
-        ]
-      },
-      smokyIntro: {
-        title: "He knows thousands of species and somehow your coffee order too.",
-        image: "assets/cg/cg_smoky_salamander_soft.png",
-        likes: "821K",
-        shares: "102K",
-        comments: [
-          "biodiversity boyfriend made me feel safe",
-          "the mist understood the assignment",
-          "he said amphibian facts and I folded"
-        ]
-      },
-      zionIntro: {
-        title: "His heart requires a permit and I fear I am filling out the application.",
-        image: "assets/cg/cg_zion_red_canyon_close.png",
-        likes: "489K",
-        shares: "39K",
-        comments: [
-          "permit daddy said no walk-ins",
-          "the canyon is narrow but the tension is wide",
-          "expedited review if you bring snacks"
-        ]
-      },
-      evergladesIntro: {
-        title: "Swamp man gave me bug spray like it was a promise ring.",
-        image: "assets/cg/cg_everglades_bug_spray_moonlight.png",
-        likes: "532K",
-        shares: "51K",
-        comments: [
-          "survival is intimate actually",
-          "apex predator energy and wet socks",
-          "the humidity has a writing credit"
-        ]
-      },
-      algorithmPost: {
-        title: "@TheAlgorithmRanger: Which park is faking sincerity for reach?",
-        image: "assets/cg/cg_algorithm_ranger_reveal.png",
-        likes: "1.2M",
-        shares: "210K",
-        comments: [
-          "why does this feel legally sticky",
-          "not the luxury dating resort pipeline",
-          "Ranger June is typing..."
-        ]
-      }
-    };
-
     const scenes = {
-      cold_open_tiktok_montage: {
+      cold_open_intro: {
         label: "Before The Lodge",
         background: "lodgeExterior",
         character: null,
         onEnter: { metrics: { viralPotential: 1, chaos: 1 } },
         lines: [
           ["player", "Okay. Breathe. Badge straight. Hair doing whatever it thinks is best."],
-          ["player", "My name is {playerName}. Online, I am a {archetype}; offline, I am a person carrying two power banks, three lip balms, and a very fragile belief that I can be normal about famous landscapes."],
-          ["player", "ParkTok was supposed to be simple for me: one sunset, two safety facts, zero captions that made strangers type 'geological thirst' in public."],
-          ["player", "Then my parody Yellowstone clip hit seven figures. Yosemite duetted it with alarming cheekbones. Acadia made sunrise coffee look like a love language. By noon, half the internet was asking which park had the best emotional availability."],
+          ["player", "My name is {playerName}. Online, I make park videos; offline, I am a person carrying two power banks, three lip balms, and a very fragile belief that I can be normal about famous landscapes."],
+          ["player", "Making park videos was supposed to be simple for me: one sunset, two safety facts, zero strangers using the phrase 'geological thirst' in public."],
+          ["player", "Then my parody Yellowstone clip hit seven figures. Yosemite answered it with alarming cheekbones. Acadia made sunrise coffee look like a love language. By noon, half the internet was asking which park had the best emotional availability."],
           ["player", "That is how I ended up invited to Viral Vista Lodge for the first Public Lands Content Creator Retreat: education, collaboration, and a legally distinct amount of romantic tension."],
           ["player", "The job sounds simple. Help the parks go viral without encouraging anyone to step off trails, bother wildlife, or confuse stewardship with flirting."],
           ["player", "The situation sounds less simple: the parks are somehow here as adult fictional personifications, my phone keeps buzzing, and the comments are already treating this like a dating show with trail maps."],
           ["player", "Before I can decide whether that is charming or career-ending, the lodge doors open."]
         ],
         choices: [
-          { label: "Step inside hydrated and emotionally available.", next: "arrival_lodge", metrics: { conservationCred: 1, rangerApproval: 1 }, parkTok: "coldOpen" },
-          { label: "Check the comments one last time.", next: "arrival_lodge", metrics: { viralPotential: 1, chaos: 1 }, parkTok: "coldOpen" },
-          { label: "Pocket backup socks and backup feelings.", next: "arrival_lodge", affection: { smoky: 1, acadia: 1 }, parkTok: "coldOpen" }
+          { label: "Step inside hydrated and emotionally available.", next: "arrival_lodge", metrics: { conservationCred: 1, rangerApproval: 1 } },
+          { label: "Silence your phone and focus.", next: "arrival_lodge", metrics: { rangerApproval: 1 } },
+          { label: "Pocket backup socks and backup feelings.", next: "arrival_lodge", affection: { smoky: 1, acadia: 1 } }
         ]
       },
 
@@ -932,12 +749,12 @@
         character: "june",
         lines: [
           ["june", "You must be {playerName}. I am Ranger June, and I can already hear your notification anxiety from across the lobby."],
-          ["june", "Badge name? Creator archetype? Emergency contact who will not ask why you were flirting with sedimentary lighting?"],
-          ["player", "I'm {playerName}. Officially a {archetype}. Unofficially, I'm here to make responsible content and maybe bad decisions in good boots."],
+          ["june", "Name? Emergency contact who will not ask why you were flirting with sedimentary lighting?"],
+          ["player", "I'm {playerName}. I am here to make responsible content and maybe bad decisions in good boots."],
           ["june", "Excellent. You will fit in terribly."],
           ["june", "The guests are adult fictional personifications of famous landscapes. They are not officials, employees, or endorsements. They are, unfortunately, photogenic."],
           ["june", "Your job is to help them go viral without causing visitors to trample wildflowers, approach bison, fall off cliffs, or call thirst an interpretive program."],
-          ["narrator", "A wall of monitors scrolls through ParkTok clips: steam, waterfalls, sunrise coffee, red rock, mist, moonlit wetlands."],
+          ["narrator", "A wall of monitors scrolls through retreat footage: steam, waterfalls, sunrise coffee, red rock, mist, moonlit wetlands."],
           ["june", "First up is Yellowstone. Keep to the boardwalk, ignore the smoldering, and do not let him turn a safety warning into foreplay-adjacent educational content."],
           ["player", "That felt very specific."],
           ["june", "I've had a week."]
@@ -951,7 +768,6 @@
         label: "Geothermal Courtyard",
         background: "yellowstone",
         character: "yellowstone",
-        onEnter: { parkTok: "yellowstoneIntro" },
         lines: [
           ["yellowstone", "Stop."],
           ["player", "I wasn't doing anything."],
@@ -977,7 +793,6 @@
         label: "Granite Arch",
         background: "yosemite",
         character: "yosemite",
-        onEnter: { parkTok: "yosemiteIntro" },
         lines: [
           ["narrator", "A granite arch frames the next guest. Somehow the sunbeam arrives two seconds before he does."],
           ["yosemite", "Please do not look directly at the composition. It is still warming up."],
@@ -990,7 +805,7 @@
           ["player", "You make erosion sound personal."],
           ["yosemite", "I have been carved by glaciers and still somehow your text left a mark."],
           ["yosemite", "Do not call me high maintenance. Call me vertically significant."],
-          ["player", "Noted for the caption."]
+          ["player", "Noted for later."]
         ],
         choices: [
           { label: "Tell him no filter could improve this.", next: "meet_acadia", affection: { yosemite: 2 }, metrics: { viralPotential: 1 } },
@@ -1003,7 +818,6 @@
         label: "Sunrise Coffee Deck",
         background: "acadia",
         character: "acadia",
-        onEnter: { parkTok: "acadiaIntro" },
         lines: [
           ["narrator", "At 4:37 AM, a compact coastal heartthrob appears with two coffees and the emotional stability of a well-maintained carriage road."],
           ["acadia", "I wanted to be the first thing you saw today."],
@@ -1029,7 +843,6 @@
         label: "Misty Greenhouse",
         background: "smoky",
         character: "smoky",
-        onEnter: { parkTok: "smokyIntro" },
         lines: [
           ["narrator", "Mist curls through a greenhouse full of moss, wildflowers, field guides, and a man quietly chopping vegetables like emotional competence is a cooking style."],
           ["smoky", "You must be {playerName}. I made soup. There are vegetarian options and conversational exits."],
@@ -1055,7 +868,6 @@
         label: "Red-Rock Photoshoot",
         background: "zion",
         character: "zion",
-        onEnter: { parkTok: "zionIntro" },
         lines: [
           ["narrator", "A red canyon path opens into a photoshoot arranged with frightening precision. Zion turns one degree toward you and the shadows applaud."],
           ["zion", "You are late for your emotional access window."],
@@ -1082,7 +894,6 @@
         label: "Moonlit Boardwalk",
         background: "everglades",
         character: "everglades",
-        onEnter: { parkTok: "evergladesIntro" },
         lines: [
           ["narrator", "The air turns warm, wet, and suspiciously charming. A man in linen leans against the boardwalk rail, smiling like a bad idea with ecological value."],
           ["everglades", "Hold out your wrist."],
@@ -1111,7 +922,7 @@
         character: null,
         onEnter: { unlockCG: "groupPunBattle" },
         lines: [
-          ["narrator", "Dinner begins with soup, trail mix, seven ring lights, and the raw competitive energy of landscapes trying to out-caption each other."],
+          ["narrator", "Dinner begins with soup, trail mix, seven ring lights, and the raw competitive energy of landscapes trying to out-charm each other."],
           ["june", "Tonight's exercise is educational puns. Winner gets first pick of tomorrow's filming slot. Loser deletes one draft thirst trap."],
           ["yellowstone", "Do not approach wildlife. Unless the wildlife approaches emotional accountability first."],
           ["yosemite", "Half Dome? I assure you, I am emotionally whole."],
@@ -1135,7 +946,7 @@
         label: "Anonymous Post",
         background: "glitch",
         character: null,
-        onEnter: { parkTok: "algorithmPost", unlockCG: "algorithmReveal", metrics: { chaos: 1 } },
+        onEnter: { unlockCG: "algorithmReveal", metrics: { chaos: 1 } },
         lines: [
           ["narrator", "Every phone at dinner buzzes in perfect, terrible harmony."],
           ["algorithm", "BREAKING: Yellowstone is too hot and emotionally unstable. Yosemite only cares about angles. Acadia is coastline bait. Zion invented paperwork to avoid intimacy. Smoky is hiding behind biodiversity. Everglades is legally a humidity incident."],
@@ -1190,13 +1001,13 @@
           ["player", "That is annoyingly romantic."],
           ["yellowstone", "I am not toxic. That is just the sulfur talking."],
           ["narrator", "A geyser exhales behind him. The timing is legally suspicious."],
-          ["yellowstone", "Help me post the correction. Make safety hotter than recklessness."],
+          ["yellowstone", "Help me correct the story. Make safety hotter than recklessness."],
           ["player", "Finally, a content strategy with emotional guardrails."]
         ],
         choices: [
-          { label: "Caption: 'The boardwalk stays on.'", next: "day_1_end_summary", affection: { yellowstone: 2 }, metrics: { conservationCred: 2, viralPotential: 1, rangerApproval: 1 } },
-          { label: "Caption: 'Restricted feature, unrestricted feelings.'", next: "day_1_end_summary", affection: { yellowstone: 1 }, metrics: { viralPotential: 2, chaos: 1 } },
-          { label: "Caption: 'Bison are not background actors.'", next: "day_1_end_summary", affection: { yellowstone: 1 }, metrics: { conservationCred: 2, rangerApproval: 1 } }
+          { label: "Back him up on staying on the boardwalk.", next: "day_1_end_summary", affection: { yellowstone: 2 }, metrics: { conservationCred: 2, viralPotential: 1, rangerApproval: 1 } },
+          { label: "Ask him to explain the danger plainly.", next: "day_1_end_summary", affection: { yellowstone: 1 }, metrics: { conservationCred: 2, rangerApproval: 1 } },
+          { label: "Tease him about making boundaries romantic.", next: "day_1_end_summary", affection: { yellowstone: 1 }, metrics: { viralPotential: 2, chaos: 1 } }
         ]
       },
 
@@ -1211,7 +1022,7 @@
           ["player", "You did ask the waterfall to enter from your good side."],
           ["yosemite", "It owed me after spring snowmelt."],
           ["yosemite", "Beauty gets attention. Attention can teach. But somewhere between the filter and the caption, I lose the valley."],
-          ["player", "Then post the messy version."],
+          ["player", "Then show me the messy version."],
           ["yosemite", "Messy? In this light?"],
           ["player", "Especially in this light."],
           ["yosemite", "Glaciers carved the granite by pressure and patience. Perhaps vulnerability follows similar principles."],
@@ -1220,7 +1031,7 @@
           ["player", "Classic geology accountability."]
         ],
         choices: [
-          { label: "Post the honest take.", next: "day_1_end_summary", affection: { yosemite: 2 }, metrics: { conservationCred: 1, viralPotential: 2 } },
+          { label: "Encourage the honest version.", next: "day_1_end_summary", affection: { yosemite: 2 }, metrics: { conservationCred: 1, viralPotential: 2 } },
           { label: "Keep one dramatic slow turn.", next: "day_1_end_summary", affection: { yosemite: 1 }, metrics: { viralPotential: 2, chaos: 1 } },
           { label: "Ask him to explain glacial carving plainly.", next: "day_1_end_summary", affection: { yosemite: 2 }, metrics: { conservationCred: 2 } }
         ]
@@ -1246,8 +1057,8 @@
           ["acadia", "That is the nicest threat anyone has made at sunrise."]
         ],
         choices: [
-          { label: "Film a quiet sunrise with no thirst caption.", next: "day_1_end_summary", affection: { acadia: 2 }, metrics: { conservationCred: 2, rangerApproval: 1 } },
-          { label: "Caption: 'First light, full feelings.'", next: "day_1_end_summary", affection: { acadia: 2 }, metrics: { viralPotential: 2 } },
+          { label: "Protect the quiet of the sunrise.", next: "day_1_end_summary", affection: { acadia: 2 }, metrics: { conservationCred: 2, rangerApproval: 1 } },
+          { label: "Tell him first light suits him.", next: "day_1_end_summary", affection: { acadia: 2 }, metrics: { viralPotential: 2 } },
           { label: "Tell him breakfast is a power move.", next: "day_1_end_summary", affection: { acadia: 1 }, metrics: { chaos: 1, viralPotential: 1 } }
         ]
       },
@@ -1268,7 +1079,7 @@
           ["smoky", "I was going to write you a song, but the mushrooms started harmonizing."],
           ["player", "Did they have notes?"],
           ["smoky", "Mostly on my bridge."],
-          ["smoky", "Help me make a post that invites curiosity without turning me into a content vending machine."],
+          ["smoky", "Help me invite curiosity without turning me into a content vending machine."],
           ["player", "One species, one feeling, one deep breath."]
         ],
         choices: [
@@ -1294,12 +1105,12 @@
           ["zion", "Someone wants access without responsibility. That is the opposite of love and trail management."],
           ["player", "So the post should teach boundaries as invitation, not rejection."],
           ["zion", "The canyon is narrow, but my feelings are wide."],
-          ["player", "That caption is getting saved."],
+          ["player", "That line is getting saved."],
           ["zion", "Submit it with snacks."]
         ],
         choices: [
-          { label: "Post a boundaries-as-trust explainer.", next: "day_1_end_summary", affection: { zion: 2 }, metrics: { conservationCred: 2, rangerApproval: 1 } },
-          { label: "Post 'emotional access window: open.'", next: "day_1_end_summary", affection: { zion: 2 }, metrics: { viralPotential: 2, chaos: 1 } },
+          { label: "Support his boundaries-as-trust approach.", next: "day_1_end_summary", affection: { zion: 2 }, metrics: { conservationCred: 2, rangerApproval: 1 } },
+          { label: "Ask whether the emotional access window is open.", next: "day_1_end_summary", affection: { zion: 2 }, metrics: { viralPotential: 2, chaos: 1 } },
           { label: "Ask for the required briefing.", next: "day_1_end_summary", affection: { zion: 1 }, metrics: { rangerApproval: 1 } }
         ]
       },
@@ -1324,7 +1135,7 @@
           ["everglades", "Yes. But I can learn punctuation."]
         ],
         choices: [
-          { label: "Post a wildlife-respect thirst trap.", next: "day_1_end_summary", affection: { everglades: 2 }, metrics: { conservationCred: 2, viralPotential: 1 } },
+          { label: "Match the flirting with a wildlife-respect reminder.", next: "day_1_end_summary", affection: { everglades: 2 }, metrics: { conservationCred: 2, viralPotential: 1 } },
           { label: "Ask him to use punctuation emotionally.", next: "day_1_end_summary", affection: { everglades: 2 }, metrics: { chaos: 1 } },
           { label: "Make bug spray the hero prop.", next: "day_1_end_summary", affection: { everglades: 1 }, metrics: { rangerApproval: 1, viralPotential: 1 } }
         ]
@@ -1337,7 +1148,7 @@
         lines: [
           ["june", "Day one report: nobody approached wildlife, nobody fell off a cliff, and only three people tried to define yearning as interpretive signage."],
           ["june", "Your chosen investigation partner is already affecting the retreat metrics."],
-          ["narrator", "ParkTok is hungry. The anonymous account is louder. Somewhere behind the lodge, a man in a salmon blazer whispers the phrase 'Thirst Preserve Premium' into a drone controller."],
+          ["narrator", "The internet is hungry. The anonymous account is louder. Somewhere behind the lodge, a man in a salmon blazer whispers the phrase 'Thirst Preserve Premium' into a drone controller."],
           ["chad", "Luxury can fix nature. Probably."],
           ["june", "I just felt my clipboard develop a migraine."],
           ["narrator", "Act 1 closes with the comment section burning, the parks pretending not to care, and your phone full of clips that are somehow educational."],
@@ -1355,7 +1166,7 @@
         background: "lodgeExterior",
         character: null,
         lines: [
-          ["narrator", "Prototype complete: Act 1 is playable, stats persist, CGs unlock, ParkTok moments pop, and the parks remain legally fictional."],
+          ["narrator", "Prototype complete: Act 1 is playable, stats persist, CGs unlock, and the parks remain legally fictional."],
           ["narrator", "Your highest affection is with {topPark}. Your content style currently reads: {contentVerdict}."],
           ["narrator", "Thank you for attending Viral Vista Lodge. Pack it in, pack it out, unpack your emotional baggage."]
         ],
@@ -1381,11 +1192,6 @@
       hud: document.getElementById("hud"),
       toast: document.getElementById("toast"),
       playerBadge: document.getElementById("playerBadge"),
-      parkTokOverlay: document.getElementById("parkTokOverlay"),
-      parkTokVisual: document.getElementById("parkTokVisual"),
-      parkTokTitle: document.getElementById("parkTokTitle"),
-      parkTokMeta: document.getElementById("parkTokMeta"),
-      parkTokComments: document.getElementById("parkTokComments"),
       galleryOverlay: document.getElementById("galleryOverlay"),
       galleryGrid: document.getElementById("galleryGrid")
     };
@@ -1420,17 +1226,11 @@
     document.getElementById("dialogueBox").addEventListener("click", event => {
       if (!event.target.closest("button")) showNextDialogueLine();
     });
-    els.parkTokOverlay.addEventListener("click", () => els.parkTokOverlay.classList.remove("active"));
     window.addEventListener("keydown", event => {
       if (event.key === " " || event.key === "Enter") {
-        if (els.parkTokOverlay.classList.contains("active")) {
-          els.parkTokOverlay.classList.remove("active");
-          return;
-        }
         showNextDialogueLine();
       }
       if (event.key === "Escape") {
-        els.parkTokOverlay.classList.remove("active");
         els.galleryOverlay.classList.remove("active");
       }
     });
@@ -1438,12 +1238,16 @@
     function startGame() {
       state = clone(defaultState);
       const name = document.getElementById("playerName").value.trim();
-      state.playerName = name || "Creator";
-      state.archetype = document.getElementById("archetype").value;
+      if (!name) {
+        document.getElementById("playerName").focus();
+        toast("Enter your name to begin.");
+        return;
+      }
+      state.playerName = name;
       audioEngine.enabled = state.audioEnabled;
       ensureAudio();
       showScreen("gameScreen");
-      renderScene("cold_open_tiktok_montage");
+      renderScene("cold_open_intro");
     }
 
     function renderScene(sceneId, options = {}) {
@@ -1501,7 +1305,6 @@
       if (choice.flags) Object.assign(state.flags, choice.flags);
       if (choice.setRoute) state.selectedRoute = choice.setRoute;
       if (choice.unlockCG) unlockCG(choice.unlockCG);
-      if (choice.parkTok) showParkTok(choice.parkTok);
       if (choice.save) saveGame();
 
       updateHUD();
@@ -1528,7 +1331,6 @@
       if (scene.onEnter.metrics) addValues(state.metrics, scene.onEnter.metrics);
       if (scene.onEnter.affection) addValues(state.affection, scene.onEnter.affection);
       if (scene.onEnter.unlockCG) unlockCG(scene.onEnter.unlockCG);
-      if (scene.onEnter.parkTok) setTimeout(() => showParkTok(scene.onEnter.parkTok), 180);
       playSfx("scene");
     }
 
@@ -1556,17 +1358,6 @@
       };
     }
 
-    function showParkTok(momentId) {
-      const moment = parkTokMoments[momentId];
-      if (!moment) return;
-      els.parkTokTitle.textContent = moment.title;
-      els.parkTokVisual.style.backgroundImage = `url("${moment.image}")`;
-      els.parkTokMeta.textContent = `${moment.likes} likes  |  ${moment.shares} shares  |  #ParkTok`;
-      els.parkTokComments.innerHTML = moment.comments.map(comment => `<div class="comment">@trailcomment: ${escapeHtml(comment)}</div>`).join("");
-      els.parkTokOverlay.classList.add("active");
-      playSfx("notification");
-    }
-
     function showGallery() {
       renderGallery();
       els.galleryOverlay.classList.add("active");
@@ -1589,23 +1380,15 @@
     }
 
     function updateHUD() {
-      els.playerBadge.textContent = `${state.playerName} - ${state.archetype}`;
+      els.playerBadge.textContent = `${state.playerName} - checked in`;
       const metricLabels = [
         ["Chaos", "chaos", "#d96f4a"],
         ["Conservation", "conservationCred", "#8ecb8b"],
         ["Viral", "viralPotential", "#f3b85b"],
-        ["Ranger", "rangerApproval", "#76c7d6"],
-        ["Yell", "affection.yellowstone", "#f0a64d"],
-        ["Yose", "affection.yosemite", "#b7c7d3"],
-        ["Acad", "affection.acadia", "#76c7d6"],
-        ["Smoky", "affection.smoky", "#9ccf90"],
-        ["Zion", "affection.zion", "#e4835e"],
-        ["Glade", "affection.everglades", "#93b76d"]
+        ["Ranger", "rangerApproval", "#76c7d6"]
       ];
       els.hud.innerHTML = metricLabels.map(([label, key, color]) => {
-        const value = key.startsWith("affection.")
-          ? clamp(state.affection[key.split(".")[1]], 0, 10)
-          : clamp(state.metrics[key], 0, 10);
+        const value = clamp(state.metrics[key], 0, 10);
         return `<div class="meter"><span>${label}: ${value}</span><b style="width:${value * 10}%;background:${color}"></b></div>`;
       }).join("");
     }
@@ -1633,7 +1416,7 @@
         audioEngine.enabled = state.audioEnabled;
         ensureAudio();
         showScreen("gameScreen");
-        renderScene(state.sceneId || "cold_open_tiktok_montage", { keepLine: true });
+        renderScene(normalizeSceneId(state.sceneId || "cold_open_intro"), { keepLine: true });
         toast("Save loaded.");
       } catch (error) {
         toast("Save could not be loaded.");
@@ -1645,7 +1428,6 @@
       state = clone(defaultState);
       audioEngine.enabled = state.audioEnabled;
       els.galleryOverlay.classList.remove("active");
-      els.parkTokOverlay.classList.remove("active");
       showScreen("startScreen");
       toast("Progress reset.");
     }
@@ -1653,6 +1435,11 @@
     function showScreen(id) {
       [els.startScreen, els.setupScreen, els.gameScreen].forEach(screen => screen.classList.remove("active"));
       els[id].classList.add("active");
+    }
+
+    function normalizeSceneId(sceneId) {
+      if (sceneId === "cold_open_tiktok_montage") return "cold_open_intro";
+      return sceneId;
     }
 
     function toggleAudio() {
@@ -1672,7 +1459,7 @@
 
     function updateAudioButton() {
       const button = document.getElementById("audioBtn");
-      button.textContent = audioEngine.enabled ? "♪" : "×";
+      button.textContent = audioEngine.enabled ? "M" : "X";
       button.title = audioEngine.enabled ? "Sound on" : "Sound muted";
     }
 
@@ -1799,7 +1586,6 @@
     function formatText(text) {
       return text
         .replaceAll("{playerName}", state.playerName)
-        .replaceAll("{archetype}", state.archetype)
         .replaceAll("{topPark}", topParkName())
         .replaceAll("{contentVerdict}", contentVerdict());
     }
@@ -1821,7 +1607,7 @@
       const m = state.metrics;
       if (m.conservationCred >= m.viralPotential && m.rangerApproval >= m.chaos) return "Leave No Trace Legend";
       if (m.chaos > m.conservationCred + 2) return "Ranger HR Meeting Risk";
-      if (m.viralPotential >= 5) return "ParkTok menace with educational upside";
+      if (m.viralPotential >= 5) return "viral menace with educational upside";
       return "soft-launching stewardship with tasteful yearning";
     }
 

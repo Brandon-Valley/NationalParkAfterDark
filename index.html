@@ -670,6 +670,7 @@
           <button class="icon-btn" id="saveBtn" title="Save">S</button>
           <button class="icon-btn" id="loadBtn" title="Load">L</button>
           <button class="icon-btn" id="galleryBtn" title="Gallery">G</button>
+          <button class="icon-btn" id="audioBtn" title="Sound on">♪</button>
           <button class="text-btn" id="resetBtn">Reset</button>
         </div>
       </header>
@@ -741,7 +742,8 @@
         rangerApproval: 0
       },
       flags: {},
-      unlockedCG: []
+      unlockedCG: [],
+      audioEnabled: true
     };
 
     let state = clone(defaultState);
@@ -772,6 +774,31 @@
       everglades: ["assets/backgrounds/bg_everglades_moonlit_boardwalk.png", "bg-everglades"],
       dinner: ["assets/backgrounds/bg_group_dinner_lodge.png", "bg-lodge"],
       glitch: ["assets/backgrounds/bg_algorithm_post_glitch.png", "bg-glitch"]
+    };
+
+    const locationThemes = {
+      lodge: { root: 50, scale: [0, 3, 5, 7, 10], wave: "triangle", tempo: 980, pad: 0.045, bass: 0.05 },
+      lodgeExterior: { root: 48, scale: [0, 5, 7, 9, 12], wave: "sine", tempo: 1080, pad: 0.045, bass: 0.045 },
+      yellowstone: { root: 43, scale: [0, 2, 5, 7, 10], wave: "sawtooth", tempo: 820, pad: 0.04, bass: 0.055 },
+      yosemite: { root: 45, scale: [0, 4, 7, 11, 12], wave: "triangle", tempo: 900, pad: 0.05, bass: 0.045 },
+      acadia: { root: 52, scale: [0, 2, 4, 7, 9], wave: "sine", tempo: 760, pad: 0.04, bass: 0.035 },
+      smoky: { root: 47, scale: [0, 3, 5, 7, 10], wave: "triangle", tempo: 1040, pad: 0.055, bass: 0.035 },
+      zion: { root: 41, scale: [0, 2, 5, 7, 9], wave: "square", tempo: 860, pad: 0.035, bass: 0.055 },
+      everglades: { root: 46, scale: [0, 2, 3, 7, 10], wave: "sine", tempo: 720, pad: 0.045, bass: 0.045 },
+      dinner: { root: 53, scale: [0, 2, 5, 7, 9], wave: "triangle", tempo: 680, pad: 0.04, bass: 0.04 },
+      glitch: { root: 42, scale: [0, 1, 6, 7, 11], wave: "sawtooth", tempo: 520, pad: 0.03, bass: 0.05 }
+    };
+
+    const characterThemes = {
+      june: { lead: "square", melody: [12, 7, 10, 5, 7, 3, 5, 0], volume: 0.022 },
+      yellowstone: { lead: "sawtooth", melody: [0, 7, 10, 14, 12, 10, 7, 5], volume: 0.026 },
+      yosemite: { lead: "triangle", melody: [12, 16, 19, 23, 19, 16, 14, 12], volume: 0.025 },
+      acadia: { lead: "sine", melody: [7, 9, 12, 14, 16, 14, 12, 9], volume: 0.024 },
+      smoky: { lead: "triangle", melody: [0, 3, 7, 10, 12, 10, 7, 3], volume: 0.024 },
+      zion: { lead: "square", melody: [0, 5, 9, 12, 17, 12, 9, 5], volume: 0.022 },
+      everglades: { lead: "sine", melody: [0, 2, 3, 7, 10, 7, 3, 2], volume: 0.025 },
+      chad: { lead: "sawtooth", melody: [12, 11, 7, 6, 5, 1, 6, 11], volume: 0.02 },
+      algorithm: { lead: "sawtooth", melody: [0, 6, 1, 11, 7, 13, 6, 1], volume: 0.024 }
     };
 
     const cgLibrary = {
@@ -878,22 +905,24 @@
 
     const scenes = {
       cold_open_tiktok_montage: {
-        label: "Cold Open",
+        label: "Before The Lodge",
         background: "lodgeExterior",
         character: null,
-        onEnter: { parkTok: "coldOpen", metrics: { viralPotential: 1, chaos: 1 } },
+        onEnter: { metrics: { viralPotential: 1, chaos: 1 } },
         lines: [
-          ["narrator", "ParkTok was supposed to be simple: one sunset, two safety facts, zero comments using the phrase geological thirst."],
-          ["narrator", "Then a parody Yellowstone clip hit seven figures, Yosemite discovered front-facing vulnerability, and every park account with a tripod started acting suspicious."],
-          ["narrator", "You, a rising creator with a ring light and questionable judgment, have been invited to Viral Vista Lodge for the first Public Lands Content Creator Retreat."],
-          ["narrator", "The invitation promises education, collaboration, and a legally distinct amount of romantic tension."],
-          ["june", "Welcome packet rule one: no touching wildlife. Rule two: no implying the wildlife wants to touch you back."],
-          ["june", "Rule three: if a handsome landscape asks you to step off a marked path, you report him to me and then reconsider your type."]
+          ["player", "Okay. Breathe. Badge straight. Hair doing whatever it thinks is best."],
+          ["player", "My name is {playerName}. Online, I am a {archetype}; offline, I am a person carrying two power banks, three lip balms, and a very fragile belief that I can be normal about famous landscapes."],
+          ["player", "ParkTok was supposed to be simple for me: one sunset, two safety facts, zero captions that made strangers type 'geological thirst' in public."],
+          ["player", "Then my parody Yellowstone clip hit seven figures. Yosemite duetted it with alarming cheekbones. Acadia made sunrise coffee look like a love language. By noon, half the internet was asking which park had the best emotional availability."],
+          ["player", "That is how I ended up invited to Viral Vista Lodge for the first Public Lands Content Creator Retreat: education, collaboration, and a legally distinct amount of romantic tension."],
+          ["player", "The job sounds simple. Help the parks go viral without encouraging anyone to step off trails, bother wildlife, or confuse stewardship with flirting."],
+          ["player", "The situation sounds less simple: the parks are somehow here as adult fictional personifications, my phone keeps buzzing, and the comments are already treating this like a dating show with trail maps."],
+          ["player", "Before I can decide whether that is charming or career-ending, the lodge doors open."]
         ],
         choices: [
-          { label: "Arrive hydrated and emotionally available.", next: "arrival_lodge", metrics: { conservationCred: 1, rangerApproval: 1 } },
-          { label: "Arrive late because you were choosing a caption.", next: "arrival_lodge", metrics: { viralPotential: 1, chaos: 1 } },
-          { label: "Arrive with backup socks and backup feelings.", next: "arrival_lodge", affection: { smoky: 1, acadia: 1 } }
+          { label: "Step inside hydrated and emotionally available.", next: "arrival_lodge", metrics: { conservationCred: 1, rangerApproval: 1 }, parkTok: "coldOpen" },
+          { label: "Check the comments one last time.", next: "arrival_lodge", metrics: { viralPotential: 1, chaos: 1 }, parkTok: "coldOpen" },
+          { label: "Pocket backup socks and backup feelings.", next: "arrival_lodge", affection: { smoky: 1, acadia: 1 }, parkTok: "coldOpen" }
         ]
       },
 
@@ -902,6 +931,7 @@
         background: "lodge",
         character: "june",
         lines: [
+          ["june", "You must be {playerName}. I am Ranger June, and I can already hear your notification anxiety from across the lobby."],
           ["june", "Badge name? Creator archetype? Emergency contact who will not ask why you were flirting with sedimentary lighting?"],
           ["player", "I'm {playerName}. Officially a {archetype}. Unofficially, I'm here to make responsible content and maybe bad decisions in good boots."],
           ["june", "Excellent. You will fit in terribly."],
@@ -1360,6 +1390,18 @@
       galleryGrid: document.getElementById("galleryGrid")
     };
 
+    const audioEngine = {
+      ctx: null,
+      master: null,
+      musicGain: null,
+      sfxGain: null,
+      intervalId: null,
+      step: 0,
+      locationKey: "lodgeExterior",
+      characterKey: null,
+      enabled: true
+    };
+
     document.getElementById("newGameBtn").addEventListener("click", () => showScreen("setupScreen"));
     document.getElementById("continueBtn").addEventListener("click", loadGame);
     document.getElementById("beginBtn").addEventListener("click", startGame);
@@ -1368,6 +1410,7 @@
     document.getElementById("loadBtn").addEventListener("click", loadGame);
     document.getElementById("resetBtn").addEventListener("click", resetGame);
     document.getElementById("galleryBtn").addEventListener("click", showGallery);
+    document.getElementById("audioBtn").addEventListener("click", toggleAudio);
     document.getElementById("closeGalleryBtn").addEventListener("click", () => els.galleryOverlay.classList.remove("active"));
     document.getElementById("unlockPreviewBtn").addEventListener("click", () => {
       Object.keys(cgLibrary).forEach(unlockCG);
@@ -1397,6 +1440,8 @@
       const name = document.getElementById("playerName").value.trim();
       state.playerName = name || "Creator";
       state.archetype = document.getElementById("archetype").value;
+      audioEngine.enabled = state.audioEnabled;
+      ensureAudio();
       showScreen("gameScreen");
       renderScene("cold_open_tiktok_montage");
     }
@@ -1409,6 +1454,7 @@
       applyOnEnter(scene);
       updateBackdrop(scene.background);
       updateSprite(scene.character);
+      updateAudioTheme(scene.background, scene.character);
       updateHUD();
       renderCurrentLine();
     }
@@ -1430,6 +1476,7 @@
       const scene = scenes[state.sceneId];
       if (!scene || state.lineIndex >= scene.lines.length - 1) return;
       state.lineIndex += 1;
+      playSfx("advance");
       renderCurrentLine();
     }
 
@@ -1448,6 +1495,7 @@
     }
 
     function applyChoiceEffects(choice) {
+      playSfx("choice");
       if (choice.affection) addValues(state.affection, choice.affection);
       if (choice.metrics) addValues(state.metrics, choice.metrics);
       if (choice.flags) Object.assign(state.flags, choice.flags);
@@ -1481,6 +1529,7 @@
       if (scene.onEnter.affection) addValues(state.affection, scene.onEnter.affection);
       if (scene.onEnter.unlockCG) unlockCG(scene.onEnter.unlockCG);
       if (scene.onEnter.parkTok) setTimeout(() => showParkTok(scene.onEnter.parkTok), 180);
+      playSfx("scene");
     }
 
     function updateBackdrop(backgroundKey) {
@@ -1515,6 +1564,7 @@
       els.parkTokMeta.textContent = `${moment.likes} likes  |  ${moment.shares} shares  |  #ParkTok`;
       els.parkTokComments.innerHTML = moment.comments.map(comment => `<div class="comment">@trailcomment: ${escapeHtml(comment)}</div>`).join("");
       els.parkTokOverlay.classList.add("active");
+      playSfx("notification");
     }
 
     function showGallery() {
@@ -1561,7 +1611,9 @@
     }
 
     function saveGame() {
+      state.audioEnabled = audioEngine.enabled;
       localStorage.setItem(SAVE_KEY, JSON.stringify(state));
+      playSfx("save");
       toast("Saved at Viral Vista Lodge.");
     }
 
@@ -1577,6 +1629,9 @@
         state.metrics = Object.assign(clone(defaultState.metrics), state.metrics || {});
         state.flags = state.flags || {};
         state.unlockedCG = state.unlockedCG || [];
+        state.audioEnabled = state.audioEnabled !== false;
+        audioEngine.enabled = state.audioEnabled;
+        ensureAudio();
         showScreen("gameScreen");
         renderScene(state.sceneId || "cold_open_tiktok_montage", { keepLine: true });
         toast("Save loaded.");
@@ -1588,6 +1643,7 @@
     function resetGame() {
       localStorage.removeItem(SAVE_KEY);
       state = clone(defaultState);
+      audioEngine.enabled = state.audioEnabled;
       els.galleryOverlay.classList.remove("active");
       els.parkTokOverlay.classList.remove("active");
       showScreen("startScreen");
@@ -1597,6 +1653,147 @@
     function showScreen(id) {
       [els.startScreen, els.setupScreen, els.gameScreen].forEach(screen => screen.classList.remove("active"));
       els[id].classList.add("active");
+    }
+
+    function toggleAudio() {
+      audioEngine.enabled = !audioEngine.enabled;
+      state.audioEnabled = audioEngine.enabled;
+      ensureAudio();
+      updateAudioButton();
+      if (audioEngine.enabled) {
+        restartMusicLoop();
+        playSfx("save");
+        toast("Sound on: original park themes enabled.");
+      } else {
+        stopMusicLoop();
+        toast("Sound muted.");
+      }
+    }
+
+    function updateAudioButton() {
+      const button = document.getElementById("audioBtn");
+      button.textContent = audioEngine.enabled ? "♪" : "×";
+      button.title = audioEngine.enabled ? "Sound on" : "Sound muted";
+    }
+
+    function ensureAudio() {
+      updateAudioButton();
+      if (!audioEngine.enabled || audioEngine.ctx) return;
+      const AudioContextCtor = window.AudioContext || window.webkitAudioContext;
+      if (!AudioContextCtor) {
+        audioEngine.enabled = false;
+        updateAudioButton();
+        return;
+      }
+      const ctx = new AudioContextCtor();
+      const master = ctx.createGain();
+      const musicGain = ctx.createGain();
+      const sfxGain = ctx.createGain();
+      master.gain.value = 0.7;
+      musicGain.gain.value = 0.22;
+      sfxGain.gain.value = 0.42;
+      musicGain.connect(master);
+      sfxGain.connect(master);
+      master.connect(ctx.destination);
+      audioEngine.ctx = ctx;
+      audioEngine.master = master;
+      audioEngine.musicGain = musicGain;
+      audioEngine.sfxGain = sfxGain;
+      restartMusicLoop();
+    }
+
+    function updateAudioTheme(locationKey, characterKey) {
+      audioEngine.locationKey = locationKey || "lodge";
+      audioEngine.characterKey = characterKey || null;
+      if (!audioEngine.enabled) return;
+      ensureAudio();
+      restartMusicLoop();
+      playSfx(characterKey ? "character" : "scene");
+    }
+
+    function restartMusicLoop() {
+      if (!audioEngine.enabled || !audioEngine.ctx) return;
+      stopMusicLoop();
+      audioEngine.step = 0;
+      playMusicStep();
+      const theme = locationThemes[audioEngine.locationKey] || locationThemes.lodge;
+      audioEngine.intervalId = setInterval(playMusicStep, theme.tempo);
+    }
+
+    function stopMusicLoop() {
+      if (audioEngine.intervalId) {
+        clearInterval(audioEngine.intervalId);
+        audioEngine.intervalId = null;
+      }
+    }
+
+    function playMusicStep() {
+      if (!audioEngine.enabled || !audioEngine.ctx) return;
+      const ctx = audioEngine.ctx;
+      if (ctx.state === "suspended") ctx.resume();
+      const theme = locationThemes[audioEngine.locationKey] || locationThemes.lodge;
+      const characterTheme = characterThemes[audioEngine.characterKey];
+      const now = ctx.currentTime;
+      const scaleNote = theme.scale[audioEngine.step % theme.scale.length];
+      const octave = audioEngine.step % 4 === 0 ? -12 : 0;
+      playTone(midiToFreq(theme.root + octave + scaleNote), 1.8, theme.pad, theme.wave, audioEngine.musicGain, now, "soft");
+
+      if (audioEngine.step % 2 === 0) {
+        playTone(midiToFreq(theme.root - 24 + scaleNote), 0.34, theme.bass, "sine", audioEngine.musicGain, now, "pluck");
+      }
+
+      if (characterTheme) {
+        const melodyNote = characterTheme.melody[audioEngine.step % characterTheme.melody.length];
+        playTone(midiToFreq(theme.root + melodyNote), 0.28, characterTheme.volume, characterTheme.lead, audioEngine.musicGain, now + 0.06, "pluck");
+      }
+
+      audioEngine.step += 1;
+    }
+
+    function playSfx(type) {
+      if (!audioEngine.enabled) return;
+      ensureAudio();
+      if (!audioEngine.ctx) return;
+      const ctx = audioEngine.ctx;
+      if (ctx.state === "suspended") ctx.resume();
+      const now = ctx.currentTime;
+      const gain = audioEngine.sfxGain;
+      const sfx = {
+        advance: [740, 0.04, 0.035, "triangle"],
+        choice: [520, 0.09, 0.075, "square"],
+        scene: [260, 0.18, 0.07, "sine"],
+        character: [392, 0.12, 0.06, "triangle"],
+        notification: [880, 0.08, 0.08, "sine"],
+        save: [660, 0.12, 0.07, "triangle"]
+      }[type] || [440, 0.08, 0.05, "sine"];
+      playTone(sfx[0], sfx[1], sfx[2], sfx[3], gain, now, "pluck");
+      if (type === "notification") playTone(1175, 0.08, 0.06, "sine", gain, now + 0.09, "pluck");
+      if (type === "choice") playTone(780, 0.07, 0.045, "triangle", gain, now + 0.08, "pluck");
+    }
+
+    function playTone(frequency, duration, volume, wave, destination, startTime, shape) {
+      const ctx = audioEngine.ctx;
+      if (!ctx || !destination) return;
+      const osc = ctx.createOscillator();
+      const gain = ctx.createGain();
+      osc.type = wave;
+      osc.frequency.setValueAtTime(frequency, startTime);
+      gain.gain.setValueAtTime(0.0001, startTime);
+      gain.gain.exponentialRampToValueAtTime(Math.max(volume, 0.0002), startTime + 0.02);
+      if (shape === "soft") {
+        gain.gain.exponentialRampToValueAtTime(0.0001, startTime + duration);
+      } else {
+        gain.gain.exponentialRampToValueAtTime(Math.max(volume * 0.35, 0.0002), startTime + duration * 0.35);
+        gain.gain.exponentialRampToValueAtTime(0.0001, startTime + duration);
+      }
+      osc.connect(gain);
+      gain.connect(destination);
+      osc.start(startTime);
+      osc.stop(startTime + duration + 0.04);
+    }
+
+    function midiToFreq(note) {
+      return 440 * Math.pow(2, (note - 69) / 12);
     }
 
     function formatText(text) {

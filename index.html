@@ -232,7 +232,7 @@
       object-fit: contain;
       filter: drop-shadow(0 30px 38px rgba(0, 0, 0, .56));
       transform: translateY(22px) scale(1);
-      transition: opacity .9s ease, transform .9s cubic-bezier(.19, 1, .22, 1);
+      transition: opacity .55s ease, transform .7s cubic-bezier(.19, 1, .22, 1), filter .7s ease;
       opacity: 1;
       z-index: 1;
       flex: 0 0 auto;
@@ -240,8 +240,8 @@
 
     .sprite.hidden {
       opacity: 0;
-      visibility: hidden;
       transform: translateY(34px) scale(.985);
+      pointer-events: none;
     }
 
     .placeholder-sprite {
@@ -286,7 +286,7 @@
       z-index: 2;
     }
 
-    .start-panel::before, .setup-card::before, .overlay-card::before {
+    .setup-card::before, .overlay-card::before {
       content: "";
       position: absolute;
       inset: 0;
@@ -383,15 +383,13 @@
 
     .start {
       height: 100%;
-      display: grid;
-      align-items: end;
-      gap: 18px;
-      padding: 24px;
+      display: flex;
+      align-items: stretch;
+      justify-content: center;
+      padding: clamp(18px, 4vw, 42px);
       position: relative;
       overflow: hidden;
-      background:
-        radial-gradient(circle at 50% 18%, rgba(210, 126, 55, .34), transparent 34%),
-        linear-gradient(180deg, #2b170d 0%, #1d120c 52%, #0f0a07 100%);
+      background: #160f0b;
     }
 
     .start::before {
@@ -399,24 +397,23 @@
       position: absolute;
       inset: 0;
       background:
-        linear-gradient(180deg, rgba(0, 0, 0, .06), rgba(0, 0, 0, .76)),
+        linear-gradient(180deg, rgba(6, 10, 10, 0) 0%, rgba(8, 9, 12, .03) 36%, rgba(8, 7, 8, .42) 72%, rgba(8, 5, 4, .8) 100%),
         url("assets/backgrounds/bg_intro_group_responsive.png") center / cover no-repeat;
-      opacity: .28;
-      filter: blur(10px) saturate(.95);
-      transform: scale(1.04);
+      pointer-events: none;
+    }
+
+    .start::after {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background:
+        linear-gradient(180deg, rgba(255, 241, 197, .1), transparent 22%),
+        radial-gradient(circle at 22% 16%, rgba(255, 196, 117, .18), transparent 28%);
       pointer-events: none;
     }
 
     .start-hero {
-      width: min(820px, calc(100vw - 32px));
-      max-height: min(58dvh, 520px);
-      justify-self: center;
-      align-self: end;
-      position: relative;
-      z-index: 1;
-      display: flex;
-      justify-content: center;
-      filter: drop-shadow(0 20px 36px rgba(0, 0, 0, .36));
+      display: none;
     }
 
     .start-hero img {
@@ -430,18 +427,16 @@
     }
 
     .start-panel {
-      width: min(860px, 100%);
-      margin: 0 auto;
-      padding: 20px;
+      width: min(620px, 100%);
+      margin: auto auto 0 0;
+      padding: 0 0 clamp(14px, 3vw, 34px);
       border: 0;
-      border-radius: 8px;
       background: transparent;
-      backdrop-filter: blur(16px);
-      filter: drop-shadow(0 18px 28px rgba(0, 0, 0, .28));
-      color: var(--ink);
+      color: #fff4dc;
       position: relative;
       isolation: isolate;
       z-index: 1;
+      text-shadow: 0 4px 18px rgba(0, 0, 0, .72);
     }
 
     .start-panel > *, .setup-card > *, .overlay-card > * {
@@ -450,16 +445,46 @@
     }
 
     h1 {
-      margin: 0 0 8px;
-      font-size: clamp(42px, 12vw, 92px);
-      line-height: .88;
+      margin: 0 0 12px;
+      font-family: Georgia, "Times New Roman", serif;
+      font-size: clamp(58px, 11vw, 124px);
+      line-height: .78;
       letter-spacing: 0;
+      max-width: 9ch;
     }
 
     .tagline {
-      margin: 0 0 16px;
-      color: var(--muted);
-      font-size: clamp(16px, 4vw, 22px);
+      width: min(520px, 100%);
+      margin: 0 0 22px;
+      color: rgba(255, 244, 220, .9);
+      font-size: clamp(17px, 2.5vw, 24px);
+      line-height: 1.28;
+    }
+
+    .start-panel .setup-actions {
+      width: min(380px, 100%);
+      grid-template-columns: 1fr;
+      gap: 10px;
+    }
+
+    .start-panel .primary,
+    .start-panel .ghost {
+      min-height: 54px;
+      border: 1px solid rgba(255, 236, 190, .48);
+      color: #fff7e8;
+      text-transform: uppercase;
+      letter-spacing: .08em;
+      font-size: 14px;
+      box-shadow: 0 16px 34px rgba(0, 0, 0, .42);
+    }
+
+    .start-panel .primary {
+      background: linear-gradient(135deg, rgba(173, 58, 76, .96), rgba(211, 126, 63, .96));
+    }
+
+    .start-panel .ghost {
+      background: rgba(22, 17, 16, .54);
+      backdrop-filter: blur(8px);
     }
 
     .disclaimer {
@@ -471,9 +496,9 @@
       inset: 0;
       display: grid;
       place-items: center;
-      padding: 18px;
-        background:
-        linear-gradient(180deg, rgba(0,0,0,.1), rgba(0,0,0,.72)),
+      padding: 20px;
+      background:
+        linear-gradient(180deg, rgba(7, 11, 12, .08), rgba(8, 7, 8, .44) 52%, rgba(8, 5, 4, .82)),
         url("assets/backgrounds/bg_outdoor_checkin.png") center/cover;
     }
 
@@ -488,9 +513,37 @@
       isolation: isolate;
     }
 
+    .setup-card {
+      width: min(520px, 100%);
+      padding: clamp(24px, 5vw, 38px);
+      background:
+        linear-gradient(180deg, rgba(255, 248, 224, .96), rgba(232, 199, 137, .93));
+      border: 1px solid rgba(255, 242, 208, .68);
+      box-shadow: 0 24px 70px rgba(0, 0, 0, .48);
+      backdrop-filter: blur(12px);
+    }
+
+    .setup-card::before {
+      display: none;
+    }
+
     .setup-card h2, .overlay-card h2 {
       margin: 0 0 8px;
       font-size: 28px;
+    }
+
+    .setup-card h2 {
+      font-family: Georgia, "Times New Roman", serif;
+      font-size: clamp(34px, 8vw, 52px);
+      line-height: .92;
+      color: #5c271f;
+    }
+
+    .checkin-copy {
+      margin: 0 0 18px;
+      color: rgba(66, 45, 27, .78);
+      font-size: 15px;
+      line-height: 1.45;
     }
 
     label {
@@ -503,12 +556,37 @@
 
     input, select {
       width: 100%;
-      min-height: 46px;
+      min-height: 50px;
       border-radius: 8px;
       border: 1px solid var(--line);
-      background: rgba(255,255,255,.08);
-      padding: 10px 12px;
+      background: rgba(255, 255, 255, .58);
+      padding: 12px 14px;
       outline: none;
+      box-shadow: inset 0 2px 8px rgba(92, 54, 23, .1);
+      font-weight: 750;
+    }
+
+    input:focus {
+      border-color: rgba(168, 79, 92, .75);
+      box-shadow: 0 0 0 3px rgba(168, 79, 92, .18), inset 0 2px 8px rgba(92, 54, 23, .08);
+    }
+
+    .setup-card .primary,
+    .setup-card .ghost {
+      min-height: 52px;
+      text-transform: uppercase;
+      letter-spacing: .07em;
+      font-size: 13px;
+      border: 1px solid rgba(92, 54, 23, .28);
+    }
+
+    .setup-card .primary {
+      background: linear-gradient(135deg, rgba(173, 58, 76, .96), rgba(211, 126, 63, .96));
+      color: #fff7e8;
+    }
+
+    .setup-card .ghost {
+      background: rgba(255, 247, 225, .55);
     }
 
     .setup-actions {
@@ -638,15 +716,10 @@
 
     @media (max-width: 700px) {
       .start {
-        display: block;
-        padding: 0;
+        padding: 18px;
       }
       .start-hero {
-        position: absolute;
-        inset: 0;
-        width: 100%;
-        max-height: none;
-        filter: none;
+        display: none;
       }
       .start-hero img {
         width: 100%;
@@ -667,14 +740,14 @@
       }
       .start-panel {
         position: absolute;
-        left: 14px;
-        right: 14px;
-        bottom: calc(26px + env(safe-area-inset-bottom));
+        left: 18px;
+        right: 18px;
+        bottom: calc(28px + env(safe-area-inset-bottom));
         width: auto;
-        padding: 18px;
+        padding: 0;
       }
       .start-panel h1 {
-        font-size: clamp(46px, 13vw, 74px);
+        font-size: clamp(54px, 16vw, 82px);
       }
       .start-panel .tagline {
         font-size: clamp(16px, 4.2vw, 21px);
@@ -704,6 +777,7 @@
       <div class="setup">
         <div class="setup-card">
           <h2>Check-In</h2>
+          <p class="checkin-copy">Your badge is waiting at the lodge desk. Choose the name the route leads will try very hard to say normally.</p>
           <label for="playerName">Name</label>
           <input id="playerName" maxlength="24" placeholder="Name" autocomplete="off" required>
           <div class="setup-actions">
@@ -786,15 +860,16 @@
     };
 
     let state = clone(defaultState);
+    let spriteLoadToken = 0;
 
     const characters = {
       player: { name: () => state.playerName, sprite: "", color: "#7b2f24" },
       narrator: { name: "Narrator", sprite: "", color: "#5f3a19" },
-      jack: { name: "Jack Everett", sprite: "assets/characters/char_jack_everett_neutral.png", color: "#8f3f24" },
-      caleb: { name: "Caleb Ranger", sprite: "assets/characters/char_caleb_ranger_neutral.png", color: "#276345" },
-      sierra: { name: "Sierra", sprite: "assets/characters/char_sierra_neutral.png", color: "#8b3f63" },
-      bruno: { name: "Bruno Bear", sprite: "assets/characters/char_bruno_bear_neutral.png", color: "#704719" },
-      river: { name: "River Hawk", sprite: "assets/characters/char_river_hawk_neutral.png", color: "#245f76" },
+      jack: { name: "Jack Everett", sprites: characterSprites("jack_everett"), color: "#8f3f24" },
+      caleb: { name: "Caleb Ranger", sprites: characterSprites("caleb_ranger"), color: "#276345" },
+      sierra: { name: "Sierra", sprites: characterSprites("sierra"), color: "#8b3f63" },
+      bruno: { name: "Bruno Bear", sprites: characterSprites("bruno_bear"), color: "#704719" },
+      river: { name: "River Hawk", sprites: characterSprites("river_hawk"), color: "#245f76" },
       group: { name: "Everyone", sprite: "", color: "#5f3a19" }
     };
 
@@ -841,6 +916,15 @@
       groupPunBattle: { title: "Pun Battle Dinner", image: "assets/cg/cg_group_pun_battle.png" }
     };
 
+    function characterSprites(slug) {
+      return {
+        neutral: `assets/charactures/${slug}/neutral.png`,
+        blushing: `assets/charactures/${slug}/blushing.png`,
+        grumpy: `assets/charactures/${slug}/grumpy.png`,
+        laughing: `assets/charactures/${slug}/laughing.png`
+      };
+    }
+
     const scenes = {
       cold_open_intro: {
         label: "Before The Lodge",
@@ -886,11 +970,11 @@
         character: "jack",
         lines: [
           ["jack", "Good answer."],
-          ["narrator", "He says it low, like approval is something warm enough to pour."],
+          ["narrator", "He says it low, like approval is something warm enough to pour.", "jack:blushing"],
           ["jack", "Most people hear a closed trail and start bargaining. I like someone who can want something and still respect the boundary."],
           ["player", "That sounds suspiciously like flirting."],
-          ["jack", "It is. I just build it sturdy."],
-          ["narrator", "He reaches past you for a stack of lodge maps. For one breath, he is close enough that cedar, rain, and coffee become a very specific problem."],
+          ["jack", "It is. I just build it sturdy.", "jack:blushing"],
+          ["narrator", "He reaches past you for a stack of lodge maps. For one breath, he is close enough that cedar, rain, and coffee become a very specific problem.", "jack:blushing"],
           ["jack", "Stay sharp tonight, {playerName}. If you keep answering like that, I may have to walk you somewhere quieter."],
           ["narrator", "A whistle cuts through the lodge speaker, followed by a polite warning about the Yellowstone safety demo starting in the west room."],
           ["jack", "That will be Caleb. He makes danger sound organized. Come on, I will get you to him before he starts citing thermal injury statistics."]
@@ -910,8 +994,8 @@
           ["jack", "Usually? It sounds like rain on a roof and someone honest enough not to pretend they are not nervous."],
           ["player", "Are you nervous?"],
           ["jack", "I'm careful. Different tool. Same steady hands."],
-          ["narrator", "He smiles into his coffee, and the lodge lights catch the edge of it."],
-          ["jack", "Careful can still be fun, if you know how to ask."],
+          ["narrator", "He smiles into his coffee, and the lodge lights catch the edge of it.", "jack:laughing"],
+          ["jack", "Careful can still be fun, if you know how to ask.", "jack:laughing"],
           ["player", "And if I ask badly?"],
           ["jack", "Then I stop you before either of us gets hurt."],
           ["narrator", "A ranger whistle chirps from the west room, where steam-map projections flicker across the cabin wall."],
@@ -929,11 +1013,11 @@
         background: "lodge",
         character: "jack",
         lines: [
-          ["narrator", "Jack's smile disappears so completely it feels like a door closing."],
-          ["jack", "Then the shot is not good enough."],
+          ["narrator", "Jack's smile disappears so completely it feels like a door closing.", "jack:grumpy"],
+          ["jack", "Then the shot is not good enough.", "jack:grumpy"],
           ["player", "I was joking."],
-          ["jack", "Good. Make better jokes around old trees."],
-          ["narrator", "He picks up the check-in list and points toward the main room, all business now."],
+          ["jack", "Good. Make better jokes around old trees.", "jack:grumpy"],
+          ["narrator", "He picks up the check-in list and points toward the main room, all business now.", "jack:grumpy"],
           ["jack", "Come on. Caleb's geothermal demo is starting. He is better company when nobody is threatening his boardwalks."]
         ],
         choices: [
@@ -960,9 +1044,9 @@
         lines: [
           ["narrator", "Beyond the west-room door, a timber boardwalk crosses a steaming Yellowstone basin. Warning signs bead with mist; the air is bright with heat and minerals."],
           ["narrator", "A ranger shape moves through the vapor, close enough that the radio on his shoulder crackles before his face comes into view.", "caleb"],
-          ["caleb", "Stop.", "caleb"],
+          ["caleb", "Stop.", "caleb:grumpy"],
           ["player", "I wasn't doing anything.", "caleb"],
-          ["caleb", "You were thinking about a better angle. The better angle is from the boardwalk.", "caleb"],
+          ["caleb", "You were thinking about a better angle. The better angle is from the boardwalk.", "caleb:grumpy"],
           ["player", "Classic ranger-looking guy, classic ranger rules.", "caleb"],
           ["caleb", "Wildlife safety, geothermal warnings, responsible decisions. Yellowstone is dramatic enough without visitors freelancing consequences.", "caleb"],
           ["caleb", "I said stay twenty-five yards away from bison, not from my heart.", "caleb"],
@@ -972,10 +1056,24 @@
           ["caleb", "I prefer emotionally consistent.", "caleb"]
         ],
         choices: [
-          { label: "Promise to stay on the boardwalk.", detail: "Caleb visibly relaxes.", next: "caleb_boardwalk_warm", affection: { caleb: 4 } },
+          { label: "Promise to stay on the boardwalk because you want to leave with him.", detail: "Caleb is not prepared for that phrasing.", next: "caleb_boardwalk_warm", affection: { caleb: 4 } },
           { label: "Ask if he always flirts like a warning sign.", next: "caleb_boardwalk_flirt", affection: { caleb: 2 } },
-          { label: "Step off the boardwalk for a better angle.", detail: "Caleb goes cold immediately.", next: "to_sierra_from_caleb", affection: { caleb: -6 } }
+          { label: "Step off the boardwalk for a better angle.", detail: "Caleb goes cold immediately.", next: "caleb_boardwalk_cold", affection: { caleb: -6 } }
         ]
+      },
+
+      caleb_boardwalk_cold: {
+        label: "Geothermal Boardwalk",
+        background: "yellowstone",
+        character: "caleb:grumpy",
+        lines: [
+          ["caleb", "Back on the boardwalk. Now.", "caleb:grumpy"],
+          ["player", "It was just one step.", "caleb:grumpy"],
+          ["caleb", "One step is exactly how people turn a warning into an incident report.", "caleb:grumpy"],
+          ["narrator", "The steam keeps moving, beautiful and indifferent. Caleb does not look away until both your feet are behind the rail.", "caleb:grumpy"],
+          ["caleb", "If you want drama, use lighting. Do not use danger.", "caleb:grumpy"]
+        ],
+        next: "to_sierra_from_caleb"
       },
 
       caleb_boardwalk_warm: {
@@ -983,11 +1081,11 @@
         background: "yellowstone",
         character: "caleb",
         lines: [
-          ["caleb", "Thank you."],
-          ["player", "That sounded personal."],
-          ["caleb", "It is. People treat warnings like dares, then expect someone else to carry the consequences."],
-          ["narrator", "Steam curls between you. Caleb lowers his voice, and somehow that feels more intimate than stepping closer."],
-          ["caleb", "You listening the first time? That is dangerously attractive."],
+          ["caleb", "That is... a very effective safety commitment.", "caleb:blushing"],
+          ["player", "Effective because of the safety part, or because I said with you?", "caleb:blushing"],
+          ["caleb", "Both. Unfortunately for my professional composure, both.", "caleb:blushing"],
+          ["narrator", "Steam curls between you. Caleb lowers his voice, and somehow that feels more intimate than stepping closer.", "caleb:blushing"],
+          ["caleb", "You listening the first time because you want us both to make it back? That is dangerously attractive.", "caleb:blushing"],
           ["player", "Dangerously? From you?"],
           ["caleb", "Metaphorically. I am still very committed to safe distances."],
           ["narrator", "He checks his schedule and nods toward the lodge doors, where the rain has softened to mist."],
@@ -1008,10 +1106,10 @@
           ["caleb", "Only when the warning sign deserves better typography."],
           ["player", "So this is a design critique and a pickup line."],
           ["caleb", "And a legally sincere request not to boil yourself for content."],
-          ["narrator", "He checks the boardwalk rail, then glances back at you with a smile he tries and fails to make professional."],
-          ["caleb", "You are trouble."],
+          ["narrator", "He checks the boardwalk rail, then glances back at you with a smile he tries and fails to make professional.", "caleb:laughing"],
+          ["caleb", "You are trouble.", "caleb:laughing"],
           ["player", "You are smiling."],
-          ["caleb", "I contain contradictions. At approved temperatures."],
+          ["caleb", "I contain contradictions. At approved temperatures.", "caleb:laughing"],
           ["narrator", "His radio chirps. From the porch, Sierra calls that the Yosemite trail model is ready before the good light moves."],
           ["caleb", "That is her cue. She believes punctuality is a form of cardio."]
         ],
@@ -1041,7 +1139,7 @@
         lines: [
           ["narrator", "Mist lifts off Yosemite granite in silver sheets. The trail bends toward a waterfall loud enough to turn every thought into weather."],
           ["narrator", "Bootsteps hit the switchback behind you, quick and certain. Sierra rounds the bend with a grin, a pack, and the confidence of someone who has never lost an argument with a mountain.", "sierra"],
-          ["sierra", "You brought water, snacks, layers, and the humility to turn around if conditions change, right?", "sierra"],
+          ["sierra", "You brought water, snacks, layers, and the humility to turn around if conditions change, right?", "sierra:grumpy"],
           ["player", "That is a lot of romance before hello.", "sierra"],
           ["sierra", "Hello. Yosemite route. Waterfall hikes, granite cliffs, big scenic feelings. Also: sturdy shoes.", "sierra"],
           ["player", "You make preparedness sound flirtatious.", "sierra"],
@@ -1053,10 +1151,24 @@
           ["sierra", "Yes. Try to keep up.", "sierra"]
         ],
         choices: [
-          { label: "Tell her no filter could improve this hike.", next: "sierra_trail_flirt", affection: { sierra: 3 } },
+          { label: "Tell her the safest view is the one where she is in it.", detail: "Sierra is not ready for that to work.", next: "sierra_trail_flirt", affection: { sierra: 3 } },
           { label: "Ask for the trail-guide version, not the influencer version.", detail: "Sierra likes that you want the truth.", next: "sierra_trail_warm", affection: { sierra: 4 } },
-          { label: "Admit you would ignore turnaround time for content.", detail: "Sierra's smile vanishes.", next: "to_bruno_from_sierra", affection: { sierra: -6 } }
+          { label: "Admit you would ignore turnaround time for content.", detail: "Sierra's smile vanishes.", next: "sierra_trail_cold", affection: { sierra: -6 } }
         ]
+      },
+
+      sierra_trail_cold: {
+        label: "Yosemite Waterfall Trail",
+        background: "yosemite",
+        character: "sierra:grumpy",
+        lines: [
+          ["sierra", "Absolutely not.", "sierra:grumpy"],
+          ["player", "I meant if the footage was really good.", "sierra:grumpy"],
+          ["sierra", "The mountain does not care how good the footage is. Turnaround time is not a suggestion with better branding.", "sierra:grumpy"],
+          ["narrator", "Her grin disappears, replaced by the kind of trail-lead stare that has ended a thousand bad ideas.", "sierra:grumpy"],
+          ["sierra", "If I say we turn around, we turn around. If that disappoints your audience, they can hydrate about it.", "sierra:grumpy"]
+        ],
+        next: "to_bruno_from_sierra"
       },
 
       sierra_trail_warm: {
@@ -1065,8 +1177,8 @@
         character: "sierra",
         lines: [
           ["sierra", "Good. The pretty version is easy. The true version is better."],
-          ["narrator", "She adjusts the strap on your pack with quick, confident fingers, tugging it snug against your shoulder."],
-          ["sierra", "There. Now you look like you might survive my favorite overlook."],
+          ["narrator", "She adjusts the strap on your pack with quick, confident fingers, tugging it snug against your shoulder.", "sierra"],
+          ["sierra", "There. Now you look like you might survive my favorite overlook.", "sierra"],
           ["player", "That was either gear advice or a threat."],
           ["sierra", "A promise. If I take you somewhere beautiful, I want you coming back with me."],
           ["narrator", "The waterfall roars behind her, but the way she says with me is louder."],
@@ -1085,14 +1197,14 @@
         background: "yosemite",
         character: "sierra",
         lines: [
-          ["sierra", "Careful. Compliments at altitude hit harder."],
-          ["player", "Should I hydrate?"],
-          ["sierra", "Absolutely. Also maybe stop looking at me like I am the scenic overlook."],
+          ["sierra", "That is a deeply impractical sentence.", "sierra:blushing"],
+          ["player", "But trail-compliant.", "sierra:blushing"],
+          ["sierra", "Annoyingly trail-compliant. Hydrate before you say anything else effective.", "sierra:blushing"],
           ["player", "Is that against trail rules?"],
           ["sierra", "No. But if you trip while doing it, I am writing 'distracted by guide' on the incident report."],
-          ["narrator", "She grins, bright and wicked, and starts up the trail just slow enough for you to catch up."],
+          ["narrator", "She grins, bright and wicked, and starts up the trail just slow enough for you to catch up.", "sierra:laughing"],
           ["narrator", "At the overlook, a route bell rings from the lantern-lit grove workshop below."],
-          ["sierra", "That is Bruno. Try not to make a fire joke unless you want the world's kindest disappointed stare."]
+          ["sierra", "That is Bruno. Try not to make a fire joke unless you want the world's kindest disappointed stare.", "sierra:laughing"]
         ],
         choices: [
           { label: "Catch up and match her pace.", next: "to_bruno_from_sierra", affection: { sierra: 4 } },
@@ -1122,20 +1234,34 @@
           ["narrator", "Beside a split-rail fence, Bruno Bear tips his ranger hat with a smile warm enough to make the whole forest stand a little taller.", "bruno"],
           ["bruno", "Howdy, {playerName}. Bruno Bear. Sequoia and Kings Canyon route. Fire safety, giant trees, forest-protector energy.", "bruno"],
           ["player", "You are extremely committed to the ranger mascot assignment.", "bruno"],
-          ["bruno", "The hat chose me.", "bruno"],
+          ["bruno", "The hat chose me.", "bruno:laughing"],
           ["bruno", "These trees survive a long time because ecosystems are patient and people learn to be careful. Campfires out cold, sparks contained, vehicles parked clear of dry grass.", "bruno"],
           ["player", "You make prevention sound heroic.", "bruno"],
           ["bruno", "Prevention is heroic. It is love arriving before the emergency.", "bruno"],
           ["narrator", "He rests one paw-hand against the fence, keeping the grove protected without making protection feel stern.", "bruno"],
-          ["bruno", "Only you can prevent bad decisions from becoming content.", "bruno"],
+          ["bruno", "Only you can prevent bad decisions from becoming content.", "bruno:grumpy"],
           ["player", "That is definitely going on merch.", "bruno"],
-          ["bruno", "Only if the proceeds fund trail restoration.", "bruno"]
+          ["bruno", "Only if the proceeds fund trail restoration.", "bruno:laughing"]
         ],
         choices: [
           { label: "Ask him to teach a fire-safety check.", detail: "Bruno beams.", next: "bruno_grove_warm", affection: { bruno: 4 } },
           { label: "Compliment the forest-protector energy.", next: "bruno_grove_flirt", affection: { bruno: 2 } },
-          { label: "Say fire safety is boring unless something burns.", detail: "Bruno looks genuinely hurt.", next: "to_river_from_bruno", affection: { bruno: -6 } }
+          { label: "Say fire safety is boring unless something burns.", detail: "Bruno looks genuinely hurt.", next: "bruno_grove_cold", affection: { bruno: -6 } }
         ]
+      },
+
+      bruno_grove_cold: {
+        label: "Giant Grove",
+        background: "sequoia",
+        character: "bruno:grumpy",
+        lines: [
+          ["bruno", "No.", "bruno:grumpy"],
+          ["player", "That came out worse than I meant.", "bruno:grumpy"],
+          ["bruno", "Fire does not wait for intentions to catch up. It just spreads.", "bruno:grumpy"],
+          ["narrator", "The warmth leaves his smile, and the grove suddenly feels older, quieter, and less forgiving.", "bruno:grumpy"],
+          ["bruno", "Around these trees, boring is another word for everyone getting to come home.", "bruno:grumpy"]
+        ],
+        next: "to_river_from_bruno"
       },
 
       bruno_grove_warm: {
@@ -1148,7 +1274,7 @@
           ["bruno", "Stir, feel, drown, repeat. Care is not glamorous, but it is how beautiful things get tomorrow."],
           ["player", "You make tomorrow sound romantic."],
           ["bruno", "Tomorrow is romantic. It means we did right by tonight."],
-          ["narrator", "His smile is gentle enough to be safe and broad enough to be a problem."],
+          ["narrator", "His smile is gentle enough to be safe and broad enough to be a problem.", "bruno"],
           ["narrator", "A red-rock permit card waits under the next lantern, stamped with River's neat handwriting."],
           ["bruno", "River has the canyon route after me. He will act mysterious about it, but he packed extra water for you."]
         ],
@@ -1164,10 +1290,10 @@
         background: "sequoia",
         character: "bruno",
         lines: [
-          ["bruno", "Forest-protector energy, huh?"],
+          ["bruno", "Forest-protector energy, huh?", "bruno:blushing"],
           ["player", "It is working for you."],
           ["bruno", "Then I should warn you: I take protection seriously."],
-          ["narrator", "He tips his hat, but his eyes stay on you, warm as sun through sequoia bark."],
+          ["narrator", "He tips his hat, but his eyes stay on you, warm as sun through sequoia bark.", "bruno:blushing"],
           ["bruno", "I like people who can be soft with powerful things."],
           ["player", "Trees or feelings?"],
           ["bruno", "Yes."],
@@ -1200,7 +1326,7 @@
         lines: [
           ["narrator", "Red canyon walls catch the late light, turning every shadow into a narrow path. A permit table waits beside the trailhead, weighted with stones and water bottles."],
           ["narrator", "River Hawk steps out from the shade, long hair moving in the desert wind like the canyon personally requested atmosphere.", "river"],
-          ["river", "You are late for your emotional access window.", "river"],
+          ["river", "You are late for your emotional access window.", "river:grumpy"],
           ["player", "I didn't know I had one.", "river"],
           ["river", "That is why you are late.", "river"],
           ["river", "River Hawk. Zion route. Canyon guide, red rock, narrow paths, and feelings that require a realistic itinerary.", "river"],
@@ -1215,8 +1341,22 @@
         choices: [
           { label: "Ask for the application packet.", next: "river_canyon_flirt", affection: { river: 3 } },
           { label: "Respect the access window.", detail: "River trusts you more.", next: "river_canyon_warm", affection: { river: 4 } },
-          { label: "Call permits pointless gatekeeping.", detail: "River closes the clipboard.", next: "to_dinner_from_river", affection: { river: -6 } }
+          { label: "Call permits pointless gatekeeping.", detail: "River closes the clipboard.", next: "river_canyon_cold", affection: { river: -6 } }
         ]
+      },
+
+      river_canyon_cold: {
+        label: "Red-Rock Permit Desk",
+        background: "zion",
+        character: "river:grumpy",
+        lines: [
+          ["river", "Gatekeeping is when someone keeps you out for power. Permits keep people alive.", "river:grumpy"],
+          ["player", "I was trying to make a point.", "river:grumpy"],
+          ["river", "Then make it from the side of the canyon where rescue crews do not have to become part of your story.", "river:grumpy"],
+          ["narrator", "He closes the clipboard with a flat, final click. The access window has very much closed with it.", "river:grumpy"],
+          ["river", "Responsibility is not a wall. It is the door.", "river:grumpy"]
+        ],
+        next: "to_dinner_from_river"
       },
 
       river_canyon_warm: {
@@ -1227,10 +1367,10 @@
           ["river", "Thank you."],
           ["player", "For respecting the window?"],
           ["river", "For understanding that access is not rejection. Sometimes the way in is slower because the place matters."],
-          ["narrator", "He folds the map with ceremonial precision, then lets his hand rest near yours on the table."],
+          ["narrator", "He folds the map with ceremonial precision, then lets his hand rest near yours on the table.", "river:blushing"],
           ["river", "I like people who do not mistake patience for lack of desire."],
           ["player", "And if desire is very patient?"],
-          ["river", "Then it may be approved for a longer route."],
+          ["river", "Then it may be approved for a longer route.", "river:blushing"],
           ["narrator", "From inside the cabin, dinner plates clatter and someone declares that the pun contest is mandatory."],
           ["river", "Group dinner. The least efficient, most revealing route."]
         ],
@@ -1250,10 +1390,10 @@
           ["player", "What counts as emotional preparedness?"],
           ["river", "Knowing when to hold eye contact and when to look at the canyon."],
           ["player", "And right now?"],
-          ["narrator", "River's smile turns slow enough to feel deliberate."],
-          ["river", "Right now, I am seeing whether you can do both."],
+          ["narrator", "River's smile turns slow enough to feel deliberate.", "river:laughing"],
+          ["river", "Right now, I am seeing whether you can do both.", "river:laughing"],
           ["narrator", "The cabin dinner bell rings before either of you can make that silence more dangerous."],
-          ["river", "Saved by communal soup. Temporarily."]
+          ["river", "Saved by communal soup. Temporarily.", "river:laughing"]
         ],
         choices: [
           { label: "Hold his gaze, then look at the canyon.", next: "to_dinner_from_river", affection: { river: 4 } },
@@ -1349,8 +1489,22 @@
         choices: [
           { label: "Back him up on staying on marked trails.", detail: "This puts you firmly on Jack's romance branch.", next: "day_1_end_summary", affection: { jack: 5 } },
           { label: "Ask him to explain old-growth protection plainly.", next: "day_1_end_summary", affection: { jack: 3 } },
-          { label: "Tell him getting lost makes better content.", detail: "This can push Jack into the hate branch.", next: "day_1_end_summary", affection: { jack: -8 } }
+          { label: "Tell him getting lost makes better content.", detail: "This can push Jack into the hate branch.", next: "jack_date_cold", affection: { jack: -8 } }
         ]
+      },
+
+      jack_date_cold: {
+        label: "Jack's Route",
+        background: "olympic",
+        character: "jack:grumpy",
+        lines: [
+          ["jack", "No story is worth turning a closed habitat into a backdrop.", "jack:grumpy"],
+          ["player", "I was thinking about the hook.", "jack:grumpy"],
+          ["jack", "Then think harder. Getting lost is not a personality. It is a search grid.", "jack:grumpy"],
+          ["narrator", "Rain beads on his flannel while he waits for the point to land.", "jack:grumpy"],
+          ["jack", "If the content needs someone to ignore the trail, the content is bad.", "jack:grumpy"]
+        ],
+        next: "day_1_end_summary"
       },
 
       caleb_date_1: {
@@ -1371,8 +1525,22 @@
         choices: [
           { label: "Back him up on staying on the boardwalk.", detail: "This puts you firmly on Caleb's romance branch.", next: "day_1_end_summary", affection: { caleb: 5 } },
           { label: "Ask him to explain the danger plainly.", next: "day_1_end_summary", affection: { caleb: 3 } },
-          { label: "Say rules ruin the mood.", detail: "This can push Caleb into the hate branch.", next: "day_1_end_summary", affection: { caleb: -8 } }
+          { label: "Say rules ruin the mood.", detail: "This can push Caleb into the hate branch.", next: "caleb_date_cold", affection: { caleb: -8 } }
         ]
+      },
+
+      caleb_date_cold: {
+        label: "Caleb's Route",
+        background: "yellowstone",
+        character: "caleb:grumpy",
+        lines: [
+          ["caleb", "The mood is not more important than the ground staying under your feet.", "caleb:grumpy"],
+          ["player", "I did not mean it that literally.", "caleb:grumpy"],
+          ["caleb", "Yellowstone will. That is the problem.", "caleb:grumpy"],
+          ["narrator", "His hand stays on the rail, steady and unsmiling, until you stop treating it like set dressing.", "caleb:grumpy"],
+          ["caleb", "Romance can survive rules. People do not always survive pretending rules are optional.", "caleb:grumpy"]
+        ],
+        next: "day_1_end_summary"
       },
 
       sierra_date_1: {
@@ -1394,8 +1562,22 @@
         choices: [
           { label: "Encourage the honest trail-guide version.", detail: "This puts you firmly on Sierra's romance branch.", next: "day_1_end_summary", affection: { sierra: 5 } },
           { label: "Ask her to explain turnaround times plainly.", next: "day_1_end_summary", affection: { sierra: 3 } },
-          { label: "Keep filming after she says the trail is unsafe.", detail: "This can push Sierra into the hate branch.", next: "day_1_end_summary", affection: { sierra: -8 } }
+          { label: "Keep filming after she says the trail is unsafe.", detail: "This can push Sierra into the hate branch.", next: "sierra_date_cold", affection: { sierra: -8 } }
         ]
+      },
+
+      sierra_date_cold: {
+        label: "Sierra's Route",
+        background: "yosemite",
+        character: "sierra:grumpy",
+        lines: [
+          ["sierra", "Camera down.", "sierra:grumpy"],
+          ["player", "Just one more second.", "sierra:grumpy"],
+          ["sierra", "That second is exactly where people slip.", "sierra:grumpy"],
+          ["narrator", "The waterfall keeps roaring, but Sierra's voice cuts through it cleanly.", "sierra:grumpy"],
+          ["sierra", "You do not get the shot by making me choose between your safety and your ego.", "sierra:grumpy"]
+        ],
+        next: "day_1_end_summary"
       },
 
       bruno_date_1: {
@@ -1416,8 +1598,22 @@
         choices: [
           { label: "Feature one fire-safety fact and one boundary.", detail: "This puts you firmly on Bruno's romance branch.", next: "day_1_end_summary", affection: { bruno: 5 } },
           { label: "Let him make the prevention line heartfelt.", next: "day_1_end_summary", affection: { bruno: 3 } },
-          { label: "Use the fire as a sexy reckless prop.", detail: "This can push Bruno into the hate branch.", next: "day_1_end_summary", affection: { bruno: -8 } }
+          { label: "Use the fire as a sexy reckless prop.", detail: "This can push Bruno into the hate branch.", next: "bruno_date_cold", affection: { bruno: -8 } }
         ]
+      },
+
+      bruno_date_cold: {
+        label: "Bruno's Route",
+        background: "sequoia",
+        character: "bruno:grumpy",
+        lines: [
+          ["bruno", "A reckless prop can still burn a living forest.", "bruno:grumpy"],
+          ["player", "I thought it would read dramatic.", "bruno:grumpy"],
+          ["bruno", "It reads careless.", "bruno:grumpy"],
+          ["narrator", "He gathers the printed comments into a neat stack, each motion careful enough to make the disappointment worse.", "bruno:grumpy"],
+          ["bruno", "If we make danger look desirable, someone else pays for the caption.", "bruno:grumpy"]
+        ],
+        next: "day_1_end_summary"
       },
 
       river_date_1: {
@@ -1439,8 +1635,22 @@
         choices: [
           { label: "Support his boundaries-as-trust approach.", detail: "This puts you firmly on River's romance branch.", next: "day_1_end_summary", affection: { river: 5 } },
           { label: "Ask whether the emotional access window is open.", next: "day_1_end_summary", affection: { river: 3 } },
-          { label: "Try to bypass the permit system for clout.", detail: "This can push River into the hate branch.", next: "day_1_end_summary", affection: { river: -8 } }
+          { label: "Try to bypass the permit system for clout.", detail: "This can push River into the hate branch.", next: "river_date_cold", affection: { river: -8 } }
         ]
+      },
+
+      river_date_cold: {
+        label: "River's Route",
+        background: "zion",
+        character: "river:grumpy",
+        lines: [
+          ["river", "Bypass the permit system and you bypass my trust.", "river:grumpy"],
+          ["player", "It was just for reach.", "river:grumpy"],
+          ["river", "Reach is not access. It is not preparation. It is not consent from the canyon.", "river:grumpy"],
+          ["narrator", "He taps the permit board once, not loudly, but with enough finality to close every shortcut in the room.", "river:grumpy"],
+          ["river", "Come back when responsibility is part of the plan.", "river:grumpy"]
+        ],
+        next: "day_1_end_summary"
       },
 
       day_1_end_summary: {
@@ -1688,33 +1898,80 @@
       });
     }
 
-    function updateSprite(characterKey) {
+    function updateSprite(characterCue) {
+      const { key: characterKey, expression } = parseCharacterCue(characterCue);
       const character = characters[characterKey];
-      if (!character || !character.sprite) {
+      const sprite = character && resolveSprite(character, expression);
+      if (!character || !sprite) {
+        spriteLoadToken += 1;
         els.sprite.classList.add("hidden");
         els.sprite.removeAttribute("src");
         els.sprite.alt = "";
+        els.sprite.dataset.spriteUrl = "";
         els.placeholderSprite.classList.remove("visible");
         return;
       }
-      const spriteUrl = new URL(character.sprite, window.location.href).href;
+      const spriteUrl = new URL(sprite, window.location.href).href;
       const characterName = resolveName(character);
-      els.sprite.onload = () => {
-        els.sprite.classList.remove("hidden");
-        els.placeholderSprite.classList.remove("visible");
-      };
-      els.sprite.onerror = () => {
-        els.sprite.classList.add("hidden");
-        els.placeholderSprite.classList.add("visible");
-      };
+      if (els.sprite.dataset.spriteUrl === spriteUrl && !els.sprite.classList.contains("hidden")) {
+        els.sprite.alt = characterName;
+        return;
+      }
+      const loadToken = spriteLoadToken + 1;
+      spriteLoadToken = loadToken;
+      const hadVisibleSprite = Boolean(els.sprite.dataset.spriteUrl) && !els.sprite.classList.contains("hidden");
+      els.sprite.classList.add("hidden");
       els.sprite.alt = characterName;
       els.sprite.decoding = "async";
       els.sprite.loading = "eager";
-      els.sprite.classList.add("hidden");
       els.placeholderSprite.classList.remove("visible");
       els.placeholderSprite.querySelector("strong").textContent = characterName;
-      els.sprite.src = spriteUrl;
-      if (els.sprite.complete && els.sprite.naturalWidth > 0) els.sprite.onload();
+      const revealSprite = () => {
+        if (loadToken !== spriteLoadToken) return;
+        els.sprite.dataset.spriteUrl = spriteUrl;
+        els.sprite.src = spriteUrl;
+        void els.sprite.offsetWidth;
+        requestAnimationFrame(() => {
+          requestAnimationFrame(() => {
+            if (loadToken === spriteLoadToken) els.sprite.classList.remove("hidden");
+          });
+        });
+        els.placeholderSprite.classList.remove("visible");
+      };
+      const showMissingSprite = () => {
+        if (loadToken !== spriteLoadToken) return;
+        els.sprite.classList.add("hidden");
+        els.placeholderSprite.classList.add("visible");
+      };
+      if (els.sprite.src === spriteUrl) {
+        window.setTimeout(revealSprite, hadVisibleSprite ? 180 : 0);
+        return;
+      }
+      const preload = new Image();
+      preload.decoding = "async";
+      preload.onload = () => {
+        if (loadToken !== spriteLoadToken) return;
+        window.setTimeout(revealSprite, hadVisibleSprite ? 180 : 0);
+      };
+      preload.onerror = showMissingSprite;
+      preload.src = spriteUrl;
+    }
+
+    function parseCharacterCue(characterCue) {
+      if (!characterCue) return { key: null, expression: "neutral" };
+      if (typeof characterCue === "object") {
+        return {
+          key: characterCue.key || characterCue.character || null,
+          expression: characterCue.expression || "neutral"
+        };
+      }
+      const [key, expression = "neutral"] = String(characterCue).split(":");
+      return { key, expression };
+    }
+
+    function resolveSprite(character, expression) {
+      if (character.sprites) return character.sprites[expression] || character.sprites.neutral;
+      return character.sprite || "";
     }
 
     function showGallery() {
@@ -1832,9 +2089,9 @@
       const master = ctx.createGain();
       const musicGain = ctx.createGain();
       const sfxGain = ctx.createGain();
-      master.gain.value = 0.72;
-      musicGain.gain.value = 0.18;
-      sfxGain.gain.value = 0.48;
+      master.gain.value = 0.95;
+      musicGain.gain.value = 0.38;
+      sfxGain.gain.value = 0.82;
       musicGain.connect(master);
       sfxGain.connect(master);
       master.connect(ctx.destination);
@@ -1913,12 +2170,12 @@
       const now = ctx.currentTime;
       const gain = audioEngine.sfxGain;
       const sfx = {
-        advance: [740, 0.045, 0.042, "triangle"],
-        choice: [520, 0.11, 0.085, "square"],
-        scene: [260, 0.24, 0.075, "sine"],
-        character: [392, 0.14, 0.068, "triangle"],
-        notification: [880, 0.08, 0.08, "sine"],
-        save: [660, 0.12, 0.07, "triangle"]
+        advance: [740, 0.045, 0.07, "triangle"],
+        choice: [520, 0.11, 0.13, "square"],
+        scene: [260, 0.24, 0.12, "sine"],
+        character: [392, 0.14, 0.11, "triangle"],
+        notification: [880, 0.08, 0.12, "sine"],
+        save: [660, 0.12, 0.11, "triangle"]
       }[type] || [440, 0.08, 0.05, "sine"];
       playTone(sfx[0], sfx[1], sfx[2], sfx[3], gain, now, "pluck");
       if (type === "notification") playTone(1175, 0.08, 0.06, "sine", gain, now + 0.09, "pluck");
@@ -1942,7 +2199,7 @@
         osc.type = index === 1 ? "triangle" : "sine";
         osc.frequency.value = midiToFreq(theme.root - 36 + offset);
         gain.gain.setValueAtTime(0.0001, now);
-        gain.gain.exponentialRampToValueAtTime(0.012 - index * 0.002, now + 1.2);
+        gain.gain.exponentialRampToValueAtTime(0.024 - index * 0.003, now + 1.2);
         osc.connect(gain);
         gain.connect(audioEngine.musicGain);
         osc.start(now);

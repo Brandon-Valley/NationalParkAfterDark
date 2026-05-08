@@ -10,7 +10,7 @@ Open `index.html` directly in a browser. There is no build step, package manager
 
 - `index.html` contains all game logic, scene data, UI, styling, save/load/reset, gallery, and ParkTok overlay behavior.
 - `assets/backgrounds` contains normalized background image names.
-- `assets/characters` contains normalized character sprite names.
+- `assets/charactures` contains one folder per love interest, with `neutral`, `blushing`, `grumpy`, and `laughing` portraits.
 - `assets/cg` contains unlockable CG images.
 - `assets/ui` contains source UI art references.
 

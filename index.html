@@ -980,9 +980,7 @@
           ["jack", "That will be Caleb. He makes danger sound organized. Come on, I will get you to him before he starts citing thermal injury statistics."]
         ],
         choices: [
-          { label: "Tell him quiet sounds dangerous in the best way.", next: "to_caleb_from_jack", affection: { jack: 4 } },
-          { label: "Ask him to show you the lodge map first.", next: "to_caleb_from_jack", affection: { jack: 2 } },
-          { label: "Step back and keep it professional.", next: "to_caleb_from_jack", affection: { jack: -1 } }
+          { label: "Follow Jack to Caleb's demo.", next: "to_caleb_from_jack" }
         ]
       },
 
@@ -1002,9 +1000,7 @@
           ["jack", "Caleb is up next. Try not to make him blush while he is holding a laser pointer."]
         ],
         choices: [
-          { label: "Ask carefully: what would make tonight fun?", next: "to_caleb_from_jack", affection: { jack: 4 } },
-          { label: "Tell him steady hands are your weakness.", next: "to_caleb_from_jack", affection: { jack: 2 } },
-          { label: "Laugh it off before it gets too real.", next: "to_caleb_from_jack", affection: { jack: -1 } }
+          { label: "Follow Jack to Caleb's demo.", next: "to_caleb_from_jack" }
         ]
       },
 
@@ -1092,9 +1088,7 @@
           ["caleb", "Sierra is staging the Yosemite route outside while the light is good. If she says keep up, hydrate first."]
         ],
         choices: [
-          { label: "Tell him safe distances can still have tension.", next: "to_sierra_from_caleb", affection: { caleb: 4 } },
-          { label: "Ask him to teach you every warning sign.", next: "to_sierra_from_caleb", affection: { caleb: 2 } },
-          { label: "Tell him he worries too much.", next: "to_sierra_from_caleb", affection: { caleb: -3 } }
+          { label: "Let Caleb lead you to Sierra.", next: "to_sierra_from_caleb" }
         ]
       },
 
@@ -1114,9 +1108,7 @@
           ["caleb", "That is her cue. She believes punctuality is a form of cardio."]
         ],
         choices: [
-          { label: "Ask what temperature he approves for flirting.", next: "to_sierra_from_caleb", affection: { caleb: 4 } },
-          { label: "Promise to keep the trouble educational.", next: "to_sierra_from_caleb", affection: { caleb: 2 } },
-          { label: "Say trouble is the whole point.", next: "to_sierra_from_caleb", affection: { caleb: -3 } }
+          { label: "Let Caleb lead you to Sierra.", next: "to_sierra_from_caleb" }
         ]
       },
 
@@ -1186,9 +1178,7 @@
           ["sierra", "Bruno is next. Be nice. He can smell reckless from across a tree ring."]
         ],
         choices: [
-          { label: "Tell her you like promises with a view.", next: "to_bruno_from_sierra", affection: { sierra: 4 } },
-          { label: "Ask her to check the rest of your gear.", next: "to_bruno_from_sierra", affection: { sierra: 2 } },
-          { label: "Say you can handle yourself.", next: "to_bruno_from_sierra", affection: { sierra: -3 } }
+          { label: "Follow Sierra toward Bruno's workshop.", next: "to_bruno_from_sierra" }
         ]
       },
 
@@ -1207,9 +1197,7 @@
           ["sierra", "That is Bruno. Try not to make a fire joke unless you want the world's kindest disappointed stare.", "sierra:laughing"]
         ],
         choices: [
-          { label: "Catch up and match her pace.", next: "to_bruno_from_sierra", affection: { sierra: 4 } },
-          { label: "Ask if the report includes witness statements.", next: "to_bruno_from_sierra", affection: { sierra: 2 } },
-          { label: "Tell her you only came for the view.", next: "to_bruno_from_sierra", affection: { sierra: -3 } }
+          { label: "Follow Sierra toward Bruno's workshop.", next: "to_bruno_from_sierra" }
         ]
       },
 
@@ -1279,9 +1267,7 @@
           ["bruno", "River has the canyon route after me. He will act mysterious about it, but he packed extra water for you."]
         ],
         choices: [
-          { label: "Tell him you want tomorrow with him in it.", next: "to_river_from_bruno", affection: { bruno: 4 } },
-          { label: "Ask him to show you the check again.", next: "to_river_from_bruno", affection: { bruno: 2 } },
-          { label: "Joke that safety is less fun than sparks.", next: "to_river_from_bruno", affection: { bruno: -3 } }
+          { label: "Follow Bruno to River's permit table.", next: "to_river_from_bruno" }
         ]
       },
 
@@ -1301,9 +1287,7 @@
           ["bruno", "River is waiting with the Zion permit board. Bring patience. He flirts in paperwork."]
         ],
         choices: [
-          { label: "Tell him you can be gentle.", next: "to_river_from_bruno", affection: { bruno: 4 } },
-          { label: "Ask which powerful thing he means first.", next: "to_river_from_bruno", affection: { bruno: 2 } },
-          { label: "Say powerful things can take care of themselves.", next: "to_river_from_bruno", affection: { bruno: -3 } }
+          { label: "Follow Bruno to River's permit table.", next: "to_river_from_bruno" }
         ]
       },
 
@@ -1375,9 +1359,7 @@
           ["river", "Group dinner. The least efficient, most revealing route."]
         ],
         choices: [
-          { label: "Ask for the longer route.", next: "to_dinner_from_river", affection: { river: 4 } },
-          { label: "Tell him patience looks good on him.", next: "to_dinner_from_river", affection: { river: 2 } },
-          { label: "Ask if there is a faster way anyway.", next: "to_dinner_from_river", affection: { river: -3 } }
+          { label: "Head to group dinner with River.", next: "to_dinner_from_river" }
         ]
       },
 
@@ -1396,9 +1378,7 @@
           ["river", "Saved by communal soup. Temporarily.", "river:laughing"]
         ],
         choices: [
-          { label: "Hold his gaze, then look at the canyon.", next: "to_dinner_from_river", affection: { river: 4 } },
-          { label: "Tell him he is hard to look away from.", next: "to_dinner_from_river", affection: { river: 2 } },
-          { label: "Say the canyon is prettier.", next: "to_dinner_from_river", affection: { river: -3 } }
+          { label: "Head to group dinner with River.", next: "to_dinner_from_river" }
         ]
       },
 

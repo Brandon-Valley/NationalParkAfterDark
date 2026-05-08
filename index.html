@@ -70,8 +70,18 @@
       inset: 0;
       background-size: cover;
       background-position: center;
-      transition: opacity .25s ease;
+      opacity: 1;
+      transition: opacity .85s ease;
       z-index: -3;
+    }
+
+    .backdrop.next {
+      opacity: 0;
+      z-index: -2;
+    }
+
+    .backdrop.next.visible {
+      opacity: 1;
     }
 
     .backdrop::after {
@@ -84,6 +94,8 @@
     }
 
     .bg-lodge { background-image: linear-gradient(135deg, #52371d, #203b38 48%, #161819); }
+    .bg-black { background: #000; }
+    .bg-black::after { display: none; }
     .bg-yellowstone { background-image: linear-gradient(135deg, #5b3a1d, #d99a47 42%, #264342); }
     .bg-yosemite { background-image: linear-gradient(135deg, #32383e, #a6b0b8 48%, #273b4a); }
     .bg-acadia { background-image: linear-gradient(135deg, #133d4d, #f0a45b 52%, #253f34); }
@@ -100,13 +112,13 @@
       display: flex;
       gap: 8px;
       align-items: center;
-      justify-content: space-between;
+      justify-content: flex-end;
       z-index: 5;
       pointer-events: none;
     }
 
     .brand {
-      display: flex;
+      display: none;
       align-items: center;
       gap: 9px;
       padding: 8px 10px;
@@ -194,40 +206,42 @@
     .stage {
       position: absolute;
       inset: 0;
-      display: grid;
-      grid-template-rows: minmax(0, 1fr) auto;
-      gap: 0;
-      padding: 110px 12px 12px;
+      padding: 72px 12px 12px;
     }
 
     .character-zone {
-      position: relative;
+      position: absolute;
+      left: 12px;
+      right: 12px;
+      top: 72px;
+      bottom: 118px;
       min-height: 0;
       display: flex;
       align-items: end;
       justify-content: center;
       pointer-events: none;
-      overflow: hidden;
-      padding-bottom: 2px;
+      overflow: visible;
+      padding-bottom: 0;
     }
 
     .sprite {
       display: block;
-      max-height: 100%;
-      max-width: min(78vw, 520px);
+      height: min(64vh, 690px);
+      max-width: min(78vw, 540px);
       width: auto;
-      height: auto;
       object-fit: contain;
       filter: drop-shadow(0 30px 38px rgba(0, 0, 0, .56));
-      transform: translateY(16px);
-      transition: opacity .18s ease, transform .18s ease;
+      transform: translateY(22px) scale(1);
+      transition: opacity .9s ease, transform .9s cubic-bezier(.19, 1, .22, 1);
       opacity: 1;
       z-index: 1;
+      flex: 0 0 auto;
     }
 
     .sprite.hidden {
       opacity: 0;
       visibility: hidden;
+      transform: translateY(34px) scale(.985);
     }
 
     .placeholder-sprite {
@@ -257,15 +271,18 @@
 
     .dialogue {
       width: min(980px, 100%);
-      margin: 0 auto;
-      border: 1px solid var(--line);
+      position: absolute;
+      left: 50%;
+      bottom: 12px;
+      transform: translateX(-50%);
+      margin: 0;
+      border: 0;
       border-radius: 8px;
       background: url("assets/ui/parchment_panel.png") center/100% 100% no-repeat;
-      box-shadow: var(--shadow);
-      backdrop-filter: blur(16px);
+      filter: drop-shadow(0 18px 28px rgba(0, 0, 0, .28));
       overflow: hidden;
       color: var(--ink);
-      position: relative;
+      position: absolute;
       z-index: 2;
     }
 
@@ -314,9 +331,30 @@
     }
 
     .choices {
-      display: grid;
+      width: min(980px, calc(100vw - 32px));
+      display: none;
       gap: 8px;
-      padding: 0 18px 18px;
+      padding: 0 10px 12px;
+      margin: 0;
+      grid-template-columns: 1fr;
+      pointer-events: auto;
+      position: fixed;
+      left: 50%;
+      bottom: var(--choices-bottom, 168px);
+      transform: translateX(-50%);
+      z-index: 4;
+      max-height: calc(100dvh - var(--choices-bottom, 168px) - 82px);
+      overflow: auto;
+    }
+
+    .choices.has-choices {
+      display: grid;
+    }
+
+    #gameScreen.choices-active .sprite,
+    #gameScreen.choices-active .placeholder-sprite {
+      opacity: 0;
+      visibility: hidden;
     }
 
     .choice, .primary {
@@ -347,13 +385,48 @@
       height: 100%;
       display: grid;
       align-items: end;
+      gap: 18px;
       padding: 24px;
-      background-image:
-        linear-gradient(180deg, rgba(0, 0, 0, .04), rgba(0, 0, 0, .78)),
-        url("assets/backgrounds/bg_intro_campfire_group.png");
-      background-position: center;
-      background-size: cover;
-      background-repeat: no-repeat;
+      position: relative;
+      overflow: hidden;
+      background:
+        radial-gradient(circle at 50% 18%, rgba(210, 126, 55, .34), transparent 34%),
+        linear-gradient(180deg, #2b170d 0%, #1d120c 52%, #0f0a07 100%);
+    }
+
+    .start::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background:
+        linear-gradient(180deg, rgba(0, 0, 0, .06), rgba(0, 0, 0, .76)),
+        url("assets/backgrounds/bg_intro_group_responsive.png") center / cover no-repeat;
+      opacity: .28;
+      filter: blur(10px) saturate(.95);
+      transform: scale(1.04);
+      pointer-events: none;
+    }
+
+    .start-hero {
+      width: min(820px, calc(100vw - 32px));
+      max-height: min(58dvh, 520px);
+      justify-self: center;
+      align-self: end;
+      position: relative;
+      z-index: 1;
+      display: flex;
+      justify-content: center;
+      filter: drop-shadow(0 20px 36px rgba(0, 0, 0, .36));
+    }
+
+    .start-hero img {
+      display: block;
+      max-width: 100%;
+      max-height: min(58dvh, 520px);
+      width: auto;
+      height: auto;
+      object-fit: contain;
+      border-radius: 2px;
     }
 
     .start-panel {
@@ -364,10 +437,11 @@
       border-radius: 8px;
       background: transparent;
       backdrop-filter: blur(16px);
-      box-shadow: var(--shadow);
+      filter: drop-shadow(0 18px 28px rgba(0, 0, 0, .28));
       color: var(--ink);
       position: relative;
       isolation: isolate;
+      z-index: 1;
     }
 
     .start-panel > *, .setup-card > *, .overlay-card > * {
@@ -389,13 +463,7 @@
     }
 
     .disclaimer {
-      margin: 12px 0 16px;
-      padding: 12px;
-      border-left: 4px solid var(--leaf);
-      background: rgba(139, 82, 37, .1);
-      color: rgba(47, 32, 21, .84);
-      line-height: 1.42;
-      font-size: 13px;
+      display: none;
     }
 
     .setup {
@@ -414,7 +482,7 @@
       border: 0;
       border-radius: 8px;
       background: transparent;
-      box-shadow: var(--shadow);
+      filter: drop-shadow(0 18px 28px rgba(0, 0, 0, .28));
       padding: 18px;
       position: relative;
       isolation: isolate;
@@ -554,10 +622,11 @@
       .brand-subtitle { display: none; }
       .text-btn { display: none; }
       .stage {
-        padding-top: 138px;
+        padding-top: 72px;
       }
       .sprite {
-        max-width: min(92vw, 420px);
+        height: min(56vh, 520px);
+        max-width: min(92vw, 430px);
       }
       .line {
         font-size: 17px;
@@ -569,9 +638,46 @@
 
     @media (max-width: 700px) {
       .start {
-        background-size: 100% 100%, 100% auto;
-        background-position: center, center 28px;
-        background-color: #1a1009;
+        display: block;
+        padding: 0;
+      }
+      .start-hero {
+        position: absolute;
+        inset: 0;
+        width: 100%;
+        max-height: none;
+        filter: none;
+      }
+      .start-hero img {
+        width: 100%;
+        height: 100%;
+        max-width: none;
+        max-height: none;
+        object-fit: cover;
+        object-position: center top;
+        border-radius: 0;
+      }
+      .start-hero::after {
+        content: "";
+        position: absolute;
+        inset: 0;
+        background:
+          linear-gradient(180deg, rgba(0, 0, 0, .02) 0%, rgba(0, 0, 0, .06) 58%, rgba(0, 0, 0, .24) 100%),
+          linear-gradient(90deg, rgba(0, 0, 0, .18), transparent 20%, transparent 80%, rgba(0, 0, 0, .18));
+      }
+      .start-panel {
+        position: absolute;
+        left: 14px;
+        right: 14px;
+        bottom: calc(26px + env(safe-area-inset-bottom));
+        width: auto;
+        padding: 18px;
+      }
+      .start-panel h1 {
+        font-size: clamp(46px, 13vw, 74px);
+      }
+      .start-panel .tagline {
+        font-size: clamp(16px, 4.2vw, 21px);
       }
     }
   </style>
@@ -580,10 +686,12 @@
   <main id="app" aria-live="polite">
     <section id="startScreen" class="screen active">
       <div class="start">
+        <div class="start-hero" aria-hidden="true">
+          <img src="assets/backgrounds/bg_intro_group_responsive.png" alt="">
+        </div>
         <div class="start-panel">
           <h1>Park After Dark</h1>
           <p class="tagline">America's most photogenic landscapes have entered the group chat.</p>
-          <p class="disclaimer">This is a fictional parody dating sim inspired by U.S. landscapes and internet park fandom. It is not affiliated with, endorsed by, or sponsored by the National Park Service or any government agency. Respect public lands, wildlife, and posted safety rules.</p>
           <div class="setup-actions">
             <button class="primary" id="newGameBtn">Start Game</button>
             <button class="ghost" id="continueBtn">Load Save</button>
@@ -608,14 +716,8 @@
 
     <section id="gameScreen" class="screen">
       <div id="backdrop" class="backdrop bg-lodge"></div>
+      <div id="backdropNext" class="backdrop next bg-lodge"></div>
       <header class="topbar">
-        <div class="brand">
-          <div class="mark">PA</div>
-          <div>
-            <div class="brand-title">Park After Dark</div>
-            <div class="brand-subtitle" id="playerBadge">Creator badge pending</div>
-          </div>
-        </div>
         <div class="control-row">
           <button class="icon-btn" id="saveBtn" title="Save" aria-label="Save">
             <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 3h12l2 2v16H5z"/><path d="M8 3v6h8V3"/><path d="M8 17h8"/></svg>
@@ -636,6 +738,7 @@
         <div class="character-zone">
           <img id="sprite" class="sprite hidden" alt="">
           <div id="placeholderSprite" class="placeholder-sprite"><strong></strong></div>
+          <div class="choices" id="choices"></div>
         </div>
         <section class="dialogue" id="dialogueBox">
           <div class="speaker">
@@ -643,7 +746,6 @@
             <div class="scene-label" id="sceneLabel">Act 1</div>
           </div>
           <div class="line" id="lineText"></div>
-          <div class="choices" id="choices"></div>
         </section>
       </div>
     </section>
@@ -698,7 +800,8 @@
 
     const backgrounds = {
       lodge: ["assets/backgrounds/bg_lodge_lobby.png", "bg-lodge"],
-      lodgeExterior: ["assets/backgrounds/bg_intro_campfire_group.png", "bg-lodge"],
+      black: ["", "bg-black"],
+      lodgeExterior: ["assets/backgrounds/bg_intro_group_responsive.png", "bg-lodge"],
       checkin: ["assets/backgrounds/bg_outdoor_checkin.png", "bg-lodge"],
       olympic: ["assets/backgrounds/bg_olympic_rain_cabin.png", "bg-smoky"],
       yellowstone: ["assets/backgrounds/bg_yellowstone_boardwalk_clean.png", "bg-yellowstone"],
@@ -741,7 +844,7 @@
     const scenes = {
       cold_open_intro: {
         label: "Before The Lodge",
-        background: "lodgeExterior",
+        background: "black",
         character: null,
         lines: [
           ["player", "Okay. Breathe. Badge straight. Hair doing whatever it thinks is best."],
@@ -751,28 +854,24 @@
           ["player", "No chaperone. No confusing non-date ranger mentor. Just me, a content schedule, and five people who look like they were designed by a trail map with opinions."],
           ["player", "Before I can decide whether that is charming or career-ending, the lodge doors open and cedar-scented rain rolls in."]
         ],
-        choices: [
-          { label: "Step inside hydrated and emotionally available.", next: "arrival_lodge", affection: { jack: 1, sierra: 1 } },
-          { label: "Silence your phone and focus.", next: "arrival_lodge", affection: { caleb: 1, river: 1 } },
-          { label: "Pocket backup socks and backup feelings.", next: "arrival_lodge", affection: { jack: 2, sierra: 1 } }
-        ]
+        next: "arrival_lodge"
       },
 
       arrival_lodge: {
         label: "Viral Vista Lodge",
         background: "lodge",
-        character: "jack",
+        character: null,
         lines: [
           ["narrator", "Inside the lodge, cedar beams glow above a stone fireplace. Rain taps the windows hard enough to sound invited."],
-          ["narrator", "A broad-shouldered man in a red flannel leans over the check-in table, sleeves rolled, one hand braced beside your name badge."],
-          ["jack", "You must be {playerName}. Jack Everett. Olympic route. Old-growth forest, mossy cabin, rain that makes everyone honest eventually."],
-          ["player", "I thought there would be a check-in packet."],
-          ["jack", "There is. It got damp. I made coffee instead."],
-          ["jack", "Ground rules are simple: stay on marked trails, respect closed areas, and don't carve initials into trees older than your entire family drama."],
-          ["player", "Responsible, direct, unexpectedly good at first impressions."],
-          ["jack", "Careful. Compliments echo in timber halls too."],
-          ["narrator", "He slides the mug toward you. His fingers brush yours for half a second too long to be an accident, and the rain gets suddenly louder."],
-          ["jack", "Before I introduce you around, answer me one thing: when the forest says no, do you listen?"]
+          ["narrator", "A broad-shouldered man in a red flannel leans over the check-in table, sleeves rolled, one hand braced beside your name badge.", "jack"],
+          ["jack", "You must be {playerName}. I'm Jack Everett, the Olympic route lead. Think old-growth forest, a mossy cabin, and rain that makes everyone honest eventually.", "jack"],
+          ["player", "I thought there would be a check-in packet.", "jack"],
+          ["jack", "There is. It got damp. I made coffee instead.", "jack"],
+          ["jack", "Ground rules are simple: stay on marked trails, respect closed areas, and don't carve initials into trees older than your entire family drama.", "jack"],
+          ["player", "Responsible, direct, unexpectedly good at first impressions.", "jack"],
+          ["jack", "Careful. Compliments echo in timber halls too.", "jack"],
+          ["narrator", "He slides the mug toward you. His fingers brush yours for half a second too long to be an accident, and the rain gets suddenly louder.", "jack"],
+          ["jack", "Before I introduce you around, answer me one thing: when the forest says no, do you listen?", "jack"]
         ],
         choices: [
           { label: "Tell him no means no, even from a trail sign.", detail: "Jack stays close.", next: "jack_lodge_warm", affection: { jack: 4 } },
@@ -792,12 +891,14 @@
           ["player", "That sounds suspiciously like flirting."],
           ["jack", "It is. I just build it sturdy."],
           ["narrator", "He reaches past you for a stack of lodge maps. For one breath, he is close enough that cedar, rain, and coffee become a very specific problem."],
-          ["jack", "Stay sharp tonight, {playerName}. If you keep answering like that, I may have to walk you somewhere quieter."]
+          ["jack", "Stay sharp tonight, {playerName}. If you keep answering like that, I may have to walk you somewhere quieter."],
+          ["narrator", "A whistle cuts through the lodge speaker, followed by a polite warning about the Yellowstone safety demo starting in the west room."],
+          ["jack", "That will be Caleb. He makes danger sound organized. Come on, I will get you to him before he starts citing thermal injury statistics."]
         ],
         choices: [
-          { label: "Tell him quiet sounds dangerous in the best way.", next: "meet_caleb", affection: { jack: 4 } },
-          { label: "Ask him to show you the lodge map first.", next: "meet_caleb", affection: { jack: 2 } },
-          { label: "Step back and keep it professional.", next: "meet_caleb", affection: { jack: -1 } }
+          { label: "Tell him quiet sounds dangerous in the best way.", next: "to_caleb_from_jack", affection: { jack: 4 } },
+          { label: "Ask him to show you the lodge map first.", next: "to_caleb_from_jack", affection: { jack: 2 } },
+          { label: "Step back and keep it professional.", next: "to_caleb_from_jack", affection: { jack: -1 } }
         ]
       },
 
@@ -812,12 +913,14 @@
           ["narrator", "He smiles into his coffee, and the lodge lights catch the edge of it."],
           ["jack", "Careful can still be fun, if you know how to ask."],
           ["player", "And if I ask badly?"],
-          ["jack", "Then I stop you before either of us gets hurt."]
+          ["jack", "Then I stop you before either of us gets hurt."],
+          ["narrator", "A ranger whistle chirps from the west room, where steam-map projections flicker across the cabin wall."],
+          ["jack", "Caleb is up next. Try not to make him blush while he is holding a laser pointer."]
         ],
         choices: [
-          { label: "Ask carefully: what would make tonight fun?", next: "meet_caleb", affection: { jack: 4 } },
-          { label: "Tell him steady hands are your weakness.", next: "meet_caleb", affection: { jack: 2 } },
-          { label: "Laugh it off before it gets too real.", next: "meet_caleb", affection: { jack: -1 } }
+          { label: "Ask carefully: what would make tonight fun?", next: "to_caleb_from_jack", affection: { jack: 4 } },
+          { label: "Tell him steady hands are your weakness.", next: "to_caleb_from_jack", affection: { jack: 2 } },
+          { label: "Laugh it off before it gets too real.", next: "to_caleb_from_jack", affection: { jack: -1 } }
         ]
       },
 
@@ -831,34 +934,47 @@
           ["player", "I was joking."],
           ["jack", "Good. Make better jokes around old trees."],
           ["narrator", "He picks up the check-in list and points toward the main room, all business now."],
-          ["jack", "Come on. The others are waiting."]
+          ["jack", "Come on. Caleb's geothermal demo is starting. He is better company when nobody is threatening his boardwalks."]
         ],
         choices: [
-          { label: "Follow him into the lodge gathering.", next: "meet_caleb" }
+          { label: "Follow him toward the geothermal demo.", next: "to_caleb_from_jack" }
         ]
+      },
+
+      to_caleb_from_jack: {
+        label: "West Room",
+        background: "lodge",
+        character: null,
+        lines: [
+          ["narrator", "Jack walks you through the cabin lobby while rain ticks against the windows. In the west room, a projector throws steam maps and boardwalk warnings across the rough pine wall."],
+          ["narrator", "He pauses at the doorway, close enough for one last cedar-and-coffee look."],
+          ["jack", "Caleb is good people. Very serious about not letting beautiful things kill careless visitors. Try listening the first time."]
+        ],
+        next: "meet_caleb"
       },
 
       meet_caleb: {
         label: "Geothermal Boardwalk",
         background: "yellowstone",
-        character: "caleb",
+        character: null,
         lines: [
-          ["narrator", "Steam curls over a Yellowstone boardwalk. Caleb Ranger steps from the vapor like a safety briefing that learned eye contact."],
-          ["caleb", "Stop."],
-          ["player", "I wasn't doing anything."],
-          ["caleb", "You were thinking about a better angle. The better angle is from the boardwalk."],
-          ["player", "Classic ranger-looking guy, classic ranger rules."],
-          ["caleb", "Wildlife safety, geothermal warnings, responsible decisions. Yellowstone is dramatic enough without visitors freelancing consequences."],
-          ["caleb", "I said stay twenty-five yards away from bison, not from my heart."],
-          ["player", "That is either a safety briefing or the most intense pickup line in Wyoming."],
-          ["caleb", "Both can be true. Boundaries are attractive when they keep everyone alive."],
-          ["player", "Old Faithful?"],
-          ["caleb", "I prefer emotionally consistent."]
+          ["narrator", "Beyond the west-room door, a timber boardwalk crosses a steaming Yellowstone basin. Warning signs bead with mist; the air is bright with heat and minerals."],
+          ["narrator", "A ranger shape moves through the vapor, close enough that the radio on his shoulder crackles before his face comes into view.", "caleb"],
+          ["caleb", "Stop.", "caleb"],
+          ["player", "I wasn't doing anything.", "caleb"],
+          ["caleb", "You were thinking about a better angle. The better angle is from the boardwalk.", "caleb"],
+          ["player", "Classic ranger-looking guy, classic ranger rules.", "caleb"],
+          ["caleb", "Wildlife safety, geothermal warnings, responsible decisions. Yellowstone is dramatic enough without visitors freelancing consequences.", "caleb"],
+          ["caleb", "I said stay twenty-five yards away from bison, not from my heart.", "caleb"],
+          ["player", "That is either a safety briefing or the most intense pickup line in Wyoming.", "caleb"],
+          ["caleb", "Both can be true. Boundaries are attractive when they keep everyone alive.", "caleb"],
+          ["player", "Old Faithful?", "caleb"],
+          ["caleb", "I prefer emotionally consistent.", "caleb"]
         ],
         choices: [
           { label: "Promise to stay on the boardwalk.", detail: "Caleb visibly relaxes.", next: "caleb_boardwalk_warm", affection: { caleb: 4 } },
           { label: "Ask if he always flirts like a warning sign.", next: "caleb_boardwalk_flirt", affection: { caleb: 2 } },
-          { label: "Step off the boardwalk for a better angle.", detail: "Caleb goes cold immediately.", next: "meet_sierra", affection: { caleb: -6 } }
+          { label: "Step off the boardwalk for a better angle.", detail: "Caleb goes cold immediately.", next: "to_sierra_from_caleb", affection: { caleb: -6 } }
         ]
       },
 
@@ -873,12 +989,14 @@
           ["narrator", "Steam curls between you. Caleb lowers his voice, and somehow that feels more intimate than stepping closer."],
           ["caleb", "You listening the first time? That is dangerously attractive."],
           ["player", "Dangerously? From you?"],
-          ["caleb", "Metaphorically. I am still very committed to safe distances."]
+          ["caleb", "Metaphorically. I am still very committed to safe distances."],
+          ["narrator", "He checks his schedule and nods toward the lodge doors, where the rain has softened to mist."],
+          ["caleb", "Sierra is staging the Yosemite route outside while the light is good. If she says keep up, hydrate first."]
         ],
         choices: [
-          { label: "Tell him safe distances can still have tension.", next: "meet_sierra", affection: { caleb: 4 } },
-          { label: "Ask him to teach you every warning sign.", next: "meet_sierra", affection: { caleb: 2 } },
-          { label: "Tell him he worries too much.", next: "meet_sierra", affection: { caleb: -3 } }
+          { label: "Tell him safe distances can still have tension.", next: "to_sierra_from_caleb", affection: { caleb: 4 } },
+          { label: "Ask him to teach you every warning sign.", next: "to_sierra_from_caleb", affection: { caleb: 2 } },
+          { label: "Tell him he worries too much.", next: "to_sierra_from_caleb", affection: { caleb: -3 } }
         ]
       },
 
@@ -893,36 +1011,51 @@
           ["narrator", "He checks the boardwalk rail, then glances back at you with a smile he tries and fails to make professional."],
           ["caleb", "You are trouble."],
           ["player", "You are smiling."],
-          ["caleb", "I contain contradictions. At approved temperatures."]
+          ["caleb", "I contain contradictions. At approved temperatures."],
+          ["narrator", "His radio chirps. From the porch, Sierra calls that the Yosemite trail model is ready before the good light moves."],
+          ["caleb", "That is her cue. She believes punctuality is a form of cardio."]
         ],
         choices: [
-          { label: "Ask what temperature he approves for flirting.", next: "meet_sierra", affection: { caleb: 4 } },
-          { label: "Promise to keep the trouble educational.", next: "meet_sierra", affection: { caleb: 2 } },
-          { label: "Say trouble is the whole point.", next: "meet_sierra", affection: { caleb: -3 } }
+          { label: "Ask what temperature he approves for flirting.", next: "to_sierra_from_caleb", affection: { caleb: 4 } },
+          { label: "Promise to keep the trouble educational.", next: "to_sierra_from_caleb", affection: { caleb: 2 } },
+          { label: "Say trouble is the whole point.", next: "to_sierra_from_caleb", affection: { caleb: -3 } }
         ]
+      },
+
+      to_sierra_from_caleb: {
+        label: "Route Porch",
+        background: "checkin",
+        character: null,
+        lines: [
+          ["narrator", "Caleb leads you back through the west-room door and onto the lodge porch. Damp air cools your face; under a lantern, the schedule board has been marked with a fresh Yosemite arrow."],
+          ["narrator", "Caleb hands you a dry route card, then points toward a granite trail model set up outside under the awning."],
+          ["caleb", "Sierra takes the Yosemite route seriously. If she asks whether you packed water, the answer is yes, even if you have to make that true immediately."]
+        ],
+        next: "meet_sierra"
       },
 
       meet_sierra: {
         label: "Yosemite Waterfall Trail",
         background: "yosemite",
-        character: "sierra",
+        character: null,
         lines: [
-          ["narrator", "A waterfall throws mist across granite cliffs. Sierra appears at the trail bend with a grin, a pack, and the confidence of someone who has never lost a switchback argument."],
-          ["sierra", "You brought water, snacks, layers, and the humility to turn around if conditions change, right?"],
-          ["player", "That is a lot of romance before hello."],
-          ["sierra", "Hello. Yosemite route. Waterfall hikes, granite cliffs, big scenic feelings. Also: sturdy shoes."],
-          ["player", "You make preparedness sound flirtatious."],
-          ["sierra", "Preparedness is flirtatious. It says you want the adventure to last."],
-          ["sierra", "People come for the view and forget the trail is not a backdrop. It is a promise you make with your feet."],
-          ["player", "That line is going in the video."],
-          ["sierra", "Good. Add a caption about staying back from slick edges."],
-          ["player", "Anything else?"],
-          ["sierra", "Yes. Try to keep up."]
+          ["narrator", "Mist lifts off Yosemite granite in silver sheets. The trail bends toward a waterfall loud enough to turn every thought into weather."],
+          ["narrator", "Bootsteps hit the switchback behind you, quick and certain. Sierra rounds the bend with a grin, a pack, and the confidence of someone who has never lost an argument with a mountain.", "sierra"],
+          ["sierra", "You brought water, snacks, layers, and the humility to turn around if conditions change, right?", "sierra"],
+          ["player", "That is a lot of romance before hello.", "sierra"],
+          ["sierra", "Hello. Yosemite route. Waterfall hikes, granite cliffs, big scenic feelings. Also: sturdy shoes.", "sierra"],
+          ["player", "You make preparedness sound flirtatious.", "sierra"],
+          ["sierra", "Preparedness is flirtatious. It says you want the adventure to last.", "sierra"],
+          ["sierra", "People come for the view and forget the trail is not a backdrop. It is a promise you make with your feet.", "sierra"],
+          ["player", "That line is going in the video.", "sierra"],
+          ["sierra", "Good. Add a caption about staying back from slick edges.", "sierra"],
+          ["player", "Anything else?", "sierra"],
+          ["sierra", "Yes. Try to keep up.", "sierra"]
         ],
         choices: [
           { label: "Tell her no filter could improve this hike.", next: "sierra_trail_flirt", affection: { sierra: 3 } },
           { label: "Ask for the trail-guide version, not the influencer version.", detail: "Sierra likes that you want the truth.", next: "sierra_trail_warm", affection: { sierra: 4 } },
-          { label: "Admit you would ignore turnaround time for content.", detail: "Sierra's smile vanishes.", next: "meet_bruno", affection: { sierra: -6 } }
+          { label: "Admit you would ignore turnaround time for content.", detail: "Sierra's smile vanishes.", next: "to_bruno_from_sierra", affection: { sierra: -6 } }
         ]
       },
 
@@ -936,12 +1069,14 @@
           ["sierra", "There. Now you look like you might survive my favorite overlook."],
           ["player", "That was either gear advice or a threat."],
           ["sierra", "A promise. If I take you somewhere beautiful, I want you coming back with me."],
-          ["narrator", "The waterfall roars behind her, but the way she says with me is louder."]
+          ["narrator", "The waterfall roars behind her, but the way she says with me is louder."],
+          ["narrator", "She points down the path toward a grove workshop where a ranger hat and a very broad smile are already waiting."],
+          ["sierra", "Bruno is next. Be nice. He can smell reckless from across a tree ring."]
         ],
         choices: [
-          { label: "Tell her you like promises with a view.", next: "meet_bruno", affection: { sierra: 4 } },
-          { label: "Ask her to check the rest of your gear.", next: "meet_bruno", affection: { sierra: 2 } },
-          { label: "Say you can handle yourself.", next: "meet_bruno", affection: { sierra: -3 } }
+          { label: "Tell her you like promises with a view.", next: "to_bruno_from_sierra", affection: { sierra: 4 } },
+          { label: "Ask her to check the rest of your gear.", next: "to_bruno_from_sierra", affection: { sierra: 2 } },
+          { label: "Say you can handle yourself.", next: "to_bruno_from_sierra", affection: { sierra: -3 } }
         ]
       },
 
@@ -955,36 +1090,51 @@
           ["sierra", "Absolutely. Also maybe stop looking at me like I am the scenic overlook."],
           ["player", "Is that against trail rules?"],
           ["sierra", "No. But if you trip while doing it, I am writing 'distracted by guide' on the incident report."],
-          ["narrator", "She grins, bright and wicked, and starts up the trail just slow enough for you to catch up."]
+          ["narrator", "She grins, bright and wicked, and starts up the trail just slow enough for you to catch up."],
+          ["narrator", "At the overlook, a route bell rings from the lantern-lit grove workshop below."],
+          ["sierra", "That is Bruno. Try not to make a fire joke unless you want the world's kindest disappointed stare."]
         ],
         choices: [
-          { label: "Catch up and match her pace.", next: "meet_bruno", affection: { sierra: 4 } },
-          { label: "Ask if the report includes witness statements.", next: "meet_bruno", affection: { sierra: 2 } },
-          { label: "Tell her you only came for the view.", next: "meet_bruno", affection: { sierra: -3 } }
+          { label: "Catch up and match her pace.", next: "to_bruno_from_sierra", affection: { sierra: 4 } },
+          { label: "Ask if the report includes witness statements.", next: "to_bruno_from_sierra", affection: { sierra: 2 } },
+          { label: "Tell her you only came for the view.", next: "to_bruno_from_sierra", affection: { sierra: -3 } }
         ]
+      },
+
+      to_bruno_from_sierra: {
+        label: "Grove Workshop",
+        background: "checkin",
+        character: null,
+        lines: [
+          ["narrator", "Sierra walks you back toward the lodge path, still talking trail conditions while the waterfall roar gives way to rain on cedar shakes."],
+          ["narrator", "Outside the lodge, the route path curves toward a stand of lantern-lit sequoia panels. The air smells like wet pine, woodsmoke, and someone taking fire safety personally."],
+          ["sierra", "Bruno is waiting at the grove workshop. Be honest with him. He is sweet, not soft."]
+        ],
+        next: "meet_bruno"
       },
 
       meet_bruno: {
         label: "Giant Grove",
         background: "sequoia",
-        character: "bruno",
+        character: null,
         lines: [
-          ["narrator", "In a grove of impossible trees, Bruno Bear tips his ranger hat with a smile warm enough to make the whole forest stand a little taller."],
-          ["bruno", "Howdy, {playerName}. Bruno Bear. Sequoia and Kings Canyon route. Fire safety, giant trees, forest-protector energy."],
-          ["player", "You are extremely committed to the ranger mascot assignment."],
-          ["bruno", "The hat chose me."],
-          ["bruno", "These trees survive a long time because ecosystems are patient and people learn to be careful. Campfires out cold, sparks contained, vehicles parked clear of dry grass."],
-          ["player", "You make prevention sound heroic."],
-          ["bruno", "Prevention is heroic. It is love arriving before the emergency."],
-          ["narrator", "He rests one paw-hand against a split-rail fence, keeping the grove protected without making protection feel stern."],
-          ["bruno", "Only you can prevent bad decisions from becoming content."],
-          ["player", "That is definitely going on merch."],
-          ["bruno", "Only if the proceeds fund trail restoration."]
+          ["narrator", "The giant grove opens around you in columns of bark and amber light. Everything smells ancient, alive, and very flammable if treated badly."],
+          ["narrator", "Beside a split-rail fence, Bruno Bear tips his ranger hat with a smile warm enough to make the whole forest stand a little taller.", "bruno"],
+          ["bruno", "Howdy, {playerName}. Bruno Bear. Sequoia and Kings Canyon route. Fire safety, giant trees, forest-protector energy.", "bruno"],
+          ["player", "You are extremely committed to the ranger mascot assignment.", "bruno"],
+          ["bruno", "The hat chose me.", "bruno"],
+          ["bruno", "These trees survive a long time because ecosystems are patient and people learn to be careful. Campfires out cold, sparks contained, vehicles parked clear of dry grass.", "bruno"],
+          ["player", "You make prevention sound heroic.", "bruno"],
+          ["bruno", "Prevention is heroic. It is love arriving before the emergency.", "bruno"],
+          ["narrator", "He rests one paw-hand against the fence, keeping the grove protected without making protection feel stern.", "bruno"],
+          ["bruno", "Only you can prevent bad decisions from becoming content.", "bruno"],
+          ["player", "That is definitely going on merch.", "bruno"],
+          ["bruno", "Only if the proceeds fund trail restoration.", "bruno"]
         ],
         choices: [
           { label: "Ask him to teach a fire-safety check.", detail: "Bruno beams.", next: "bruno_grove_warm", affection: { bruno: 4 } },
           { label: "Compliment the forest-protector energy.", next: "bruno_grove_flirt", affection: { bruno: 2 } },
-          { label: "Say fire safety is boring unless something burns.", detail: "Bruno looks genuinely hurt.", next: "meet_river", affection: { bruno: -6 } }
+          { label: "Say fire safety is boring unless something burns.", detail: "Bruno looks genuinely hurt.", next: "to_river_from_bruno", affection: { bruno: -6 } }
         ]
       },
 
@@ -998,12 +1148,14 @@
           ["bruno", "Stir, feel, drown, repeat. Care is not glamorous, but it is how beautiful things get tomorrow."],
           ["player", "You make tomorrow sound romantic."],
           ["bruno", "Tomorrow is romantic. It means we did right by tonight."],
-          ["narrator", "His smile is gentle enough to be safe and broad enough to be a problem."]
+          ["narrator", "His smile is gentle enough to be safe and broad enough to be a problem."],
+          ["narrator", "A red-rock permit card waits under the next lantern, stamped with River's neat handwriting."],
+          ["bruno", "River has the canyon route after me. He will act mysterious about it, but he packed extra water for you."]
         ],
         choices: [
-          { label: "Tell him you want tomorrow with him in it.", next: "meet_river", affection: { bruno: 4 } },
-          { label: "Ask him to show you the check again.", next: "meet_river", affection: { bruno: 2 } },
-          { label: "Joke that safety is less fun than sparks.", next: "meet_river", affection: { bruno: -3 } }
+          { label: "Tell him you want tomorrow with him in it.", next: "to_river_from_bruno", affection: { bruno: 4 } },
+          { label: "Ask him to show you the check again.", next: "to_river_from_bruno", affection: { bruno: 2 } },
+          { label: "Joke that safety is less fun than sparks.", next: "to_river_from_bruno", affection: { bruno: -3 } }
         ]
       },
 
@@ -1018,37 +1170,52 @@
           ["narrator", "He tips his hat, but his eyes stay on you, warm as sun through sequoia bark."],
           ["bruno", "I like people who can be soft with powerful things."],
           ["player", "Trees or feelings?"],
-          ["bruno", "Yes."]
+          ["bruno", "Yes."],
+          ["narrator", "The lodge bell chimes again, and Bruno nods toward the red-rock route table."],
+          ["bruno", "River is waiting with the Zion permit board. Bring patience. He flirts in paperwork."]
         ],
         choices: [
-          { label: "Tell him you can be gentle.", next: "meet_river", affection: { bruno: 4 } },
-          { label: "Ask which powerful thing he means first.", next: "meet_river", affection: { bruno: 2 } },
-          { label: "Say powerful things can take care of themselves.", next: "meet_river", affection: { bruno: -3 } }
+          { label: "Tell him you can be gentle.", next: "to_river_from_bruno", affection: { bruno: 4 } },
+          { label: "Ask which powerful thing he means first.", next: "to_river_from_bruno", affection: { bruno: 2 } },
+          { label: "Say powerful things can take care of themselves.", next: "to_river_from_bruno", affection: { bruno: -3 } }
         ]
+      },
+
+      to_river_from_bruno: {
+        label: "Permit Table",
+        background: "checkin",
+        character: null,
+        lines: [
+          ["narrator", "Bruno does not disappear after your answer. He walks you back toward the lodge path with one paw-hand hovering near the lanterns, checking every wick like care is muscle memory."],
+          ["narrator", "At the far end of the porch, red-rock maps wait beneath a neat stack of permits. Someone has placed a water bottle beside your name card."],
+          ["bruno", "That is River's table. He likes rules because they keep people close enough to come home."]
+        ],
+        next: "meet_river"
       },
 
       meet_river: {
         label: "Red-Rock Permit Desk",
         background: "zion",
-        character: "river",
+        character: null,
         lines: [
-          ["narrator", "Red canyon walls catch the late light. River Hawk waits beside a trailhead sign, long hair moving in the desert wind like the permit system approved the drama."],
-          ["river", "You are late for your emotional access window."],
-          ["player", "I didn't know I had one."],
-          ["river", "That is why you are late."],
-          ["river", "River Hawk. Zion route. Canyon guide, red rock, narrow paths, and feelings that require a realistic itinerary."],
-          ["player", "For hiking?"],
-          ["river", "For hiking too."],
-          ["river", "The canyon rewards patience. Permits, water, sun protection, knowing your limits. Access means responsibility."],
-          ["player", "You want access to my heart? Submit your permit application?"],
-          ["river", "Approved for preliminary review."],
-          ["player", "That was fast."],
-          ["river", "You brought snacks. The process respects preparedness."]
+          ["narrator", "Red canyon walls catch the late light, turning every shadow into a narrow path. A permit table waits beside the trailhead, weighted with stones and water bottles."],
+          ["narrator", "River Hawk steps out from the shade, long hair moving in the desert wind like the canyon personally requested atmosphere.", "river"],
+          ["river", "You are late for your emotional access window.", "river"],
+          ["player", "I didn't know I had one.", "river"],
+          ["river", "That is why you are late.", "river"],
+          ["river", "River Hawk. Zion route. Canyon guide, red rock, narrow paths, and feelings that require a realistic itinerary.", "river"],
+          ["player", "For hiking?", "river"],
+          ["river", "For hiking too.", "river"],
+          ["river", "The canyon rewards patience. Permits, water, sun protection, knowing your limits. Access means responsibility.", "river"],
+          ["player", "You want access to my heart? Submit your permit application?", "river"],
+          ["river", "Approved for preliminary review.", "river"],
+          ["player", "That was fast.", "river"],
+          ["river", "You brought snacks. The process respects preparedness.", "river"]
         ],
         choices: [
           { label: "Ask for the application packet.", next: "river_canyon_flirt", affection: { river: 3 } },
           { label: "Respect the access window.", detail: "River trusts you more.", next: "river_canyon_warm", affection: { river: 4 } },
-          { label: "Call permits pointless gatekeeping.", detail: "River closes the clipboard.", next: "group_dinner_pun_battle", affection: { river: -6 } }
+          { label: "Call permits pointless gatekeeping.", detail: "River closes the clipboard.", next: "to_dinner_from_river", affection: { river: -6 } }
         ]
       },
 
@@ -1063,12 +1230,14 @@
           ["narrator", "He folds the map with ceremonial precision, then lets his hand rest near yours on the table."],
           ["river", "I like people who do not mistake patience for lack of desire."],
           ["player", "And if desire is very patient?"],
-          ["river", "Then it may be approved for a longer route."]
+          ["river", "Then it may be approved for a longer route."],
+          ["narrator", "From inside the cabin, dinner plates clatter and someone declares that the pun contest is mandatory."],
+          ["river", "Group dinner. The least efficient, most revealing route."]
         ],
         choices: [
-          { label: "Ask for the longer route.", next: "group_dinner_pun_battle", affection: { river: 4 } },
-          { label: "Tell him patience looks good on him.", next: "group_dinner_pun_battle", affection: { river: 2 } },
-          { label: "Ask if there is a faster way anyway.", next: "group_dinner_pun_battle", affection: { river: -3 } }
+          { label: "Ask for the longer route.", next: "to_dinner_from_river", affection: { river: 4 } },
+          { label: "Tell him patience looks good on him.", next: "to_dinner_from_river", affection: { river: 2 } },
+          { label: "Ask if there is a faster way anyway.", next: "to_dinner_from_river", affection: { river: -3 } }
         ]
       },
 
@@ -1082,13 +1251,27 @@
           ["river", "Knowing when to hold eye contact and when to look at the canyon."],
           ["player", "And right now?"],
           ["narrator", "River's smile turns slow enough to feel deliberate."],
-          ["river", "Right now, I am seeing whether you can do both."]
+          ["river", "Right now, I am seeing whether you can do both."],
+          ["narrator", "The cabin dinner bell rings before either of you can make that silence more dangerous."],
+          ["river", "Saved by communal soup. Temporarily."]
         ],
         choices: [
-          { label: "Hold his gaze, then look at the canyon.", next: "group_dinner_pun_battle", affection: { river: 4 } },
-          { label: "Tell him he is hard to look away from.", next: "group_dinner_pun_battle", affection: { river: 2 } },
-          { label: "Say the canyon is prettier.", next: "group_dinner_pun_battle", affection: { river: -3 } }
+          { label: "Hold his gaze, then look at the canyon.", next: "to_dinner_from_river", affection: { river: 4 } },
+          { label: "Tell him he is hard to look away from.", next: "to_dinner_from_river", affection: { river: 2 } },
+          { label: "Say the canyon is prettier.", next: "to_dinner_from_river", affection: { river: -3 } }
         ]
+      },
+
+      to_dinner_from_river: {
+        label: "Cabin Dinner",
+        background: "lodge",
+        character: null,
+        lines: [
+          ["narrator", "River clips the permit board shut and walks with you back through the rain-dark porch lights. The lodge is no longer a menu of strangers; it is a place full of people whose reactions you can still feel."],
+          ["narrator", "Warmth spills from the dining room. You hear Jack laugh, Caleb object to unsafe candle placement, Sierra dare someone to race her for dessert, and Bruno calmly supervise the fire."],
+          ["river", "Group dinner. Try to survive the puns. They are not regulated."]
+        ],
+        next: "group_dinner_pun_battle"
       },
 
       group_dinner_pun_battle: {
@@ -1125,9 +1308,7 @@
           ["narrator", "Rain hushes the lodge roof. Somewhere down the hall, someone laughs your name like they are trying it on."],
           ["narrator", "You fall asleep wondering whose route you want badly enough to risk choosing."]
         ],
-        choices: [
-          { label: "Sleep until morning.", next: "morning_route_choice" }
-        ]
+        next: "morning_route_choice"
       },
 
       morning_route_choice: {
@@ -1151,18 +1332,19 @@
       jack_date_1: {
         label: "Jack's Route",
         background: "olympic",
-        character: "jack",
+        character: null,
         onEnter: { unlockCG: "jackCabin" },
         lines: [
           ["narrator", "Jack's route starts at a mossy cabin while rain ticks against the porch roof and turns the whole forest silver."],
-          ["jack", "Out here, the quiet does half the talking."],
-          ["player", "And the other half?"],
-          ["jack", "Depends whether you are brave enough to answer it."],
-          ["player", "You sound protective."],
-          ["jack", "I am. Old growth has survived centuries. It deserves better than someone chasing a spooky caption through closed habitat."],
-          ["jack", "Desire and direction can coexist. A trail marker is just a boundary with paint."],
-          ["player", "That is annoyingly romantic."],
-          ["jack", "Help me correct the story. Make staying found hotter than getting lost."]
+          ["narrator", "Jack waits under the eaves with two mugs and a look that makes the storm seem like it dressed up for him.", "jack"],
+          ["jack", "Out here, the quiet does half the talking.", "jack"],
+          ["player", "And the other half?", "jack"],
+          ["jack", "Depends whether you are brave enough to answer it.", "jack"],
+          ["player", "You sound protective.", "jack"],
+          ["jack", "I am. Old growth has survived centuries. It deserves better than someone chasing a spooky caption through closed habitat.", "jack"],
+          ["jack", "Desire and direction can coexist. A trail marker is just a boundary with paint.", "jack"],
+          ["player", "That is annoyingly romantic.", "jack"],
+          ["jack", "Help me correct the story. Make staying found hotter than getting lost.", "jack"]
         ],
         choices: [
           { label: "Back him up on staying on marked trails.", detail: "This puts you firmly on Jack's romance branch.", next: "day_1_end_summary", affection: { jack: 5 } },
@@ -1174,16 +1356,17 @@
       caleb_date_1: {
         label: "Caleb's Route",
         background: "yellowstone",
-        character: "caleb",
+        character: null,
         onEnter: { unlockCG: "calebSteam" },
         lines: [
-          ["narrator", "Caleb chooses the boardwalk because boundaries are his love language and also mandatory."],
-          ["caleb", "Stay beside me. The steam is beautiful, but it does not negotiate."],
-          ["player", "That sounded like a line."],
-          ["caleb", "It was a warning. The fact that it worked as a line is between you and your judgment."],
-          ["player", "You sound protective."],
-          ["caleb", "I am. Everyone gets too close and then acts shocked when the wild stays wild."],
-          ["caleb", "Help me correct the story. Make safety hotter than recklessness."]
+          ["narrator", "The Yellowstone boardwalk cuts a clean line through steam and mineral color. Every rail looks ordinary until the ground exhales beside it."],
+          ["narrator", "Caleb stops at your shoulder, close enough to guide without crowding, one hand resting on the rail.", "caleb"],
+          ["caleb", "Stay beside me. The steam is beautiful, but it does not negotiate.", "caleb"],
+          ["player", "That sounded like a line.", "caleb"],
+          ["caleb", "It was a warning. The fact that it worked as a line is between you and your judgment.", "caleb"],
+          ["player", "You sound protective.", "caleb"],
+          ["caleb", "I am. Everyone gets too close and then acts shocked when the wild stays wild.", "caleb"],
+          ["caleb", "Help me correct the story. Make safety hotter than recklessness.", "caleb"]
         ],
         choices: [
           { label: "Back him up on staying on the boardwalk.", detail: "This puts you firmly on Caleb's romance branch.", next: "day_1_end_summary", affection: { caleb: 5 } },
@@ -1195,17 +1378,18 @@
       sierra_date_1: {
         label: "Sierra's Route",
         background: "yosemite",
-        character: "sierra",
+        character: null,
         onEnter: { unlockCG: "sierraWaterfall" },
         lines: [
-          ["narrator", "Sierra brings you to an overlook, then checks the weather twice before pretending the golden hour was casual."],
-          ["sierra", "I love this trail because it tells the truth fast."],
-          ["player", "The trail does have excellent timing."],
-          ["sierra", "It also has slick rock, changing conditions, and people who think confidence is a substitute for water."],
-          ["player", "Then show me the useful version."],
-          ["sierra", "Useful? In this light?"],
-          ["player", "Especially in this light."],
-          ["sierra", "Fine. Beauty gets attention. Attention can teach. But the caption has to respect the climb."]
+          ["narrator", "Yosemite opens into an overlook washed with spray and late sun. The granite looks cinematic; the wet stone underfoot looks less interested in your content plan."],
+          ["narrator", "Sierra checks the weather twice, then turns back like the golden hour was merely something she arranged on the way over.", "sierra"],
+          ["sierra", "I love this trail because it tells the truth fast.", "sierra"],
+          ["player", "The trail does have excellent timing.", "sierra"],
+          ["sierra", "It also has slick rock, changing conditions, and people who think confidence is a substitute for water.", "sierra"],
+          ["player", "Then show me the useful version.", "sierra"],
+          ["sierra", "Useful? In this light?", "sierra"],
+          ["player", "Especially in this light.", "sierra"],
+          ["sierra", "Fine. Beauty gets attention. Attention can teach. But the caption has to respect the climb.", "sierra"]
         ],
         choices: [
           { label: "Encourage the honest trail-guide version.", detail: "This puts you firmly on Sierra's romance branch.", next: "day_1_end_summary", affection: { sierra: 5 } },
@@ -1217,16 +1401,17 @@
       bruno_date_1: {
         label: "Bruno's Route",
         background: "sequoia",
-        character: "bruno",
+        character: null,
         onEnter: { unlockCG: "brunoGrove" },
         lines: [
           ["narrator", "Bruno spreads printed comments across a picnic table beneath towering trees, each one weighted with a smooth river stone."],
-          ["bruno", "People think fire safety is a lecture until they understand it is a love letter to the forest."],
-          ["player", "So the lesson is patience?"],
-          ["bruno", "Patience, care, and knowing when a spark needs attention before it becomes a crisis."],
-          ["player", "You don't have to make every warning charming."],
-          ["bruno", "I know. I simply like when people listen."],
-          ["bruno", "Help me invite care without turning danger into a dare."]
+          ["narrator", "He looks up from the table, hat brim warm with grove light, and the whole lesson softens before he says a word.", "bruno"],
+          ["bruno", "People think fire safety is a lecture until they understand it is a love letter to the forest.", "bruno"],
+          ["player", "So the lesson is patience?", "bruno"],
+          ["bruno", "Patience, care, and knowing when a spark needs attention before it becomes a crisis.", "bruno"],
+          ["player", "You don't have to make every warning charming.", "bruno"],
+          ["bruno", "I know. I simply like when people listen.", "bruno"],
+          ["bruno", "Help me invite care without turning danger into a dare.", "bruno"]
         ],
         choices: [
           { label: "Feature one fire-safety fact and one boundary.", detail: "This puts you firmly on Bruno's romance branch.", next: "day_1_end_summary", affection: { bruno: 5 } },
@@ -1238,17 +1423,18 @@
       river_date_1: {
         label: "River's Route",
         background: "zion",
-        character: "river",
+        character: null,
         onEnter: { unlockCG: "riverCanyon" },
         lines: [
           ["narrator", "River plans a canyon morning like a man who color-codes both permit windows and grudges."],
-          ["river", "People think I use rules to avoid intimacy."],
-          ["player", "Do you?"],
-          ["river", "I use rules to create trust. Then occasionally hide behind the clipboard."],
-          ["player", "That is almost self-awareness."],
-          ["river", "Do not flirt with my growth arc unless you have completed the required briefing."],
-          ["river", "Someone wants access without responsibility. That is the opposite of love and trail management."],
-          ["player", "So the post should teach boundaries as invitation, not rejection."]
+          ["narrator", "He stands beside a shaded trail marker, reviewing the plan like the canyon might audit him for emotional compliance.", "river"],
+          ["river", "People think I use rules to avoid intimacy.", "river"],
+          ["player", "Do you?", "river"],
+          ["river", "I use rules to create trust. Then occasionally hide behind the clipboard.", "river"],
+          ["player", "That is almost self-awareness.", "river"],
+          ["river", "Do not flirt with my growth arc unless you have completed the required briefing.", "river"],
+          ["river", "Someone wants access without responsibility. That is the opposite of love and trail management.", "river"],
+          ["player", "So the post should teach boundaries as invitation, not rejection.", "river"]
         ],
         choices: [
           { label: "Support his boundaries-as-trust approach.", detail: "This puts you firmly on River's romance branch.", next: "day_1_end_summary", affection: { river: 5 } },
@@ -1262,7 +1448,7 @@
         background: "lodge",
         character: null,
         lines: [
-          ["narrator", "By evening, the route has changed something. Maybe it was a spark. Maybe it was a bruise. Maybe it was both."],
+          ["narrator", "By evening, the day has changed something. Maybe it was a spark. Maybe it was a bruise. Maybe it was both."],
           ["narrator", "Nobody announces whether you succeeded. The game is quieter than that. You have to live with the look they gave you when the conversation ended."],
           ["narrator", "Back at the lodge, the windows glow against the dark, and the thought of tomorrow feels less like content and more like consequence."],
           ["narrator", "The full routes will continue in Act 2: longer dates, private CGs, repair scenes, bad endings, and the kind of choices nobody can undo with a clever caption."]
@@ -1296,10 +1482,12 @@
       setupScreen: document.getElementById("setupScreen"),
       gameScreen: document.getElementById("gameScreen"),
       backdrop: document.getElementById("backdrop"),
+      backdropNext: document.getElementById("backdropNext"),
       sprite: document.getElementById("sprite"),
       placeholderSprite: document.getElementById("placeholderSprite"),
       speakerName: document.getElementById("speakerName"),
       sceneLabel: document.getElementById("sceneLabel"),
+      dialogueBox: document.getElementById("dialogueBox"),
       lineText: document.getElementById("lineText"),
       choices: document.getElementById("choices"),
       toast: document.getElementById("toast"),
@@ -1382,7 +1570,6 @@
       state.lineIndex = options.keepLine ? state.lineIndex : 0;
       applyOnEnter(scene);
       updateBackdrop(scene.background);
-      updateSprite(scene.character);
       updateAudioTheme(scene.background, scene.character);
       updateHUD();
       renderCurrentLine();
@@ -1393,17 +1580,29 @@
       const line = scene.lines[state.lineIndex];
       const speakerKey = line ? line[0] : "narrator";
       const speaker = characters[speakerKey] || characters.narrator;
+      const lineCharacterKey = line && line.length > 2 ? line[2] : scene.character;
+      updateSprite(lineCharacterKey);
       els.speakerName.textContent = resolveName(speaker);
       els.speakerName.style.color = speaker.color || "#f3b85b";
       els.sceneLabel.textContent = scene.label || state.sceneId;
       els.lineText.textContent = formatText(line ? line[1] : "");
       els.choices.innerHTML = "";
+      els.choices.classList.remove("has-choices");
+      els.choices.style.removeProperty("--choices-bottom");
+      els.gameScreen.classList.remove("choices-active");
       if (state.lineIndex >= scene.lines.length - 1) renderChoices(scene.choices || []);
     }
 
     function showNextDialogueLine() {
       const scene = scenes[state.sceneId];
-      if (!scene || state.lineIndex >= scene.lines.length - 1) return;
+      if (!scene) return;
+      if (state.lineIndex >= scene.lines.length - 1) {
+        if (scene.next) {
+          playSfx("advance");
+          renderScene(scene.next);
+        }
+        return;
+      }
       state.lineIndex += 1;
       playSfx("advance");
       renderCurrentLine();
@@ -1411,6 +1610,12 @@
 
     function renderChoices(choices) {
       els.choices.innerHTML = "";
+      els.choices.classList.toggle("has-choices", choices.length > 0);
+      els.gameScreen.classList.toggle("choices-active", choices.length > 0);
+      if (choices.length > 0) {
+        const dialogueHeight = els.dialogueBox.getBoundingClientRect().height;
+        els.choices.style.setProperty("--choices-bottom", `${Math.ceil(dialogueHeight + 28)}px`);
+      }
       choices.forEach(choice => {
         const button = document.createElement("button");
         button.className = "choice";
@@ -1459,8 +1664,28 @@
 
     function updateBackdrop(backgroundKey) {
       const bg = backgrounds[backgroundKey] || backgrounds.lodge;
-      els.backdrop.className = "backdrop " + bg[1];
-      els.backdrop.style.backgroundImage = `url("${bg[0]}")`;
+      const image = bg[0] ? `url("${bg[0]}")` : "none";
+      if (els.backdrop.dataset.key === backgroundKey) return;
+      if (!els.backdrop.dataset.key) {
+        els.backdrop.className = "backdrop " + bg[1];
+        els.backdrop.style.backgroundImage = image;
+        els.backdrop.dataset.key = backgroundKey;
+        return;
+      }
+      els.backdropNext.className = "backdrop next " + bg[1];
+      els.backdropNext.style.backgroundImage = image;
+      els.backdropNext.dataset.key = backgroundKey;
+      requestAnimationFrame(() => {
+        els.backdropNext.classList.add("visible");
+        window.setTimeout(() => {
+          els.backdrop.className = "backdrop " + bg[1];
+          els.backdrop.style.backgroundImage = image;
+          els.backdrop.dataset.key = backgroundKey;
+          els.backdropNext.className = "backdrop next " + bg[1];
+          els.backdropNext.style.backgroundImage = image;
+          els.backdropNext.dataset.key = backgroundKey;
+        }, 900);
+      });
     }
 
     function updateSprite(characterKey) {
@@ -1514,7 +1739,7 @@
     }
 
     function updateHUD() {
-      els.playerBadge.textContent = `${state.playerName} - checked in`;
+      if (els.playerBadge) els.playerBadge.textContent = `${state.playerName} - checked in`;
     }
 
     function updateBeginButton() {

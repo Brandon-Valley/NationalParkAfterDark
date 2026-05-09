@@ -832,6 +832,10 @@
         <h2>CG Gallery</h2>
         <p class="tagline">Unlocked scenes from the retreat. Blanks are future emotional weather events.</p>
         <div class="gallery-grid" id="galleryGrid"></div>
+        <details style="margin-top:14px; text-align:left; font-size:0.84rem; color:#5d4b2d;">
+          <summary>Audio Credits</summary>
+          <p style="margin-top:8px; white-space:pre-line;">Almost Bliss, Clear Air, Evening, Windswept, On My Way, Morning, Fireflies and Stardust, and Crowd Hammer by Kevin MacLeod (incompetech.com), licensed CC BY 4.0. Button Click Sound Effect by qubodup (OpenGameArt), CC0. Creaky Door Hinge Spooky by w.forster.1@gmail.com (OpenGameArt), CC0. Opening and Closing a Map Sounds by Spring Spring (OpenGameArt), CC0. Chimey UI Sounds by MouseBYTE (OpenGameArt), CC0.</p>
+        </details>
         <div class="setup-actions">
           <button class="primary" id="closeGalleryBtn">Return</button>
           <button class="ghost" id="unlockPreviewBtn">Preview Unlocks</button>
@@ -890,25 +894,66 @@
       morning: ["assets/backgrounds/bg_outdoor_checkin.png", "bg-lodge"]
     };
 
-    const locationThemes = {
-      lodge: { root: 50, scale: [0, 3, 5, 7, 10], wave: "triangle", tempo: 980, pad: 0.045, bass: 0.05 },
-      lodgeExterior: { root: 48, scale: [0, 5, 7, 9, 12], wave: "sine", tempo: 1080, pad: 0.045, bass: 0.045 },
-      olympic: { root: 47, scale: [0, 3, 5, 7, 10], wave: "triangle", tempo: 1040, pad: 0.055, bass: 0.035 },
-      yellowstone: { root: 43, scale: [0, 2, 5, 7, 10], wave: "sawtooth", tempo: 820, pad: 0.04, bass: 0.055 },
-      yosemite: { root: 45, scale: [0, 4, 7, 11, 12], wave: "triangle", tempo: 900, pad: 0.05, bass: 0.045 },
-      sequoia: { root: 52, scale: [0, 2, 4, 7, 9], wave: "sine", tempo: 760, pad: 0.04, bass: 0.035 },
-      zion: { root: 41, scale: [0, 2, 5, 7, 9], wave: "square", tempo: 860, pad: 0.035, bass: 0.055 },
-      dinner: { root: 53, scale: [0, 2, 5, 7, 9], wave: "triangle", tempo: 680, pad: 0.04, bass: 0.04 },
+    const musicThemes = {
+      introspection: { src: "assets/audio/music/Almost Bliss.mp3", loopStart: 11.2, loopEnd: 303.4, volume: 0.34, title: "Almost Bliss" },
+      base: { src: "assets/audio/music/Clear Air.mp3", loopStart: 8.2, loopEnd: 176.8, volume: 0.52, title: "Clear Air" },
+      lodge: { src: "assets/audio/music/Clear Air.mp3", loopStart: 8.2, loopEnd: 176.8, volume: 0.52, title: "Clear Air" },
+      checkin: { src: "assets/audio/music/Evening.mp3", loopStart: 7.4, loopEnd: 176.8, volume: 0.46, title: "Evening" },
+      dinner: { src: "assets/audio/music/Almost Bliss.mp3", loopStart: 10.0, loopEnd: 305.8, volume: 0.48, title: "Almost Bliss" },
+      jack: { src: "assets/audio/music/Windswept.mp3", loopStart: 9.6, loopEnd: 199.8, volume: 0.5, title: "Windswept" },
+      caleb: { src: "assets/audio/music/On My Way.mp3", loopStart: 11.2, loopEnd: 243.8, volume: 0.5, title: "On My Way" },
+      sierra: { src: "assets/audio/music/Morning.mp3", loopStart: 6.0, loopEnd: 146.0, volume: 0.54, title: "Morning" },
+      bruno: { src: "assets/audio/music/Fireflies and Stardust.mp3", loopStart: 9.0, loopEnd: 244.5, volume: 0.5, title: "Fireflies and Stardust" },
+      river: { src: "assets/audio/music/Crowd Hammer.mp3", loopStart: 7.5, loopEnd: 198.5, volume: 0.45, title: "Crowd Hammer" }
     };
 
-    const characterThemes = {
-      jack: { lead: "triangle", melody: [0, 3, 7, 10, 12, 10, 7, 3], volume: 0.024 },
-      caleb: { lead: "sawtooth", melody: [0, 7, 10, 14, 12, 10, 7, 5], volume: 0.026 },
-      sierra: { lead: "triangle", melody: [12, 16, 19, 23, 19, 16, 14, 12], volume: 0.025 },
-      bruno: { lead: "sine", melody: [7, 9, 12, 14, 16, 14, 12, 9], volume: 0.024 },
-      river: { lead: "square", melody: [0, 5, 9, 12, 17, 12, 9, 5], volume: 0.022 },
-      morning: { lead: "sine", melody: [0, 4, 7, 12, 14, 12, 7, 4], volume: 0.02 }
+    const locationMusic = {
+      black: "introspection",
+      lodge: "lodge",
+      lodgeExterior: "base",
+      checkin: "checkin",
+      olympic: "jack",
+      yellowstone: "caleb",
+      yosemite: "sierra",
+      sequoia: "bruno",
+      zion: "river",
+      dinner: "dinner",
+      morning: "base"
     };
+
+    const characterMusic = {
+      jack: "jack",
+      caleb: "caleb",
+      sierra: "sierra",
+      bruno: "bruno",
+      river: "river"
+    };
+
+    const sfxTracks = {
+      advance: { src: "assets/audio/sfx/qubodup-click/qubodup-click/qubodup-click2.wav", volume: 0.26 },
+      choice: { src: "assets/audio/sfx/snd_close_map.wav", volume: 0.18 },
+      type: { src: "assets/audio/sfx/qubodup-click/qubodup-click/qubodup-hover2.wav", volume: 0.12 },
+      scene: { src: "assets/audio/sfx/snd_use_map.wav", volume: 0.16, startAt: 0.06 },
+      character: { src: "assets/audio/sfx/qubodup-click/qubodup-click/qubodup-click1.wav", volume: 0.2 },
+      notification: { src: "assets/audio/sfx/chimey/Chime_Load.mp3", volume: 0.58 },
+      save: { src: "assets/audio/sfx/chimey/Chime_Save.mp3", volume: 0.58 },
+      door: { src: "assets/audio/sfx/creaky_door_hinge.wav", volume: 0.68 }
+    };
+
+    const audioCredits = [
+      '"Almost Bliss" by Kevin MacLeod (incompetech.com), CC BY 4.0',
+      '"Clear Air" by Kevin MacLeod (incompetech.com), CC BY 4.0',
+      '"Almost Bliss" by Kevin MacLeod (incompetech.com), CC BY 4.0',
+      '"Evening" by Kevin MacLeod (incompetech.com), CC BY 4.0',
+      '"Windswept" by Kevin MacLeod (incompetech.com), CC BY 4.0',
+      '"On My Way" by Kevin MacLeod (incompetech.com), CC BY 4.0',
+      '"Morning" by Kevin MacLeod (incompetech.com), CC BY 4.0',
+      '"Fireflies and Stardust" by Kevin MacLeod (incompetech.com), CC BY 4.0',
+      '"River Valley Breakdown" by Kevin MacLeod (incompetech.com), CC BY 4.0',
+      "Twangy UI Sounds by EZduzziteh (OpenGameArt), CC0",
+      "Chimey UI Sounds by MouseBYTE (OpenGameArt), CC0",
+      '"Creaky Door Hinge Spooky" by w.forster.1@gmail.com (OpenGameArt), CC0'
+    ];
 
     const cgLibrary = {
       jackCabin: { title: "Rain-Soaked Cabin", image: "assets/backgrounds/bg_olympic_rain_cabin.png" },
@@ -939,6 +984,7 @@
           ["player", "Viral Vista Lodge invited me to help five very photogenic public-lands ambassadors make responsible content without encouraging anyone to step off trails, bother wildlife, or confuse stewardship with flirting."],
           ["player", "The roster: Jack Everett in Olympic's rain-soaked old growth, Caleb Ranger in Yellowstone, Sierra on Yosemite's waterfall trails, Bruno Bear protecting the giant trees, and River Hawk guiding Zion's canyons."],
           ["player", "No chaperone. No confusing non-date ranger mentor. Just me, a content schedule, and five people who look like they were designed by a trail map with opinions."],
+          ["player", "Okay. Let's do this."],
           ["player", "Before I can decide whether that is charming or career-ending, the lodge doors open and cedar-scented rain rolls in."]
         ],
         next: "arrival_lodge"
@@ -1690,16 +1736,18 @@
     };
 
     const audioEngine = {
-      ctx: null,
-      master: null,
-      musicGain: null,
-      sfxGain: null,
-      intervalId: null,
-      step: 0,
       locationKey: "lodgeExterior",
       characterKey: null,
-      ambientNodes: [],
-      musicStarted: false,
+      musicKey: null,
+      activeMusicIndex: 0,
+      musicPlayers: [],
+      loopTimerId: null,
+      fadeTimerIds: [],
+      transitioning: false,
+      currentTheme: null,
+      queuedMusicKey: null,
+      trackChangeToken: 0,
+      justPlayedDoorSfx: false,
       enabled: true
     };
 
@@ -1710,7 +1758,12 @@
     });
     document.getElementById("continueBtn").addEventListener("click", loadGame);
     document.getElementById("beginBtn").addEventListener("click", startGame);
-    document.getElementById("playerName").addEventListener("input", updateBeginButton);
+    document.getElementById("playerName").addEventListener("input", event => {
+      updateBeginButton();
+      if (event.inputType && event.inputType !== "insertReplacementText" && event.inputType !== "historyUndo" && event.inputType !== "historyRedo") {
+        playSfx("type");
+      }
+    });
     document.getElementById("backStartBtn").addEventListener("click", () => showScreen("startScreen"));
     document.getElementById("saveBtn").addEventListener("click", saveGame);
     document.getElementById("loadBtn").addEventListener("click", loadGame);
@@ -1761,8 +1814,8 @@
       if (!scene) throw new Error("Missing scene: " + sceneId);
       state.sceneId = sceneId;
       state.lineIndex = options.keepLine ? state.lineIndex : 0;
-      applyOnEnter(scene);
       updateBackdrop(scene.background);
+      applyOnEnter(scene);
       updateAudioTheme(scene.background, scene.character);
       updateHUD();
       renderCurrentLine();
@@ -1783,6 +1836,9 @@
       els.choices.classList.remove("has-choices");
       els.choices.style.removeProperty("--choices-bottom");
       els.gameScreen.classList.remove("choices-active");
+      if (state.sceneId === "cold_open_intro" && state.lineIndex === scene.lines.length - 1) {
+        window.setTimeout(() => playSfx("door"), 120);
+      }
       if (state.lineIndex >= scene.lines.length - 1) renderChoices(scene.choices || []);
     }
 
@@ -1852,13 +1908,24 @@
       if (!scene.onEnter) return;
       if (scene.onEnter.affection) addValues(state.affection, scene.onEnter.affection);
       if (scene.onEnter.unlockCG) unlockCG(scene.onEnter.unlockCG);
-      playSfx("scene");
+      if (audioEngine.justPlayedDoorSfx) {
+        audioEngine.justPlayedDoorSfx = false;
+      } else {
+        playSfx("scene");
+      }
     }
 
     function updateBackdrop(backgroundKey) {
+      const previousKey = els.backdrop.dataset.key || "";
       const bg = backgrounds[backgroundKey] || backgrounds.lodge;
       const image = bg[0] ? `url("${bg[0]}")` : "none";
       if (els.backdrop.dataset.key === backgroundKey) return;
+      audioEngine.justPlayedDoorSfx = false;
+      const crossedCabinThreshold = isCabinBackground(previousKey) !== isCabinBackground(backgroundKey);
+      if (crossedCabinThreshold && previousKey) {
+        audioEngine.justPlayedDoorSfx = true;
+        window.setTimeout(() => playSfx("door"), 120);
+      }
       if (!els.backdrop.dataset.key) {
         els.backdrop.className = "backdrop " + bg[1];
         els.backdrop.style.backgroundImage = image;
@@ -2030,6 +2097,15 @@
     function showScreen(id) {
       [els.startScreen, els.setupScreen, els.gameScreen].forEach(screen => screen.classList.remove("active"));
       els[id].classList.add("active");
+      if (!audioEngine.enabled) return;
+      ensureAudio();
+      if (id === "setupScreen") {
+        audioEngine.locationKey = "black";
+        audioEngine.characterKey = null;
+        restartMusicLoop();
+      } else if (id === "startScreen") {
+        stopMusicLoop();
+      }
     }
 
     function normalizeSceneId(sceneId) {
@@ -2045,7 +2121,7 @@
       if (audioEngine.enabled) {
         restartMusicLoop();
         playSfx("save");
-        toast("Sound on: original park themes enabled.");
+        toast("Sound on: licensed park themes enabled.");
       } else {
         stopMusicLoop();
         toast("Sound muted.");
@@ -2061,33 +2137,20 @@
 
     function ensureAudio() {
       updateAudioButton();
-      if (!audioEngine.enabled || audioEngine.ctx) return;
-      const AudioContextCtor = window.AudioContext || window.webkitAudioContext;
-      if (!AudioContextCtor) {
-        audioEngine.enabled = false;
-        updateAudioButton();
-        return;
-      }
-      const ctx = new AudioContextCtor();
-      const master = ctx.createGain();
-      const musicGain = ctx.createGain();
-      const sfxGain = ctx.createGain();
-      master.gain.value = 0.95;
-      musicGain.gain.value = 0.38;
-      sfxGain.gain.value = 0.82;
-      musicGain.connect(master);
-      sfxGain.connect(master);
-      master.connect(ctx.destination);
-      audioEngine.ctx = ctx;
-      audioEngine.master = master;
-      audioEngine.musicGain = musicGain;
-      audioEngine.sfxGain = sfxGain;
+      if (!audioEngine.enabled) return;
+      if (audioEngine.musicPlayers.length) return;
+      audioEngine.musicPlayers = [new Audio(), new Audio()];
+      audioEngine.musicPlayers.forEach(player => {
+        player.preload = "auto";
+        player.loop = false;
+        player.volume = 0;
+      });
       restartMusicLoop();
     }
 
     function updateAudioTheme(locationKey, characterKey) {
       audioEngine.locationKey = locationKey || "lodge";
-      audioEngine.characterKey = characterKey || null;
+      audioEngine.characterKey = parseCharacterCue(characterKey).key || characterKey || null;
       if (!audioEngine.enabled) return;
       ensureAudio();
       restartMusicLoop();
@@ -2095,163 +2158,134 @@
     }
 
     function restartMusicLoop() {
-      if (!audioEngine.enabled || !audioEngine.ctx) return;
-      stopMusicLoop();
-      audioEngine.step = 0;
-      startAmbientBed();
-      playMusicStep();
-      const theme = locationThemes[audioEngine.locationKey] || locationThemes.lodge;
-      audioEngine.intervalId = setInterval(playMusicStep, theme.tempo);
+      if (!audioEngine.enabled) return;
+      const nextMusicKey = resolveMusicKey();
+      if (!nextMusicKey) return;
+      if (audioEngine.musicKey === nextMusicKey && audioEngine.currentTheme) return;
+      playMusicTrack(nextMusicKey);
     }
 
     function stopMusicLoop() {
-      if (audioEngine.intervalId) {
-        clearInterval(audioEngine.intervalId);
-        audioEngine.intervalId = null;
-      }
-      stopAmbientBed();
-    }
-
-    function playMusicStep() {
-      if (!audioEngine.enabled || !audioEngine.ctx) return;
-      const ctx = audioEngine.ctx;
-      if (ctx.state === "suspended") ctx.resume();
-      const theme = locationThemes[audioEngine.locationKey] || locationThemes.lodge;
-      const characterTheme = characterThemes[audioEngine.characterKey];
-      const now = ctx.currentTime;
-      const scaleNote = theme.scale[audioEngine.step % theme.scale.length];
-      const octave = audioEngine.step % 4 === 0 ? -12 : 0;
-      const root = theme.root + octave + scaleNote;
-      playTone(midiToFreq(root), 2.4, theme.pad, theme.wave, audioEngine.musicGain, now, "soft");
-      playTone(midiToFreq(theme.root + theme.scale[(audioEngine.step + 2) % theme.scale.length] + 12), 2.0, theme.pad * 0.45, "sine", audioEngine.musicGain, now + 0.03, "soft");
-
-      if (audioEngine.step % 2 === 0) {
-        playTone(midiToFreq(theme.root - 24 + scaleNote), 0.42, theme.bass, "sine", audioEngine.musicGain, now, "pluck");
-      }
-
-      if (characterTheme) {
-        const melodyNote = characterTheme.melody[audioEngine.step % characterTheme.melody.length];
-        playTone(midiToFreq(theme.root + melodyNote), 0.3, characterTheme.volume, characterTheme.lead, audioEngine.musicGain, now + 0.08, "pluck");
-      }
-
-      if (audioEngine.step % 4 === 2) {
-        playNoise(0.035, 0.055, audioEngine.musicGain, now + 0.04, "hat");
-      }
-      if (audioEngine.step % 8 === 0) {
-        playNoise(0.16, 0.045, audioEngine.musicGain, now + 0.02, "soft");
-      }
-
-      audioEngine.step += 1;
+      audioEngine.trackChangeToken += 1;
+      window.clearInterval(audioEngine.loopTimerId);
+      audioEngine.fadeTimerIds.forEach(id => window.clearInterval(id));
+      audioEngine.loopTimerId = null;
+      audioEngine.fadeTimerIds = [];
+      audioEngine.transitioning = false;
+      audioEngine.musicPlayers.forEach(player => {
+        player.pause();
+        player.currentTime = 0;
+        player.volume = 0;
+      });
+      audioEngine.currentTheme = null;
+      audioEngine.musicKey = null;
     }
 
     function playSfx(type) {
       if (!audioEngine.enabled) return;
       ensureAudio();
-      if (!audioEngine.ctx) return;
-      const ctx = audioEngine.ctx;
-      if (ctx.state === "suspended") ctx.resume();
-      const now = ctx.currentTime;
-      const gain = audioEngine.sfxGain;
-      const sfx = {
-        advance: [740, 0.045, 0.07, "triangle"],
-        choice: [520, 0.11, 0.13, "square"],
-        scene: [260, 0.24, 0.12, "sine"],
-        character: [392, 0.14, 0.11, "triangle"],
-        notification: [880, 0.08, 0.12, "sine"],
-        save: [660, 0.12, 0.11, "triangle"]
-      }[type] || [440, 0.08, 0.05, "sine"];
-      playTone(sfx[0], sfx[1], sfx[2], sfx[3], gain, now, "pluck");
-      if (type === "notification") playTone(1175, 0.08, 0.06, "sine", gain, now + 0.09, "pluck");
-      if (type === "choice") {
-        playTone(780, 0.08, 0.05, "triangle", gain, now + 0.08, "pluck");
-        playNoise(0.08, 0.035, gain, now + 0.02, "soft");
+      const config = sfxTracks[type];
+      if (!config) return;
+      const effect = new Audio(config.src);
+      effect.volume = config.volume;
+      const startPlayback = () => {
+        if (config.startAt) {
+          try {
+            effect.currentTime = config.startAt;
+          } catch (error) {}
+        }
+        effect.play().catch(() => {});
+      };
+      if (config.startAt) {
+        if (effect.readyState >= 1) startPlayback();
+        else effect.addEventListener("loadedmetadata", startPlayback, { once: true });
+        effect.load();
+        return;
       }
-      if (type === "advance") playNoise(0.025, 0.022, gain, now, "hat");
-      if (type === "scene" || type === "character") playTone(sfx[0] * 1.5, 0.18, sfx[2] * 0.46, "sine", gain, now + 0.13, "soft");
+      effect.play().catch(() => {});
     }
 
-    function startAmbientBed() {
-      stopAmbientBed();
-      if (!audioEngine.enabled || !audioEngine.ctx) return;
-      const ctx = audioEngine.ctx;
-      const theme = locationThemes[audioEngine.locationKey] || locationThemes.lodge;
-      const now = ctx.currentTime;
-      [0, 7, 12].forEach((offset, index) => {
-        const osc = ctx.createOscillator();
-        const gain = ctx.createGain();
-        osc.type = index === 1 ? "triangle" : "sine";
-        osc.frequency.value = midiToFreq(theme.root - 36 + offset);
-        gain.gain.setValueAtTime(0.0001, now);
-        gain.gain.exponentialRampToValueAtTime(0.024 - index * 0.003, now + 1.2);
-        osc.connect(gain);
-        gain.connect(audioEngine.musicGain);
-        osc.start(now);
-        audioEngine.ambientNodes.push({ osc, gain });
-      });
-      audioEngine.musicStarted = true;
+    function resolveMusicKey() {
+      if (audioEngine.locationKey === "lodge") return "lodge";
+      if (audioEngine.locationKey === "checkin") return "checkin";
+      const characterKey = characterMusic[audioEngine.characterKey];
+      if (characterKey) return characterKey;
+      return locationMusic[audioEngine.locationKey] || "base";
     }
 
-    function stopAmbientBed() {
-      if (!audioEngine.ctx) return;
-      const now = audioEngine.ctx.currentTime;
-      audioEngine.ambientNodes.forEach(({ osc, gain }) => {
-        try {
-          gain.gain.cancelScheduledValues(now);
-          gain.gain.setTargetAtTime(0.0001, now, 0.08);
-          osc.stop(now + 0.4);
-        } catch (error) {}
-      });
-      audioEngine.ambientNodes = [];
-      audioEngine.musicStarted = false;
+    function isCabinBackground(backgroundKey) {
+      return backgroundKey === "olympic" || backgroundKey === "lodge";
     }
 
-    function playTone(frequency, duration, volume, wave, destination, startTime, shape) {
-      const ctx = audioEngine.ctx;
-      if (!ctx || !destination) return;
-      const osc = ctx.createOscillator();
-      const gain = ctx.createGain();
-      osc.type = wave;
-      osc.frequency.setValueAtTime(frequency, startTime);
-      gain.gain.setValueAtTime(0.0001, startTime);
-      gain.gain.exponentialRampToValueAtTime(Math.max(volume, 0.0002), startTime + 0.02);
-      if (shape === "soft") {
-        gain.gain.exponentialRampToValueAtTime(0.0001, startTime + duration);
-      } else {
-        gain.gain.exponentialRampToValueAtTime(Math.max(volume * 0.35, 0.0002), startTime + duration * 0.35);
-        gain.gain.exponentialRampToValueAtTime(0.0001, startTime + duration);
+    function playMusicTrack(musicKey) {
+      if (!audioEngine.enabled || !musicThemes[musicKey]) return;
+      const transitionToken = audioEngine.trackChangeToken + 1;
+      audioEngine.trackChangeToken = transitionToken;
+      audioEngine.queuedMusicKey = musicKey;
+      const theme = musicThemes[musicKey];
+      window.clearInterval(audioEngine.loopTimerId);
+      audioEngine.loopTimerId = null;
+      audioEngine.fadeTimerIds.forEach(id => window.clearInterval(id));
+      audioEngine.fadeTimerIds = [];
+
+      const outgoing = audioEngine.currentTheme ? audioEngine.musicPlayers[audioEngine.activeMusicIndex] : null;
+      const incomingIndex = outgoing ? (audioEngine.activeMusicIndex === 0 ? 1 : 0) : 0;
+      const incoming = audioEngine.musicPlayers[incomingIndex];
+      incoming.pause();
+      incoming.src = theme.src;
+      incoming.load();
+
+      const startPlayback = () => {
+        if (!audioEngine.enabled || audioEngine.trackChangeToken !== transitionToken) return;
+        incoming.currentTime = theme.loopStart;
+        incoming.volume = 0;
+        incoming.play().catch(() => {});
+        fadePlayer(incoming, theme.volume, outgoing ? 1800 : 900);
+        if (outgoing) {
+          fadePlayer(outgoing, 0, 1800, () => {
+            outgoing.pause();
+            outgoing.currentTime = theme.loopStart;
+          });
+        }
+        audioEngine.currentTheme = theme;
+        audioEngine.musicKey = musicKey;
+        audioEngine.activeMusicIndex = incomingIndex;
+        audioEngine.transitioning = false;
+        audioEngine.loopTimerId = window.setInterval(checkMusicLoop, 120);
+      };
+
+      audioEngine.transitioning = Boolean(outgoing);
+      if (incoming.readyState >= 2) startPlayback();
+      else incoming.addEventListener("canplay", startPlayback, { once: true });
+    }
+
+    function checkMusicLoop() {
+      if (!audioEngine.enabled || !audioEngine.currentTheme || audioEngine.transitioning) return;
+      const current = audioEngine.musicPlayers[audioEngine.activeMusicIndex];
+      if (!current || current.readyState < 2) return;
+      if (current.currentTime >= audioEngine.currentTheme.loopEnd - 0.08) {
+        const overflow = Math.max(0, current.currentTime - audioEngine.currentTheme.loopEnd);
+        current.currentTime = Math.min(
+          audioEngine.currentTheme.loopStart + overflow,
+          audioEngine.currentTheme.loopEnd - 0.12
+        );
       }
-      osc.connect(gain);
-      gain.connect(destination);
-      osc.start(startTime);
-      osc.stop(startTime + duration + 0.04);
     }
 
-    function playNoise(duration, volume, destination, startTime, shape) {
-      const ctx = audioEngine.ctx;
-      if (!ctx || !destination) return;
-      const sampleCount = Math.max(1, Math.floor(ctx.sampleRate * duration));
-      const buffer = ctx.createBuffer(1, sampleCount, ctx.sampleRate);
-      const data = buffer.getChannelData(0);
-      for (let i = 0; i < sampleCount; i += 1) {
-        data[i] = (Math.random() * 2 - 1) * (1 - i / sampleCount);
-      }
-      const source = ctx.createBufferSource();
-      const filter = ctx.createBiquadFilter();
-      const gain = ctx.createGain();
-      source.buffer = buffer;
-      filter.type = shape === "hat" ? "highpass" : "lowpass";
-      filter.frequency.value = shape === "hat" ? 4200 : 1200;
-      gain.gain.setValueAtTime(Math.max(volume, 0.0002), startTime);
-      gain.gain.exponentialRampToValueAtTime(0.0001, startTime + duration);
-      source.connect(filter);
-      filter.connect(gain);
-      gain.connect(destination);
-      source.start(startTime);
-      source.stop(startTime + duration + 0.02);
-    }
-
-    function midiToFreq(note) {
-      return 440 * Math.pow(2, (note - 69) / 12);
+    function fadePlayer(player, targetVolume, duration, onComplete) {
+      const startVolume = player.volume;
+      const startTime = performance.now();
+      const timerId = window.setInterval(() => {
+        const elapsed = performance.now() - startTime;
+        const progress = Math.min(1, elapsed / duration);
+        player.volume = startVolume + (targetVolume - startVolume) * progress;
+        if (progress >= 1) {
+          window.clearInterval(timerId);
+          audioEngine.fadeTimerIds = audioEngine.fadeTimerIds.filter(id => id !== timerId);
+          if (onComplete) onComplete();
+        }
+      }, 16);
+      audioEngine.fadeTimerIds.push(timerId);
     }
 
     function formatText(text) {

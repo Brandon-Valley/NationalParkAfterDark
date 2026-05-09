@@ -4,8 +4,8 @@ const TIME_LABELS = { daytime: "Daytime", sunset: "Sunset", night: "Night" };
 const LOVE_INTEREST_KEYS = ["jack", "caleb", "sierra", "bruno", "river"];
 
 const defaultState = {
-  playerName: "Creator",
-  sceneId: "intro_checkin_arrival",
+  playerName: "You",
+  sceneId: "intro_bus_ride",
   lineIndex: 0,
   selectedRoute: null,
   day: 1,
@@ -22,6 +22,7 @@ const defaultState = {
   choiceReactionNext: null,
   choiceReactionBackground: null,
   choiceReactionLabel: null,
+  lineAudioCueKey: null,
   introReturnScene: null,
   devPanelOpen: false,
   devChoicePreview: true,
@@ -131,7 +132,14 @@ const sfxTracks = {
   scene: { src: "assets/audio/sfx/snd_use_map.wav", volume: 0.16, startAt: 0.06 },
   character: { src: "assets/audio/sfx/qubodup-click/qubodup-click/qubodup-click1.wav", volume: 0.2 },
   save: { src: "assets/audio/sfx/chimey/Chime_Save.mp3", volume: 0.58 },
-  door: { src: "assets/audio/sfx/creaky_door_hinge.wav", volume: 0.68 }
+  door: { src: "assets/audio/sfx/creaky_door_hinge.wav", volume: 0.68 },
+  busApproachStop: { src: "assets/audio/sfx/bus/bus_approach_stop.mp3", volume: 0.62, channel: "bus" },
+  busIdle: { src: "assets/audio/sfx/bus/bus_idle.mp3", volume: 0.45, channel: "bus" },
+  busDeparture: { src: "assets/audio/sfx/bus/bus_departure.mp3", volume: 0.62, channel: "bus" }
+};
+
+const ambientTracks = {
+  bus: { src: "assets/audio/sfx/bus/school_bus_country_road_loop.ogg", volume: 0.32, delayMs: 1400, fadeMs: 2600 }
 };
 
 const cgLibrary = {
@@ -726,16 +734,92 @@ const visitBeats = {
 };
 
 const scenes = {
+  intro_bus_ride: {
+    label: "On the Road",
+    background: () => ({ location: "black", time: "daytime" }),
+    ambient: "bus",
+    lines: [
+      ["player", "The bus is dark enough that the window only gives me my own face back."],
+      ["player", "Somewhere beyond the glass, a country road keeps unspooling under the tires. Fence posts. Pines. The occasional mailbox leaning like it has survived gossip."],
+      ["player", "Two weeks ago, I was editing a sunrise video at three in the morning and arguing with strangers about whether a cliff looked better in vertical or horizontal."],
+      ["player", "Then one of my posts went viral for all the wrong reasons: one careless shortcut, one badly framed apology, and one comment section that turned into a controlled burn."],
+      ["player", "So now I am on a bus to Viral Vista Lodge, where five national park route leads are apparently going to teach me how to look at a place without turning it into a backdrop."],
+      ["player", "A creator retreat. A second chance. A very scenic consequence."]
+    ],
+    next: "intro_bus_arrival"
+  },
+  intro_bus_arrival: {
+    label: "Arrival",
+    background: () => ({ location: "black", time: "daytime" }),
+    ambient: "bus",
+    lines: [
+      ["narrator", "The engine dips lower. Gravel crunches under the tires as the bus slows.", null, { audio: "busApproachStop" }],
+      ["narrator", "For a moment, everything is brakes, gravel, and the low idle of the engine.", null, { audio: "busIdle" }],
+      ["player", "It seems we've arrived."],
+      ["narrator", "The bus door folds open. You step down into cool mountain air."],
+      ["narrator", "Behind you, the engine rises again. The bus pulls away, fading down the road until the quiet has room to move back in.", null, { audio: "busDeparture" }],
+      ["player", "No easy ride back now. Maybe that is the point."]
+    ],
+    next: "intro_checkin_arrival"
+  },
   intro_checkin_arrival: {
     label: "Check-In",
     background: () => ({ location: "checkIn", time: "daytime" }),
     lines: [
-      ["player", "My name is {playerName}, and I make a living turning beautiful places into tiny videos people watch while pretending they are not procrastinating."],
-      ["player", "The parks invited me to a creator retreat at Viral Vista Lodge: five route leads, five iconic landscapes, one very official promise that I would learn to make better choices."],
-      ["player", "I assumed that meant content choices. Lighting. Angles. Maybe not flirting with park staff on day one."],
       ["narrator", "Daylight spills across the outdoor check-in desk, all pine shadows, fresh coffee, and a kiosk humming with suspicious confidence."],
-      ["narrator", "Your badge prints with your name on it: {playerName}."],
-      ["player", "Okay. Cute. A little official. A little ominous."]
+      ["player", "Hello? Retreat person? Person who knows where retreat people go?"],
+      ["narrator", "No one answers. The lodge beyond the trees looks awake, but the check-in desk has been left to fend for itself."],
+      ["player", "Cool. Love a welcome experience with abandonment as a design principle."],
+      ["narrator", "A neat card waits on the table beside a stack of blank badges: Please fill out your name badge before proceeding to the lodge lobby."],
+      ["player", "A badge. Right. If I am going to be emotionally reforested, I should probably label myself first."]
+    ],
+    nextAction: showNameEntry
+  },
+  intro_river_checkin: {
+    label: "Check-In",
+    background: () => ({ location: "checkIn", time: "daytime" }),
+    character: "river",
+    lines: [
+      ["narrator", "The badge printer spits out your name with a tiny mechanical cough."],
+      ["narrator", "Before you can pin it on straight, someone steps out from the shade beside the route map, arms folded, expression already disappointed in several things.", "river:grumpy"],
+      ["river", "{playerName}. That is either your name or the kiosk has begun inventing evidence. Neither outcome comforts me.", "river:grumpy"],
+      ["player", "Nice to meet you too. I usually wait until the third sentence before accusing office supplies of crimes.", "river:grumpy"],
+      ["river", "That was not an accusation. That was pattern recognition.", "river:grumpy"],
+      ["player", "Ah. A data-driven grudge. Very professional.", "river:grumpy"],
+      ["river", "Hah.", "river:laughing"],
+      ["narrator", "It escapes them before they can stop it: one short laugh, sharp and unwillingly real.", "river:laughing"],
+      ["river", "No. Do not look pleased. I am not encouraging this.", "river:grumpy"],
+      ["player", "Too late. I have been encouraged at a dangerously low threshold.", "river:grumpy"],
+      ["river", "River Hawk. Zion route lead. Sandstone, permits, heat, flash floods, and the part where charm does not improve your odds.", "river:grumpy"],
+      ["player", "Noted. Charm filed under non-essential survival gear.", "river"],
+      ["river", "File it under litter if it gets in the way.", "river:grumpy"],
+      ["narrator", "They adjust one corner of the route map by half an inch, glare at the kiosk like it personally lowered standards, and walk off toward the canyon trail.", "river:grumpy"]
+    ],
+    next: "intro_after_river_checkin"
+  },
+  intro_after_river_checkin: {
+    label: "Check-In",
+    background: () => ({ location: "checkIn", time: "daytime" }),
+    lines: [
+      ["player", "That was weird."],
+      ["player", "Informative. Hostile. Weird."],
+      ["player", "I guess I better head over to the lodge lobby next, before the badge printer tells someone I have been loitering."]
+    ],
+    next: "intro_lodge_walk"
+  },
+  intro_lodge_walk: {
+    label: "The Path",
+    background: () => ({ location: "black", time: "daytime" }),
+    lines: [
+      ["narrator", "The path from check-in slips under the trees and keeps going longer than you expect."],
+      ["narrator", "Gravel gives way to packed earth, then to wide stone steps softened by moss at the edges."],
+      ["player", "For a place built around first impressions, this retreat is really making me earn the front door."],
+      ["narrator", "At last, the trees open around a broad timber lodge with cedar siding, a deep wraparound porch, and tall windows glowing warm behind green-painted trim."],
+      ["narrator", "A stone chimney climbs one side of the building, big enough to explain the fireplace you can already smell in the air."],
+      ["player", "Okay. That looks like the kind of building where someone either hands you cocoa or a quest."],
+      ["narrator", "You look around for a welcome committee. The porch is empty. The rocking chairs are still. Even the hanging ferns seem sworn to secrecy."],
+      ["player", "Right. Cool. More mysterious hospitality."],
+      ["narrator", "You climb the porch steps, take the heavy brass handle, and open the lodge door.", null, { audio: "door" }]
     ],
     next: "intro_lodge_lobby"
   },
@@ -748,6 +832,12 @@ const scenes = {
       ["narrator", "The whole place feels like summer camp if summer camp had better lighting and significantly more romantic tension."],
       ["narrator", "A broad-shouldered man in a red flannel leans over the check-in table, sleeves rolled, one hand braced beside your name badge.", "jack"],
       ["jack", "You must be {playerName}. I'm Jack Everett, the Olympic route lead. Think old-growth forest, a mossy cabin, and rain that makes everyone honest eventually.", "jack"],
+      ["player", "Before we get to rain honesty, is River Hawk always like that?", "jack"],
+      ["jack", "Like a storm cloud learned policy enforcement? Yeah. River's heart is in the right place; they just keep it behind three locked gates and a permit form.", "jack:laughing"],
+      ["player", "They laughed at one joke and then looked furious about the paperwork of enjoying it.", "jack"],
+      ["jack", "That means it went well. If River truly disliked you, the temperature would have dropped and the kiosk would have asked to be unplugged.", "jack:laughing"],
+      ["player", "Comforting. I think.", "jack"],
+      ["jack", "You'll get used to them. Or you will develop better posture from bracing yourself. Either way, growth.", "jack"],
       ["player", "I thought there would be a check-in packet.", "jack"],
       ["jack", "There is. It says welcome, hydrate, do not wander off trail, and if a sign says no, take it personally.", "jack:laughing"],
       ["player", "That is a lot of emotional labor from signage.", "jack"],
@@ -1276,6 +1366,12 @@ const audioEngine = {
   currentTheme: null,
   trackChangeToken: 0,
   justPlayedDoorSfx: false,
+  ambientKey: null,
+  ambientPlayer: null,
+  ambientTimerId: null,
+  ambientFadeTimerId: null,
+  ambientToken: 0,
+  sfxChannels: {},
   enabled: true
 };
 
@@ -1285,12 +1381,10 @@ validateSceneEstablishingRules();
 
 function bindEvents() {
   document.getElementById("newGameBtn").addEventListener("click", () => {
-    document.getElementById("playerName").value = "";
-    updateBeginButton();
-    showScreen("setupScreen");
+    startGame();
   });
   document.getElementById("continueBtn").addEventListener("click", loadGame);
-  document.getElementById("beginBtn").addEventListener("click", startGame);
+  document.getElementById("beginBtn").addEventListener("click", completeLegacySetup);
   document.getElementById("playerName").addEventListener("input", event => {
     updateBeginButton();
     if (event.inputType && !["insertReplacementText", "historyUndo", "historyRedo"].includes(event.inputType)) playSfx("type");
@@ -1377,6 +1471,13 @@ function isContinuationScene(sceneId) {
 
 function startGame() {
   state = clone(defaultState);
+  audioEngine.enabled = state.audioEnabled;
+  ensureAudio();
+  showScreen("gameScreen");
+  renderScene("intro_bus_ride", { suppressSceneSfx: true });
+}
+
+function completeLegacySetup() {
   const name = document.getElementById("playerName").value.trim();
   if (!name) {
     document.getElementById("playerName").focus();
@@ -1387,7 +1488,15 @@ function startGame() {
   audioEngine.enabled = state.audioEnabled;
   ensureAudio();
   showScreen("gameScreen");
-  renderScene("intro_checkin_arrival");
+  renderScene("intro_river_checkin");
+}
+
+function showNameEntry() {
+  const input = document.getElementById("playerName");
+  input.value = state.playerName === defaultState.playerName ? "" : state.playerName;
+  updateBeginButton();
+  showScreen("setupScreen");
+  window.setTimeout(() => input.focus(), 30);
 }
 
 function renderScene(sceneId, options = {}) {
@@ -1395,10 +1504,12 @@ function renderScene(sceneId, options = {}) {
   if (!scene) throw new Error("Missing scene: " + sceneId);
   state.sceneId = sceneId;
   state.lineIndex = options.keepLine ? state.lineIndex : 0;
+  if (!options.keepLine) state.lineAudioCueKey = null;
   if (scene.onEnter && !options.keepLine) scene.onEnter();
   const background = resolveValue(scene.background) || { location: "lodge", time: state.timeOfDay };
   updateBackdrop(background);
-  updateAudioTheme(background.location, null);
+  updateAmbient(scene.ambient || null);
+  updateAudioTheme(background.location, null, { suppressSfx: options.suppressSceneSfx });
   updateDevPanel();
   renderCurrentLine();
 }
@@ -1419,6 +1530,7 @@ function renderCurrentLine() {
   els.speakerName.style.color = speaker.color || "#f3b85b";
   els.sceneLabel.textContent = resolveValue(scene.label) || state.sceneId;
   els.lineText.textContent = formatText(line[1] || "");
+  playLineAudioCue(line[3]);
   updateCopyControls();
   els.choices.innerHTML = "";
   els.choices.classList.remove("has-choices");
@@ -2043,7 +2155,7 @@ function loadGame() {
     audioEngine.enabled = state.audioEnabled;
     ensureAudio();
     showScreen("gameScreen");
-    renderScene(normalizeSceneId(state.sceneId || "intro_checkin_arrival"), { keepLine: true });
+    renderScene(normalizeSceneId(state.sceneId || "intro_bus_ride"), { keepLine: true });
     toast("Save loaded.");
   } catch (error) {
     toast("Save could not be loaded.");
@@ -2057,6 +2169,7 @@ function resetGame() {
   state = clone(defaultState);
   audioEngine.enabled = state.audioEnabled;
   els.galleryOverlay.classList.remove("active");
+  updateAmbient(null);
   showScreen("startScreen");
   toast("Progress reset.");
 }
@@ -2064,6 +2177,9 @@ function resetGame() {
 function showScreen(id) {
   [els.startScreen, els.setupScreen, els.gameScreen].forEach(screen => screen.classList.remove("active"));
   els[id].classList.add("active");
+  if (id !== "gameScreen") {
+    updateAmbient(null);
+  }
   if (!audioEngine.enabled) return;
   ensureAudio();
   if (id === "setupScreen" || id === "startScreen") {
@@ -2074,7 +2190,7 @@ function showScreen(id) {
 }
 
 function normalizeSceneId(sceneId) {
-  return scenes[sceneId] ? sceneId : "intro_checkin_arrival";
+  return scenes[sceneId] ? sceneId : "intro_bus_ride";
 }
 
 function toggleAudio() {
@@ -2083,6 +2199,8 @@ function toggleAudio() {
   ensureAudio();
   updateAudioButton();
   if (audioEngine.enabled) {
+    const scene = scenes[state.sceneId];
+    if (scene) updateAmbient(scene.ambient || null);
     restartMusicLoop();
     toast("Sound on.");
   } else {
@@ -2098,6 +2216,88 @@ function updateAudioButton() {
   button.classList.toggle("muted", !audioEngine.enabled);
 }
 
+function updateAmbient(key) {
+  if (!audioEngine.enabled || !key) {
+    stopAmbient();
+    stopSfxChannel("bus");
+    return;
+  }
+  if (audioEngine.ambientKey === key && audioEngine.ambientPlayer) return;
+  stopAmbient();
+  const config = ambientTracks[key];
+  if (!config) return;
+  const ambientToken = audioEngine.ambientToken + 1;
+  audioEngine.ambientToken = ambientToken;
+  audioEngine.ambientKey = key;
+  const startAmbient = () => {
+    if (!audioEngine.enabled || audioEngine.ambientToken !== ambientToken) return;
+    const player = new Audio(config.src);
+    player.loop = true;
+    player.volume = config.fadeMs ? 0 : config.volume;
+    audioEngine.ambientPlayer = player;
+    player.play().then(() => {
+      if (config.fadeMs) fadeAmbient(player, config.volume, config.fadeMs, ambientToken);
+    }).catch(() => {});
+  };
+  if (config.delayMs) {
+    audioEngine.ambientTimerId = window.setTimeout(startAmbient, config.delayMs);
+    return;
+  }
+  startAmbient();
+}
+
+function fadeAmbient(player, targetVolume, duration, ambientToken) {
+  window.clearInterval(audioEngine.ambientFadeTimerId);
+  const startVolume = player.volume;
+  const startTime = performance.now();
+  audioEngine.ambientFadeTimerId = window.setInterval(() => {
+    if (audioEngine.ambientToken !== ambientToken || audioEngine.ambientPlayer !== player) {
+      window.clearInterval(audioEngine.ambientFadeTimerId);
+      audioEngine.ambientFadeTimerId = null;
+      return;
+    }
+    const progress = Math.min(1, (performance.now() - startTime) / duration);
+    player.volume = startVolume + (targetVolume - startVolume) * progress;
+    if (progress >= 1) {
+      window.clearInterval(audioEngine.ambientFadeTimerId);
+      audioEngine.ambientFadeTimerId = null;
+    }
+  }, 16);
+}
+
+function stopAmbient() {
+  audioEngine.ambientToken += 1;
+  window.clearTimeout(audioEngine.ambientTimerId);
+  window.clearInterval(audioEngine.ambientFadeTimerId);
+  audioEngine.ambientTimerId = null;
+  audioEngine.ambientFadeTimerId = null;
+  if (!audioEngine.ambientPlayer) {
+    audioEngine.ambientKey = null;
+    return;
+  }
+  audioEngine.ambientPlayer.pause();
+  audioEngine.ambientPlayer.currentTime = 0;
+  audioEngine.ambientKey = null;
+  audioEngine.ambientPlayer = null;
+}
+
+function stopSfxChannel(channel) {
+  const player = audioEngine.sfxChannels[channel];
+  if (!player) return;
+  player.pause();
+  player.currentTime = 0;
+  delete audioEngine.sfxChannels[channel];
+}
+
+function playLineAudioCue(cue) {
+  const audioCue = cue && cue.audio;
+  if (!audioCue || !audioEngine.enabled) return;
+  const cueKey = `${state.sceneId}:${state.lineIndex}:${audioCue}`;
+  if (state.lineAudioCueKey === cueKey) return;
+  state.lineAudioCueKey = cueKey;
+  playSfx(audioCue);
+}
+
 function ensureAudio() {
   updateAudioButton();
   if (!audioEngine.enabled) return;
@@ -2111,12 +2311,13 @@ function ensureAudio() {
   restartMusicLoop();
 }
 
-function updateAudioTheme(locationKey, characterCue) {
+function updateAudioTheme(locationKey, characterCue, options = {}) {
   audioEngine.locationKey = locationKey || "lodge";
   audioEngine.characterKey = parseCharacterCue(characterCue).key || null;
   if (!audioEngine.enabled) return;
   ensureAudio();
   restartMusicLoop();
+  if (options.suppressSfx) return;
   playSfx(characterCue ? "character" : "scene");
 }
 
@@ -2129,6 +2330,8 @@ function restartMusicLoop() {
 }
 
 function stopMusicLoop() {
+  stopAmbient();
+  Object.keys(audioEngine.sfxChannels).forEach(stopSfxChannel);
   audioEngine.trackChangeToken += 1;
   window.clearInterval(audioEngine.loopTimerId);
   audioEngine.fadeTimerIds.forEach(id => window.clearInterval(id));
@@ -2148,8 +2351,18 @@ function playSfx(type) {
   if (!audioEngine.enabled) return;
   const config = sfxTracks[type];
   if (!config) return;
+  if (config.channel && audioEngine.sfxChannels[config.channel]) {
+    audioEngine.sfxChannels[config.channel].pause();
+    audioEngine.sfxChannels[config.channel].currentTime = 0;
+  }
   const effect = new Audio(config.src);
   effect.volume = config.volume;
+  if (config.channel) {
+    audioEngine.sfxChannels[config.channel] = effect;
+    effect.addEventListener("ended", () => {
+      if (audioEngine.sfxChannels[config.channel] === effect) delete audioEngine.sfxChannels[config.channel];
+    }, { once: true });
+  }
   const startPlayback = () => {
     if (config.startAt) {
       try { effect.currentTime = config.startAt; } catch (error) {}

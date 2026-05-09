@@ -396,6 +396,120 @@
     .impact.positive { background: rgba(41, 116, 62, .94); }
     .impact.negative { background: rgba(151, 43, 37, .94); }
 
+    .day-transition {
+      position: absolute;
+      inset: 0;
+      z-index: 12;
+      display: grid;
+      place-items: center;
+      padding: 22px;
+      pointer-events: none;
+      opacity: 0;
+      visibility: hidden;
+      background:
+        linear-gradient(180deg, rgba(13, 16, 14, .46), rgba(33, 20, 12, .72)),
+        rgba(8, 7, 5, .34);
+      backdrop-filter: blur(3px) saturate(.9);
+      transition: opacity .7s ease, visibility .7s ease;
+    }
+
+    .day-transition.active {
+      opacity: 1;
+      visibility: visible;
+      pointer-events: auto;
+    }
+
+    .day-transition.leaving {
+      opacity: 0;
+      visibility: visible;
+    }
+
+    .day-transition-card {
+      width: min(560px, 100%);
+      min-height: min(360px, calc(100dvh - 72px));
+      display: grid;
+      place-items: center;
+      padding: clamp(30px, 7vw, 54px);
+      border: 0;
+      border-radius: 0;
+      color: #fff4dc;
+      text-align: center;
+      background: transparent;
+      box-shadow: none;
+      transform: translateY(18px) scale(.98);
+      filter: none;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .day-transition-card::before,
+    .day-transition-card::after {
+      display: none;
+    }
+
+    .day-transition-content {
+      position: relative;
+      z-index: 1;
+    }
+
+    .day-transition.active .day-transition-card {
+      animation: day-card-enter .86s cubic-bezier(.18, 1, .22, 1) both;
+    }
+
+    .day-transition.leaving .day-transition-card {
+      animation: day-card-exit .62s ease both;
+    }
+
+    .day-transition-kicker {
+      margin: 0 0 10px;
+      font-size: clamp(12px, 2.4vw, 15px);
+      font-weight: 900;
+      letter-spacing: .12em;
+      text-transform: uppercase;
+      color: rgba(255, 228, 164, .9);
+      text-shadow: 0 3px 18px rgba(0, 0, 0, .82);
+    }
+
+    .day-transition-title {
+      margin: 0;
+      font-family: Georgia, "Times New Roman", serif;
+      font-size: clamp(72px, 17vw, 138px);
+      line-height: .86;
+      letter-spacing: 0;
+      color: #fff4dc;
+      text-shadow: 0 8px 34px rgba(0, 0, 0, .82);
+    }
+
+    .day-transition-caption {
+      margin: 16px auto 0;
+      max-width: 36ch;
+      font-size: clamp(15px, 2.8vw, 19px);
+      line-height: 1.38;
+      color: rgba(255, 247, 226, .92);
+      text-shadow: 0 3px 16px rgba(0, 0, 0, .84);
+    }
+
+    .day-transition-button {
+      margin: 24px auto 0;
+      min-width: min(240px, 100%);
+      text-align: center;
+      text-transform: uppercase;
+      letter-spacing: .07em;
+      color: #fff7e8;
+      background: linear-gradient(135deg, rgba(173, 58, 76, .96), rgba(211, 126, 63, .96));
+      border: 1px solid rgba(92, 54, 23, .28);
+    }
+
+    @keyframes day-card-enter {
+      from { opacity: 0; transform: translateY(22px) scale(.97); filter: blur(7px) drop-shadow(0 12px 18px rgba(0, 0, 0, .16)); }
+      to { opacity: 1; transform: translateY(0) scale(1); filter: blur(0) drop-shadow(0 12px 18px rgba(0, 0, 0, .22)); }
+    }
+
+    @keyframes day-card-exit {
+      from { opacity: 1; transform: translateY(0) scale(1); filter: blur(0) drop-shadow(0 12px 18px rgba(0, 0, 0, .22)); }
+      to { opacity: 0; transform: translateY(-14px) scale(1.01); filter: blur(5px) drop-shadow(0 12px 18px rgba(0, 0, 0, .14)); }
+    }
+
     .primary, .ghost {
       text-align: center;
       display: grid;
@@ -866,6 +980,16 @@
     <section id="gameScreen" class="screen">
       <div id="backdrop" class="backdrop bg-lodge"></div>
       <div id="backdropNext" class="backdrop next bg-lodge"></div>
+      <div class="day-transition" id="dayTransition" aria-hidden="true">
+        <div class="day-transition-card">
+          <div class="day-transition-content">
+            <p class="day-transition-kicker">Morning</p>
+            <h2 class="day-transition-title">Day 1</h2>
+            <p class="day-transition-caption">Three chances wait beyond the lodge doors.</p>
+            <button class="primary day-transition-button" id="dayTransitionButton">Start the day</button>
+          </div>
+        </div>
+      </div>
       <header class="topbar">
         <div class="control-row">
           <button class="text-btn" id="devBtn">Dev</button>
@@ -927,6 +1051,6 @@
     <div class="toast" id="toast"></div>
   </main>
 
-  <script src="game.js?v=3"></script>
+  <script src="game.js?v=4"></script>
 </body>
 </html>

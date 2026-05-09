@@ -976,7 +976,7 @@ const scenes = {
     label: "Night",
     background: () => ({ location: "black", time: "night" }),
     character: null,
-    onEnter: () => { state.day = 1; },
+    onEnter: () => { state.day = 2; },
     lines: [
       ["narrator", "Sleep takes you fast."],
       ["narrator", "Somewhere below, the lodge settles. Somewhere outside, the impossible kiosk keeps its secrets."]
@@ -1006,13 +1006,14 @@ const scenes = {
     ]
   },
   checkin_travel_event: {
-    label: () => `${TIME_LABELS[state.timeOfDay]} Check-In`,
-    background: () => ({ location: "checkIn", time: state.timeOfDay }),
+    label: () => state.flags.returningEarly ? `${TIME_LABELS[state.timeOfDay]} Lodge Lobby` : `${TIME_LABELS[state.timeOfDay]} Check-In`,
+    background: () => ({ location: state.flags.returningEarly ? "lodge" : "checkIn", time: state.timeOfDay }),
     character: () => state.pendingEncounter?.character || null,
     lines: () => buildCheckInEventLines(),
     nextAction: () => {
       if (state.flags.returningEarly) {
         state.flags.returningEarly = false;
+        state.pendingEncounter = null;
         renderScene("early_lodge_return");
         return;
       }
@@ -1163,11 +1164,13 @@ const els = {
   devBtn: document.getElementById("devBtn"),
   devPanel: document.getElementById("devPanel"),
   devScores: document.getElementById("devScores"),
-  devChoicePreview: document.getElementById("devChoicePreview")
+  devChoicePreview: document.getElementById("devChoicePreview"),
+  dayTransition: document.getElementById("dayTransition"),
+  dayTransitionButton: document.getElementById("dayTransitionButton")
 };
 
 const audioEngine = {
-  locationKey: "lodge",
+  locationKey: "checkIn",
   characterKey: null,
   musicKey: null,
   activeMusicIndex: 0,
@@ -1218,13 +1221,19 @@ function bindEvents() {
     updateDevPanel();
     renderCurrentLine();
   });
+  els.dayTransitionButton.addEventListener("click", startDayFromTransition);
   document.getElementById("gameScreen").addEventListener("click", event => {
+    if (els.dayTransition.classList.contains("active")) return;
     if (event.target.closest("button, input, select, textarea, a, .dev-panel")) return;
     if (els.galleryOverlay.classList.contains("active")) return;
     showNextDialogueLine();
   });
   document.addEventListener("pointerdown", () => { if (audioEngine.enabled) ensureAudio(); });
   window.addEventListener("keydown", event => {
+    if (els.dayTransition.classList.contains("active")) {
+      if (event.key === " " || event.key === "Enter") startDayFromTransition();
+      return;
+    }
     if (event.key === " " || event.key === "Enter") showNextDialogueLine();
     if (event.key === "Escape") els.galleryOverlay.classList.remove("active");
   });
@@ -1373,6 +1382,7 @@ function startNewDay() {
   state.pendingDestination = null;
   state.pendingEncounter = null;
   renderScene("day_wake");
+  showDayTransition(state.day);
 }
 
 function loveInterestChoices() {
@@ -1437,16 +1447,50 @@ function rollCheckInEvent(destination) {
 
 function buildCheckInEventLines() {
   const event = state.pendingEncounter || { type: "flavor" };
+  const returningEarly = Boolean(state.flags.returningEarly);
   if (event.type === "surprise") {
     const character = event.character;
     const mood = relationshipState(character);
     return [
-      ["narrator", "The route should be simple. Naturally, the check-in kiosk chooses this moment to become socially complicated."],
+      ["narrator", returningEarly
+        ? "The walk back should be simple. Naturally, the lodge lobby chooses this moment to become socially complicated."
+        : "The route should be simple. Naturally, the check-in kiosk chooses this moment to become socially complicated."],
       ["narrator", `${characters[character].shortName} is already near the desk when you arrive, turning a quick stop into a small collision of plans.`, character],
       ...parkFlavor[character].surprise[mood].map((text, index) => [index === 0 ? character : "narrator", text, characterExpression(character, mood)])
     ];
   }
+  if (returningEarly) {
+    return [
+      ["narrator", `The lodge lobby gathers the ${state.timeOfDay === "sunset" ? "last light" : "night quiet"} in warm panes of glass and polished wood.`],
+      ["player", "Okay. Good. A normal room with normal doors and no route marker trying to make plans for me."]
+    ];
+  }
   return checkInFlavor[state.timeOfDay] || checkInFlavor.daytime;
+}
+
+function showDayTransition(day) {
+  if (!els.dayTransition) return;
+  const title = els.dayTransition.querySelector(".day-transition-title");
+  const kicker = els.dayTransition.querySelector(".day-transition-kicker");
+  const caption = els.dayTransition.querySelector(".day-transition-caption");
+  if (title) title.textContent = `Day ${day}`;
+  if (kicker) kicker.textContent = "Morning at Viral Vista Lodge";
+  if (caption) caption.textContent = "The lobby is warming up, the maps are waiting, and the kiosk has already decided to be a problem.";
+  els.dayTransition.classList.remove("active", "leaving");
+  els.dayTransition.setAttribute("aria-hidden", "false");
+  void els.dayTransition.offsetWidth;
+  els.dayTransition.classList.add("active");
+  if (els.dayTransitionButton) els.dayTransitionButton.focus({ preventScroll: true });
+}
+
+function startDayFromTransition() {
+  if (!els.dayTransition || !els.dayTransition.classList.contains("active") || els.dayTransition.classList.contains("leaving")) return;
+  els.dayTransition.classList.add("leaving");
+  window.clearTimeout(startDayFromTransition.timer);
+  startDayFromTransition.timer = window.setTimeout(() => {
+    els.dayTransition.classList.remove("active", "leaving");
+    els.dayTransition.setAttribute("aria-hidden", "true");
+  }, 680);
 }
 
 function buildArrivalLines(character, time) {
@@ -1758,12 +1802,10 @@ function showScreen(id) {
   els[id].classList.add("active");
   if (!audioEngine.enabled) return;
   ensureAudio();
-  if (id === "setupScreen") {
+  if (id === "setupScreen" || id === "startScreen") {
     audioEngine.locationKey = "checkIn";
     audioEngine.characterKey = null;
     restartMusicLoop();
-  } else if (id === "startScreen") {
-    stopMusicLoop();
   }
 }
 

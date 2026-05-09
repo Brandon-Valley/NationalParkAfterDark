@@ -8,9 +8,10 @@ Open `index.html` directly in a browser. There is no build step, package manager
 
 ## Structure
 
-- `index.html` contains all game logic, scene data, UI, styling, save/load/reset, gallery, and ParkTok overlay behavior.
+- `index.html` contains the app shell, styling, save/load/reset controls, gallery markup, and developer panel markup.
+- `game.js` contains the game logic, scene data, time-of-day loop, relationship scoring, travel events, save/load/reset, and gallery behavior.
 - `assets/audio` contains licensed music loops and replacement UI sound effects.
-- `assets/backgrounds` contains normalized background image names.
+- `assets/backgrounds/time_variants` contains normalized location folders with `daytime`, `sunset`, and `night` background variants.
 - `assets/charactures` contains one folder per love interest, with `neutral`, `blushing`, `grumpy`, and `laughing` portraits.
 - `assets/cg` contains unlockable CG images.
 - `assets/ui` contains source UI art references.
@@ -19,10 +20,9 @@ Open `index.html` directly in a browser. There is no build step, package manager
 
 The game is intentionally data-driven for quick LLM iteration:
 
-- Add or edit dialogue in the `scenes` object.
-- Add fake vertical-video clips in `parkTokMoments`.
+- Add or edit dialogue in the `scenes` object and `parkFlavor` data in `game.js`.
 - Add gallery entries in `cgLibrary`.
-- Keep all gameplay JavaScript in `index.html` for the first prototype.
+- Keep gameplay systems data-driven so routes, times of day, and check-in encounters can be expanded without one-off scene routing.
 
 The app falls back to CSS backgrounds and character name cards if image assets are missing.
 

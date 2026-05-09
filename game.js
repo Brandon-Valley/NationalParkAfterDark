@@ -1,4 +1,4 @@
-const SAVE_KEY = "parkAfterDarkSaveV3";
+const SAVE_KEY = "parkAfterDarkSaveV4";
 const TIMES = ["daytime", "sunset", "night"];
 const TIME_LABELS = { daytime: "Daytime", sunset: "Sunset", night: "Night" };
 const LOVE_INTEREST_KEYS = ["jack", "caleb", "sierra", "bruno", "river"];
@@ -15,7 +15,9 @@ const defaultState = {
   pendingEncounter: null,
   visitTime: null,
   visitBeat: 0,
+  visitStartMood: null,
   visitLastChoice: null,
+  visitLastReaction: null,
   choiceReactionLines: null,
   choiceReactionNext: null,
   choiceReactionBackground: null,
@@ -28,7 +30,7 @@ const defaultState = {
     caleb: 5,
     sierra: 5,
     bruno: 5,
-    river: 5
+    river: 2
   },
   flags: {},
   unlockedCG: [],
@@ -380,9 +382,14 @@ const visitBeats = {
       },
       choices: [
         { label: "Tell him you will follow the marked trail and his lead.", feelings: { jack: 1 }, tone: "warm" },
-        { label: "Ask what the forest sounds like when it gets a vote.", feelings: { jack: 2 }, tone: "flirt" },
         { label: "Say a little risk makes better stories.", feelings: { jack: -2 }, tone: "bad" }
       ],
+      choicesByMood: {
+        low: [
+          { label: "Promise to stay on the marked trail without making him repeat himself.", detail: "Repair trust carefully.", feelings: { jack: 1 }, tone: "warm", reaction: [["jack", "Good. I am trying very hard to believe you on the first try.", "jack:grumpy"], ["narrator", "He starts walking, still guarded, but no longer braced for immediate disaster.", "jack:grumpy"]] },
+          { label: "Ask whether every rule is really necessary.", detail: "He has heard enough.", feelings: { jack: -3 }, tone: "bad", reaction: [["jack", "Yes. Especially when someone asks that like a challenge.", "jack:grumpy"], ["narrator", "His voice stays even, which somehow makes the setback worse.", "jack:grumpy"]] }
+        ]
+      },
       reactions: {
         warm: [["jack", "Good. I like not rescuing people from problems they introduced themselves to.", "jack:laughing"], ["narrator", "He says it dryly, but his shoulders loosen as he starts down the slick boardwalk.", "jack"]],
         flirt: [["jack", "Careful. That is dangerously close to an excellent question.", "jack:blushing"], ["narrator", "He holds your gaze for one rain-bright second before pretending to inspect the trail.", "jack:blushing"]],
@@ -397,9 +404,14 @@ const visitBeats = {
       },
       choices: [
         { label: "Notice the tiny seedlings growing from a nurse log.", feelings: { jack: 2 }, tone: "warm" },
-        { label: "Tease him about looking romantic while giving safety tips.", feelings: { jack: 1 }, tone: "flirt" },
         { label: "Step toward the side path just to see his reaction.", feelings: { jack: -2 }, tone: "bad" }
       ],
+      choicesByMood: {
+        low: [
+          { label: "Point out the nurse log and ask before stepping closer.", detail: "Careful curiosity.", feelings: { jack: 1 }, tone: "warm", reaction: [["jack", "Asking first. Excellent endangered behavior.", "jack"], ["narrator", "He gives you the smallest smile, like sunlight briefly found the understory.", "jack"]] },
+          { label: "Say the closed path would make a better shot.", detail: "The exact wrong instinct.", feelings: { jack: -3 }, tone: "bad", reaction: [["jack", "Then take a worse shot and a better hint.", "jack:grumpy"], ["narrator", "He plants himself between you and the side path like weather with boots.", "jack:grumpy"]] }
+        ]
+      },
       reactions: {
         warm: [["jack", "Most people miss those. The forest is very good at starting over quietly.", "jack"], ["narrator", "His voice softens, almost proud, like you passed a test he did not admit he was giving.", "jack"]],
         flirt: [["jack", "I contain multitudes. Some of them know how to read a trail closure.", "jack:laughing"], ["player", "A devastating combination.", "jack:laughing"]],
@@ -417,6 +429,12 @@ const visitBeats = {
         { label: "Say you are already looking for an excuse to come back.", feelings: { jack: 2 }, tone: "flirt" },
         { label: "Say the rain is kind of ruining the aesthetic.", feelings: { jack: -2 }, tone: "bad" }
       ],
+      choicesByMood: {
+        low: [
+          { label: "Thank him for keeping you safe even while annoyed.", detail: "Own the awkwardness.", feelings: { jack: 1 }, tone: "warm", reaction: [["jack", "Annoyed and careful are compatible. Lucky for you.", "jack"], ["narrator", "His expression eases by a fraction, and out here a fraction counts.", "jack"]] },
+          { label: "Complain that this visit was mostly rules.", detail: "He is done negotiating.", feelings: { jack: -3 }, tone: "bad", reaction: [["jack", "Because you kept auditioning for consequences.", "jack:grumpy"], ["narrator", "The walk back becomes very scenic and very quiet.", "jack:grumpy"]] }
+        ]
+      },
       reactions: {
         warm: [["jack", "That is the trick. Respect the danger, then you get to notice everything else.", "jack"], ["narrator", "He walks you back slowly, letting the forest have the last word.", "jack"]],
         flirt: [["jack", "I can probably manufacture one. I am resourceful in weather-related emergencies.", "jack:blushing"], ["narrator", "His smile follows you all the way back to the route marker.", "jack:blushing"]],
@@ -433,9 +451,14 @@ const visitBeats = {
       },
       choices: [
         { label: "Promise both feet stay on the boardwalk.", feelings: { caleb: 2 }, tone: "warm" },
-        { label: "Ask if he always makes safety sound attractive.", feelings: { caleb: 1 }, tone: "flirt" },
         { label: "Say rules ruin the mood.", feelings: { caleb: -2 }, tone: "bad" }
       ],
+      choicesByMood: {
+        low: [
+          { label: "Repeat the boardwalk rule back to him exactly.", detail: "Prove you heard him.", feelings: { caleb: 1 }, tone: "warm", reaction: [["caleb", "Thank you. I know it is not glamorous, but neither is an evacuation form.", "caleb:grumpy"], ["narrator", "His shoulders lower a little, which feels like earning a permit.", "caleb:grumpy"]] },
+          { label: "Step close to the rail to prove you are listening.", detail: "Contradictory and stressful.", feelings: { caleb: -3 }, tone: "bad", reaction: [["caleb", "Back. Listening does not require a demonstration.", "caleb:grumpy"], ["narrator", "His fear shows through the anger for one sharp second.", "caleb:grumpy"]] }
+        ]
+      },
       reactions: {
         warm: [["caleb", "Excellent. That sentence just improved my blood pressure.", "caleb:laughing"], ["narrator", "He gestures you forward, visibly pleased despite the professional face he is attempting.", "caleb"]],
         flirt: [["caleb", "No. Sometimes I make it sound terrifying. Depends who is listening.", "caleb:blushing"], ["player", "I am listening very respectfully.", "caleb:blushing"]],
@@ -450,9 +473,14 @@ const visitBeats = {
       },
       choices: [
         { label: "Ask what first made him fall for Yellowstone.", feelings: { caleb: 2 }, tone: "warm" },
-        { label: "Tell him the steam is doing excellent romantic lighting work.", feelings: { caleb: 1 }, tone: "flirt" },
         { label: "Lean over the rail for a better look.", feelings: { caleb: -2 }, tone: "bad" }
       ],
+      choicesByMood: {
+        low: [
+          { label: "Ask him what the pool is doing under the surface.", detail: "Curiosity with respect.", feelings: { caleb: 1 }, tone: "warm", reaction: [["caleb", "Circulating heat, minerals, pressure. Beautiful things are usually busy under the surface.", "caleb"], ["narrator", "He hears himself getting sincere and decides to allow it.", "caleb"]] },
+          { label: "Say the steam would look better from past the rope.", detail: "Absolutely not.", feelings: { caleb: -3 }, tone: "bad", reaction: [["caleb", "Then the photo can remain hypothetical.", "caleb:grumpy"], ["narrator", "He moves between you and the rope with ranger-final authority.", "caleb:grumpy"]] }
+        ]
+      },
       reactions: {
         warm: [["caleb", "The first geyser I saw. It looked chaotic, but it was following a pattern older than me.", "caleb"], ["narrator", "He sounds almost shy about the sincerity of it.", "caleb:blushing"]],
         flirt: [["caleb", "The steam is not a licensed assistant, but I will pass along the compliment.", "caleb:laughing"], ["narrator", "He laughs before he can stop himself.", "caleb:laughing"]],
@@ -470,6 +498,12 @@ const visitBeats = {
         { label: "Ask if the snack comes with another date.", feelings: { caleb: 2 }, tone: "flirt" },
         { label: "Say you still think the warnings are overkill.", feelings: { caleb: -2 }, tone: "bad" }
       ],
+      choicesByMood: {
+        low: [
+          { label: "Thank him for being patient when you made it difficult.", detail: "Accountability helps.", feelings: { caleb: 1 }, tone: "warm", reaction: [["caleb", "I appreciate you saying that. I prefer difficult conversations to preventable injuries.", "caleb"], ["narrator", "The warmth returns carefully, like steam thinning after a gust.", "caleb"]] },
+          { label: "Ask if you can skip the safety talk next time.", detail: "There may not be a next time.", feelings: { caleb: -3 }, tone: "bad", reaction: [["caleb", "No. Especially next time.", "caleb:grumpy"], ["narrator", "Whatever softness had gathered between you vents away into the dark.", "caleb:grumpy"]] }
+        ]
+      },
       reactions: {
         warm: [["caleb", "That is... exactly why I do this.", "caleb:blushing"], ["narrator", "For once, Caleb has no statistic ready. Just a smile he cannot file away.", "caleb:blushing"]],
         flirt: [["caleb", "It can. For safety reasons, obviously.", "caleb:laughing"], ["narrator", "He hands you the snack like it is evidence.", "caleb:laughing"]],
@@ -486,9 +520,14 @@ const visitBeats = {
       },
       choices: [
         { label: "Look up before answering and let the view land.", feelings: { sierra: 2 }, tone: "warm" },
-        { label: "Tell her the view is dramatic, but she is worse.", feelings: { sierra: 1 }, tone: "flirt" },
         { label: "Start framing a perfect post instead.", feelings: { sierra: -2 }, tone: "bad" }
       ],
+      choicesByMood: {
+        low: [
+          { label: "Put the camera away and look before you speak.", detail: "Show her the place comes first.", feelings: { sierra: 1 }, tone: "warm", reaction: [["sierra", "Okay. That was almost suspiciously growth-oriented.", "sierra"], ["narrator", "She still looks guarded, but the grin stops hiding quite so hard.", "sierra"]] },
+          { label: "Say the view will still be there after you get the shot.", detail: "Wrong priority.", feelings: { sierra: -3 }, tone: "bad", reaction: [["sierra", "And I will still be here judging you accurately.", "sierra:grumpy"], ["narrator", "Her disappointment moves faster than the waterfall mist.", "sierra:grumpy"]] }
+        ]
+      },
       reactions: {
         warm: [["sierra", "There. That pause? That is the good stuff.", "sierra"], ["narrator", "She smiles like you found a trail marker hidden in plain sight.", "sierra:laughing"]],
         flirt: [["sierra", "Correct answer. Reckless, but correct.", "sierra:blushing"], ["player", "I respect the terrain.", "sierra:blushing"]],
@@ -503,9 +542,14 @@ const visitBeats = {
       },
       choices: [
         { label: "Ask her what part of the trail most people miss.", feelings: { sierra: 2 }, tone: "warm" },
-        { label: "Challenge her to point out the best view before you do.", feelings: { sierra: 1 }, tone: "flirt" },
         { label: "Complain that the climb is too much work.", feelings: { sierra: -2 }, tone: "bad" }
       ],
+      choicesByMood: {
+        low: [
+          { label: "Ask what you should notice before the obvious overlook.", detail: "Let her lead.", feelings: { sierra: 1 }, tone: "warm", reaction: [["sierra", "The mist on the leaves. The sound bouncing off granite. Your own breathing, if you can stand being sincere.", "sierra"], ["narrator", "She says it sharply, but she slows so you can see it.", "sierra"]] },
+          { label: "Lag behind to film her walking ahead.", detail: "She catches you immediately.", feelings: { sierra: -3 }, tone: "bad", reaction: [["sierra", "Do not turn me into scenery because you are losing the plot.", "sierra:grumpy"], ["narrator", "The waterfall suddenly feels much louder.", "sierra:grumpy"]] }
+        ]
+      },
       reactions: {
         warm: [["sierra", "The sound. Everyone photographs the water. Fewer people listen to it arrive.", "sierra"], ["narrator", "For a moment, she lets the trail go quiet around you.", "sierra"]],
         flirt: [["sierra", "Bold. Wrong, probably, but bold.", "sierra:laughing"], ["narrator", "She laughs and darts ahead, daring you to keep up.", "sierra:laughing"]],
@@ -523,6 +567,12 @@ const visitBeats = {
         { label: "Say you would follow her to a worse view too.", feelings: { sierra: 2 }, tone: "flirt" },
         { label: "Say the photos will be the best part.", feelings: { sierra: -2 }, tone: "bad" }
       ],
+      choicesByMood: {
+        low: [
+          { label: "Tell her one real memory beat one perfect post today.", detail: "Exactly what she wanted.", feelings: { sierra: 1 }, tone: "warm", reaction: [["sierra", "Finally. Was that so painful?", "sierra"], ["player", "A little. Worth it.", "sierra"]] },
+          { label: "Ask her to move so you can get a cleaner shot.", detail: "A spectacular miss.", feelings: { sierra: -3 }, tone: "bad", reaction: [["sierra", "Wow. You really found the trapdoor under the floor.", "sierra:grumpy"], ["narrator", "She steps aside, but the space she leaves feels colder than shade.", "sierra:grumpy"]] }
+        ]
+      },
       reactions: {
         warm: [["sierra", "Do not make it weird, but... you are welcome.", "sierra:blushing"], ["narrator", "She looks away at the waterfall, smiling where you can still see it.", "sierra:blushing"]],
         flirt: [["sierra", "Impossible. I do not do worse views.", "sierra:laughing"], ["narrator", "She bumps your shoulder with hers before starting down.", "sierra:laughing"]],
@@ -539,9 +589,14 @@ const visitBeats = {
       },
       choices: [
         { label: "Lower your voice and match his pace.", feelings: { bruno: 2 }, tone: "warm" },
-        { label: "Tell him he looks at home among giants.", feelings: { bruno: 1 }, tone: "flirt" },
         { label: "Ask if there is a faster way through.", feelings: { bruno: -2 }, tone: "bad" }
       ],
+      choicesByMood: {
+        low: [
+          { label: "Lower your voice and ask where he wants you to walk.", detail: "Gentle repair.", feelings: { bruno: 1 }, tone: "warm", reaction: [["bruno", "Thank you. Quiet is easier to share when nobody has to wrestle it into place.", "bruno"], ["narrator", "His expression softens, slow and cautious.", "bruno"]] },
+          { label: "Ask if the trees can really tell the difference.", detail: "He can.", feelings: { bruno: -3 }, tone: "bad", reaction: [["bruno", "I can.", "bruno:grumpy"], ["narrator", "The two words land softly and somehow sink deep.", "bruno:grumpy"]] }
+        ]
+      },
       reactions: {
         warm: [["bruno", "Thank you. Some places ask gently, but they still ask.", "bruno"], ["narrator", "His smile comes slow and real.", "bruno"]],
         flirt: [["bruno", "That may be the nicest height joke I have ever received.", "bruno:laughing"], ["player", "I am a respectful innovator.", "bruno:laughing"]],
@@ -556,9 +611,14 @@ const visitBeats = {
       },
       choices: [
         { label: "Ask him to teach you the fire-safety check.", feelings: { bruno: 2 }, tone: "warm" },
-        { label: "Say his gentleness is kind of devastating.", feelings: { bruno: 1 }, tone: "flirt" },
         { label: "Joke that one tiny ember cannot matter much.", feelings: { bruno: -2 }, tone: "bad" }
       ],
+      choicesByMood: {
+        low: [
+          { label: "Ask before touching the fire ring stones.", detail: "Respect his care.", feelings: { bruno: 1 }, tone: "warm", reaction: [["bruno", "Yes. Here, feel for warmth with the back of your hand first.", "bruno"], ["narrator", "He teaches you carefully, pleased by the asking more than he says.", "bruno"]] },
+          { label: "Kick ash aside to see if anything is still hot.", detail: "Careless.", feelings: { bruno: -3 }, tone: "bad", reaction: [["bruno", "Stop.", "bruno:grumpy"], ["narrator", "His gentleness disappears just long enough to show you the line.", "bruno:grumpy"]] }
+        ]
+      },
       reactions: {
         warm: [["bruno", "Gladly. Caring is easier when your hands know what to do.", "bruno:laughing"], ["narrator", "He guides you through the check with patient pride.", "bruno:laughing"]],
         flirt: [["bruno", "Oh. That is... I am going to inspect this perfectly safe bark now.", "bruno:blushing"], ["narrator", "He turns pink enough that even the sunset would be jealous.", "bruno:blushing"]],
@@ -576,6 +636,12 @@ const visitBeats = {
         { label: "Ask if favorite trees count as date witnesses.", feelings: { bruno: 2 }, tone: "flirt" },
         { label: "Say you are ready to go because it all looks the same.", feelings: { bruno: -2 }, tone: "bad" }
       ],
+      choicesByMood: {
+        low: [
+          { label: "Thank him for trusting you with even a little of the grove.", detail: "Small humility.", feelings: { bruno: 1 }, tone: "warm", reaction: [["bruno", "A little trust is still trust. It matters.", "bruno"], ["narrator", "He lets the words rest between you like a lantern set down carefully.", "bruno"]] },
+          { label: "Ask if everyone gets this disappointed-tree speech.", detail: "Unkind.", feelings: { bruno: -3 }, tone: "bad", reaction: [["bruno", "No. I usually save my disappointment for people I hoped would understand.", "bruno:grumpy"], ["narrator", "The walk back feels longer after that.", "bruno:grumpy"]] }
+        ]
+      },
       reactions: {
         warm: [["bruno", "That means more than you know.", "bruno:blushing"], ["narrator", "He walks you back with a shy smile and the steady glow of the lantern.", "bruno:blushing"]],
         flirt: [["bruno", "They are very discreet. Terrible at gossip.", "bruno:laughing"], ["narrator", "His laugh rolls through the grove, warm and low.", "bruno:laughing"]],
@@ -591,14 +657,20 @@ const visitBeats = {
         high: ["river", "You came. Good. The canyon was becoming insufferable without competition.", "river:blushing"]
       },
       choices: [
-        { label: "Tell them you will respect the route.", feelings: { river: 2 }, tone: "warm" },
-        { label: "Say you came to see if the canyon could compete with them.", feelings: { river: 1 }, tone: "flirt" },
-        { label: "Ask how strict the permit rules really are.", feelings: { river: -2 }, tone: "bad" }
+        { label: "Tell them you will respect the route without requiring applause.", feelings: { river: 1 }, tone: "warm" },
+        { label: "Ask how strict the permit rules really are.", feelings: { river: -3 }, tone: "bad" }
       ],
+      choicesByMood: {
+        low: [
+          { label: "State the route rules back and ask what you missed.", detail: "The only answer they almost respect.", feelings: { river: 1 }, tone: "warm", reaction: [["river", "You missed that I dislike being impressed. Continue anyway.", "river:grumpy"], ["narrator", "They turn toward the trail, still sharp, but no longer dismissing you outright.", "river:grumpy"]] },
+          { label: "Ask if they are always this hostile to guests.", detail: "They take that personally.", feelings: { river: -3 }, tone: "bad", reaction: [["river", "Only the ones who confuse boundaries with hostility.", "river:grumpy"], ["narrator", "The canyon seems to remove several degrees from the air.", "river:grumpy"]] },
+          { label: "Suggest skipping the permit board and improvising.", detail: "A major setback.", feelings: { river: -4 }, tone: "bad", reaction: [["river", "Absolutely not. I am now revising my estimate of your survival instincts downward.", "river:grumpy"], ["narrator", "They mark the route with enough force to make the pencil sound offended.", "river:grumpy"]] }
+        ]
+      },
       reactions: {
-        warm: [["river", "Efficient answer. Suspiciously attractive.", "river:blushing"], ["narrator", "They turn before you can enjoy the compliment too obviously.", "river:blushing"]],
-        flirt: [["river", "It cannot. But it has seniority.", "river:laughing"], ["player", "A formidable opponent.", "river:laughing"]],
-        bad: [["river", "Strict enough that I become unpleasant in defense of them.", "river:grumpy"], ["narrator", "Their calm is somehow sharper than yelling.", "river:grumpy"]]
+        warm: [["river", "Adequate. I am choosing to treat adequate as promising, against precedent.", "river"], ["narrator", "They turn before the compliment can become recognizable.", "river"]],
+        flirt: [["river", "It cannot. But it has seniority, which you lack.", "river:laughing"], ["player", "A formidable opponent.", "river:laughing"]],
+        bad: [["river", "Strict enough that I become unpleasant in defense of them.", "river:grumpy"], ["narrator", "Their calm is somehow sharper than yelling, and twice as hard to recover from.", "river:grumpy"]]
       }
     },
     {
@@ -608,13 +680,19 @@ const visitBeats = {
         high: ["narrator", "River slows at a bend where the canyon light turns deep red and private.", "river:blushing"]
       },
       choices: [
-        { label: "Ask what the desert taught them to notice first.", feelings: { river: 2 }, tone: "warm" },
-        { label: "Tell them their route notes sound like poetry with liability coverage.", feelings: { river: 1 }, tone: "flirt" },
-        { label: "Kick a loose stone down the trail.", feelings: { river: -2 }, tone: "bad" }
+        { label: "Ask what the desert taught them to notice first.", feelings: { river: 1 }, tone: "warm" },
+        { label: "Kick a loose stone down the trail.", feelings: { river: -4 }, tone: "bad" }
       ],
+      choicesByMood: {
+        low: [
+          { label: "Ask what the canyon needs from you right now.", detail: "Good because it is practical.", feelings: { river: 1 }, tone: "warm", reaction: [["river", "Attention. Foot placement. Less ornamental confidence.", "river:grumpy"], ["narrator", "It is not warmth, exactly, but it is instruction instead of dismissal.", "river:grumpy"]] },
+          { label: "Tell them they make silence feel like a punishment.", detail: "Too accusatory.", feelings: { river: -3 }, tone: "bad", reaction: [["river", "No. Your discomfort is doing that independently.", "river:grumpy"], ["narrator", "The words land clean and leave no handles.", "river:grumpy"]] },
+          { label: "Say this would be more fun with music.", detail: "A canyon crime, apparently.", feelings: { river: -4 }, tone: "bad", reaction: [["river", "Then go find a place shallow enough to need a soundtrack.", "river:grumpy"], ["narrator", "They do not raise their voice. They do not have to.", "river:grumpy"]] }
+        ]
+      },
       reactions: {
-        warm: [["river", "Water. Even when it is absent, it explains the shape of everything.", "river"], ["narrator", "They say it softly, like sharing a password.", "river"]],
-        flirt: [["river", "That is the most tolerable thing anyone has said about paperwork.", "river:laughing"], ["narrator", "Their smile is quick, rare, and absolutely worth catching.", "river:laughing"]],
+        warm: [["river", "Water. Even when it is absent, it explains the shape of everything.", "river"], ["narrator", "They say it softly, then look annoyed that softness escaped.", "river"]],
+        flirt: [["river", "That is the most tolerable thing anyone has said about paperwork.", "river:laughing"], ["narrator", "Their smile is quick, rare, and gone before it can be used against them.", "river:laughing"]],
         bad: [["river", "Do not make gravity responsible for your boredom.", "river:grumpy"], ["narrator", "The stone clicks into silence. River waits until you feel every click.", "river:grumpy"]]
       }
     },
@@ -625,13 +703,20 @@ const visitBeats = {
         high: ["river", "One last overlook. Do not make me admit I chose the romantic one.", "river:blushing"]
       },
       choices: [
-        { label: "Thank them for showing you the desert's quiet side.", feelings: { river: 2 }, tone: "warm" },
-        { label: "Promise not to tell anyone they chose the romantic route.", feelings: { river: 2 }, tone: "flirt" },
-        { label: "Say the canyon is mostly just rocks.", feelings: { river: -2 }, tone: "bad" }
+        { label: "Thank them for showing you the desert's quiet side.", feelings: { river: 1 }, tone: "warm" },
+        { label: "Promise not to tell anyone they chose the romantic route.", feelings: { river: 1 }, tone: "flirt" },
+        { label: "Say the canyon is mostly just rocks.", feelings: { river: -4 }, tone: "bad" }
       ],
+      choicesByMood: {
+        low: [
+          { label: "Thank them for not giving up on the visit.", detail: "Small, direct, useful.", feelings: { river: 1 }, tone: "warm", reaction: [["river", "Do not romanticize endurance. But... noted.", "river"], ["narrator", "They look at the canyon instead of you, which from River feels almost merciful.", "river"]] },
+          { label: "Ask why they make affection feel like a final exam.", detail: "Too much too soon.", feelings: { river: -3 }, tone: "bad", reaction: [["river", "Affection is not on the syllabus.", "river:grumpy"], ["narrator", "The overlook suddenly has plenty of room and none of it feels close.", "river:grumpy"]] },
+          { label: "Suggest they would be happier if they relaxed.", detail: "Never say this.", feelings: { river: -4 }, tone: "bad", reaction: [["river", "I would be happier if people stopped mistaking control for damage.", "river:grumpy"], ["narrator", "For once, the anger is not cold. It is worse.", "river:grumpy"]] }
+        ]
+      },
       reactions: {
-        warm: [["river", "Good. The loud side gets enough attention.", "river"], ["narrator", "They walk you back slowly, letting the canyon keep its dignity.", "river"]],
-        flirt: [["river", "Wise. I know where all the difficult switchbacks are.", "river:blushing"], ["narrator", "Their shoulder brushes yours, plausibly by accident and not plausibly at all.", "river:blushing"]],
+        warm: [["river", "Good. The loud side gets enough attention.", "river"], ["narrator", "They walk you back slowly, as if you have earned one unhurried thing.", "river"]],
+        flirt: [["river", "Wise. I know where all the difficult switchbacks are.", "river:blushing"], ["narrator", "Their shoulder almost brushes yours, then does not. River makes even restraint feel deliberate.", "river:blushing"]],
         bad: [["river", "And people are mostly water. Reduction is a boring hobby.", "river:grumpy"], ["narrator", "They turn toward the return route with magnificent restraint.", "river:grumpy"]]
       }
     }
@@ -668,7 +753,6 @@ const scenes = {
     ],
     choices: [
       { label: "Tell him no means no, even from a trail sign.", detail: "Start with respect for boundaries.", next: "intro_lodge_jack_two", feelings: { jack: 2 }, reaction: [["jack", "That is the kind of sentence that keeps my blood pressure scenic.", "jack:laughing"], ["narrator", "He taps your welcome packet against his palm, smiling like you just passed the first trail marker.", "jack:laughing"]] },
-      { label: "Ask what the forest sounds like when it says yes.", detail: "Curious and a little flirty.", next: "intro_lodge_jack_two", feelings: { jack: 1 }, reaction: [["jack", "Usually rain, frogs, and me pretending that question did not work on me.", "jack:blushing"], ["player", "I will take pretending as a provisional win.", "jack:blushing"]] },
       { label: "Say rules are flexible if the shot is good enough.", detail: "Bad first instinct.", next: "intro_lodge_jack_two", feelings: { jack: -2 }, reaction: [["jack", "No shot is good enough to make a rescue team hate your name.", "jack:grumpy"], ["narrator", "The warmth in his face does not vanish, but it does step back.", "jack:grumpy"]] }
     ]
   },
@@ -683,7 +767,6 @@ const scenes = {
     ],
     choices: [
       { label: "Ask what Olympic means to him.", detail: "Invite sincerity.", next: "intro_lodge_jack_three", feelings: { jack: 2 }, reaction: [["jack", "Rain, mostly. Then trees old enough to make your problems feel badly scheduled.", "jack"], ["narrator", "He says it like a joke, but there is devotion under the weather report.", "jack:blushing"]] },
-      { label: "Say he makes protective sound unfairly charming.", detail: "Flirt with the ranger energy.", next: "intro_lodge_jack_three", feelings: { jack: 1 }, reaction: [["jack", "Dangerous thing to say to a man holding emergency whistles.", "jack:blushing"], ["player", "I accept the risk.", "jack:blushing"]] },
       { label: "Joke that visitors keep parks relevant.", detail: "This lands badly.", next: "intro_lodge_jack_three", feelings: { jack: -2 }, reaction: [["jack", "Parks were relevant before any of us learned to point a camera at them.", "jack:grumpy"], ["narrator", "His voice stays calm, which somehow makes the correction sharper.", "jack:grumpy"]] }
     ]
   },
@@ -698,7 +781,6 @@ const scenes = {
     ],
     choices: [
       { label: "Say you want to learn how to make people care without flattening the place.", detail: "A thoughtful answer.", next: "intro_lodge_jack_wrap", feelings: { jack: 2 }, reaction: [["jack", "That is... a better answer than I expected this early.", "jack:blushing"], ["narrator", "For a moment, he looks at you like the retreat might have brought him a good surprise.", "jack:blushing"]] },
-      { label: "Say you are open to being changed by a few beautiful places.", detail: "Earnest, maybe dangerous.", next: "intro_lodge_jack_wrap", feelings: { jack: 1 }, reaction: [["jack", "Careful. Places are very good at taking people up on that.", "jack"], ["player", "That sounded like a warning and an invitation.", "jack"], ["jack", "Efficient, right?", "jack:laughing"]] },
       { label: "Say you mostly want better numbers and better views.", detail: "Honest, but not graceful.", next: "intro_lodge_jack_wrap", feelings: { jack: -2 }, reaction: [["jack", "Then I hope the views do some work on you before the numbers do.", "jack:grumpy"], ["narrator", "He gathers the route cards with a little more force than necessary.", "jack:grumpy"]] }
     ]
   },
@@ -729,7 +811,6 @@ const scenes = {
     ],
     choices: [
       { label: "Tell Jack you respect a man who refuses to explain the plot device.", detail: "Jack enjoys that more than he admits.", next: "intro_yellowstone_caleb", feelings: { jack: 2 }, reaction: [["jack", "That is the healthiest possible relationship with this kiosk.", "jack:laughing"], ["narrator", "He looks extremely pleased to have explained nothing.", "jack:laughing"]] },
-      { label: "Say the kiosk seems legally questionable.", detail: "Jack calls that an advanced observation.", next: "intro_yellowstone_caleb", reaction: [["jack", "Probably. But it has never asked for a lawyer, and I respect confidence.", "jack:laughing"], ["player", "That did not reassure me.", "jack:laughing"]] },
       { label: "Demand a full scientific explanation right now.", detail: "Jack expertly does not provide one.", next: "intro_yellowstone_caleb", feelings: { jack: -2 }, reaction: [["jack", "I would love to, but then the kiosk gets smug.", "jack"], ["narrator", "He turns the route card over before you can object, committing fully to evasion.", "jack"]] }
     ]
   },
@@ -746,7 +827,6 @@ const scenes = {
     ],
     choices: [
       { label: "Promise Caleb both feet are staying on the boardwalk.", detail: "Safety rizz lands cleanly.", next: "intro_yellowstone_caleb_two", feelings: { caleb: 2 }, reaction: [["caleb", "Good. I like my visitors alive and my paperwork boring.", "caleb:laughing"], ["narrator", "His smile is quick, but it cuts cleanly through the steam.", "caleb:laughing"]] },
-      { label: "Ask if the steam always makes him look this dramatic.", detail: "He recovers eventually.", next: "intro_yellowstone_caleb_two", feelings: { caleb: 1 }, reaction: [["caleb", "The steam is not doing this on purpose. Probably.", "caleb:blushing"], ["player", "Probably is a strong romantic foundation.", "caleb:blushing"]] },
       { label: "Joke about stepping off for a better angle.", detail: "Caleb does not laugh.", next: "intro_yellowstone_caleb_two", feelings: { caleb: -2 }, reaction: [["caleb", "Please do not make me tackle you in front of a thermal feature.", "caleb:grumpy"], ["narrator", "The look he gives you could laminate a safety poster.", "caleb:grumpy"]] }
     ]
   },
@@ -760,7 +840,6 @@ const scenes = {
     ],
     choices: [
       { label: "Ask what first made him love the park.", detail: "Give him room to be sincere.", next: "intro_yellowstone_caleb_three", feelings: { caleb: 2 }, reaction: [["caleb", "A geyser eruption when I was twelve. It scared me half to death, then made everything else feel too small.", "caleb:blushing"], ["narrator", "He looks embarrassed by how honest that was, which makes it worse in the best way.", "caleb:blushing"]] },
-      { label: "Say you like how serious he gets about beautiful things.", detail: "A direct compliment.", next: "intro_yellowstone_caleb_three", feelings: { caleb: 1 }, reaction: [["caleb", "Beautiful things deserve competence.", "caleb"], ["player", "That was not a denial.", "caleb"], ["caleb", "It was not meant to be.", "caleb:blushing"]] },
       { label: "Ask whether every rule really matters.", detail: "He has thoughts.", next: "intro_yellowstone_caleb_three", feelings: { caleb: -2 }, reaction: [["caleb", "Here? Yes.", "caleb:grumpy"], ["narrator", "The answer is short enough to leave steam hissing into the silence after it.", "caleb:grumpy"]] }
     ]
   },
@@ -774,7 +853,6 @@ const scenes = {
     ],
     choices: [
       { label: "Stand quietly with him and let the place be enough.", detail: "Respect the moment.", next: "intro_yellowstone_wrap", feelings: { caleb: 2 }, reaction: [["caleb", "Thank you.", "caleb"], ["narrator", "He says it softly, like quiet is something you did together.", "caleb:blushing"]] },
-      { label: "Tell him this was a surprisingly good first date with danger.", detail: "Flirt through the safety briefing.", next: "intro_yellowstone_wrap", feelings: { caleb: 1 }, reaction: [["caleb", "I am choosing to hear 'good first date' and not 'with danger.'", "caleb:laughing"], ["player", "Selective hearing. Very romantic.", "caleb:laughing"]] },
       { label: "Admit you still want one closer picture.", detail: "Bad instinct.", next: "intro_yellowstone_wrap", feelings: { caleb: -2 }, reaction: [["caleb", "Then I am walking you back before wanting becomes doing.", "caleb:grumpy"], ["narrator", "He is not cruel about it. Somehow that makes disappointing him worse.", "caleb:grumpy"]] }
     ]
   },
@@ -822,7 +900,6 @@ const scenes = {
     ],
     choices: [
       { label: "Match Sierra's pace and compliment the view without making it a bit.", next: "intro_yosemite_sierra_two", feelings: { sierra: 2 }, reaction: [["sierra", "Look at you, having a genuine experience. Dangerous. Attractive.", "sierra:laughing"], ["narrator", "She grins and lets the trail open toward the waterfall.", "sierra:laughing"]] },
-      { label: "Ask her favorite place to watch the light move on the granite.", next: "intro_yosemite_sierra_two", feelings: { sierra: 1 }, reaction: [["sierra", "Now that is a question with legs. Come on.", "sierra:blushing"], ["narrator", "She points you toward a small overlook glowing gold at the edges.", "sierra:blushing"]] },
       { label: "Try to turn the waterfall into content immediately.", next: "intro_yosemite_sierra_two", feelings: { sierra: -2 }, reaction: [["sierra", "The waterfall is not your unpaid intern.", "sierra:grumpy"], ["player", "That is... fair.", "sierra:grumpy"]] }
     ]
   },
@@ -850,7 +927,6 @@ const scenes = {
     ],
     choices: [
       { label: "Admit you shut up and let it be bigger.", detail: "The rare correct answer.", next: "intro_yosemite_wrap", feelings: { sierra: 2 }, reaction: [["sierra", "Good. There may be hope for you yet.", "sierra:blushing"], ["narrator", "She looks at the granite instead of you, but her smile gives her away.", "sierra:blushing"]] },
-      { label: "Say you ask the person beside you what she sees.", detail: "Share the moment.", next: "intro_yosemite_wrap", feelings: { sierra: 1 }, reaction: [["sierra", "Sneaky. Making me do emotional labor with a view.", "sierra:laughing"], ["player", "Only because you are good at it.", "sierra:laughing"]] },
       { label: "Say you make the caption work anyway.", detail: "Old habits.", next: "intro_yosemite_wrap", feelings: { sierra: -2 }, reaction: [["sierra", "The cliff is disappointed, and so am I.", "sierra:grumpy"], ["narrator", "She says it like a joke, but only half of it is joking.", "sierra:grumpy"]] }
     ]
   },
@@ -900,15 +976,17 @@ const scenes = {
     lines: [
       ["narrator", "The red rock route waits under a sky packed with stars. Canyon walls rise around you like the dark has architecture."],
       ["player", "The desert is quieter than I expected. Not empty. Just extremely selective."],
-      ["narrator", "Someone stands beside the route sign, still as sandstone until they turn their head.", "river"],
-      ["river", "You are late, but the desert is dramatic enough to pretend that was intentional.", "river"],
-      ["player", "Is that approval?", "river"],
-      ["river", "That was meteorology with judgment.", "river:laughing"]
+      ["narrator", "Someone stands beside the route sign, still as sandstone until they turn their head.", "river:grumpy"],
+      ["river", "You are late.", "river:grumpy"],
+      ["player", "By... the amount of time it took the kiosk to bend space?", "river:grumpy"],
+      ["river", "I do not grade excuses on a curve.", "river:grumpy"],
+      ["player", "Is this your welcome speech?", "river:grumpy"],
+      ["river", "No. That was me deciding whether to have one.", "river:grumpy"]
     ],
     choices: [
-      { label: "Respect River's route rules and let the night be quiet.", next: "intro_zion_river_two", feelings: { river: 2 }, reaction: [["river", "Excellent. Silence improves most people by at least thirty percent.", "river:laughing"], ["narrator", "They start down the route, and the canyon seems to approve of the restraint.", "river:laughing"]] },
-      { label: "Ask what the canyon sounds like when nobody is performing.", next: "intro_zion_river_two", feelings: { river: 1 }, reaction: [["river", "Like water that left a long time ago and still expects credit.", "river:blushing"], ["narrator", "Their answer is dry, but their voice is softer than before.", "river:blushing"]] },
-      { label: "Say deserts are basically empty content backdrops.", next: "intro_zion_river_two", feelings: { river: -2 }, reaction: [["river", "That is the kind of sentence a canyon remembers.", "river:grumpy"], ["narrator", "The silence after it feels less peaceful and more earned.", "river:grumpy"]] }
+      { label: "Apologize once, then ask for the route rules.", detail: "Practical humility.", next: "intro_zion_river_two", feelings: { river: 1 }, reaction: [["river", "Efficient recovery. Do not make me regret acknowledging it.", "river:grumpy"], ["narrator", "They hand you the route card like trust is a very small, very breakable object.", "river:grumpy"]] },
+      { label: "Ask if they are always this charming with guests.", detail: "Sarcasm meets sharper sarcasm.", next: "intro_zion_river_two", feelings: { river: -3 }, reaction: [["river", "No. Sometimes guests earn charming.", "river:grumpy"], ["narrator", "The canyon holds the silence with impressive commitment.", "river:grumpy"]] },
+      { label: "Joke that permits are just paperwork cosplay.", detail: "Catastrophic.", next: "intro_zion_river_two", feelings: { river: -4 }, reaction: [["river", "Paperwork is what keeps rescue from becoming archaeology.", "river:grumpy"], ["narrator", "Their voice goes so flat the desert seems to flinch on your behalf.", "river:grumpy"]] }
     ]
   },
   intro_zion_river_two: {
@@ -916,13 +994,12 @@ const scenes = {
     background: () => ({ location: "zion", time: "night" }),
     lines: [
       ["narrator", "River leads you along a pale ribbon of trail where the canyon walls hold the day's heat like a memory.", "river"],
-      ["river", "People call deserts empty when they do not know how to read quiet.", "river"],
+      ["river", "People call deserts empty when they do not know how to read quiet.", "river:grumpy"],
       ["player", "And you read it fluently?", "river"]
     ],
     choices: [
-      { label: "Ask what the quiet is saying tonight.", detail: "Meet them on their terms.", next: "intro_zion_river_three", feelings: { river: 2 }, reaction: [["river", "That the air is cooling, the trail is stable, and you are trying harder than expected.", "river:blushing"], ["player", "The desert said all that?", "river:blushing"], ["river", "I paraphrased.", "river:blushing"]] },
-      { label: "Tell them their desert translation is unfairly attractive.", detail: "Dry flirting.", next: "intro_zion_river_three", feelings: { river: 1 }, reaction: [["river", "Flattery is not a navigation tool.", "river:laughing"], ["player", "But noted on the map?", "river:laughing"], ["river", "Annoyingly, yes.", "river:laughing"]] },
-      { label: "Say quiet usually means nothing is happening.", detail: "Wrong audience.", next: "intro_zion_river_three", feelings: { river: -2 }, reaction: [["river", "That is a loud-person interpretation.", "river:grumpy"], ["narrator", "Their disappointment is calm enough to echo.", "river:grumpy"]] }
+      { label: "Ask what the quiet is saying tonight.", detail: "Meet them on their terms.", next: "intro_zion_river_three", feelings: { river: 1 }, reaction: [["river", "That the air is cooling, the trail is stable, and you are trying harder than expected.", "river"], ["player", "The desert said all that?", "river"], ["river", "I paraphrased. Generously.", "river"]] },
+      { label: "Ask if all this silence is supposed to be impressive.", detail: "You are digging down.", next: "intro_zion_river_three", feelings: { river: -4 }, reaction: [["river", "No. It is supposed to be left alone by people who need constant applause.", "river:grumpy"], ["narrator", "The route keeps going. The conversation does not recover quickly.", "river:grumpy"]] }
     ]
   },
   intro_zion_river_three: {
@@ -930,13 +1007,12 @@ const scenes = {
     background: () => ({ location: "zion", time: "night" }),
     lines: [
       ["narrator", "The route reaches a night-sky overlook. Above the canyon, stars crowd the dark until the silence feels deliberate.", "river"],
-      ["river", "Last stop. After this, you go back to the lodge before exhaustion makes you poetic in a legally concerning way.", "river"],
+      ["river", "Last stop. After this, you go back to the lodge before exhaustion makes you poetic in a legally concerning way.", "river:grumpy"],
       ["player", "Too late, probably.", "river"]
     ],
     choices: [
-      { label: "Thank them for showing you the desert instead of explaining it.", detail: "Respect the restraint.", next: "intro_zion_wrap", feelings: { river: 2 }, reaction: [["river", "Good. Explanations are where people start lying to sound complete.", "river"], ["narrator", "They look up at the stars, and for once their stillness feels openly gentle.", "river:blushing"]] },
-      { label: "Promise not to tell anyone they picked the romantic overlook.", detail: "A dangerous observation.", next: "intro_zion_wrap", feelings: { river: 1 }, reaction: [["river", "Wise. I control the return route.", "river:blushing"], ["player", "Threat or flirtation?", "river:blushing"], ["river", "Efficient ambiguity.", "river:blushing"]] },
-      { label: "Say you are mostly thinking about sleep.", detail: "Honest but clumsy.", next: "intro_zion_wrap", feelings: { river: -1 }, reaction: [["river", "Finally, an honest survival instinct.", "river"], ["narrator", "They sound amused, but the moment closes a little sooner than it might have.", "river"]] }
+      { label: "Thank them for showing you the desert instead of explaining it.", detail: "Respect the restraint.", next: "intro_zion_wrap", feelings: { river: 1 }, reaction: [["river", "Good. Explanations are where people start lying to sound complete.", "river"], ["narrator", "They look up at the stars, and for once their stillness almost lets you stand beside it.", "river"]] },
+      { label: "Say the overlook is pretty, but not worth the attitude.", detail: "A hard crash.", next: "intro_zion_wrap", feelings: { river: -4 }, reaction: [["river", "Then admire it quickly.", "river:grumpy"], ["narrator", "The stars remain spectacular. River gives you none of them.", "river:grumpy"]] }
     ]
   },
   intro_zion_wrap: {
@@ -944,9 +1020,9 @@ const scenes = {
     background: () => ({ location: "zion", time: "night" }),
     lines: [
       ["narrator", "River walks you back through the dark with the quiet confidence of someone who knows every stone by reputation.", "river"],
-      ["river", "That is enough canyon for a first night. Any more and you will start assigning symbolism to boulders.", "river"],
+      ["river", "That is enough canyon for a first night. Any more and you will start assigning symbolism to boulders.", "river:grumpy"],
       ["player", "This one does look judgmental.", "river"],
-      ["river", "It is. Come on.", "river:laughing"]
+      ["river", "It is. It also has better timing than most people.", "river:grumpy"]
     ],
     next: "intro_first_night_lodge"
   },
@@ -966,6 +1042,10 @@ const scenes = {
         ["narrator", "Jack is by the fireplace, stacking route cards into a tidy pile that immediately leans sideways.", "jack"],
         ["player", "I am a little sad I did not get to see your park tonight.", "jack"],
         jackReply,
+        ["player", "I did meet River.", "jack"],
+        ["jack", "Ah. Zion's most scenic locked gate.", "jack:laughing"],
+        ["player", "So it is not just me?", "jack:laughing"],
+        ["jack", "River thinks warm welcomes are how people get complacent. Do not take the first frost personally. Do take the route rules personally.", "jack"],
         ["jack", "Go sleep, {playerName}. Tomorrow gives you three chances to make something happen.", "jack"],
         ["narrator", "You climb the lodge stairs with park dust on your shoes and too many voices still bright in your head."]
       ];
@@ -986,11 +1066,20 @@ const scenes = {
   day_wake: {
     label: () => `Day ${state.day}`,
     background: () => ({ location: "lodge", time: "daytime" }),
-    onEnter: () => { state.timeOfDay = "daytime"; state.pendingDestination = null; state.pendingEncounter = null; state.visitTime = null; state.visitBeat = 0; state.visitLastChoice = null; },
-    lines: () => [
-      ["narrator", "Morning fills the lodge lobby with clean light and the low murmur of maps being unfolded."],
-      ["player", state.day === 1 ? "A new day. Three chances to make something happen." : `Day ${state.day}. Same impossible kiosk. New chances.`]
-    ],
+    onEnter: () => { state.timeOfDay = "daytime"; state.pendingDestination = null; state.pendingEncounter = null; state.visitTime = null; state.visitBeat = 0; state.visitStartMood = null; state.visitLastChoice = null; state.visitLastReaction = null; },
+    lines: () => {
+      const riverLow = relationshipState("river") === "low";
+      const chatter = riverLow ? [
+        ["caleb", "If you are headed to Zion, remember River's default expression is not a medical emergency."],
+        ["sierra", "It is more of a weather system with cheekbones."],
+        ["bruno", "They are not unkind. They just trust slowly and correct quickly."]
+      ] : [];
+      return [
+        ["narrator", "Morning fills the lodge lobby with clean light and the low murmur of maps being unfolded."],
+        ...chatter,
+        ["player", state.day === 1 ? "A new day. Three chances to make something happen." : `Day ${state.day}. Same impossible kiosk. New chances.`]
+      ];
+    },
     choices: () => loveInterestChoices("Who do you want to visit first?")
   },
   checkin_hub: {
@@ -1407,7 +1496,9 @@ function startTravel(destination) {
 function continueToPendingDestination() {
   state.visitTime = state.timeOfDay;
   state.visitBeat = 0;
+  state.visitStartMood = relationshipState(state.pendingDestination);
   state.visitLastChoice = null;
+  state.visitLastReaction = null;
   renderScene("main_visit_arrival");
 }
 
@@ -1415,7 +1506,9 @@ function completeVisit() {
   const completedTime = state.visitTime || state.timeOfDay;
   state.visitTime = null;
   state.visitBeat = 0;
+  state.visitStartMood = null;
   state.visitLastChoice = null;
+  state.visitLastReaction = null;
   if (completedTime === "daytime") {
     renderScene("transition_to_sunset_checkin");
   } else if (completedTime === "sunset") {
@@ -1494,11 +1587,17 @@ function startDayFromTransition() {
 }
 
 function buildArrivalLines(character, time) {
-  return arrivalFlavor[character]?.[time] || [
+  const mood = relationshipState(character);
+  const lines = arrivalFlavor[character]?.[time] || [
     ["narrator", "The route opens into a different kind of quiet."],
     ["player", "New place. New chance not to be weird about it."],
     ["narrator", `${characters[character].shortName} appears at the edge of the trail.`, character]
   ];
+  return lines.map(line => {
+    const cue = line[2];
+    if (cue !== character) return line;
+    return [line[0], line[1], characterExpression(character, mood)];
+  });
 }
 
 function currentVisitBeat(character) {
@@ -1508,19 +1607,22 @@ function currentVisitBeat(character) {
 
 function buildVisitPromptLines(character) {
   const beat = currentVisitBeat(character);
-  const mood = relationshipState(character);
+  const mood = state.visitStartMood || relationshipState(character);
   const prompt = beat.prompt[mood] || beat.prompt.neutral;
   return [prompt];
 }
 
 function buildVisitChoices(character) {
   const beat = currentVisitBeat(character);
-  return beat.choices.map(choice => ({
+  const mood = state.visitStartMood || relationshipState(character);
+  const choices = beat.choicesByMood?.[mood] || beat.choices;
+  return choices.map(choice => ({
     label: choice.label,
     detail: choice.detail || reactionDetail(choice.tone),
     feelings: choice.feelings,
     action: () => {
       state.visitLastChoice = choice.tone;
+      state.visitLastReaction = choice.reaction || null;
       renderScene("main_visit_reaction");
     }
   }));
@@ -1529,12 +1631,14 @@ function buildVisitChoices(character) {
 function buildVisitReactionLines(character) {
   const beat = currentVisitBeat(character);
   const tone = state.visitLastChoice || "warm";
+  if (state.visitLastReaction) return state.visitLastReaction;
   return beat.reactions[tone] || beat.reactions.warm;
 }
 
 function advanceVisitBeat() {
   state.visitBeat = (state.visitBeat || 0) + 1;
   state.visitLastChoice = null;
+  state.visitLastReaction = null;
   if (state.visitBeat >= (visitBeats[state.pendingDestination] || []).length) {
     renderScene("main_visit_wrapup");
     return;
@@ -1577,7 +1681,7 @@ function characterExpression(character, mood) {
 
 function relationshipState(character) {
   const score = state.feelings[character] ?? 5;
-  if (score <= 3) return "low";
+  if (score < 5) return "low";
   if (score >= 7) return "high";
   return "neutral";
 }
@@ -1760,7 +1864,7 @@ function saveGame() {
 }
 
 function loadGame() {
-  const raw = localStorage.getItem(SAVE_KEY) || localStorage.getItem("parkAfterDarkSaveV2") || localStorage.getItem("parkAfterDarkSaveV1");
+  const raw = localStorage.getItem(SAVE_KEY);
   if (!raw) {
     toast("No save found yet.");
     return;

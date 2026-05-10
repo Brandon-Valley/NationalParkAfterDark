@@ -43,6 +43,7 @@ const defaultState = {
 
 let state = clone(defaultState);
 let spriteLoadToken = 0;
+let lineAutoAdvanceTimer = null;
 
 const characters = {
   player: { name: () => state.playerName, sprite: "", color: "#7b2f24" },
@@ -60,7 +61,20 @@ const characters = {
     },
     color: "#276345"
   },
-  sierra: { name: "Sierra", shortName: "Sierra", park: "Yosemite", location: "yosemite", sprites: { ...characterSprites("sierra"), sly: "assets/charactures/sierra/sly.png" }, color: "#8b3f63" },
+  sierra: {
+    name: "Sierra",
+    shortName: "Sierra",
+    park: "Yosemite",
+    location: "yosemite",
+    sprites: {
+      ...characterSprites("sierra"),
+      sly: "assets/charactures/sierra/sly.png",
+      stargazingStep2: "assets/charactures/sierra/full_love/stargazing_step_2.png",
+      stargazingStep3: "assets/charactures/sierra/full_love/stargazing_step_3.png",
+      stargazingStep4: "assets/charactures/sierra/full_love/stargazing_step_4.png"
+    },
+    color: "#8b3f63"
+  },
   dakota: { name: "Dakota", shortName: "Dakota", park: "Sequoia", location: "sequoia", sprites: characterSprites("dakota"), color: "#704719" },
   natai: { name: "Natai", shortName: "Natai", park: "Zion", location: "zion", sprites: characterSprites("natai"), color: "#245f76" }
 };
@@ -96,6 +110,11 @@ const backgroundCatalog = {
     sunset: "assets/backgrounds/time_variants/yosemite/sunset.png",
     night: "assets/backgrounds/time_variants/yosemite/night.png"
   },
+  yosemiteMeadowNight: {
+    daytime: "assets/backgrounds/special/yosemite_meadow_night.png",
+    sunset: "assets/backgrounds/special/yosemite_meadow_night.png",
+    night: "assets/backgrounds/special/yosemite_meadow_night.png"
+  },
   sequoia: {
     daytime: "assets/backgrounds/time_variants/sequoia/daytime.png",
     sunset: "assets/backgrounds/time_variants/sequoia/sunset.png",
@@ -117,6 +136,7 @@ const backgroundClasses = {
   yellowstone: "bg-yellowstone",
   yellowstoneMisty: "bg-yellowstone",
   yosemite: "bg-yosemite",
+  yosemiteMeadowNight: "bg-yosemite",
   sequoia: "bg-smoky",
   zion: "bg-zion"
 };
@@ -166,6 +186,7 @@ const cgLibrary = {
   calebSteam: { title: "Boardwalk Boundaries", image: "assets/backgrounds/time_variants/yellowstone/daytime.png" },
   calebFullLoveGood: { title: "Steam, Sparks, and Footnotes", image: "assets/backgrounds/special/yellowstone_night_misty.png" },
   sierraWaterfall: { title: "No Filter Needed", image: "assets/backgrounds/time_variants/yosemite/sunset.png" },
+  sierraFullLoveGood: { title: "Where The Quiet Lands", image: "assets/backgrounds/special/yosemite_meadow_night.png" },
   dakotaGrove: { title: "Forest Protector", image: "assets/backgrounds/time_variants/sequoia/daytime.png" },
   nataiCanyon: { title: "Permit Approved", image: "assets/backgrounds/time_variants/zion/night.png" }
 };
@@ -177,6 +198,13 @@ const fullLoveScenes = {
     times: ["night"],
     entryScene: "full_love_caleb_start",
     completedFlag: "calebFullLoveGood"
+  },
+  sierra: {
+    character: "sierra",
+    requiredFeeling: 10,
+    times: ["night"],
+    entryScene: "full_love_sierra_start",
+    completedFlag: "sierraFullLoveGood"
   }
 };
 
@@ -248,7 +276,7 @@ const parkFlavor = {
       night: {
         low: ["The waterfall is a pale line in the dark. Sierra keeps the pace brisk and the conversation sharper.", "She is still dazzling, just currently using it as a weapon with excellent aim."],
         neutral: ["At night, Yosemite turns spare and echoing. Sierra points out the sound of water before you can see it.", "She likes that you listen, and she tells you so in a voice designed to make listening difficult."],
-        high: ["Moonlight turns the waterfall silver. Sierra takes your hand for one tricky step and does not immediately let go.", "She says some views work better when nobody is trying to caption them, especially when one of the views is you."]
+        high: ["Moonlight turns the waterfall silver. Sierra takes your hand for one tricky step and does not immediately let go.", "She says some views work better when nobody is trying to caption them, then almost mentions another place before deciding you have not earned that secret yet."]
       }
     },
     surprise: {
@@ -557,7 +585,7 @@ const visitBeats = {
       prompt: {
         low: ["sierra", "Tell me you came here to actually see Yosemite, not just use it as proof you went somewhere. Lie prettily if you must; I will still know.", "sierra:sly"],
         neutral: ["sierra", "Rule one: look up. Yosemite hates being treated like wallpaper, and I hate competing with wallpaper for your eyes.", "sierra:sly"],
-        high: ["sierra", "You made it. Good. The waterfall was getting impatient, and so was I. Mine is cuter.", "sierra:sly"]
+        high: ["sierra", "You made it. Good. The waterfall was getting impatient, and so was I. Mine is cuter. Do not let either of us catch you only looking at the loud part.", "sierra:sly"]
       },
       choices: [
         { label: "Look up before answering and let the view land.", feelings: { sierra: 2 }, tone: "warm" },
@@ -572,7 +600,7 @@ const visitBeats = {
         ]
       },
       reactions: {
-        warm: [["sierra", "There. That pause? That is the good stuff.", "sierra"], ["sierra", "See, I knew there was a romantic lead hiding under all that screen glare.", "sierra:sly"], ["narrator", "She smiles like you found a trail marker hidden in plain sight.", "sierra"]],
+        warm: [["sierra", "There. That pause? That is the good stuff.", "sierra"], ["sierra", "See, I knew there was a romantic lead hiding under all that screen glare.", "sierra:sly"], ["narrator", "She smiles like you found a trail marker hidden in plain sight, then looks away before the smile can tell on her.", "sierra"]],
         flirt: [["sierra", "Oh, that was smooth.", "sierra:blushing"], ["sierra", "Complicated is my best angle. Keep looking up, though. I want Yosemite to think it still has a chance.", "sierra:sly"], ["player", "I respect the terrain.", "sierra:blushing"]],
         bad: [["sierra", "Oh, we are doing this the hard way. Fine. I look incredible when I am right.", "sierra:sly"], ["narrator", "She steps between you and the shot with athletic precision.", "sierra:grumpy"]]
       }
@@ -581,7 +609,7 @@ const visitBeats = {
       prompt: {
         low: ["narrator", "Sierra leads you up the trail at a pace that suggests forgiveness has cardio requirements and flirtation has endurance training.", "sierra:grumpy"],
         neutral: ["narrator", "The waterfall throws cool mist across the trail. Sierra slows just enough for you to catch the rainbow in it, and maybe the way she checks your reaction.", "sierra"],
-        high: ["narrator", "Sierra takes the steep steps two at a time, then waits at the top pretending she did not check whether you followed or whether you enjoyed the view.", "sierra:blushing"]
+        high: ["narrator", "Sierra takes the steep steps two at a time, then waits at the top pretending she did not check whether you followed, whether you enjoyed the view, or whether you noticed the quiet after her laugh.", "sierra:blushing"]
       },
       choices: [
         { label: "Ask her what part of the trail most people miss.", feelings: { sierra: 2 }, tone: "warm" },
@@ -596,7 +624,7 @@ const visitBeats = {
         ]
       },
       reactions: {
-        warm: [["sierra", "The sound. Everyone photographs the water. Fewer people listen to it arrive.", "sierra"], ["sierra", "Fewer still look that good doing it.", "sierra:sly"], ["narrator", "For a moment, she lets the trail go quiet around you.", "sierra"]],
+        warm: [["sierra", "The sound. Everyone photographs the water. Fewer people listen to it arrive.", "sierra"], ["sierra", "I like people who notice before the proof shows up. Very inconvenient for my whole mysterious act.", "sierra:blushing"], ["sierra", "Fewer still look that good doing it.", "sierra:sly"], ["narrator", "For a moment, she lets the trail go quiet around you.", "sierra"]],
         flirt: [["sierra", "A mountain?", "sierra:laughing"], ["sierra", "Please. Mountains are subtle compared to me.", "sierra:sly"], ["narrator", "She laughs and darts ahead, daring you to keep up.", "sierra:laughing"]],
         bad: [["sierra", "The view is not a vending machine. You do have to move toward it. Same rule applies to me, inconveniently.", "sierra:sly"], ["narrator", "Her expression could cut switchbacks.", "sierra:grumpy"]]
       }
@@ -605,7 +633,7 @@ const visitBeats = {
       prompt: {
         low: ["sierra", "We are almost done. Try to leave with one genuine memory. Bonus points if it involves me being unfairly memorable.", "sierra:sly"],
         neutral: ["sierra", "Last overlook. Then I return you before the trail decides we are part of it. Though I do like the sound of being difficult to leave.", "sierra:sly"],
-        high: ["sierra", "One more overlook. No captions. Just us, an unreasonable amount of granite, and me behaving with almost heroic restraint.", "sierra:sly"]
+        high: ["sierra", "One more overlook. No captions. Just us, an unreasonable amount of granite, and me behaving with almost heroic restraint. If I ever show you my favorite quiet place, act natural.", "sierra:sly"]
       },
       choices: [
         { label: "Thank her for making you slow down.", feelings: { sierra: 2 }, tone: "warm" },
@@ -1060,8 +1088,8 @@ const scenes = {
       ["player", "That sounds suspiciously like life advice.", "sierra:laughing"]
     ],
     choices: [
-      { label: "Ask what most people miss here.", next: "intro_yosemite_sierra_three", feelings: { sierra: 2 }, reaction: [["sierra", "The sound before the view. The water announces itself, and everyone still waits for proof.", "sierra"], ["sierra", "Same mistake people make with chemistry.", "sierra:sly"], ["narrator", "She says it lightly, but the answer has roots and a wink at the end.", "sierra"]] },
-      { label: "Tell her she notices things like someone in love with the place.", next: "intro_yosemite_sierra_three", feelings: { sierra: 1 }, reaction: [["sierra", "Obviously. Have you seen it?", "sierra:laughing"], ["sierra", "I am loyal to beauty. Present company included, if you keep behaving.", "sierra:sly"], ["narrator", "She laughs, but there is a blush tucked behind the bravado.", "sierra:blushing"]] },
+      { label: "Ask what most people miss here.", next: "intro_yosemite_sierra_three", feelings: { sierra: 2 }, reaction: [["sierra", "The sound before the view. The water announces itself, and everyone still waits for proof.", "sierra"], ["sierra", "Same mistake people make with chemistry. Same mistake they make with people who joke too fast.", "sierra:blushing"], ["narrator", "She says it lightly, but the answer has roots and a wink at the end.", "sierra"]] },
+      { label: "Tell her she notices things like someone in love with the place.", next: "intro_yosemite_sierra_three", feelings: { sierra: 1 }, reaction: [["sierra", "Obviously. Have you seen it?", "sierra:laughing"], ["sierra", "I am loyal to beauty. Present company included, if you keep behaving.", "sierra:sly"], ["narrator", "She laughs, but there is a blush tucked behind the bravado, quick enough that she hopes you missed it.", "sierra:blushing"]] },
       { label: "Tell her eye contact sounds like a dangerous reward.", next: "intro_yosemite_sierra_three", feelings: { sierra: 2 }, reaction: [["sierra", "Mm.", "sierra:blushing"], ["sierra", "It is. Yosemite has cliffs; I have follow-through.", "sierra:sly"], ["narrator", "She says it without missing a step, devastatingly casual.", "sierra"]] },
       { label: "Say the biggest thing is usually the best shot.", next: "intro_yosemite_sierra_three", feelings: { sierra: -2 }, reaction: [["sierra", "That is how people come home with twelve identical photos and no memory.", "sierra:grumpy"], ["sierra", "Tragic, especially when I am standing right here with narrative tension.", "sierra:sly"], ["player", "Point taken.", "sierra:grumpy"]] }
     ]
@@ -1434,6 +1462,152 @@ const scenes = {
     ],
     nextAction: completeFullLoveScene
   },
+  full_love_sierra_start: {
+    label: "Yosemite After Dark",
+    background: () => ({ location: "yosemite", time: "night" }),
+    onEnter: () => { state.visitTime = "night"; state.pendingDestination = "sierra"; state.pendingFullLoveScene = "sierra"; },
+    lines: [
+      ["narrator", "The heart on Sierra's route card warms under your thumb, and the kiosk prints a ticket with one handwritten-looking note at the bottom: NO CAPTIONS AFTER MIDNIGHT."],
+      ["narrator", "Yosemite opens around you in night-blue granite and the distant voice of falling water. The familiar trail feels quieter now, like it has been holding its breath."],
+      ["player", "Sierra?"],
+      ["narrator", "A flashlight beam dances once across the trail, then drops. Sierra steps out from the dark already smiling, cheeks bright with cold air and trouble.", "sierra:laughing"],
+      ["sierra", "Look who followed the rules long enough to earn the dangerous version of Yosemite.", "sierra:sly"],
+      ["player", "Dangerous because it is dark, or dangerous because you are smiling like that?", "sierra:sly"],
+      ["sierra", "Yes.", "sierra:laughing"],
+      ["narrator", "She laughs, easy and bright, then nudges your shoulder with hers. The contact lingers half a second longer than her jokes usually allow.", "sierra:blushing"],
+      ["sierra", "Come on. I know a place. No crowds, no waterfall trying to win the conversation, no one pretending a perfect view makes them immune to feelings.", "sierra:blushing"],
+      ["player", "That last one sounds targeted.", "sierra:blushing"],
+      ["sierra", "Sweetheart, if I target you, you will know. This is me asking.", "sierra:blushing"]
+    ],
+    next: "full_love_sierra_meadow"
+  },
+  full_love_sierra_meadow: {
+    label: "Yosemite Meadow",
+    background: () => ({ location: "yosemiteMeadowNight", time: "night" }),
+    lines: [
+      ["narrator", "The trail opens into a high meadow washed in moonlight. Wildflowers silver at the edges. Grass bends softly under the night air. Far across the valley, cliffs rise like sleeping giants, and the waterfall glows pale against the dark."],
+      ["player", "Oh."],
+      ["narrator", "For once, the word is small enough to be honest."],
+      ["player", "This is beautiful."],
+      ["narrator", "The meadow seems to make room around you: grass, stars, cold stone, warm breath, and the impossible feeling of being somewhere meant to be kept quiet."],
+      ["sierra", "Told you.", "sierra:stargazingStep2"],
+      ["narrator", "Sierra has already claimed a patch of grass like the meadow was saving it for her. She looks up instead of at you, but her smile knows exactly where you are.", "sierra:stargazingStep2"],
+      ["sierra", "Best ceiling in the building. That bright one? I used to pretend it was watching the trail for me when I had to close alone.", "sierra:stargazingStep2"],
+      ["player", "You came here by yourself?", "sierra:stargazingStep2"],
+      ["sierra", "Mhm. Don't look so worried. I am very brave, extremely fast, and only medium scared of noises I cannot flirt with.", "sierra:stargazingStep2"],
+      ["narrator", "She grins, but it does not quite finish becoming armor.", "sierra:stargazingStep3"],
+      ["sierra", "Lie down. The stars are better when you stop trying to deserve them.", "sierra:stargazingStep3"]
+    ],
+    next: "full_love_sierra_two"
+  },
+  full_love_sierra_two: {
+    label: "Yosemite Meadow",
+    background: () => ({ location: "yosemiteMeadowNight", time: "night" }),
+    lines: [
+      ["narrator", "You lower yourself into the grass beside her. The cold comes through your jacket. Sierra's shoulder nearly touches yours, close enough that the space between you starts to feel deliberate.", "sierra:stargazingStep3"],
+      ["sierra", "I know I act like everything is a game.", "sierra:stargazingStep3"],
+      ["player", "You do have a championship record.", "sierra:stargazingStep3"],
+      ["sierra", "I know. Terrible burden, being this talented.", "sierra:stargazingStep3"],
+      ["narrator", "Her laugh fades into a breath. She keeps looking up, like honesty is easier when it has somewhere vast to go.", "sierra:stargazingStep3"],
+      ["sierra", "The flirting is real. The jokes are real. But sometimes they are also a very cute door with an excellent lock.", "sierra:stargazingStep3"],
+      ["player", "What is it locking away?", "sierra:stargazingStep3"],
+      ["sierra", "The part of me that wants to be taken seriously and is terrified someone will do it wrong.", "sierra:stargazingStep3"],
+      ["narrator", "The meadow goes still around the confession. Even the waterfall feels farther away.", "sierra:stargazingStep3"],
+      ["sierra", "People like the shiny version. The mouth. The confidence. The part that turns every overlook into a dare. It is easier than asking them to stay when I stop performing.", "sierra:stargazingStep3"]
+    ],
+    next: "full_love_sierra_three"
+  },
+  full_love_sierra_three: {
+    label: "Yosemite Meadow",
+    background: () => ({ location: "yosemiteMeadowNight", time: "night" }),
+    lines: [
+      ["narrator", "Sierra turns toward you, excitement flickering through the vulnerability because she is still Sierra, still alive with everything she feels.", "sierra:stargazingStep3"],
+      ["sierra", "But you kept noticing the quiet things. The sound before the waterfall. The pause before the joke. The way I look away when something matters too much.", "sierra:stargazingStep3"],
+      ["player", "You noticed me noticing?", "sierra:stargazingStep3"],
+      ["sierra", "Please. I notice professionally. I just pretend it is a hobby so no one gets scared.", "sierra:stargazingStep3"],
+      ["narrator", "Her smile trembles, then steadies. She reaches for your hand in the grass and does not make a joke out of the way her fingers fit between yours.", "sierra:stargazingStep4"],
+      ["sierra", "When I am with you, I don't feel like I have to be brighter than the place to keep from disappearing inside it.", "sierra:stargazingStep4"],
+      ["player", "Sierra.", "sierra:stargazingStep4"],
+      ["sierra", "No, let me say it before I get dramatic and attractive in self-defense.", "sierra:stargazingStep4"],
+      ["sierra", "You make me feel seen without feeling caught. Do you know how rare that is for someone who keeps offering everyone the easy version first?", "sierra:stargazingStep4"]
+    ],
+    next: "full_love_sierra_prompt"
+  },
+  full_love_sierra_prompt: {
+    label: "Yosemite Meadow",
+    background: () => ({ location: "yosemiteMeadowNight", time: "night" }),
+    lines: [
+      ["narrator", "She stays close, propped on one elbow now, and the whole meadow seems to tilt toward her. Her gaze is warm, unguarded, and almost painfully trusting.", "sierra:stargazingStep4"],
+      ["sierra", "I am letting you see the part of me that does not know how to make a clean exit. The part that hopes you will stay anyway.", "sierra:stargazingStep4"]
+    ],
+    choices: [
+      {
+        label: "Tell her you are staying, and that she does not have to sparkle to be wanted.",
+        next: "full_love_sierra_good",
+        unlockCG: "sierraFullLoveGood",
+        flags: { sierraFullLoveGood: true }
+      },
+      {
+        label: "Say, 'Wow, the vulnerable rizz is crazy. Big content moment.'",
+        next: "full_love_sierra_bad_pause",
+        feelings: { sierra: -6 },
+        fadeOutMusicUntilScene: { sceneId: "day_wake", fadeOutMs: 2400, resumeFadeMs: 5600 }
+      }
+    ]
+  },
+  full_love_sierra_good: {
+    label: "Yosemite Meadow",
+    background: () => ({ location: "yosemiteMeadowNight", time: "night" }),
+    lines: [
+      ["narrator", "Sierra's expression changes so gently it almost hurts. The smolder falls away first. Then the performance. What remains is a woman in the grass under the stars, looking at you like she chose this risk on purpose.", "sierra:stargazingStep4"],
+      ["player", "I am staying. Not because you are dazzling, even though you are dangerously good at that.", "sierra:stargazingStep4"],
+      ["player", "Because this is you too. The quiet. The scared part. The part that wants to be known without having to earn the room first.", "sierra:stargazingStep4"],
+      ["sierra", "That was unfairly good.", "sierra:stargazingStep4"],
+      ["player", "I learned from the best.", "sierra:stargazingStep4"],
+      ["narrator", "She laughs once, soft and shaky, then closes the distance. The kiss starts careful, almost reverent, and then Sierra makes a small sound against your mouth that turns the whole night warmer.", "sierra:stargazingStep4"],
+      ["sierra", "Still staying?", "sierra:stargazingStep4"],
+      ["player", "Very much.", "sierra:stargazingStep4"],
+      ["narrator", "Her hand curls in your jacket. The stars blur at the edge of your vision as she kisses you again, slower this time, like she has been brave enough to ask and now intends to enjoy every answer.", "sierra:stargazingStep4"],
+      ["narrator", "The meadow keeps your secret. Grass presses cool against your hands; Sierra is warm and laughing breathlessly when your foreheads touch; every joke she tries to make dissolves into another kiss before it can protect her.", "sierra:stargazingStep4"],
+      ["sierra", "For the record, I am usually much smoother than this.", "sierra:stargazingStep4"],
+      ["player", "I like this version.", "sierra:stargazingStep4"],
+      ["sierra", "Yeah?", "sierra:stargazingStep4"],
+      ["player", "Yeah.", "sierra:stargazingStep4"],
+      ["narrator", "After a while, you go back to looking at the stars. Then her fingers trace your wrist and looking at the stars becomes temporarily impossible. Then you both laugh too quietly, settle back into the grass, and let the sky gather itself above you again.", "sierra:stargazingStep4"],
+      ["narrator", "Hours pass in pieces: constellations, kisses, Sierra's voice telling you which trails scare her and which ones saved her, your hand in her hair, her cheek against your shoulder, the two of you forgetting to keep track of anything except each other.", "sierra:stargazingStep4"],
+      ["narrator", "At some point, the talking thins into silence. The silence becomes breathing. The breathing becomes sleep."],
+      ["narrator", "Morning finds you in pale gold. Sierra is asleep beside you, one hand still tucked in your sleeve, peaceful in a way that makes your chest go quiet."],
+      ["player", "You do not wake her. You brush the grass from her hair, kiss her forehead, and leave her resting under the first warm light of Yosemite."],
+      ["narrator", "By the time you reach the lodge lobby, morning has fully arrived, and something tender has followed you back with it."]
+    ],
+    nextAction: completeSierraFullLoveMorning
+  },
+  full_love_sierra_bad_pause: {
+    label: "Yosemite Meadow",
+    background: () => ({ location: "yosemiteMeadowNight", time: "night" }),
+    lines: [
+      ["narrator", "", "sierra:stargazingStep4", { dialogueHidden: true, autoAdvanceMs: 3000 }],
+      ["narrator", "...", "sierra:stargazingStep4", { dialogueSlowFade: true, autoAdvanceMs: 2600 }]
+    ],
+    next: "full_love_sierra_bad_departure"
+  },
+  full_love_sierra_bad_departure: {
+    label: "Yosemite Meadow",
+    background: () => ({ location: "yosemiteMeadowNight", time: "night" }),
+    lines: [
+      ["narrator", "", "sierra:stargazingStep4", { dialogueHidden: true, spriteDriftUp: true, autoAdvanceMs: 4300 }],
+      ["narrator", "Sierra does not say anything. This is worse than anger. Anger would have shape. Anger would be an event. This is simply the meadow deciding you have become a cautionary object lesson."],
+      ["narrator", "She got up slowly, with the silent precision of someone removing herself from a haunted group chat, and walked away without once looking back."],
+      ["player", "Oh no."],
+      ["narrator", "The words you chose remain in the grass behind you, faintly radioactive. Nearby wildflowers appear to be reevaluating the concept of language."],
+      ["player", "I said 'vulnerable rizz' to a woman trusting me under the stars."],
+      ["narrator", "You have never felt more embarrassed. Not publicly. Not privately. Possibly not metaphysically."],
+      ["narrator", "You sit in the meadow and contemplate what this means about you as a person. Are you a person? Would a person say that? Is the soul a real thing, and if so, can it file a noise complaint against the mouth?"],
+      ["narrator", "Yosemite offers no answer. It has cliffs to be and dignity to preserve."],
+      ["player", "I should go back to the lodge before the stars start unfollowing me."]
+    ],
+    nextAction: completeFullLoveScene
+  },
   transition_to_sunset_checkin: {
     label: "On The Route",
     background: () => ({ location: "black", time: "sunset" }),
@@ -1552,6 +1726,9 @@ const audioEngine = {
   transitioning: false,
   currentTheme: null,
   trackChangeToken: 0,
+  musicSuppressedLocationKey: null,
+  musicSuppressedUntilSceneId: null,
+  musicResumeFadeMs: null,
   justPlayedDoorSfx: false,
   ambientKey: null,
   ambientPlayer: null,
@@ -1671,7 +1848,7 @@ function validateSceneEstablishingRules() {
 
 function isContinuationScene(sceneId) {
   // These are follow-up beats inside the same setting, not fresh arrivals.
-  return /(_two|_three|_wrap|_wrapup|_reaction|_prompt)$/.test(sceneId) || sceneId === "choice_reaction";
+  return /(_two|_three|_wrap|_wrapup|_reaction|_prompt|_pause|_departure)$/.test(sceneId) || sceneId === "choice_reaction";
 }
 
 function startGame() {
@@ -1707,6 +1884,7 @@ function showNameEntry() {
 function renderScene(sceneId, options = {}) {
   const scene = scenes[sceneId];
   if (!scene) throw new Error("Missing scene: " + sceneId);
+  window.clearTimeout(lineAutoAdvanceTimer);
   state.sceneId = sceneId;
   state.lineIndex = options.keepLine ? state.lineIndex : 0;
   if (!options.keepLine) state.lineAudioCueKey = null;
@@ -1720,9 +1898,11 @@ function renderScene(sceneId, options = {}) {
 }
 
 function renderCurrentLine() {
+  window.clearTimeout(lineAutoAdvanceTimer);
   const scene = scenes[state.sceneId];
   const lines = resolveValue(scene.lines) || [];
   const line = lines[state.lineIndex] || ["narrator", ""];
+  const lineOptions = line[3] || {};
   const speakerKey = line[0] || "narrator";
   const speaker = characters[speakerKey] || characters.narrator;
   // Establishing shots are a hard story rule: a character sprite only appears
@@ -1735,16 +1915,21 @@ function renderCurrentLine() {
   els.speakerName.style.color = speaker.color || "#f3b85b";
   els.sceneLabel.textContent = resolveValue(scene.label) || state.sceneId;
   els.lineText.textContent = formatText(line[1] || "");
-  playLineAudioCue(line[3]);
+  applyLinePresentation(lineOptions);
+  playLineAudioCue(lineOptions);
   updateCopyControls();
   els.choices.innerHTML = "";
   els.choices.classList.remove("has-choices");
   els.choices.style.removeProperty("--choices-bottom");
   els.gameScreen.classList.remove("choices-active");
   if (state.lineIndex >= lines.length - 1) renderChoices(resolveValue(scene.choices) || []);
+  if (lineOptions.autoAdvanceMs) {
+    lineAutoAdvanceTimer = window.setTimeout(() => showNextDialogueLine(), lineOptions.autoAdvanceMs);
+  }
 }
 
 function showNextDialogueLine() {
+  window.clearTimeout(lineAutoAdvanceTimer);
   const scene = scenes[state.sceneId];
   if (!scene) return;
   const lines = resolveValue(scene.lines) || [];
@@ -1760,6 +1945,12 @@ function showNextDialogueLine() {
   state.lineIndex += 1;
   playSfx("advance");
   renderCurrentLine();
+}
+
+function applyLinePresentation(options = {}) {
+  els.gameScreen.classList.toggle("dialogue-hidden", Boolean(options.dialogueHidden));
+  els.gameScreen.classList.toggle("dialogue-slow-fade", Boolean(options.dialogueSlowFade));
+  els.gameScreen.classList.toggle("sprite-drift-up", Boolean(options.spriteDriftUp));
 }
 
 function renderChoices(choices) {
@@ -1815,6 +2006,8 @@ function applyChoiceEffects(choice) {
   if (choice.flags) Object.assign(state.flags, choice.flags);
   if (choice.setRoute) state.selectedRoute = choice.setRoute;
   if (choice.unlockCG) unlockCG(choice.unlockCG);
+  if (choice.fadeOutMusicUntilLocationChange) fadeOutMusicUntilLocationChange(choice.fadeOutMusicUntilLocationChange);
+  if (choice.fadeOutMusicUntilScene) fadeOutMusicUntilScene(choice.fadeOutMusicUntilScene);
   if (choice.save) saveGame();
   updateDevPanel();
   if (choice.reaction && choice.next) {
@@ -2034,6 +2227,18 @@ function completeFullLoveScene() {
   }
 }
 
+function completeSierraFullLoveMorning() {
+  state.pendingFullLoveScene = null;
+  state.pendingDestination = null;
+  state.visitTime = null;
+  state.visitBeat = 0;
+  state.visitStartMood = null;
+  state.visitLastChoice = null;
+  state.visitLastReaction = null;
+  state.day += 1;
+  startNewDay();
+}
+
 function completeVisit() {
   const completedTime = state.visitTime || state.timeOfDay;
   state.visitTime = null;
@@ -2229,12 +2434,12 @@ function buildVisitWrapupLines(character) {
     const sierraMoodLine = {
       low: "Sierra walks you back with care and a smile sharp enough to prove she is still annoyed. Even mad, she flirts like it is a second trail system and she knows every switchback.",
       neutral: "Sierra walks beside you, Yosemite quiet around her and mischief bright in her eyes. She points out one star, then says it is trying too hard because you already looked up.",
-      high: "Sierra lingers at the route marker like goodbye is a game she fully intends to win. She tells you the waterfall can have the scenery, because she is keeping your attention."
+      high: "Sierra lingers at the route marker like goodbye is a game she fully intends to win. She tells you the waterfall can have the scenery, because she is keeping your attention, and because the best view in Yosemite is not on the daytime route."
     }[mood];
     const sierraExitLine = {
       low: "For the record, I am still annoyed. Unfortunately for both of us, annoyed is a very good look on me.",
       neutral: "Come back later. Yosemite likes repeat visitors, and I like watching you pretend that sentence was only about the park.",
-      high: "Go on. Leave before I start making the waterfall jealous on purpose."
+      high: "Go on. Leave before I start making the waterfall jealous on purpose. Come back after dark if you ever want the quiet version."
     }[mood];
     return [
       ["narrator", timeExit, characterExpression(character, mood)],
@@ -2438,6 +2643,8 @@ function updateSprite(characterCue) {
   const { key: characterKey, expression } = parseCharacterCue(characterCue);
   const character = characters[characterKey];
   const sprite = character && resolveSprite(character, expression);
+  els.sprite.classList.toggle("sierra-stargazing-sprite", characterKey === "sierra" && String(expression || "").startsWith("stargazingStep"));
+  els.sprite.classList.toggle("sierra-stargazing-close", characterKey === "sierra" && expression === "stargazingStep4");
   if (!character || !sprite) {
     spriteLoadToken += 1;
     els.sprite.classList.add("hidden");
@@ -2705,15 +2912,25 @@ function ensureAudio() {
     player.loop = false;
     player.volume = 0;
   });
-  restartMusicLoop();
+  if (!audioEngine.musicSuppressedLocationKey) restartMusicLoop();
 }
 
 function updateAudioTheme(locationKey, characterCue, options = {}) {
-  audioEngine.locationKey = locationKey || "lodge";
+  const nextLocationKey = locationKey || "lodge";
+  if (audioEngine.musicSuppressedUntilSceneId) {
+    if (state.sceneId === audioEngine.musicSuppressedUntilSceneId) {
+      audioEngine.musicSuppressedUntilSceneId = null;
+      audioEngine.musicSuppressedLocationKey = null;
+    }
+  } else if (audioEngine.musicSuppressedLocationKey && audioEngine.musicSuppressedLocationKey !== nextLocationKey) {
+    audioEngine.musicSuppressedLocationKey = null;
+    audioEngine.musicResumeFadeMs = 3400;
+  }
+  audioEngine.locationKey = nextLocationKey;
   audioEngine.characterKey = parseCharacterCue(characterCue).key || null;
   if (!audioEngine.enabled) return;
   ensureAudio();
-  restartMusicLoop();
+  if (!audioEngine.musicSuppressedLocationKey) restartMusicLoop();
   if (options.suppressSfx) return;
   playSfx(characterCue ? "character" : "scene");
 }
@@ -2727,6 +2944,9 @@ function restartMusicLoop() {
 }
 
 function stopMusicLoop() {
+  audioEngine.musicSuppressedLocationKey = null;
+  audioEngine.musicSuppressedUntilSceneId = null;
+  audioEngine.musicResumeFadeMs = null;
   stopAmbient();
   Object.keys(audioEngine.sfxChannels).forEach(stopSfxChannel);
   audioEngine.trackChangeToken += 1;
@@ -2742,6 +2962,40 @@ function stopMusicLoop() {
   });
   audioEngine.currentTheme = null;
   audioEngine.musicKey = null;
+}
+
+function fadeOutMusicUntilLocationChange(duration = 2200) {
+  audioEngine.musicSuppressedLocationKey = audioEngine.locationKey || currentBackgroundKey().split(".")[0] || "lodge";
+  audioEngine.musicSuppressedUntilSceneId = null;
+  fadeOutCurrentMusic(duration);
+}
+
+function fadeOutMusicUntilScene(config) {
+  const settings = typeof config === "object" ? config : { sceneId: String(config || "") };
+  audioEngine.musicSuppressedLocationKey = audioEngine.locationKey || currentBackgroundKey().split(".")[0] || "lodge";
+  audioEngine.musicSuppressedUntilSceneId = settings.sceneId || null;
+  audioEngine.musicResumeFadeMs = settings.resumeFadeMs || 5600;
+  fadeOutCurrentMusic(settings.fadeOutMs || 2200);
+}
+
+function fadeOutCurrentMusic(duration = 2200) {
+  if (!audioEngine.enabled) return;
+  ensureAudio();
+  audioEngine.trackChangeToken += 1;
+  window.clearInterval(audioEngine.loopTimerId);
+  audioEngine.loopTimerId = null;
+  audioEngine.transitioning = false;
+  audioEngine.fadeTimerIds.forEach(id => window.clearInterval(id));
+  audioEngine.fadeTimerIds = [];
+  const players = audioEngine.musicPlayers.filter(player => player && !player.paused && player.volume > 0);
+  audioEngine.currentTheme = null;
+  audioEngine.musicKey = null;
+  if (!players.length) return;
+  players.forEach(player => {
+    fadePlayer(player, 0, duration, () => {
+      player.pause();
+    });
+  });
 }
 
 function playSfx(type) {
@@ -2793,6 +3047,8 @@ function playMusicTrack(musicKey) {
   audioEngine.fadeTimerIds.forEach(id => window.clearInterval(id));
   audioEngine.fadeTimerIds = [];
   const outgoing = audioEngine.currentTheme ? audioEngine.musicPlayers[audioEngine.activeMusicIndex] : null;
+  const incomingFadeMs = audioEngine.musicResumeFadeMs || (outgoing ? 1800 : 900);
+  audioEngine.musicResumeFadeMs = null;
   const incomingIndex = outgoing ? (audioEngine.activeMusicIndex === 0 ? 1 : 0) : 0;
   const incoming = audioEngine.musicPlayers[incomingIndex];
   incoming.pause();
@@ -2803,7 +3059,7 @@ function playMusicTrack(musicKey) {
     incoming.currentTime = theme.loopStart;
     incoming.volume = 0;
     incoming.play().catch(() => {});
-    fadePlayer(incoming, theme.volume, outgoing ? 1800 : 900);
+    fadePlayer(incoming, theme.volume, incomingFadeMs);
     if (outgoing) fadePlayer(outgoing, 0, 1800, () => {
       outgoing.pause();
       outgoing.currentTime = theme.loopStart;

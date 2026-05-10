@@ -174,6 +174,13 @@ const musicThemes = {
   jack: { src: "assets/audio/music/Windswept.mp3", loopStart: 9.6, loopEnd: 199.8, volume: 0.5 },
   caleb: { src: "assets/audio/music/On My Way.mp3", loopStart: 11.2, loopEnd: 243.8, volume: 0.5 },
   sierra: { src: "assets/audio/music/Morning.mp3", loopStart: 6.0, loopEnd: 146.0, volume: 0.54 },
+  jackFullLoveCabin: { src: "assets/audio/music/Anamalie.mp3", loopStart: 3.0, loopEnd: 203.0, volume: 0.44 },
+  jackFullLoveGood: { src: "assets/audio/music/Slow Burn.mp3", loopStart: 4.0, loopEnd: 224.0, volume: 0.42 },
+  calebFullLoveRomantic: { src: "assets/audio/music/Heartwarming.mp3", loopStart: 1.2, loopEnd: 69.0, volume: 0.46 },
+  calebFullLoveGood: { src: "assets/audio/music/Your Call.mp3", loopStart: 4.0, loopEnd: 219.0, volume: 0.42 },
+  calebFullLoveBad: { src: "assets/audio/music/Volatile Reaction.mp3", loopStart: 1.6, loopEnd: 161.0, volume: 0.42 },
+  sierraFullLoveMeadow: { src: "assets/audio/music/There is Romance.mp3", loopStart: 2.0, loopEnd: 193.0, volume: 0.42 },
+  sierraFullLoveGood: { src: "assets/audio/music/Sardana.mp3", loopStart: 2.0, loopEnd: 187.0, volume: 0.4 },
   dakota: { src: "assets/audio/music/Fireflies and Stardust.mp3", loopStart: 9.0, loopEnd: 244.5, volume: 0.5 },
   natai: { src: "assets/audio/music/Crowd Hammer.mp3", loopStart: 7.5, loopEnd: 198.5, volume: 0.45 }
 };
@@ -183,9 +190,12 @@ const locationMusic = {
   lodge: "lodge",
   checkIn: "checkIn",
   olympic: "jack",
+  jackCabinNight: "jack",
+  jackCabinDay: "jack",
   yellowstone: "caleb",
   yellowstoneMisty: "caleb",
   yosemite: "sierra",
+  yosemiteMeadowNight: "sierra",
   sequoia: "dakota",
   zion: "natai"
 };
@@ -1404,6 +1414,7 @@ const scenes = {
   full_love_jack_cabin: {
     label: "Jack's Cabin",
     background: () => ({ location: "jackCabinNight", time: "night" }),
+    music: "jackFullLoveCabin",
     ambient: "rainRoof",
     lines: [
       ["narrator", "Inside, Jack's cabin glows with lantern light and stove warmth. Rain drums against the roof in a steady, intimate rhythm."],
@@ -1426,6 +1437,7 @@ const scenes = {
   full_love_jack_shirt: {
     label: "Jack's Cabin",
     background: () => ({ location: "jackCabinNight", time: "night" }),
+    music: "jackFullLoveCabin",
     ambient: "rainRoof",
     lines: [
       ["narrator", "Jack turns away just enough to be polite and unbuttons the red flannel. When he faces you again, he is blushing, bare-chested, and holding the shirt out with both hands like it matters.", "jack:offeringShirt"],
@@ -1440,6 +1452,7 @@ const scenes = {
   full_love_jack_prompt: {
     label: "Jack's Cabin",
     background: () => ({ location: "jackCabinNight", time: "night" }),
+    music: "jackFullLoveCabin",
     ambient: "rainRoof",
     lines: [
       ["jack", "If you take it, I need you to know what I mean. Not pressure. Not a joke. Just... me choosing to be brave with someone who already knows where all my clumsiest parts live.", "jack:offeringShirt"],
@@ -1462,6 +1475,7 @@ const scenes = {
   full_love_jack_good: {
     label: "Jack's Cabin",
     background: () => ({ location: "jackCabinNight", time: "night" }),
+    music: "jackFullLoveGood",
     ambient: "rainRoof",
     lines: [
       ["narrator", "You take the flannel. Jack watches your hands close around it like he is trying very hard to remember how breathing works.", "jack:offeringShirt"],
@@ -1490,6 +1504,7 @@ const scenes = {
   full_love_jack_bad: {
     label: "Jack's Cabin",
     background: () => ({ location: "jackCabinNight", time: "night" }),
+    music: "jack",
     ambient: "rainRoof",
     lines: [
       ["narrator", "Jack listens all the way through. The shirt stays offered between you, but his face does not close. If anything, it gets gentler.", "jack:offeringShirt"],
@@ -1508,6 +1523,7 @@ const scenes = {
   full_love_jack_friend_cabin: {
     label: "Jack's Cabin",
     background: () => ({ location: "jackCabinNight", time: "night" }),
+    music: "jack",
     ambient: "rainRoof",
     lines: [
       ["narrator", "So you sit at Jack's little table while rain drums over the cabin roof and he deals a stack of illustrated mushroom cards with the solemnity of a wilderness judge.", "jack"],
@@ -1524,6 +1540,7 @@ const scenes = {
   full_love_jack_friend_rain_stop: {
     label: "Jack's Cabin",
     background: () => ({ location: "jackCabinNight", time: "night" }),
+    music: "jack",
     lines: [
       ["narrator", "Eventually the rain on the roof thins from a steady rush to a soft patter, then to a few last taps that fade into the cabin quiet."],
       ["jack", "Hear that? The storm is letting up.", "jack"],
@@ -1555,6 +1572,7 @@ const scenes = {
   full_love_jack_morning_wake: {
     label: "Jack's Cabin",
     background: () => ({ location: "jackCabinDay", time: "daytime" }),
+    music: "jack",
     ambient: "morningBirds",
     onEnter: () => { state.timeOfDay = "daytime"; },
     lines: [
@@ -1571,6 +1589,7 @@ const scenes = {
   full_love_caleb_start: {
     label: "Yellowstone After Dark",
     background: () => ({ location: "yellowstoneMisty", time: "night" }),
+    music: "calebFullLoveRomantic",
     onEnter: () => { state.visitTime = "night"; state.pendingDestination = "caleb"; state.pendingFullLoveScene = "caleb"; },
     lines: [
       ["narrator", "The heart on Caleb's route card glows warm under your thumb, and the kiosk responds by printing a ticket that simply reads: AFTER DARK. VERY SCIENTIFIC."],
@@ -1589,6 +1608,7 @@ const scenes = {
   full_love_caleb_two: {
     label: "Yellowstone After Dark",
     background: () => ({ location: "yellowstoneMisty", time: "night" }),
+    music: "calebFullLoveRomantic",
     lines: [
       ["narrator", "He pats at the little flame in his hair. It refuses to surrender with theatrical dignity."],
       ["caleb", "I should be embarrassed. I planned a careful walk. A clean shirt. One, maybe two, facts delivered with emotional restraint.", "caleb:fullLoveRomantic"],
@@ -1608,6 +1628,7 @@ const scenes = {
   full_love_caleb_prompt: {
     label: "Yellowstone After Dark",
     background: () => ({ location: "yellowstoneMisty", time: "night" }),
+    music: "calebFullLoveRomantic",
     lines: [
       ["player", "There is a quiz right now."],
       ["caleb", "A small one. Emotionally load-bearing. Old Faithful has celebrity status, but what have I told you about Yellowstone's geysers?", "caleb:fullLoveRomantic"]
@@ -1629,6 +1650,7 @@ const scenes = {
   full_love_caleb_good: {
     label: "Yellowstone After Dark",
     background: () => ({ location: "yellowstoneMisty", time: "night" }),
+    music: "calebFullLoveGood",
     lines: [
       ["narrator", "Caleb goes very still. For one suspended second, even the steam seems to behave."],
       ["caleb", "More than half. Yes.", "caleb:fullLoveRomantic"],
@@ -1649,6 +1671,7 @@ const scenes = {
   full_love_caleb_bad: {
     label: "Yellowstone After Dark",
     background: () => ({ location: "yellowstoneMisty", time: "night" }),
+    music: "calebFullLoveBad",
     lines: [
       ["narrator", "Caleb's face changes so fast it should come with a weather advisory."],
       ["caleb", "Old Faithful is WHAT.", "caleb:fullLoveRage"],
@@ -1690,6 +1713,7 @@ const scenes = {
   full_love_sierra_meadow: {
     label: "Yosemite Meadow",
     background: () => ({ location: "yosemiteMeadowNight", time: "night" }),
+    music: "sierraFullLoveMeadow",
     lines: [
       ["narrator", "The trail opens into a high meadow washed in moonlight. Wildflowers silver at the edges. Grass bends softly under the night air. Far across the valley, cliffs rise huge and quiet, and the waterfall glows pale against the dark."],
       ["player", "Oh."],
@@ -1708,6 +1732,7 @@ const scenes = {
   full_love_sierra_two: {
     label: "Yosemite Meadow",
     background: () => ({ location: "yosemiteMeadowNight", time: "night" }),
+    music: "sierraFullLoveMeadow",
     lines: [
       ["narrator", "You lower yourself into the grass beside her. The cold comes through your jacket. Sierra's shoulder nearly touches yours, close enough that the space between you starts to feel deliberate.", "sierra:stargazingStep3"],
       ["sierra", "When I first found this place, I thought I would bring people here all the time.", "sierra:stargazingStep3"],
@@ -1725,6 +1750,7 @@ const scenes = {
   full_love_sierra_three: {
     label: "Yosemite Meadow",
     background: () => ({ location: "yosemiteMeadowNight", time: "night" }),
+    music: "sierraFullLoveMeadow",
     lines: [
       ["narrator", "Sierra turns toward you. In the moonlight, her eyes are bright and a little afraid, but she does not look away.", "sierra:stargazingStep3"],
       ["sierra", "I have been trying to think of something clever to say since the kiosk printed that ticket.", "sierra:stargazingStep3"],
@@ -1741,6 +1767,7 @@ const scenes = {
   full_love_sierra_prompt: {
     label: "Yosemite Meadow",
     background: () => ({ location: "yosemiteMeadowNight", time: "night" }),
+    music: "sierraFullLoveMeadow",
     lines: [
       ["narrator", "She stays close, and the whole meadow seems to tilt toward her. Her thumb moves once over your knuckles, almost too lightly to count.", "sierra:stargazingStep4"],
       ["sierra", "I don't want this to end. I want to stay here a while and find out what happens next.", "sierra:stargazingStep4"]
@@ -1763,6 +1790,7 @@ const scenes = {
   full_love_sierra_good: {
     label: "Yosemite Meadow",
     background: () => ({ location: "yosemiteMeadowNight", time: "night" }),
+    music: "sierraFullLoveGood",
     lines: [
       ["narrator", "Sierra's expression changes so gently it almost hurts. Hope arrives first, then relief, then a warmth that makes the cold meadow feel suddenly survivable.", "sierra:stargazingStep4"],
       ["player", "I want that too.", "sierra:stargazingStep4"],
@@ -1783,6 +1811,7 @@ const scenes = {
   full_love_sierra_morning_return: {
     label: "Morning",
     background: () => ({ location: "black", time: "daytime" }),
+    music: "sierraFullLoveGood",
     character: null,
     lines: [
       ["narrator", "Morning comes softly, and the meadow stays behind the dark a little longer."],
@@ -1795,6 +1824,7 @@ const scenes = {
   full_love_sierra_bad_pause: {
     label: "Yosemite Meadow",
     background: () => ({ location: "yosemiteMeadowNight", time: "night" }),
+    music: "sierraFullLoveMeadow",
     lines: [
       ["narrator", "", "sierra:stargazingStep4", { dialogueHidden: true, autoAdvanceMs: 3000 }],
       ["narrator", "...", "sierra:stargazingStep4", { dialogueSlowFade: true, autoAdvanceMs: 2600 }]
@@ -1804,6 +1834,7 @@ const scenes = {
   full_love_sierra_bad_departure: {
     label: "Yosemite Meadow",
     background: () => ({ location: "yosemiteMeadowNight", time: "night" }),
+    music: "sierraFullLoveMeadow",
     lines: [
       ["narrator", "", "sierra:stargazingStep4", { dialogueHidden: true, spriteDriftUp: true, autoAdvanceMs: 4300 }],
       ["narrator", "Sierra goes still. Not angry, not theatrical, just suddenly farther away than the few inches of grass between you should allow."],
@@ -1932,6 +1963,7 @@ const els = {
 const audioEngine = {
   locationKey: "checkIn",
   characterKey: null,
+  musicOverrideKey: null,
   musicKey: null,
   activeMusicIndex: 0,
   musicPlayers: [],
@@ -2116,7 +2148,10 @@ function renderScene(sceneId, options = {}) {
   const background = resolveValue(scene.background) || { location: "lodge", time: state.timeOfDay };
   const backgroundChanged = updateBackdrop(background);
   updateAmbient(scene.ambient || null);
-  updateAudioTheme(background.location, null, { suppressSfx: options.suppressSceneSfx });
+  updateAudioTheme(background.location, null, {
+    musicKey: resolveValue(scene.music) || null,
+    suppressSfx: options.suppressSceneSfx
+  });
   updateDevPanel();
   if (backgroundChanged && !options.keepLine && !options.skipEstablishingPause) {
     els.gameScreen.classList.add("establishing-pause");
@@ -3249,6 +3284,7 @@ function updateAudioTheme(locationKey, characterCue, options = {}) {
   }
   audioEngine.locationKey = nextLocationKey;
   audioEngine.characterKey = parseCharacterCue(characterCue).key || null;
+  audioEngine.musicOverrideKey = options.musicKey || null;
   if (!audioEngine.enabled) return;
   ensureAudio();
   if (!audioEngine.musicSuppressedLocationKey) restartMusicLoop();
@@ -3283,6 +3319,7 @@ function stopMusicLoop() {
   });
   audioEngine.currentTheme = null;
   audioEngine.musicKey = null;
+  audioEngine.musicOverrideKey = null;
 }
 
 function fadeOutMusicUntilLocationChange(duration = 2200) {
@@ -3351,6 +3388,9 @@ function playSfx(type) {
 }
 
 function resolveMusicKey() {
+  if (audioEngine.musicOverrideKey && musicThemes[audioEngine.musicOverrideKey]) {
+    return audioEngine.musicOverrideKey;
+  }
   if (["black", "lodge", "checkIn"].includes(audioEngine.locationKey)) {
     return locationMusic[audioEngine.locationKey] || "lodge";
   }

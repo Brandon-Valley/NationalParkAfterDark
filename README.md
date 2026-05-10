@@ -29,7 +29,7 @@ The app falls back to CSS backgrounds and character name cards if image assets a
 ## Audio Credits
 
 Music:
-"Almost Bliss", "Clear Air", "Evening", "Windswept", "On My Way", "Morning", "Fireflies and Stardust", and "Crowd Hammer" by Kevin MacLeod ([Incompetech](https://incompetech.com/)), licensed under [CC BY 4.0](https://creativecommons.org/licenses/by/4.0/).
+"Almost Bliss", "Clear Air", "Evening", "Windswept", "On My Way", "Morning", "Fireflies and Stardust", "Crowd Hammer", "There is Romance", "Anamalie", "Slow Burn", "Sardana", "Heartwarming", "Your Call", and "Volatile Reaction" by Kevin MacLeod ([Incompetech](https://incompetech.com/)), licensed under [CC BY 4.0](https://creativecommons.org/licenses/by/4.0/).
 
 Sound effects:
 "Button Click Sound Effect (CC0/Public Domain)" by qubodup ([OpenGameArt](https://opengameart.org/content/button-click-sound-effect-cc0public-domain)), CC0.

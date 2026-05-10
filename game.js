@@ -1477,6 +1477,17 @@ function bindEvents() {
     state.devSkipButton = els.devSkipButton.checked;
     updateDevPanel();
   });
+  els.devScores.addEventListener("input", event => {
+    const input = event.target.closest("[data-dev-feeling-key]");
+    if (!input || input.value === "") return;
+    setFeelingScore(input.dataset.devFeelingKey, input.value);
+  });
+  els.devScores.addEventListener("change", event => {
+    const input = event.target.closest("[data-dev-feeling-key]");
+    if (!input) return;
+    const score = setFeelingScore(input.dataset.devFeelingKey, input.value);
+    input.value = score;
+  });
   els.dialogueCopyBtn.addEventListener("click", event => {
     event.stopPropagation();
     copyCurrentDialogueLine();
@@ -2054,11 +2065,21 @@ function addFeelings(changes) {
   });
 }
 
+function setFeelingScore(key, value) {
+  if (!LOVE_INTEREST_KEYS.includes(key)) return state.feelings[key] ?? 5;
+  const fallback = state.feelings[key] ?? defaultState.feelings[key] ?? 5;
+  const parsed = Number(value);
+  const score = Number.isFinite(parsed) ? Math.round(parsed) : fallback;
+  state.feelings[key] = clamp(score, 0, 10);
+  return state.feelings[key];
+}
+
 function sanitizeFeelings(savedFeelings) {
   const clean = clone(defaultState.feelings);
   Object.keys(clean).forEach(key => {
     if (savedFeelings && savedFeelings[key] !== undefined) {
-      clean[key] = clamp(Number(savedFeelings[key]) || 5, 0, 10);
+      const savedScore = Number(savedFeelings[key]);
+      clean[key] = Number.isFinite(savedScore) ? clamp(Math.round(savedScore), 0, 10) : clean[key];
     }
   });
   return clean;
@@ -2128,7 +2149,25 @@ function updateDevPanel() {
   updateCopyControls();
   els.devScores.innerHTML = LOVE_INTEREST_KEYS.map(key => {
     const score = state.feelings[key] ?? 5;
-    return `<div class="dev-score"><span>${escapeHtml(characters[key].shortName)}</span><strong>${score}/10</strong></div>`;
+    const name = escapeHtml(characters[key].shortName);
+    return `
+      <label class="dev-score" for="devFeeling-${escapeHtml(key)}">
+        <span>${name}</span>
+        <span class="dev-score-control">
+          <input
+            id="devFeeling-${escapeHtml(key)}"
+            type="number"
+            min="0"
+            max="10"
+            step="1"
+            inputmode="numeric"
+            data-dev-feeling-key="${escapeHtml(key)}"
+            value="${score}"
+            aria-label="${name} feeling score"
+          >
+          <span>/10</span>
+        </span>
+      </label>`;
   }).join("");
 }
 

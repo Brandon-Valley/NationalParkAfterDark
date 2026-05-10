@@ -36,3 +36,5 @@ Sound effects:
 "Creaky Door Hinge Spooky" by w.forster.1@gmail.com ([OpenGameArt](https://opengameart.org/content/creaky-door-hinge-spooky)), CC0.
 "Opening and Closing a Map Sounds" by Spring Spring ([OpenGameArt](https://opengameart.org/content/opening-and-closing-a-map-sounds)), CC0.
 "Chimey UI Sounds" by MouseBYTE ([OpenGameArt](https://opengameart.org/content/chimey-ui-sounds)), CC0.
+"Rain (loopable)" by Ylmir ([OpenGameArt](https://opengameart.org/content/rain-loopable)), CC0.
+"Rain On The Roof" by Roman Lipatov ([Directory.Audio](https://directory.audio/sound-effects/weather/1372-rain-on-the-roof)), CC0.

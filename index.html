@@ -93,6 +93,23 @@
         linear-gradient(90deg, rgba(5, 8, 8, .46), transparent 34%, rgba(5, 8, 8, .34));
     }
 
+    #gameScreen::after {
+      content: "";
+      position: absolute;
+      inset: 0;
+      z-index: 10;
+      pointer-events: none;
+      opacity: 0;
+      background:
+        radial-gradient(circle at 48% 14%, rgba(255, 255, 255, .98), rgba(214, 232, 255, .72) 24%, transparent 58%),
+        linear-gradient(180deg, rgba(232, 242, 255, .92), rgba(255, 255, 255, .2));
+      mix-blend-mode: screen;
+    }
+
+    #gameScreen.screen-flash::after {
+      animation: lightningFlash .82s ease-out both;
+    }
+
     .bg-lodge { background-image: linear-gradient(135deg, #52371d, #203b38 48%, #161819); }
     .bg-black { background: #000; }
     .bg-black::after { display: none; }
@@ -280,6 +297,14 @@
       to { opacity: 1; }
     }
 
+    @keyframes lightningFlash {
+      0% { opacity: 0; }
+      7% { opacity: 1; }
+      18% { opacity: .14; }
+      27% { opacity: .78; }
+      100% { opacity: 0; }
+    }
+
     @keyframes sierraSilentExit {
       0% {
         opacity: 1;
@@ -370,7 +395,9 @@
     }
 
     #gameScreen.day-transitioning .dialogue,
-    #gameScreen.day-transitioning .choices {
+    #gameScreen.day-transitioning .choices,
+    #gameScreen.establishing-pause .dialogue,
+    #gameScreen.establishing-pause .choices {
       opacity: 0;
       visibility: hidden;
       pointer-events: none;
@@ -1277,7 +1304,7 @@
         <div class="gallery-grid" id="galleryGrid"></div>
         <details style="margin-top:14px; text-align:left; font-size:0.84rem; color:#5d4b2d;">
           <summary>Audio Credits</summary>
-          <p style="margin-top:8px; white-space:pre-line;">Almost Bliss, Clear Air, Evening, Windswept, On My Way, Morning, Fireflies and Stardust, and Crowd Hammer by Kevin MacLeod (incompetech.com), licensed CC BY 4.0. Button Click Sound Effect by qubodup (OpenGameArt), CC0. Creaky Door Hinge Spooky by w.forster.1@gmail.com (OpenGameArt), CC0. Opening and Closing a Map Sounds by Spring Spring (OpenGameArt), CC0. Chimey UI Sounds by MouseBYTE (OpenGameArt), CC0. School bus country road interior by kyles (Freesound), CC0. Bus Arriving And Departing Sound Effect by UnstuntedSFX, royalty-free.</p>
+          <p style="margin-top:8px; white-space:pre-line;">Almost Bliss, Clear Air, Evening, Windswept, On My Way, Morning, Fireflies and Stardust, and Crowd Hammer by Kevin MacLeod (incompetech.com), licensed CC BY 4.0. Button Click Sound Effect by qubodup (OpenGameArt), CC0. Creaky Door Hinge Spooky by w.forster.1@gmail.com (OpenGameArt), CC0. Opening and Closing a Map Sounds by Spring Spring (OpenGameArt), CC0. Chimey UI Sounds by MouseBYTE (OpenGameArt), CC0. Rain (loopable) by Ylmir (OpenGameArt), CC0. Rain On The Roof by Roman Lipatov (Directory.Audio), CC0. School bus country road interior by kyles (Freesound), CC0. Bus Arriving And Departing Sound Effect by UnstuntedSFX, royalty-free.</p>
         </details>
         <div class="setup-actions">
           <button class="primary" id="closeGalleryBtn">Return</button>

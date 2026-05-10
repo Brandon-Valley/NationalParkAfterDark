@@ -44,11 +44,22 @@ const defaultState = {
 let state = clone(defaultState);
 let spriteLoadToken = 0;
 let lineAutoAdvanceTimer = null;
+let establishingPauseTimer = null;
 
 const characters = {
   player: { name: () => state.playerName, sprite: "", color: "#7b2f24" },
   narrator: { name: "Narrator", sprite: "", color: "#5f3a19" },
-  jack: { name: "Jack", shortName: "Jack", park: "Olympic", location: "olympic", sprites: characterSprites("jack"), color: "#8f3f24" },
+  jack: {
+    name: "Jack",
+    shortName: "Jack",
+    park: "Olympic",
+    location: "olympic",
+    sprites: {
+      ...characterSprites("jack"),
+      offeringShirt: "assets/charactures/jack/full_love/offering_shirt.png"
+    },
+    color: "#8f3f24"
+  },
   caleb: {
     name: "Caleb",
     shortName: "Caleb",
@@ -115,6 +126,16 @@ const backgroundCatalog = {
     sunset: "assets/backgrounds/special/yosemite_meadow_night.png",
     night: "assets/backgrounds/special/yosemite_meadow_night.png"
   },
+  jackCabinNight: {
+    daytime: "assets/backgrounds/special/jack/cabin_interior_night.png",
+    sunset: "assets/backgrounds/special/jack/cabin_interior_night.png",
+    night: "assets/backgrounds/special/jack/cabin_interior_night.png"
+  },
+  jackCabinDay: {
+    daytime: "assets/backgrounds/special/jack/cabin_interior_daytime.png",
+    sunset: "assets/backgrounds/special/jack/cabin_interior_daytime.png",
+    night: "assets/backgrounds/special/jack/cabin_interior_daytime.png"
+  },
   sequoia: {
     daytime: "assets/backgrounds/time_variants/sequoia/daytime.png",
     sunset: "assets/backgrounds/time_variants/sequoia/sunset.png",
@@ -137,6 +158,8 @@ const backgroundClasses = {
   yellowstoneMisty: "bg-yellowstone",
   yosemite: "bg-yosemite",
   yosemiteMeadowNight: "bg-yosemite",
+  jackCabinNight: "bg-smoky",
+  jackCabinDay: "bg-smoky",
   sequoia: "bg-smoky",
   zion: "bg-zion"
 };
@@ -172,17 +195,22 @@ const sfxTracks = {
   character: { src: "assets/audio/sfx/qubodup-click/qubodup-click/qubodup-click1.wav", volume: 0.2 },
   save: { src: "assets/audio/sfx/chimey/Chime_Save.mp3", volume: 0.58 },
   door: { src: "assets/audio/sfx/creaky_door_hinge.wav", volume: 0.68 },
+  thunderFlash: { src: "assets/audio/sfx/ambient/thunder_flash.wav", volume: 0.76 },
   busApproachStop: { src: "assets/audio/sfx/bus/bus_approach_stop.mp3", volume: 0.62, channel: "bus" },
   busIdle: { src: "assets/audio/sfx/bus/bus_idle.mp3", volume: 0.45, channel: "bus" },
   busDeparture: { src: "assets/audio/sfx/bus/bus_departure.mp3", volume: 0.62, channel: "bus" }
 };
 
 const ambientTracks = {
-  bus: { src: "assets/audio/sfx/bus/school_bus_country_road_loop.ogg", volume: 0.32, delayMs: 1400, fadeMs: 2600 }
+  bus: { src: "assets/audio/sfx/bus/school_bus_country_road_loop.ogg", volume: 0.32, delayMs: 1400, fadeMs: 2600 },
+  rainForest: { src: "assets/audio/sfx/ambient/rain_forest_loop.ogg", volume: 0.34, fadeMs: 1800, stopFadeMs: 1600 },
+  rainRoof: { src: "assets/audio/sfx/ambient/rain_roof_loop.mp3", volume: 0.42, fadeMs: 1800, stopFadeMs: 3600 },
+  morningBirds: { src: "assets/audio/sfx/ambient/morning_birds_loop.wav", volume: 0.34, fadeMs: 2200, stopFadeMs: 1800 }
 };
 
 const cgLibrary = {
-  jackCabin: { title: "Rain-Soaked Cabin", image: "assets/backgrounds/time_variants/olympic/daytime.png" },
+  jackCabin: { title: "Rain-Soaked Cabin", image: "assets/backgrounds/special/jack/cabin_interior_night.png" },
+  jackFullLoveGood: { title: "Rain On The Roof", image: "assets/backgrounds/special/jack/cabin_interior_daytime.png" },
   calebSteam: { title: "Boardwalk Boundaries", image: "assets/backgrounds/time_variants/yellowstone/daytime.png" },
   calebFullLoveGood: { title: "Steam, Sparks, and Footnotes", image: "assets/backgrounds/special/yellowstone_night_misty.png" },
   sierraWaterfall: { title: "No Filter Needed", image: "assets/backgrounds/time_variants/yosemite/sunset.png" },
@@ -192,6 +220,13 @@ const cgLibrary = {
 };
 
 const fullLoveScenes = {
+  jack: {
+    character: "jack",
+    requiredFeeling: 10,
+    times: ["night"],
+    entryScene: "full_love_jack_start",
+    completedFlag: "jackFullLoveGood"
+  },
   caleb: {
     character: "caleb",
     requiredFeeling: 10,
@@ -264,9 +299,9 @@ const parkFlavor = {
     place: "the Yosemite waterfall trail",
     visit: {
       daytime: {
-        low: ["Sierra bounds ahead on the Yosemite trail, then stops to make sure you are not turning the overlook into a performance piece.", "Granite cliffs rise clean and enormous behind her. She says they are hard to impress, but you are welcome to keep trying on both of them."],
+        low: ["Sierra bounds ahead on the Yosemite trail, then stops to make sure you are actually looking at the overlook.", "Granite cliffs rise clean and enormous behind her. She says they are hard to impress, but you are welcome to keep trying on both of them."],
         neutral: ["Sierra leads you toward a waterfall throwing mist into the sun. She moves like the trail is a dance floor with consequences.", "She teases you into looking up from the obvious view to the better one, then adds that your focusing face is trouble."],
-        high: ["Sierra waits at the waterfall overlook, bright-eyed and wind-tossed, like Yosemite personally gave her good lighting.", "She grins when mist catches in your hair and says Yosemite is flirting with you. Then she says she was there first."]
+        high: ["Sierra waits at the waterfall overlook, bright-eyed and wind-tossed, like Yosemite personally gave her good lighting.", "She grins when mist catches in your hair and says Yosemite is showing off for you. Then she says it has excellent taste."]
       },
       sunset: {
         low: ["Sunset paints the granite pink. Sierra loves the view too much to stay annoyed, but she gives you no free points.", "She asks whether you can appreciate a cliff without making it about yourself, then smiles like she might grade the answer on charm."],
@@ -274,15 +309,15 @@ const parkFlavor = {
         high: ["Sierra pulls you to a viewpoint just as the granite catches fire with sunset.", "For a second she is quiet. Then she ruins the solemnity beautifully by saying the view is almost as distracting as you."]
       },
       night: {
-        low: ["The waterfall is a pale line in the dark. Sierra keeps the pace brisk and the conversation sharper.", "She is still dazzling, just currently using it as a weapon with excellent aim."],
+        low: ["The waterfall is a pale line in the dark. Sierra keeps the pace brisk and the conversation sharper.", "She is still impossible to ignore, even when every smile arrives with a point on it."],
         neutral: ["At night, Yosemite turns spare and echoing. Sierra points out the sound of water before you can see it.", "She likes that you listen, and she tells you so in a voice designed to make listening difficult."],
         high: ["Moonlight turns the waterfall silver. Sierra takes your hand for one tricky step and does not immediately let go.", "She says some views work better when nobody is trying to caption them, then almost mentions another place before deciding you have not earned that secret yet."]
       }
     },
     surprise: {
-      low: ["Sierra is perched near check-in, lacing her boots. 'Going somewhere? Try not to make the landscape carry the conversation. You have a nice mouth; use it responsibly.'"],
-      neutral: ["Sierra jogs past check-in, then doubles back. 'Hydrate. Also, if you see a dramatic cliff, say hello for me. If it flirts back, I taught it everything.'"],
-      high: ["Sierra appears at check-in with waterfall mist still in her hair. 'I was not waiting for you. I was waiting dramatically near your path because subtlety looked boring on me.'"]
+      low: ["Sierra is perched near check-in, lacing her boots. 'Going somewhere? Try not to make the landscape carry the conversation. I have high standards for trail banter.'"],
+      neutral: ["Sierra jogs past check-in, then doubles back. 'Hydrate. Also, if you see a dramatic cliff, say hello for me. If it tries to impress you, I taught it everything.'"],
+      high: ["Sierra appears at check-in with waterfall mist still in her hair. 'I was not waiting for you. I just happened to choose the most obvious place to be found.'"]
     }
   },
   dakota: {
@@ -400,8 +435,8 @@ const arrivalFlavor = {
     ],
     night: [
       ["narrator", "At night, Yosemite becomes a shape of cliffs and water sounds, huge and close in the dark."],
-      ["player", "The waterfall is louder when I cannot see all of it. That feels like a metaphor with hiking boots and Sierra's fingerprints on it."],
-      ["narrator", "Sierra's flashlight bobs along the trail before she appears, already moving like stillness owes her money and you owe her your full attention.", "sierra"]
+      ["player", "The waterfall is louder when I cannot see all of it. Sierra is probably going to tell me that was the point."],
+      ["narrator", "Sierra's flashlight bobs along the trail before she appears, already moving like the dark is another path she knows by heart.", "sierra"]
     ]
   },
   dakota: {
@@ -595,32 +630,32 @@ const visitBeats = {
       choicesByMood: {
         low: [
           { label: "Put the camera away and look before you speak.", feelings: { sierra: 1 }, tone: "warm", reaction: [["sierra", "Okay. That was almost suspiciously growth-oriented.", "sierra"], ["sierra", "Careful, that look is annoyingly good on you.", "sierra:sly"], ["narrator", "She still looks guarded, but the grin stops hiding quite so hard.", "sierra"]] },
-          { label: "Tell her even her judgment has unfair charisma.", feelings: { sierra: 1 }, tone: "flirt", reaction: [["sierra", "Oh.", "sierra:blushing"], ["sierra", "Flattery during probation? Risky. Unfortunately, I respect dangerous trail behavior only when it is verbal.", "sierra:sly"], ["narrator", "Her eyes narrow, but the corner of her mouth gives the whole performance away.", "sierra"]] },
-          { label: "Say the view will still be there after you get the shot.", feelings: { sierra: -3 }, tone: "bad", reaction: [["sierra", "And I will still be here judging you accurately. Do not worry, I make disappointment look fantastic.", "sierra:sly"], ["narrator", "Her disappointment moves faster than the waterfall mist, even when she weaponizes the smile.", "sierra:grumpy"]] }
+          { label: "Tell her even her judgment has unfair charisma.", feelings: { sierra: 1 }, tone: "flirt", reaction: [["sierra", "Oh.", "sierra:blushing"], ["sierra", "Flattery during probation? Risky. Unfortunately, I respect dangerous trail behavior only when it is verbal.", "sierra:sly"], ["narrator", "Her eyes narrow, but the corner of her mouth gives her away.", "sierra"]] },
+          { label: "Say the view will still be there after you get the shot.", feelings: { sierra: -3 }, tone: "bad", reaction: [["sierra", "And I will still be here judging you accurately. Do not worry, I make disappointment look fantastic.", "sierra:sly"], ["narrator", "Her disappointment moves faster than the waterfall mist, even when she tries to keep the smile in place.", "sierra:grumpy"]] }
         ]
       },
       reactions: {
-        warm: [["sierra", "There. That pause? That is the good stuff.", "sierra"], ["sierra", "See, I knew there was a romantic lead hiding under all that screen glare.", "sierra:sly"], ["narrator", "She smiles like you found a trail marker hidden in plain sight, then looks away before the smile can tell on her.", "sierra"]],
+        warm: [["sierra", "There. That pause? That is the good stuff.", "sierra"], ["sierra", "See, I knew you could let the place get to you if you stopped arguing with it.", "sierra:sly"], ["narrator", "She smiles like you found a trail marker hidden in plain sight, then looks away before the smile can tell on her.", "sierra"]],
         flirt: [["sierra", "Oh, that was smooth.", "sierra:blushing"], ["sierra", "Complicated is my best angle. Keep looking up, though. I want Yosemite to think it still has a chance.", "sierra:sly"], ["player", "I respect the terrain.", "sierra:blushing"]],
         bad: [["sierra", "Oh, we are doing this the hard way. Fine. I look incredible when I am right.", "sierra:sly"], ["narrator", "She steps between you and the shot with athletic precision.", "sierra:grumpy"]]
       }
     },
     {
       prompt: {
-        low: ["narrator", "Sierra leads you up the trail at a pace that suggests forgiveness has cardio requirements and flirtation has endurance training.", "sierra:grumpy"],
+        low: ["narrator", "Sierra leads you up the trail at a pace that suggests forgiveness has cardio requirements and you are currently behind on both.", "sierra:grumpy"],
         neutral: ["narrator", "The waterfall throws cool mist across the trail. Sierra slows just enough for you to catch the rainbow in it, and maybe the way she checks your reaction.", "sierra"],
         high: ["narrator", "Sierra takes the steep steps two at a time, then waits at the top pretending she did not check whether you followed, whether you enjoyed the view, or whether you noticed the quiet after her laugh.", "sierra:blushing"]
       },
       choices: [
         { label: "Ask her what part of the trail most people miss.", feelings: { sierra: 2 }, tone: "warm" },
-        { label: "Ask if keeping up with her always feels like being flirted with by a mountain.", feelings: { sierra: 2 }, tone: "flirt" },
+        { label: "Ask if keeping up with her always feels like being personally challenged by a mountain.", feelings: { sierra: 2 }, tone: "flirt" },
         { label: "Complain that the climb is too much work.", feelings: { sierra: -2 }, tone: "bad" }
       ],
       choicesByMood: {
         low: [
-          { label: "Ask what you should notice before the obvious overlook.", feelings: { sierra: 1 }, tone: "warm", reaction: [["sierra", "The mist on the leaves. The sound bouncing off granite. Your own breathing, if you can stand being sincere.", "sierra"], ["sierra", "Yours is cute when you stop performing.", "sierra:sly"], ["narrator", "She says it sharply, but she slows so you can see it.", "sierra"]] },
+          { label: "Ask what you should notice before the obvious overlook.", feelings: { sierra: 1 }, tone: "warm", reaction: [["sierra", "The mist on the leaves. The sound bouncing off granite. Your own breathing, if you can stand being sincere.", "sierra"], ["sierra", "Yours is cute when you forget to be clever.", "sierra:sly"], ["narrator", "She says it sharply, but she slows so you can see it.", "sierra"]] },
           { label: "Ask whether she always scolds people this attractively.", feelings: { sierra: 1 }, tone: "flirt", reaction: [["sierra", "Wow. Starting there?", "sierra:blushing"], ["sierra", "Only the ones with survival potential and terrible timing.", "sierra:sly"], ["narrator", "She turns uphill before you can answer, but her laugh stays behind long enough to count.", "sierra:laughing"]] },
-          { label: "Lag behind to film her walking ahead.", feelings: { sierra: -3 }, tone: "bad", reaction: [["sierra", "Do not turn me into scenery because you are losing the plot. I am the plot twist, sweetheart.", "sierra:sly"], ["narrator", "The waterfall suddenly feels much louder.", "sierra:grumpy"]] }
+          { label: "Lag behind to film her walking ahead.", feelings: { sierra: -3 }, tone: "bad", reaction: [["sierra", "Do not turn me into scenery because you forgot to keep up. I am much more interesting when you are present for it.", "sierra:sly"], ["narrator", "The waterfall suddenly feels much louder.", "sierra:grumpy"]] }
         ]
       },
       reactions: {
@@ -644,7 +679,7 @@ const visitBeats = {
         low: [
           { label: "Tell her one real memory beat one perfect post today.", feelings: { sierra: 1 }, tone: "warm", reaction: [["sierra", "Finally. Was that so painful?", "sierra"], ["sierra", "You survived sincerity and still look pretty. Inspiring.", "sierra:sly"], ["player", "A little. Worth it.", "sierra:blushing"]] },
           { label: "Admit she is making it difficult to look at anything else.", feelings: { sierra: 1 }, tone: "flirt", reaction: [["sierra", "...Oh.", "sierra:blushing"], ["sierra", "That is the first bad trail decision today that I might reward.", "sierra:sly"], ["narrator", "The waterfall mist catches in her grin like the park itself is encouraging bad ideas.", "sierra"]] },
-          { label: "Ask her to move so you can get a cleaner shot.", feelings: { sierra: -3 }, tone: "bad", reaction: [["sierra", "Wow. You really found the trapdoor under the floor. And here I was, looking gorgeous near your redemption arc.", "sierra:sly"], ["narrator", "She steps aside, but the space she leaves feels colder than shade.", "sierra:grumpy"]] }
+          { label: "Ask her to move so you can get a cleaner shot.", feelings: { sierra: -3 }, tone: "bad", reaction: [["sierra", "Wow. You really found the trapdoor under the floor. And here I was, looking gorgeous near your chance to be better.", "sierra:sly"], ["narrator", "She steps aside, but the space she leaves feels colder than shade.", "sierra:grumpy"]] }
         ]
       },
       reactions: {
@@ -1069,14 +1104,14 @@ const scenes = {
       ["narrator", "A woman jogs down from the overlook as if gravity signed a waiver for her, then slows with a grin that feels personally illegal.", "sierra"],
       ["sierra", "You made it. Good. The cliff was starting to think you were intimidated. I told it to wait until you saw me.", "sierra:sly"],
       ["player", "I am intimidated. I am just being stylish about it.", "sierra:laughing"],
-      ["sierra", "Excellent. Fear with presentation. Keep up, pretty thing.", "sierra:sly"],
+      ["sierra", "Excellent. Brave enough to admit it, stylish enough to survive it. Keep up, pretty thing.", "sierra:sly"],
       ["sierra", "Also, Jack told me not to let you undersell yourself. He said it with his whole face, which is how Jack says everything. Cute, but exhausting.", "sierra:sly"],
       ["player", "He has never owned a subtle expression in his life.", "sierra:laughing"]
     ],
     choices: [
-      { label: "Match Sierra's pace and compliment the view without making it a bit.", next: "intro_yosemite_sierra_two", feelings: { sierra: 2 }, reaction: [["sierra", "Look at you, having a genuine experience.", "sierra"], ["sierra", "Dangerous. Attractive. Try not to make me proud this early.", "sierra:sly"], ["narrator", "She grins and lets the trail open toward the waterfall.", "sierra"]] },
+      { label: "Match Sierra's pace and compliment the view without overselling it.", next: "intro_yosemite_sierra_two", feelings: { sierra: 2 }, reaction: [["sierra", "Look at you, having a genuine experience.", "sierra"], ["sierra", "Dangerous. Attractive. Try not to make me proud this early.", "sierra:sly"], ["narrator", "She grins and lets the trail open toward the waterfall.", "sierra"]] },
       { label: "Tell Sierra the view has competition.", next: "intro_yosemite_sierra_two", feelings: { sierra: 2 }, reaction: [["sierra", "Oh.", "sierra:blushing"], ["sierra", "Finally, someone respecting Yosemite by bringing ambition.", "sierra:sly"], ["narrator", "She points up the trail, but her smile stays on you another second.", "sierra:blushing"]] },
-      { label: "Try to turn the waterfall into content immediately.", next: "intro_yosemite_sierra_two", feelings: { sierra: -2 }, reaction: [["sierra", "The waterfall is not your unpaid intern.", "sierra:grumpy"], ["sierra", "Neither am I, sweetheart, even when I am carrying the scene.", "sierra:sly"], ["player", "That is... fair.", "sierra:grumpy"]] }
+      { label: "Try to turn the waterfall into content immediately.", next: "intro_yosemite_sierra_two", feelings: { sierra: -2 }, reaction: [["sierra", "The waterfall is not your unpaid intern.", "sierra:grumpy"], ["sierra", "Neither am I, sweetheart, even when I am clearly the best thing in frame.", "sierra:sly"], ["player", "That is... fair.", "sierra:grumpy"]] }
     ]
   },
   intro_yosemite_sierra_two: {
@@ -1089,9 +1124,9 @@ const scenes = {
     ],
     choices: [
       { label: "Ask what most people miss here.", next: "intro_yosemite_sierra_three", feelings: { sierra: 2 }, reaction: [["sierra", "The sound before the view. The water announces itself, and everyone still waits for proof.", "sierra"], ["sierra", "Same mistake people make with chemistry. Same mistake they make with people who joke too fast.", "sierra:blushing"], ["narrator", "She says it lightly, but the answer has roots and a wink at the end.", "sierra"]] },
-      { label: "Tell her she notices things like someone in love with the place.", next: "intro_yosemite_sierra_three", feelings: { sierra: 1 }, reaction: [["sierra", "Obviously. Have you seen it?", "sierra:laughing"], ["sierra", "I am loyal to beauty. Present company included, if you keep behaving.", "sierra:sly"], ["narrator", "She laughs, but there is a blush tucked behind the bravado, quick enough that she hopes you missed it.", "sierra:blushing"]] },
+      { label: "Tell her she notices things like someone in love with the place.", next: "intro_yosemite_sierra_three", feelings: { sierra: 1 }, reaction: [["sierra", "Obviously. Have you seen it?", "sierra:laughing"], ["sierra", "I am loyal to beauty. Present company included, if you keep behaving.", "sierra:sly"], ["narrator", "She laughs, but there is a blush tucked into the edge of it, quick enough that she hopes you missed it.", "sierra:blushing"]] },
       { label: "Tell her eye contact sounds like a dangerous reward.", next: "intro_yosemite_sierra_three", feelings: { sierra: 2 }, reaction: [["sierra", "Mm.", "sierra:blushing"], ["sierra", "It is. Yosemite has cliffs; I have follow-through.", "sierra:sly"], ["narrator", "She says it without missing a step, devastatingly casual.", "sierra"]] },
-      { label: "Say the biggest thing is usually the best shot.", next: "intro_yosemite_sierra_three", feelings: { sierra: -2 }, reaction: [["sierra", "That is how people come home with twelve identical photos and no memory.", "sierra:grumpy"], ["sierra", "Tragic, especially when I am standing right here with narrative tension.", "sierra:sly"], ["player", "Point taken.", "sierra:grumpy"]] }
+      { label: "Say the biggest thing is usually the best shot.", next: "intro_yosemite_sierra_three", feelings: { sierra: -2 }, reaction: [["sierra", "That is how people come home with twelve identical photos and no memory.", "sierra:grumpy"], ["sierra", "Tragic, especially when I am standing right here making your day more interesting.", "sierra:sly"], ["player", "Point taken.", "sierra:grumpy"]] }
     ]
   },
   intro_yosemite_sierra_three: {
@@ -1330,6 +1365,206 @@ const scenes = {
     lines: () => buildVisitWrapupLines(state.pendingDestination),
     nextAction: completeVisit
   },
+  full_love_jack_start: {
+    label: "Olympic After Dark",
+    background: () => ({ location: "olympic", time: "night" }),
+    onEnter: () => { state.visitTime = "night"; state.pendingDestination = "jack"; state.pendingFullLoveScene = "jack"; },
+    lines: [
+      ["narrator", "The heart on Jack's route card warms under your thumb. The kiosk hums, thinks about being normal, and declines."],
+      ["narrator", "Olympic opens around you in the usual night-dark hush: cedar silhouettes, wet ferns silvered by lantern light, Jack's cabin tucked beyond the trail like a secret the forest has been keeping."],
+      ["player", "Jack?"],
+      ["narrator", "The porch lantern lifts. Jack steps into view with his familiar grin already arriving before the rest of him.", "jack"],
+      ["jack", "{playerName}. Hey. You made it. I was going to say something smooth, but then I saw you and all my sentences put on hiking boots and ran away.", "jack:blushing"],
+      ["player", "That is pretty normal for us.", "jack:blushing"],
+      ["jack", "Yeah. Good normal, though. The kind where I know where to stand, and you know I will pretend not to worry while absolutely worrying.", "jack"],
+      ["narrator", "He offers the lantern handle. Your fingers brush around the warm metal, and the tiny contact rearranges the night more than it has any right to.", "jack:blushing"],
+      ["jack", "I thought we could take the short loop. Nothing heroic. Just trees, rain smell, and maybe me finally saying one sincere thing without tripping over a fern.", "jack:blushing"],
+      ["narrator", "White light cracks across the forest. For one instant every cedar branch turns sharp and silver.", null, { screenFlash: true, audio: "thunderFlash" }],
+      ["player", "That was new."],
+      ["narrator", "Rain arrives hard enough to sound like applause with an agenda."]
+    ],
+    next: "full_love_jack_rain"
+  },
+  full_love_jack_rain: {
+    label: "Olympic After Dark",
+    background: () => ({ location: "olympic", time: "night" }),
+    ambient: "rainForest",
+    lines: [
+      ["jack", "Oh no. Okay. That is not short-loop rain. That is cabin-now rain.", "jack:grumpy"],
+      ["player", "Cabin-now rain sounds official.", "jack:grumpy"],
+      ["jack", "Very official. Ranger-adjacent. Also I promised myself I would not let you get soaked on the night I finally worked up courage, so... please take cover in my cabin?", "jack:blushing"],
+      ["player", "Lead the way, Jack.", "jack:blushing"],
+      ["narrator", "He shields the lantern with one big hand and keeps the other near your elbow as you cross the slick porch boards. The rain follows you right up to the door."]
+    ],
+    next: "full_love_jack_cabin"
+  },
+  full_love_jack_cabin: {
+    label: "Jack's Cabin",
+    background: () => ({ location: "jackCabinNight", time: "night" }),
+    ambient: "rainRoof",
+    lines: [
+      ["narrator", "Inside, Jack's cabin glows with lantern light and stove warmth. Rain drums against the roof in a steady, intimate rhythm."],
+      ["narrator", "Jack shuts the door behind you, then immediately looks apologetic, like the weather is a guest he invited by mistake.", "jack:grumpy"],
+      ["jack", "I am sorry. This was supposed to be romantic in a competent way, not romantic in a weather-emergency way.", "jack:grumpy"],
+      ["player", "Jack. This is very you.", "jack"],
+      ["jack", "That is either reassuring or a full performance review.", "jack:laughing"],
+      ["narrator", "He laughs, then softens. The rain on the roof fills the pause so neither of you has to run from it.", "jack:blushing"],
+      ["jack", "We were friends before any of this got complicated. Before the retreat, before the route cards, before I started looking at you and forgetting useful nouns.", "jack:blushing"],
+      ["jack", "I keep thinking friendship should feel smaller than this. Familiar, safe, easy to carry. But with you it feels like it grew rooms while I was not looking.", "jack:blushing"],
+      ["player", "Rooms?", "jack:blushing"],
+      ["jack", "Yeah. Places I want to stay. Places I did not know I was allowed to want.", "jack:blushing"],
+      ["narrator", "A wet chill finally catches up with you. You shiver before you can hide it, and Jack notices like noticing you is the oldest habit he has.", "jack:grumpy"],
+      ["jack", "You're cold. Hold on. I have dry blankets, but my clean flannel is warmer than it has any right to be.", "jack:grumpy"],
+      ["player", "You do not have to give me your shirt.", "jack:grumpy"],
+      ["jack", "I know. That is why I want to.", "jack:blushing"]
+    ],
+    next: "full_love_jack_shirt"
+  },
+  full_love_jack_shirt: {
+    label: "Jack's Cabin",
+    background: () => ({ location: "jackCabinNight", time: "night" }),
+    ambient: "rainRoof",
+    lines: [
+      ["narrator", "Jack turns away just enough to be polite and unbuttons the red flannel. When he faces you again, he is blushing, bare-chested, and holding the shirt out with both hands like it matters.", "jack:offeringShirt"],
+      ["jack", "Here. It is dry. It smells like cedar smoke and probably me being nervous, but it will keep you warm.", "jack:offeringShirt"],
+      ["player", "Jack...", "jack:offeringShirt"],
+      ["jack", "I know this is a lot. I know we have been friends long enough that changing the shape of it feels like stepping off a trail we both memorized.", "jack:offeringShirt"],
+      ["jack", "But I do not want to pretend the old trail is all there is. Not when being near you feels like coming home and getting lost at the same time.", "jack:offeringShirt"],
+      ["narrator", "The shirt is warm from him. The rain keeps tapping overhead, patient as a heartbeat.", "jack:offeringShirt"]
+    ],
+    next: "full_love_jack_prompt"
+  },
+  full_love_jack_prompt: {
+    label: "Jack's Cabin",
+    background: () => ({ location: "jackCabinNight", time: "night" }),
+    ambient: "rainRoof",
+    lines: [
+      ["jack", "If you take it, I need you to know what I mean. Not pressure. Not a joke. Just... me choosing to be brave with someone who already knows where all my clumsiest parts live.", "jack:offeringShirt"],
+      ["jack", "Is this okay?", "jack:offeringShirt"]
+    ],
+    choices: [
+      {
+        label: "Take his shirt and tell him you want the friendship and everything it is becoming.",
+        next: "full_love_jack_good",
+        unlockCG: "jackFullLoveGood",
+        flags: { jackFullLoveGood: true }
+      },
+      {
+        label: "Tell him you love him as your friend, and you want to keep that safe tonight.",
+        next: "full_love_jack_bad",
+        feelings: { jack: -3 }
+      }
+    ]
+  },
+  full_love_jack_good: {
+    label: "Jack's Cabin",
+    background: () => ({ location: "jackCabinNight", time: "night" }),
+    ambient: "rainRoof",
+    lines: [
+      ["narrator", "You take the flannel. Jack watches your hands close around it like he is trying very hard to remember how breathing works.", "jack:offeringShirt"],
+      ["player", "I want this. The friendship. The history. The part where it turns into more and we get to learn that slowly, messily, together.", "jack:offeringShirt"],
+      ["jack", "Together is my favorite plan. I did not know plans could have favorites until right now.", "jack:offeringShirt"],
+      ["narrator", "You slip into his shirt. It is too big in the sleeves, warm at the collar, and unfairly full of him.", "jack:offeringShirt"],
+      ["jack", "Oh.", "jack:offeringShirt"],
+      ["player", "Good oh?", "jack:offeringShirt"],
+      ["jack", "Historically good. Possibly ranger-report good, except I would set the report on fire before letting Caleb edit it.", "jack:offeringShirt"],
+      ["narrator", "He steps closer. Slowly. Carefully. Giving you every chance to stop him and hoping with his whole face that you will not need to.", "jack:offeringShirt"],
+      ["player", "Jack."],
+      ["narrator", "The kiss starts as a question and becomes an answer both of you already knew by heart. His hands settle at your waist over the borrowed flannel, reverent and shaking a little, and the cabin seems to draw warm around you.", "jack:offeringShirt"],
+      ["jack", "I have wanted to do that for a very long time.", "jack:offeringShirt"],
+      ["player", "How long?", "jack:offeringShirt"],
+      ["jack", "Long enough that the honest answer needs its own trail map.", "jack:offeringShirt"],
+      ["narrator", "The rest of the night unfolds in rain-soft pieces: another kiss by the stove, laughter against his shoulder, his shirt slipping from one shared warmth into another, Jack murmuring your name like he is still amazed he is allowed to.", "jack:offeringShirt"],
+      ["narrator", "There is heat, and tenderness, and the deep relief of wanting someone who wants you back without making either of you smaller.", "jack:offeringShirt"],
+      ["narrator", "At some point the storm refuses to let up. Jack pulls a blanket over both of you on the narrow cabin bed and promises, sleepily, to get you back to the lodge at first light.", "jack:offeringShirt"],
+      ["jack", "For the record, I am still your friend.", "jack:offeringShirt"],
+      ["player", "Good.", "jack:offeringShirt"],
+      ["jack", "And also wildly, inconveniently, cabin-roof-rain-level in love with you.", "jack:offeringShirt"],
+      ["narrator", "You answer him softly. The rain keeps its rhythm overhead until words become breathing, and breathing becomes sleep."]
+    ],
+    nextAction: completeJackFullLoveNight
+  },
+  full_love_jack_bad: {
+    label: "Jack's Cabin",
+    background: () => ({ location: "jackCabinNight", time: "night" }),
+    ambient: "rainRoof",
+    lines: [
+      ["narrator", "Jack listens all the way through. The shirt stays offered between you, but his face does not close. If anything, it gets gentler.", "jack:offeringShirt"],
+      ["player", "I love you, Jack. I do. But I think tonight I need that love to stay friendship-shaped.", "jack:offeringShirt"],
+      ["jack", "Okay.", "jack:offeringShirt"],
+      ["player", "Okay?", "jack:offeringShirt"],
+      ["jack", "Yeah. Okay. Thank you for trusting me with the real answer.", "jack:offeringShirt"],
+      ["narrator", "There is a flicker of disappointment, because Jack is honest enough to feel things when they happen. But he folds it carefully into kindness instead of making it your job.", "jack:offeringShirt"],
+      ["jack", "Friendship-shaped is not a consolation prize. It is us. It is years of bad jokes and trail snacks and you knowing I say 'left' when I mean 'the other left.'", "jack:offeringShirt"],
+      ["jack", "Also, I should probably put this back on before I try to be emotionally mature and catch a cold at the same time.", "jack:laughing"],
+      ["narrator", "He pulls the flannel back on, cheeks pink, smile real. The cabin feels a little less charged and a lot more familiar.", "jack"],
+      ["jack", "Since the rain has us trapped, do you want to play a board game? I have one about identifying mushrooms. Caleb says it is not a game because there is no scoring system. Caleb has clearly never experienced the thrill of correctly naming a fungus.", "jack:laughing"]
+    ],
+    next: "full_love_jack_friend_cabin"
+  },
+  full_love_jack_friend_cabin: {
+    label: "Jack's Cabin",
+    background: () => ({ location: "jackCabinNight", time: "night" }),
+    ambient: "rainRoof",
+    lines: [
+      ["narrator", "So you sit at Jack's little table while rain drums over the cabin roof and he deals a stack of illustrated mushroom cards with the solemnity of a wilderness judge.", "jack"],
+      ["player", "This mushroom looks fake.", "jack"],
+      ["jack", "That is exactly what the mushroom wants you to think.", "jack:laughing"],
+      ["narrator", "The game is ridiculous. Jack is delighted. You lose three rounds in a row to a man who keeps apologizing to the cards when he shuffles too aggressively.", "jack:laughing"],
+      ["jack", "For the record, I am really glad you are here.", "jack:blushing"],
+      ["player", "Even like this?", "jack:blushing"],
+      ["jack", "Especially like this. Safe is not boring with you. Safe is... the place where I get to keep knowing you.", "jack:blushing"],
+      ["narrator", "The night relaxes around that. No performance, no hard feelings, no pretending the friendship was ever small. Just the stove, the rain, and Jack laughing when you accuse a mushroom of emotional fraud.", "jack:laughing"]
+    ],
+    next: "full_love_jack_friend_rain_stop"
+  },
+  full_love_jack_friend_rain_stop: {
+    label: "Jack's Cabin",
+    background: () => ({ location: "jackCabinNight", time: "night" }),
+    lines: [
+      ["narrator", "Eventually the rain on the roof thins from a steady rush to a soft patter, then to a few last taps that fade into the cabin quiet."],
+      ["jack", "Hear that? The storm is letting up.", "jack"],
+      ["player", "So the mushroom tournament ends in a draw?", "jack"],
+      ["jack", "A dignified pause. The mushrooms and I are both very secure about it.", "jack:laughing"],
+      ["narrator", "He checks the porch, then comes back with your jacket and that practical Jack warmth that has always known how to get you home.", "jack"],
+      ["jack", "Path's safe now. I will walk you out to the trail light.", "jack"]
+    ],
+    next: "full_love_jack_friend_goodbye"
+  },
+  full_love_jack_friend_goodbye: {
+    label: "Olympic After Dark",
+    background: () => ({ location: "olympic", time: "night" }),
+    lines: [
+      ["narrator", "Outside, Olympic is wet and shining under the night sky. The cabin glows behind Jack, warm in the trees, while the forest exhales after the storm."],
+      ["narrator", "Jack stands with you by the porch steps, hands tucked into his flannel pockets, smile soft and steady.", "jack"],
+      ["jack", "Tonight was still good, right?", "jack"],
+      ["player", "Really good.", "jack"],
+      ["jack", "Good. Because I am counting mushroom night as a success. Possibly my finest work as a host and amateur fungus referee.", "jack:laughing"],
+      ["player", "Thank you for being you about it.", "jack:blushing"],
+      ["jack", "Always. I mean, I will still be awkward in new and surprising ways, but the important parts are steady.", "jack:blushing"],
+      ["narrator", "He hugs you before you go. It is warm, familiar, and easy to trust.", "jack"],
+      ["jack", "Get back safe, {playerName}. I will see you at the lodge tomorrow.", "jack"],
+      ["player", "Goodnight, Jack.", "jack"],
+      ["jack", "Goodnight.", "jack:blushing"]
+    ],
+    nextAction: completeFullLoveScene
+  },
+  full_love_jack_morning_wake: {
+    label: "Jack's Cabin",
+    background: () => ({ location: "jackCabinDay", time: "daytime" }),
+    ambient: "morningBirds",
+    onEnter: () => { state.timeOfDay = "daytime"; },
+    lines: [
+      ["narrator", "Morning finds Jack's cabin washed in quiet gray light. The rain has stopped. Somewhere outside, birds test the day with small, bright notes."],
+      ["narrator", "Jack is awake beside you, hair impossible, expression impossibly soft.", "jack:blushing"],
+      ["jack", "Hi.", "jack:blushing"],
+      ["player", "Hi.", "jack:blushing"],
+      ["jack", "I was going to make breakfast sound casual, but I am too happy and I think the eggs would know.", "jack:laughing"],
+      ["narrator", "He walks you back to the lodge through clean morning air, hand warm around yours until the lobby doors come into view."],
+      ["narrator", "By the time you step inside Viral Vista Lodge, the normal morning rhythm is waiting, though nothing in your chest feels normal at all."]
+    ],
+    nextAction: completeJackFullLoveMorning
+  },
   full_love_caleb_start: {
     label: "Yellowstone After Dark",
     background: () => ({ location: "yellowstoneMisty", time: "night" }),
@@ -1435,16 +1670,17 @@ const scenes = {
     onEnter: () => { state.visitTime = "night"; state.pendingDestination = "sierra"; state.pendingFullLoveScene = "sierra"; },
     lines: [
       ["narrator", "The heart on Sierra's route card warms under your thumb, and the kiosk prints a ticket with one handwritten-looking note at the bottom: NO CAPTIONS AFTER MIDNIGHT."],
-      ["narrator", "Yosemite opens around you in night-blue granite and the distant voice of falling water. The familiar trail feels quieter now, like it has been holding its breath."],
+      ["narrator", "Yosemite opens around you in night-blue granite and the distant voice of falling water. The familiar trail feels quieter now, like it has saved its best answer for last."],
       ["player", "Sierra?"],
-      ["narrator", "A flashlight beam dances once across the trail, then drops. Sierra steps out from the dark already smiling, cheeks bright with cold air and trouble.", "sierra:laughing"],
-      ["sierra", "Look who followed the rules long enough to earn the dangerous version of Yosemite.", "sierra:sly"],
-      ["player", "Dangerous because it is dark, or dangerous because you are smiling like that?", "sierra:sly"],
-      ["sierra", "Yes.", "sierra:laughing"],
-      ["narrator", "She laughs, easy and bright, then nudges your shoulder with hers. The contact lingers half a second longer than her jokes usually allow.", "sierra:blushing"],
-      ["sierra", "Come on. I know a place. No crowds, no waterfall trying to win the conversation, no one pretending a perfect view makes them immune to feelings.", "sierra:blushing"],
-      ["player", "That last one sounds targeted.", "sierra:blushing"],
-      ["sierra", "Sweetheart, if I target you, you will know. This is me asking.", "sierra:blushing"]
+      ["narrator", "A flashlight beam cuts softly across the trail, then lowers. Sierra steps out of the dark with wind in her hair, cheeks bright from cold, and a small smile waiting for you.", "sierra:laughing"],
+      ["sierra", "You came.", "sierra:blushing"],
+      ["player", "Of course I did.", "sierra:blushing"],
+      ["narrator", "She looks down at the trail for half a breath, pleased enough that she has to let the feeling pass before she can move.", "sierra:blushing"],
+      ["sierra", "Good. I was hoping you would say it like that.", "sierra:blushing"],
+      ["player", "Like what?", "sierra:blushing"],
+      ["sierra", "Like it was easy.", "sierra:blushing"],
+      ["narrator", "She turns her flashlight toward a narrow side trail and offers you her hand.", "sierra"],
+      ["sierra", "Come on. I want to show you the place I go when Yosemite gets too big to explain.", "sierra"]
     ],
     next: "full_love_sierra_meadow"
   },
@@ -1452,18 +1688,17 @@ const scenes = {
     label: "Yosemite Meadow",
     background: () => ({ location: "yosemiteMeadowNight", time: "night" }),
     lines: [
-      ["narrator", "The trail opens into a high meadow washed in moonlight. Wildflowers silver at the edges. Grass bends softly under the night air. Far across the valley, cliffs rise like sleeping giants, and the waterfall glows pale against the dark."],
+      ["narrator", "The trail opens into a high meadow washed in moonlight. Wildflowers silver at the edges. Grass bends softly under the night air. Far across the valley, cliffs rise huge and quiet, and the waterfall glows pale against the dark."],
       ["player", "Oh."],
-      ["narrator", "For once, the word is small enough to be honest."],
       ["player", "This is beautiful."],
       ["narrator", "The meadow seems to make room around you: grass, stars, cold stone, warm breath, and the impossible feeling of being somewhere meant to be kept quiet."],
-      ["sierra", "Told you.", "sierra:stargazingStep2"],
-      ["narrator", "Sierra has already claimed a patch of grass like the meadow was saving it for her. She looks up instead of at you, but her smile knows exactly where you are.", "sierra:stargazingStep2"],
-      ["sierra", "Best ceiling in the building. That bright one? I used to pretend it was watching the trail for me when I had to close alone.", "sierra:stargazingStep2"],
+      ["sierra", "I know.", "sierra"],
+      ["narrator", "Sierra sits in the grass and tips her face toward the sky.", "sierra:stargazingStep2"],
+      ["sierra", "That bright one over the ridge? I used to pretend it was watching the trail for me when I closed alone.", "sierra:stargazingStep2"],
       ["player", "You came here by yourself?", "sierra:stargazingStep2"],
-      ["sierra", "Mhm. Don't look so worried. I am very brave, extremely fast, and only medium scared of noises I cannot flirt with.", "sierra:stargazingStep2"],
-      ["narrator", "She grins, but it does not quite finish becoming armor.", "sierra:stargazingStep3"],
-      ["sierra", "Lie down. The stars are better when you stop trying to deserve them.", "sierra:stargazingStep3"]
+      ["sierra", "Sometimes. It made the walk back feel shorter, knowing this was waiting up here.", "sierra:stargazingStep2"],
+      ["narrator", "She pats the grass beside her, then leaves her hand there a moment longer than necessary.", "sierra:stargazingStep3"],
+      ["sierra", "Lie down. The stars are better when you stop trying to win the staring contest.", "sierra:stargazingStep3"]
     ],
     next: "full_love_sierra_two"
   },
@@ -1472,15 +1707,15 @@ const scenes = {
     background: () => ({ location: "yosemiteMeadowNight", time: "night" }),
     lines: [
       ["narrator", "You lower yourself into the grass beside her. The cold comes through your jacket. Sierra's shoulder nearly touches yours, close enough that the space between you starts to feel deliberate.", "sierra:stargazingStep3"],
-      ["sierra", "I know I act like everything is a game.", "sierra:stargazingStep3"],
-      ["player", "You do have a championship record.", "sierra:stargazingStep3"],
-      ["sierra", "I know. Terrible burden, being this talented.", "sierra:stargazingStep3"],
-      ["narrator", "Her laugh fades into a breath. She keeps looking up, like honesty is easier when it has somewhere vast to go.", "sierra:stargazingStep3"],
-      ["sierra", "The flirting is real. The jokes are real. But sometimes they are also a very cute door with an excellent lock.", "sierra:stargazingStep3"],
-      ["player", "What is it locking away?", "sierra:stargazingStep3"],
-      ["sierra", "The part of me that wants to be taken seriously and is terrified someone will do it wrong.", "sierra:stargazingStep3"],
-      ["narrator", "The meadow goes still around the confession. Even the waterfall feels farther away.", "sierra:stargazingStep3"],
-      ["sierra", "People like the shiny version. The mouth. The confidence. The part that turns every overlook into a dare. It is easier than asking them to stay when I stop performing.", "sierra:stargazingStep3"]
+      ["sierra", "When I first found this place, I thought I would bring people here all the time.", "sierra:stargazingStep3"],
+      ["player", "But you did not.", "sierra:stargazingStep3"],
+      ["sierra", "No. Turns out I am generous with trail advice and extremely selfish with silence.", "sierra:stargazingStep3"],
+      ["narrator", "She smiles at that, a small smile, gone almost as soon as it appears.", "sierra:stargazingStep3"],
+      ["sierra", "Most people want the waterfall. The big view. The story they can tell later.", "sierra:stargazingStep3"],
+      ["player", "And you?", "sierra:stargazingStep3"],
+      ["sierra", "I wanted someone who would notice this part too. The cold. The little flowers. How loud your own breathing gets when nobody is filling the space for you.", "sierra:stargazingStep3"],
+      ["narrator", "The meadow holds the words gently. Even the waterfall feels farther away.", "sierra:stargazingStep3"],
+      ["sierra", "I did not know I was waiting for you until you kept showing up like the quiet parts mattered.", "sierra:stargazingStep3"]
     ],
     next: "full_love_sierra_three"
   },
@@ -1488,15 +1723,15 @@ const scenes = {
     label: "Yosemite Meadow",
     background: () => ({ location: "yosemiteMeadowNight", time: "night" }),
     lines: [
-      ["narrator", "Sierra turns toward you, excitement flickering through the vulnerability because she is still Sierra, still alive with everything she feels.", "sierra:stargazingStep3"],
-      ["sierra", "But you kept noticing the quiet things. The sound before the waterfall. The pause before the joke. The way I look away when something matters too much.", "sierra:stargazingStep3"],
-      ["player", "You noticed me noticing?", "sierra:stargazingStep3"],
-      ["sierra", "Please. I notice professionally. I just pretend it is a hobby so no one gets scared.", "sierra:stargazingStep3"],
-      ["narrator", "Her smile trembles, then steadies. She reaches for your hand in the grass and does not make a joke out of the way her fingers fit between yours.", "sierra:stargazingStep4"],
-      ["sierra", "When I am with you, I don't feel like I have to be brighter than the place to keep from disappearing inside it.", "sierra:stargazingStep4"],
-      ["player", "Sierra.", "sierra:stargazingStep4"],
-      ["sierra", "No, let me say it before I get dramatic and attractive in self-defense.", "sierra:stargazingStep4"],
-      ["sierra", "You make me feel seen without feeling caught. Do you know how rare that is for someone who keeps offering everyone the easy version first?", "sierra:stargazingStep4"]
+      ["narrator", "Sierra turns toward you. In the moonlight, her eyes are bright and a little afraid, but she does not look away.", "sierra:stargazingStep3"],
+      ["sierra", "I have been trying to think of something clever to say since the kiosk printed that ticket.", "sierra:stargazingStep3"],
+      ["player", "Any luck?", "sierra:stargazingStep3"],
+      ["sierra", "Terrible luck. Very humbling evening for my pride.", "sierra:stargazingStep3"],
+      ["narrator", "The joke lands softly, then gives way to the sound of her breathing. She reaches for your hand in the grass, and her fingers fit between yours with a careful certainty.", "sierra:stargazingStep4"],
+      ["sierra", "So I am going to say the true thing instead.", "sierra:stargazingStep4"],
+      ["player", "Okay.", "sierra:stargazingStep4"],
+      ["sierra", "I wanted you here. Not because the view is good, even though obviously I have taste.", "sierra:stargazingStep4"],
+      ["sierra", "Because when something beautiful happens, I keep wondering what your face would do if you saw it too.", "sierra:stargazingStep4"]
     ],
     next: "full_love_sierra_prompt"
   },
@@ -1504,18 +1739,18 @@ const scenes = {
     label: "Yosemite Meadow",
     background: () => ({ location: "yosemiteMeadowNight", time: "night" }),
     lines: [
-      ["narrator", "She stays close, propped on one elbow now, and the whole meadow seems to tilt toward her. Her gaze is warm, unguarded, and almost painfully trusting.", "sierra:stargazingStep4"],
-      ["sierra", "I am letting you see the part of me that does not know how to make a clean exit. The part that hopes you will stay anyway.", "sierra:stargazingStep4"]
+      ["narrator", "She stays close, and the whole meadow seems to tilt toward her. Her thumb moves once over your knuckles, almost too lightly to count.", "sierra:stargazingStep4"],
+      ["sierra", "I don't want this to end. I want to stay here a while and find out what happens next.", "sierra:stargazingStep4"]
     ],
     choices: [
       {
-        label: "Tell her you are staying, and that she does not have to sparkle to be wanted.",
+        label: "Tell her you want that too.",
         next: "full_love_sierra_good",
         unlockCG: "sierraFullLoveGood",
         flags: { sierraFullLoveGood: true }
       },
       {
-        label: "Say, 'Wow, the vulnerable rizz is crazy. Big content moment.'",
+        label: "Say, 'So this is your meadow situationship era.'",
         next: "full_love_sierra_bad_pause",
         feelings: { sierra: -6 },
         fadeOutMusicUntilScene: { sceneId: "day_wake", fadeOutMs: 2400, resumeFadeMs: 5600 }
@@ -1526,24 +1761,29 @@ const scenes = {
     label: "Yosemite Meadow",
     background: () => ({ location: "yosemiteMeadowNight", time: "night" }),
     lines: [
-      ["narrator", "Sierra's expression changes so gently it almost hurts. The smolder falls away first. Then the performance. What remains is a woman in the grass under the stars, looking at you like she chose this risk on purpose.", "sierra:stargazingStep4"],
-      ["player", "I am staying. Not because you are dazzling, even though you are dangerously good at that.", "sierra:stargazingStep4"],
-      ["player", "Because this is you too. The quiet. The scared part. The part that wants to be known without having to earn the room first.", "sierra:stargazingStep4"],
-      ["sierra", "That was unfairly good.", "sierra:stargazingStep4"],
-      ["player", "I learned from the best.", "sierra:stargazingStep4"],
-      ["narrator", "She laughs once, soft and shaky, then closes the distance. The kiss starts careful, almost reverent, and then Sierra makes a small sound against your mouth that turns the whole night warmer.", "sierra:stargazingStep4"],
-      ["sierra", "Still staying?", "sierra:stargazingStep4"],
-      ["player", "Very much.", "sierra:stargazingStep4"],
-      ["narrator", "Her hand curls in your jacket. The stars blur at the edge of your vision as she kisses you again, slower this time, like she has been brave enough to ask and now intends to enjoy every answer.", "sierra:stargazingStep4"],
-      ["narrator", "The meadow keeps your secret. Grass presses cool against your hands; Sierra is warm and laughing breathlessly when your foreheads touch; every joke she tries to make dissolves into another kiss before it can protect her.", "sierra:stargazingStep4"],
-      ["sierra", "For the record, I am usually much smoother than this.", "sierra:stargazingStep4"],
-      ["player", "I like this version.", "sierra:stargazingStep4"],
-      ["sierra", "Yeah?", "sierra:stargazingStep4"],
-      ["player", "Yeah.", "sierra:stargazingStep4"],
-      ["narrator", "After a while, you go back to looking at the stars. Then her fingers trace your wrist and looking at the stars becomes temporarily impossible. Then you both laugh too quietly, settle back into the grass, and let the sky gather itself above you again.", "sierra:stargazingStep4"],
-      ["narrator", "Hours pass in pieces: constellations, kisses, Sierra's voice telling you which trails scare her and which ones saved her, your hand in her hair, her cheek against your shoulder, the two of you forgetting to keep track of anything except each other.", "sierra:stargazingStep4"],
-      ["narrator", "At some point, the talking thins into silence. The silence becomes breathing. The breathing becomes sleep."],
-      ["narrator", "Morning finds you in pale gold. Sierra is asleep beside you, one hand still tucked in your sleeve, peaceful in a way that makes your chest go quiet."],
+      ["narrator", "Sierra's expression changes so gently it almost hurts. Hope arrives first, then relief, then a warmth that makes the cold meadow feel suddenly survivable.", "sierra:stargazingStep4"],
+      ["player", "I want that too.", "sierra:stargazingStep4"],
+      ["player", "I want to stay. I want the quiet part, and the impossible view, and you beside me when the sky does something worth remembering.", "sierra:stargazingStep4"],
+      ["sierra", "You are very hard to act normal around.", "sierra:stargazingStep4"],
+      ["player", "Good.", "sierra:stargazingStep4"],
+      ["narrator", "She laughs once, breathless and bright, then closes the distance. The kiss starts careful, a question asked against your mouth, and turns warmer when you answer with your hand at her waist.", "sierra:stargazingStep4"],
+      ["sierra", "Still here?", "sierra:stargazingStep4"],
+      ["player", "Right here.", "sierra:stargazingStep4"],
+      ["narrator", "Her hand curls in your jacket. The stars blur at the edge of your vision as she kisses you again, slow enough that the whole night narrows to how close you can be and still want closer.", "sierra:stargazingStep4"],
+      ["narrator", "The meadow keeps the rest private. There is grass cool under your palms, Sierra warm against you, the soft shock of her laughter at your ear, and the clear, mutual decision to let the world get very small for a while.", "sierra:stargazingStep4"],
+      ["player", "Later, you will remember the stars in fragments: one over her shoulder, one above the ridge, one disappearing when she leans down to kiss you again.", "sierra:stargazingStep4"],
+      ["narrator", "Hours pass in pieces: constellations, whispered trail stories, your fingers in her hair, her cheek against your chest, the two of you forgetting to keep track of anything except each other.", "sierra:stargazingStep4"],
+      ["narrator", "At some point, the talking thins into silence. The silence becomes breathing. The breathing becomes sleep.", "sierra:stargazingStep4", { fadeOutSprite: true }]
+    ],
+    next: "full_love_sierra_morning_return"
+  },
+  full_love_sierra_morning_return: {
+    label: "Morning",
+    background: () => ({ location: "black", time: "daytime" }),
+    character: null,
+    lines: [
+      ["narrator", "Morning comes softly, and the meadow stays behind the dark a little longer."],
+      ["narrator", "Sierra is still asleep beside you, one hand tucked in your sleeve, peaceful in a way that makes your chest go quiet."],
       ["player", "You do not wake her. You brush the grass from her hair, kiss her forehead, and leave her resting under the first warm light of Yosemite."],
       ["narrator", "By the time you reach the lodge lobby, morning has fully arrived, and something tender has followed you back with it."]
     ],
@@ -1563,15 +1803,17 @@ const scenes = {
     background: () => ({ location: "yosemiteMeadowNight", time: "night" }),
     lines: [
       ["narrator", "", "sierra:stargazingStep4", { dialogueHidden: true, spriteDriftUp: true, autoAdvanceMs: 4300 }],
-      ["narrator", "Sierra does not say anything. This is worse than anger. Anger would have shape. Anger would be an event. This is simply the meadow deciding you have become a cautionary object lesson."],
-      ["narrator", "She got up slowly, with the silent precision of someone removing herself from a haunted group chat, and walked away without once looking back."],
-      ["player", "Oh no."],
-      ["narrator", "The words you chose remain in the grass behind you, faintly radioactive. Nearby wildflowers appear to be reevaluating the concept of language."],
-      ["player", "I said 'vulnerable rizz' to a woman trusting me under the stars."],
-      ["narrator", "You have never felt more embarrassed. Not publicly. Not privately. Possibly not metaphysically."],
-      ["narrator", "You sit in the meadow and contemplate what this means about you as a person. Are you a person? Would a person say that? Is the soul a real thing, and if so, can it file a noise complaint against the mouth?"],
-      ["narrator", "Yosemite offers no answer. It has cliffs to be and dignity to preserve."],
-      ["player", "I should go back to the lodge before the stars start unfollowing me."]
+      ["narrator", "Sierra goes still. Not angry, not theatrical, just suddenly farther away than the few inches of grass between you should allow."],
+      ["sierra", "Right.", "sierra:stargazingStep4"],
+      ["player", "Sierra, wait. I did not mean to make it sound small.", "sierra:stargazingStep4"],
+      ["sierra", "I know.", "sierra:stargazingStep4"],
+      ["narrator", "She stands and brushes grass from her sleeves with careful hands. The meadow remains beautiful, which somehow makes it worse."],
+      ["sierra", "That is the problem, I think. You did not mean to.", "sierra:stargazingStep4"],
+      ["narrator", "She walks you back to the main trail in silence. At the route marker, her flashlight pauses on the path toward the lodge."],
+      ["sierra", "You can find your way from here.", "sierra:grumpy"],
+      ["player", "I can.", "sierra:grumpy"],
+      ["narrator", "She nods once and leaves before either of you can make the night kinder than it was."],
+      ["player", "The walk back feels longer than it should."]
     ],
     nextAction: completeFullLoveScene
   },
@@ -1814,7 +2056,7 @@ function validateSceneEstablishingRules() {
 
 function isContinuationScene(sceneId) {
   // These are follow-up beats inside the same setting, not fresh arrivals.
-  return /(_two|_three|_wrap|_wrapup|_reaction|_prompt|_pause|_departure)$/.test(sceneId) || sceneId === "choice_reaction";
+  return /(_two|_three|_wrap|_wrapup|_reaction|_prompt|_pause|_departure|_rain|_cabin|_shirt|_good|_bad)$/.test(sceneId) || sceneId === "choice_reaction";
 }
 
 function startGame() {
@@ -1851,16 +2093,26 @@ function renderScene(sceneId, options = {}) {
   const scene = scenes[sceneId];
   if (!scene) throw new Error("Missing scene: " + sceneId);
   window.clearTimeout(lineAutoAdvanceTimer);
+  window.clearTimeout(establishingPauseTimer);
+  els.gameScreen.classList.remove("establishing-pause");
   state.sceneId = sceneId;
   state.lineIndex = options.keepLine ? state.lineIndex : 0;
   if (!options.keepLine) state.lineAudioCueKey = null;
   if (scene.onEnter && !options.keepLine) scene.onEnter();
   const background = resolveValue(scene.background) || { location: "lodge", time: state.timeOfDay };
-  updateBackdrop(background);
+  const backgroundChanged = updateBackdrop(background);
   updateAmbient(scene.ambient || null);
   updateAudioTheme(background.location, null, { suppressSfx: options.suppressSceneSfx });
   updateDevPanel();
+  if (backgroundChanged && !options.keepLine && !options.skipEstablishingPause) {
+    els.gameScreen.classList.add("establishing-pause");
+  }
   renderCurrentLine();
+  if (backgroundChanged && !options.keepLine && !options.skipEstablishingPause) {
+    establishingPauseTimer = window.setTimeout(() => {
+      els.gameScreen.classList.remove("establishing-pause");
+    }, 1080);
+  }
 }
 
 function renderCurrentLine() {
@@ -1895,6 +2147,7 @@ function renderCurrentLine() {
 }
 
 function showNextDialogueLine() {
+  if (els.gameScreen.classList.contains("establishing-pause")) return;
   window.clearTimeout(lineAutoAdvanceTimer);
   const scene = scenes[state.sceneId];
   if (!scene) return;
@@ -1917,6 +2170,14 @@ function applyLinePresentation(options = {}) {
   els.gameScreen.classList.toggle("dialogue-hidden", Boolean(options.dialogueHidden));
   els.gameScreen.classList.toggle("dialogue-slow-fade", Boolean(options.dialogueSlowFade));
   els.gameScreen.classList.toggle("sprite-drift-up", Boolean(options.spriteDriftUp));
+  if (options.fadeOutSprite) {
+    requestAnimationFrame(() => els.sprite.classList.add("hidden"));
+  }
+  els.gameScreen.classList.remove("screen-flash");
+  if (options.screenFlash) {
+    void els.gameScreen.offsetWidth;
+    els.gameScreen.classList.add("screen-flash");
+  }
 }
 
 function renderChoices(choices) {
@@ -1997,8 +2258,9 @@ function startNewDay() {
   state.pendingDestination = null;
   state.pendingEncounter = null;
   els.gameScreen.classList.add("day-transitioning");
-  renderScene("day_wake");
-  showDayTransition(state.day);
+  showDayTransition(state.day, {
+    onStart: () => renderScene("day_wake", { suppressSceneSfx: true })
+  });
 }
 
 function copyCurrentDialogueLine() {
@@ -2040,6 +2302,7 @@ function skipCurrentInteraction() {
     startDayFromTransition();
     return;
   }
+  if (els.gameScreen.classList.contains("establishing-pause")) return;
   const startingBackground = currentBackgroundKey();
   playSfx("advance");
 
@@ -2205,6 +2468,26 @@ function completeSierraFullLoveMorning() {
   startNewDay();
 }
 
+function completeJackFullLoveNight() {
+  state.day += 1;
+  renderScene("full_love_jack_morning_wake");
+  showDayTransition(state.day, {
+    kicker: "Morning in Jack's Cabin",
+    caption: "The storm has passed, the cabin is brightening, and the lodge morning is waiting just down the trail."
+  });
+}
+
+function completeJackFullLoveMorning() {
+  state.pendingFullLoveScene = null;
+  state.pendingDestination = null;
+  state.visitTime = null;
+  state.visitBeat = 0;
+  state.visitStartMood = null;
+  state.visitLastChoice = null;
+  state.visitLastReaction = null;
+  renderScene("day_wake");
+}
+
 function completeVisit() {
   const completedTime = state.visitTime || state.timeOfDay;
   state.visitTime = null;
@@ -2268,14 +2551,15 @@ function buildCheckInEventLines() {
   return checkInFlavor[state.timeOfDay] || checkInFlavor.daytime;
 }
 
-function showDayTransition(day) {
+function showDayTransition(day, options = {}) {
   if (!els.dayTransition) return;
   const title = els.dayTransition.querySelector(".day-transition-title");
   const kicker = els.dayTransition.querySelector(".day-transition-kicker");
   const caption = els.dayTransition.querySelector(".day-transition-caption");
   if (title) title.textContent = `Day ${day}`;
-  if (kicker) kicker.textContent = "Morning at Viral Vista Lodge";
-  if (caption) caption.textContent = "The lobby is warming up, the maps are waiting, and the kiosk has already decided to be a problem.";
+  if (kicker) kicker.textContent = options.kicker || "Morning at Viral Vista Lodge";
+  if (caption) caption.textContent = options.caption || "The lobby is warming up, the maps are waiting, and the kiosk has already decided to be a problem.";
+  showDayTransition.onStart = typeof options.onStart === "function" ? options.onStart : null;
   els.gameScreen.classList.add("day-transitioning");
   els.dayTransition.classList.remove("active", "leaving");
   els.dayTransition.setAttribute("aria-hidden", "false");
@@ -2286,13 +2570,16 @@ function showDayTransition(day) {
 
 function startDayFromTransition() {
   if (!els.dayTransition || !els.dayTransition.classList.contains("active") || els.dayTransition.classList.contains("leaving")) return;
+  const onStart = showDayTransition.onStart;
+  showDayTransition.onStart = null;
+  if (onStart) onStart();
   els.dayTransition.classList.add("leaving");
   window.clearTimeout(startDayFromTransition.timer);
   startDayFromTransition.timer = window.setTimeout(() => {
     els.dayTransition.classList.remove("active", "leaving");
     els.dayTransition.setAttribute("aria-hidden", "true");
     els.gameScreen.classList.remove("day-transitioning");
-  }, 680);
+  }, onStart ? 920 : 680);
 }
 
 function buildArrivalLines(character, time) {
@@ -2389,14 +2676,14 @@ function buildVisitWrapupLines(character) {
   }
   if (character === "sierra") {
     const sierraMoodLine = {
-      low: "Sierra walks you back with care and a smile sharp enough to prove she is still annoyed. Even mad, she flirts like it is a second trail system and she knows every switchback.",
+      low: "Sierra walks you back with care and a smile sharp enough to prove she is still annoyed. Even mad, she knows exactly how long to let the silence stretch before it turns dangerous.",
       neutral: "Sierra walks beside you, Yosemite quiet around her and mischief bright in her eyes. She points out one star, then says it is trying too hard because you already looked up.",
       high: "Sierra lingers at the route marker like goodbye is a game she fully intends to win. She tells you the waterfall can have the scenery, because she is keeping your attention, and because the best view in Yosemite is not on the daytime route."
     }[mood];
     const sierraExitLine = {
       low: "For the record, I am still annoyed. Unfortunately for both of us, annoyed is a very good look on me.",
       neutral: "Come back later. Yosemite likes repeat visitors, and I like watching you pretend that sentence was only about the park.",
-      high: "Go on. Leave before I start making the waterfall jealous on purpose. Come back after dark if you ever want the quiet version."
+      high: "Go on. Leave before I start making the waterfall jealous on purpose. Come back after dark if you want to see where I go when the trail gets quiet."
     }[mood];
     return [
       ["narrator", timeExit, characterExpression(character, mood)],
@@ -2567,7 +2854,7 @@ function updateBackdrop(backgroundInput) {
   const src = backgroundCatalog[location]?.[time] || "";
   const cssClass = backgroundClasses[location] || "bg-lodge";
   const image = src ? `url("${src}")` : "none";
-  if (els.backdrop.dataset.key === key) return;
+  if (els.backdrop.dataset.key === key) return false;
   audioEngine.justPlayedDoorSfx = false;
   const previousLocation = (els.backdrop.dataset.key || "").split(".")[0];
   if (shouldPlayDoorSfx(previousLocation, location, time)) {
@@ -2578,7 +2865,7 @@ function updateBackdrop(backgroundInput) {
     els.backdrop.className = `backdrop ${cssClass}`;
     els.backdrop.style.backgroundImage = image;
     els.backdrop.dataset.key = key;
-    return;
+    return true;
   }
   els.backdropNext.className = `backdrop next ${cssClass}`;
   els.backdropNext.style.backgroundImage = image;
@@ -2594,23 +2881,29 @@ function updateBackdrop(backgroundInput) {
       els.backdropNext.dataset.key = key;
     }, 900);
   });
+  return true;
 }
 
 function updateSprite(characterCue) {
   const { key: characterKey, expression } = parseCharacterCue(characterCue);
   const character = characters[characterKey];
   const sprite = character && resolveSprite(character, expression);
-  els.sprite.classList.toggle("sierra-stargazing-sprite", characterKey === "sierra" && String(expression || "").startsWith("stargazingStep"));
-  els.sprite.classList.toggle("sierra-stargazing-close", characterKey === "sierra" && expression === "stargazingStep4");
   if (!character || !sprite) {
-    spriteLoadToken += 1;
+    const hideToken = spriteLoadToken + 1;
+    spriteLoadToken = hideToken;
     els.sprite.classList.add("hidden");
-    els.sprite.removeAttribute("src");
-    els.sprite.alt = "";
-    els.sprite.dataset.spriteUrl = "";
     els.placeholderSprite.classList.remove("visible");
+    window.setTimeout(() => {
+      if (hideToken !== spriteLoadToken) return;
+      els.sprite.removeAttribute("src");
+      els.sprite.alt = "";
+      els.sprite.dataset.spriteUrl = "";
+      els.sprite.classList.remove("sierra-stargazing-sprite", "sierra-stargazing-close");
+    }, 620);
     return;
   }
+  els.sprite.classList.toggle("sierra-stargazing-sprite", characterKey === "sierra" && String(expression || "").startsWith("stargazingStep"));
+  els.sprite.classList.toggle("sierra-stargazing-close", characterKey === "sierra" && expression === "stargazingStep4");
   const spriteUrl = new URL(sprite, window.location.href).href;
   const characterName = resolveName(character);
   if (els.sprite.dataset.spriteUrl === spriteUrl && !els.sprite.classList.contains("hidden")) {
@@ -2826,7 +3119,7 @@ function fadeAmbient(player, targetVolume, duration, ambientToken) {
   }, 16);
 }
 
-function stopAmbient() {
+function stopAmbient(immediate = false) {
   audioEngine.ambientToken += 1;
   window.clearTimeout(audioEngine.ambientTimerId);
   window.clearInterval(audioEngine.ambientFadeTimerId);
@@ -2836,10 +3129,19 @@ function stopAmbient() {
     audioEngine.ambientKey = null;
     return;
   }
-  audioEngine.ambientPlayer.pause();
-  audioEngine.ambientPlayer.currentTime = 0;
+  const player = audioEngine.ambientPlayer;
+  const config = ambientTracks[audioEngine.ambientKey];
   audioEngine.ambientKey = null;
   audioEngine.ambientPlayer = null;
+  if (!immediate && config?.stopFadeMs && audioEngine.enabled) {
+    fadePlayer(player, 0, config.stopFadeMs, () => {
+      player.pause();
+      player.currentTime = 0;
+    });
+    return;
+  }
+  player.pause();
+  player.currentTime = 0;
 }
 
 function stopSfxChannel(channel) {
@@ -2904,7 +3206,7 @@ function stopMusicLoop() {
   audioEngine.musicSuppressedLocationKey = null;
   audioEngine.musicSuppressedUntilSceneId = null;
   audioEngine.musicResumeFadeMs = null;
-  stopAmbient();
+  stopAmbient(true);
   Object.keys(audioEngine.sfxChannels).forEach(stopSfxChannel);
   audioEngine.trackChangeToken += 1;
   window.clearInterval(audioEngine.loopTimerId);

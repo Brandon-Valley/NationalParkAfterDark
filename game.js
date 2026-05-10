@@ -28,6 +28,7 @@ const defaultState = {
   devPanelOpen: false,
   devChoicePreview: true,
   devEasyCopy: true,
+  devBackButton: true,
   devSkipButton: true,
   feelings: {
     jack: 5,
@@ -45,6 +46,8 @@ let state = clone(defaultState);
 let spriteLoadToken = 0;
 let lineAutoAdvanceTimer = null;
 let establishingPauseTimer = null;
+const DEV_HISTORY_LIMIT = 100;
+let devHistory = [];
 
 const characters = {
   player: { name: () => state.playerName, sprite: "", color: "#7b2f24" },
@@ -1913,11 +1916,13 @@ const els = {
   galleryOverlay: document.getElementById("galleryOverlay"),
   galleryGrid: document.getElementById("galleryGrid"),
   devBtn: document.getElementById("devBtn"),
+  backBtn: document.getElementById("backBtn"),
   skipBtn: document.getElementById("skipBtn"),
   devPanel: document.getElementById("devPanel"),
   devScores: document.getElementById("devScores"),
   devChoicePreview: document.getElementById("devChoicePreview"),
   devEasyCopy: document.getElementById("devEasyCopy"),
+  devBackButton: document.getElementById("devBackButton"),
   devSkipButton: document.getElementById("devSkipButton"),
   dialogueCopyBtn: document.getElementById("dialogueCopyBtn"),
   dayTransition: document.getElementById("dayTransition"),
@@ -1987,6 +1992,10 @@ function bindEvents() {
     updateDevPanel();
     renderCurrentLine();
   });
+  els.devBackButton.addEventListener("change", () => {
+    state.devBackButton = els.devBackButton.checked;
+    updateDevPanel();
+  });
   els.devSkipButton.addEventListener("change", () => {
     state.devSkipButton = els.devSkipButton.checked;
     updateDevPanel();
@@ -2016,6 +2025,10 @@ function bindEvents() {
   els.skipBtn.addEventListener("click", event => {
     event.stopPropagation();
     skipCurrentInteraction();
+  });
+  els.backBtn.addEventListener("click", event => {
+    event.stopPropagation();
+    goBackOneStep();
   });
   els.dayTransitionButton.addEventListener("click", startDayFromTransition);
   document.getElementById("gameScreen").addEventListener("click", event => {
@@ -2061,6 +2074,7 @@ function isContinuationScene(sceneId) {
 
 function startGame() {
   state = clone(defaultState);
+  clearDevHistory();
   audioEngine.enabled = state.audioEnabled;
   ensureAudio();
   showScreen("gameScreen");
@@ -2153,14 +2167,18 @@ function showNextDialogueLine() {
   if (!scene) return;
   const lines = resolveValue(scene.lines) || [];
   if (state.lineIndex >= lines.length - 1) {
-    playSfx("advance");
     if (scene.nextAction) {
+      pushDevHistory();
+      playSfx("advance");
       scene.nextAction();
     } else if (scene.next) {
+      pushDevHistory();
+      playSfx("advance");
       renderScene(scene.next);
     }
     return;
   }
+  pushDevHistory();
   state.lineIndex += 1;
   playSfx("advance");
   renderCurrentLine();
@@ -2228,6 +2246,7 @@ function copyIconSvg() {
 }
 
 function applyChoiceEffects(choice) {
+  pushDevHistory();
   playSfx("choice");
   if (choice.feelings) addFeelings(choice.feelings);
   if (choice.flags) Object.assign(state.flags, choice.flags);
@@ -2285,6 +2304,41 @@ function copyText(text) {
     });
 }
 
+function pushDevHistory() {
+  devHistory.push(clone(state));
+  if (devHistory.length > DEV_HISTORY_LIMIT) devHistory.shift();
+  updateDevPanel();
+}
+
+function clearDevHistory() {
+  devHistory = [];
+  updateDevPanel();
+}
+
+function goBackOneStep() {
+  const previousState = devHistory.pop();
+  if (!previousState) {
+    toast("No previous step to go back to.");
+    updateDevPanel();
+    return;
+  }
+
+  window.clearTimeout(lineAutoAdvanceTimer);
+  window.clearTimeout(establishingPauseTimer);
+  if (els.dayTransition) {
+    els.dayTransition.classList.remove("active", "leaving");
+    els.dayTransition.setAttribute("aria-hidden", "true");
+  }
+  els.gameScreen.classList.remove("day-transitioning", "establishing-pause");
+  state = previousState;
+  renderScene(normalizeSceneId(state.sceneId || "intro_bus_ride"), {
+    keepLine: true,
+    skipEstablishingPause: true,
+    suppressSceneSfx: true
+  });
+  playSfx("advance");
+}
+
 function fallbackCopyText(text) {
   const textarea = document.createElement("textarea");
   textarea.value = text;
@@ -2304,6 +2358,7 @@ function skipCurrentInteraction() {
   }
   if (els.gameScreen.classList.contains("establishing-pause")) return;
   const startingBackground = currentBackgroundKey();
+  pushDevHistory();
   playSfx("advance");
 
   for (let step = 0; step < 80; step += 1) {
@@ -2570,6 +2625,7 @@ function showDayTransition(day, options = {}) {
 
 function startDayFromTransition() {
   if (!els.dayTransition || !els.dayTransition.classList.contains("active") || els.dayTransition.classList.contains("leaving")) return;
+  pushDevHistory();
   const onStart = showDayTransition.onStart;
   showDayTransition.onStart = null;
   if (onStart) onStart();
@@ -2803,7 +2859,10 @@ function updateDevPanel() {
   els.devPanel.classList.toggle("active", Boolean(state.devPanelOpen));
   els.devChoicePreview.checked = Boolean(state.devChoicePreview);
   els.devEasyCopy.checked = Boolean(state.devEasyCopy);
+  els.devBackButton.checked = Boolean(state.devBackButton);
   els.devSkipButton.checked = Boolean(state.devSkipButton);
+  els.backBtn.hidden = !state.devBackButton;
+  els.backBtn.disabled = devHistory.length === 0;
   els.skipBtn.hidden = !state.devSkipButton;
   updateCopyControls();
   els.devScores.innerHTML = LOVE_INTEREST_KEYS.map(key => {
@@ -3003,10 +3062,12 @@ function loadGame() {
     state.audioEnabled = state.audioEnabled !== false;
     state.devChoicePreview = saved.devChoicePreview !== false;
     state.devEasyCopy = saved.devEasyCopy !== false;
+    state.devBackButton = saved.devBackButton !== false;
     state.devSkipButton = saved.devSkipButton !== false;
     state.timeOfDay = TIMES.includes(state.timeOfDay) ? state.timeOfDay : "daytime";
     state.day = Math.max(1, Number(state.day) || 1);
     audioEngine.enabled = state.audioEnabled;
+    clearDevHistory();
     ensureAudio();
     showScreen("gameScreen");
     renderScene(normalizeSceneId(state.sceneId || "intro_bus_ride"), { keepLine: true });
@@ -3021,6 +3082,7 @@ function resetGame() {
   localStorage.removeItem("parkAfterDarkSaveV2");
   localStorage.removeItem("parkAfterDarkSaveV1");
   state = clone(defaultState);
+  clearDevHistory();
   audioEngine.enabled = state.audioEnabled;
   els.galleryOverlay.classList.remove("active");
   updateAmbient(null);

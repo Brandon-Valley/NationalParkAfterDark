@@ -769,9 +769,19 @@
       display: grid;
       place-items: center;
       padding: 20px;
+      background: url("assets/backgrounds/time_variants/checkIn/daytime.png") center/cover;
+      overflow: hidden;
+    }
+
+    .setup::before {
+      content: "";
+      position: absolute;
+      inset: 0;
       background:
-        linear-gradient(180deg, rgba(7, 11, 12, .08), rgba(8, 7, 8, .44) 52%, rgba(8, 5, 4, .82)),
-        url("assets/backgrounds/time_variants/checkIn/daytime.png") center/cover;
+        linear-gradient(180deg, rgba(13, 16, 14, .46), rgba(33, 20, 12, .72)),
+        rgba(8, 7, 5, .34);
+      backdrop-filter: blur(3px) saturate(.9);
+      pointer-events: none;
     }
 
     .setup-card, .overlay-card {
@@ -793,7 +803,25 @@
       border: 1px solid rgba(255, 242, 208, .68);
       box-shadow: 0 24px 70px rgba(0, 0, 0, .48);
       backdrop-filter: blur(12px);
+      z-index: 1;
     }
+
+    .screen.active .setup-card {
+      animation: setup-card-enter .86s cubic-bezier(.18, 1, .22, 1) both;
+    }
+
+    .screen.active .setup-card h2,
+    .screen.active .setup-card .checkin-copy,
+    .screen.active .setup-card label,
+    .screen.active .setup-card input,
+    .screen.active .setup-card .setup-actions {
+      animation: setup-content-enter .74s cubic-bezier(.18, 1, .22, 1) both;
+    }
+
+    .screen.active .setup-card .checkin-copy { animation-delay: .08s; }
+    .screen.active .setup-card label { animation-delay: .15s; }
+    .screen.active .setup-card input { animation-delay: .18s; }
+    .screen.active .setup-card .setup-actions { animation-delay: .24s; }
 
     .setup-card::before {
       display: none;
@@ -866,6 +894,20 @@
       grid-template-columns: 1fr 1fr;
       gap: 8px;
       margin-top: 16px;
+    }
+
+    .setup-card .setup-actions {
+      grid-template-columns: 1fr;
+    }
+
+    @keyframes setup-card-enter {
+      from { opacity: 0; transform: translateY(22px) scale(.97); filter: blur(7px) drop-shadow(0 12px 18px rgba(0, 0, 0, .16)); }
+      to { opacity: 1; transform: translateY(0) scale(1); filter: blur(0) drop-shadow(0 18px 28px rgba(0, 0, 0, .28)); }
+    }
+
+    @keyframes setup-content-enter {
+      from { opacity: 0; transform: translateY(12px); filter: blur(4px); }
+      to { opacity: 1; transform: translateY(0); filter: blur(0); }
     }
 
     .ghost {
@@ -1155,8 +1197,7 @@
           <label for="playerName">Name</label>
           <input id="playerName" maxlength="24" placeholder="Name" autocomplete="off" required>
           <div class="setup-actions">
-            <button class="primary" id="beginBtn">Begin</button>
-            <button class="ghost" id="backStartBtn">Back</button>
+            <button class="primary" id="beginBtn">OK</button>
           </div>
         </div>
       </div>

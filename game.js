@@ -1250,41 +1250,8 @@ const scenes = {
     background: () => ({ location: "lodge", time: "daytime" }),
     onEnter: () => { state.timeOfDay = "daytime"; state.pendingDestination = null; state.pendingEncounter = null; state.pendingFullLoveScene = null; state.visitTime = null; state.visitBeat = 0; state.visitStartMood = null; state.visitLastChoice = null; state.visitLastReaction = null; },
     lines: () => {
-      const nataiLow = relationshipState("natai") === "low";
-      const chatter = nataiLow ? [
-        ["caleb", "If you are headed to Zion, remember Natai's default expression is not a medical emergency."],
-        ["sierra", "It is more of a weather system with cheekbones. Speaking of weather systems, if you survive Zion, come find me and I will ruin your forecast.", "sierra:sly"],
-        ["dakota", "They are not unkind. They just trust slowly and correct quickly."]
-      ] : [];
-      const jackMood = relationshipState("jack");
-      const jackChatter = jackMood === "high" ? [
-        ["sierra", "Jack tried to make you coffee this morning and put the grounds in the mug. Not the machine. The mug. Adorable, but I would flirt with you using an actual beverage.", "sierra:sly"],
-        ["caleb", "He was distracted. Deeply, visibly, historically distracted."],
-        ["dakota", "He asked whether looking happy was unprofessional. I told him kindness has never been the problem."]
-      ] : jackMood === "low" ? [
-        ["dakota", "Jack was up early checking the Olympic route twice. He worries more when he is hurt."],
-        ["caleb", "He is not complicated. He cares, then his brain tries to build a shed around it."]
-      ] : [
-        ["sierra", "Jack asked if anyone knew a casual way to say 'I am glad my old friend is here.' I suggested 'wow, look who got prettier,' but apparently that was my brand, not his.", "sierra:sly"],
-        ["caleb", "For Jack, that is advanced emotional engineering."]
-      ];
-      const calebMood = relationshipState("caleb");
-      const calebChatter = calebMood === "high" ? [
-        ["sierra", "Caleb spent breakfast trying to pretend he did not make you a Yellowstone reading list called 'casual follow-up.' Personally, I prefer direct eye contact and plausible deniability.", "sierra:sly"],
-        ["jack", "It has tabs. Romantic tabs. I did not know tabs could look hopeful."],
-        ["dakota", "He asked whether five facts was too many for a good morning note. Sierra said five was his version of restraint."]
-      ] : calebMood === "low" ? [
-        ["natai", "Caleb rewrote a safety card at dawn. That is what he does when someone mistakes his care for noise."],
-        ["sierra", "He is acting fine, which for Caleb means alphabetizing hurt feelings by geyser basin. If you need a less alphabetical distraction later, I volunteer.", "sierra:sly"]
-      ] : [
-        ["dakota", "Caleb labeled the muffin tray by geologic era again."],
-        ["sierra", "And then looked personally betrayed when I moved the blueberry muffins out of the Pleistocene. I saved you one from the flirty modern era.", "sierra:sly"]
-      ];
       return [
         ["narrator", "Morning fills the lodge lobby with clean light and the low murmur of maps being unfolded."],
-        ...chatter,
-        ...jackChatter,
-        ...calebChatter,
         ["player", state.day === 1 ? "A new day. Three chances to make something happen." : `Day ${state.day}. Same impossible kiosk. New chances.`]
       ];
     },
@@ -1305,7 +1272,7 @@ const scenes = {
   checkin_travel_event: {
     label: () => state.flags.returningEarly ? `${TIME_LABELS[state.timeOfDay]} Lodge Lobby` : `${TIME_LABELS[state.timeOfDay]} Check-In`,
     background: () => ({ location: state.flags.returningEarly ? "lodge" : "checkIn", time: state.timeOfDay }),
-    character: () => state.pendingEncounter?.character || null,
+    character: () => state.flags.returningEarly ? null : state.pendingEncounter?.character || null,
     lines: () => buildCheckInEventLines(),
     nextAction: () => {
       if (state.flags.returningEarly) {
@@ -1753,7 +1720,6 @@ function bindEvents() {
     updateBeginButton();
     if (event.inputType && !["insertReplacementText", "historyUndo", "historyRedo"].includes(event.inputType)) playSfx("type");
   });
-  document.getElementById("backStartBtn").addEventListener("click", () => showScreen("startScreen"));
   document.getElementById("saveBtn").addEventListener("click", saveGame);
   document.getElementById("loadBtn").addEventListener("click", loadGame);
   document.getElementById("resetBtn").addEventListener("click", resetGame);
@@ -2269,16 +2235,9 @@ function hasImplementedFullLoveScene(character) {
 }
 
 function returnToLodgeEarly() {
-  if (state.timeOfDay !== "night" && Math.random() < 0.5) {
-    const candidates = LOVE_INTEREST_KEYS;
-    state.pendingDestination = null;
-    state.flags.returningEarly = true;
-    state.pendingEncounter = Math.random() < 0.8
-      ? { type: "surprise", character: randomItem(candidates) }
-      : { type: "flavor" };
-    renderScene("checkin_travel_event");
-    return;
-  }
+  state.pendingDestination = null;
+  state.pendingEncounter = null;
+  state.flags.returningEarly = false;
   renderScene("early_lodge_return");
 }
 
@@ -2291,21 +2250,19 @@ function rollCheckInEvent(destination) {
 function buildCheckInEventLines() {
   const event = state.pendingEncounter || { type: "flavor" };
   const returningEarly = Boolean(state.flags.returningEarly);
-  if (event.type === "surprise") {
-    const character = event.character;
-    const mood = relationshipState(character);
-    return [
-      ["narrator", returningEarly
-        ? "The walk back should be simple. Naturally, the lodge lobby chooses this moment to become socially complicated."
-        : "The route should be simple. Naturally, the check-in kiosk chooses this moment to become socially complicated."],
-      ["narrator", `${characters[character].shortName} is already near the desk when you arrive, turning a quick stop into a small collision of plans.`, character],
-      ...parkFlavor[character].surprise[mood].map((text, index) => [index === 0 ? character : "narrator", text, character === "sierra" && index === 0 ? "sierra:sly" : characterExpression(character, mood)])
-    ];
-  }
   if (returningEarly) {
     return [
       ["narrator", `The lodge lobby gathers the ${state.timeOfDay === "sunset" ? "last light" : "night quiet"} in warm panes of glass and polished wood.`],
       ["player", "Okay. Good. A normal room with normal doors and no route marker trying to make plans for me."]
+    ];
+  }
+  if (event.type === "surprise") {
+    const character = event.character;
+    const mood = relationshipState(character);
+    return [
+      ["narrator", "The route should be simple. Naturally, the check-in kiosk chooses this moment to become socially complicated."],
+      ["narrator", `${characters[character].shortName} is already near the desk when you arrive, turning a quick stop into a small collision of plans.`, character],
+      ...parkFlavor[character].surprise[mood].map((text, index) => [index === 0 ? character : "narrator", text, character === "sierra" && index === 0 ? "sierra:sly" : characterExpression(character, mood)])
     ];
   }
   return checkInFlavor[state.timeOfDay] || checkInFlavor.daytime;

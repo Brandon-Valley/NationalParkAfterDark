@@ -184,6 +184,37 @@ const backgroundClasses = {
   zion: "bg-zion"
 };
 
+const SKIP_TO_LOCATION_LABELS = {
+  checkIn: "Check-In",
+  lodge: "Lodge Lobby",
+  olympic: "Olympic",
+  yellowstone: "Yellowstone",
+  yellowstoneMisty: "Yellowstone Mist",
+  yosemite: "Yosemite",
+  yosemiteMeadowNight: "Yosemite Meadow",
+  zionClearingNight: "Zion Clearing",
+  jackCabinNight: "Jack's Cabin",
+  jackCabinDay: "Jack's Cabin Morning",
+  sequoia: "Sequoia",
+  zion: "Zion"
+};
+
+const SKIP_TO_VISIT_DESTINATIONS = {
+  olympic: "jack",
+  yellowstone: "caleb",
+  yosemite: "sierra",
+  sequoia: "dakota",
+  zion: "natai"
+};
+
+const SKIP_TO_SCENE_TARGETS = {
+  yellowstoneMisty: "full_love_caleb_start",
+  yosemiteMeadowNight: "full_love_sierra_meadow",
+  zionClearingNight: "full_love_natai_camp",
+  jackCabinNight: "full_love_jack_cabin",
+  jackCabinDay: "full_love_jack_morning_wake"
+};
+
 const musicThemes = {
   introspection: { src: "assets/audio/music/Almost Bliss.mp3", loopStart: 11.2, loopEnd: 303.4, volume: 0.34 },
   lodge: { src: "assets/audio/music/Clear Air.mp3", loopStart: 8.2, loopEnd: 176.8, volume: 0.52 },
@@ -1346,6 +1377,38 @@ const scenes = {
       { label: "Return to the lodge lobby early.", action: returnToLodgeEarly }
     ]
   },
+  dev_skip_to_picker: {
+    label: "Skip To",
+    background: () => state.choiceReactionBackground || { location: "lodge", time: state.timeOfDay },
+    lines: [
+      ["narrator", "Choose a setting and time of day. The route marker will put you there with the normal scene flow active."]
+    ],
+    choices: () => buildDevSkipToChoices()
+  },
+  dev_skip_to_checkin: {
+    label: () => `${TIME_LABELS[state.timeOfDay]} Check-In`,
+    background: () => ({ location: "checkIn", time: state.timeOfDay }),
+    lines: () => [
+      ["narrator", `${TIME_LABELS[state.timeOfDay]} settles over the check-in desk. The kiosk waits with cheerful, physics-violating patience.`],
+      ["player", state.timeOfDay === "daytime" ? "Okay. Normal check-in desk. Normal route cards. Extremely normal impossible choices." : "One more route, unless I cash out early."]
+    ],
+    choices: () => [
+      ...loveInterestChoices(),
+      { label: "Return to the lodge lobby early.", action: returnToLodgeEarly }
+    ]
+  },
+  dev_skip_to_lodge: {
+    label: () => `${TIME_LABELS[state.timeOfDay]} Lodge Lobby`,
+    background: () => ({ location: "lodge", time: state.timeOfDay }),
+    lines: () => [
+      ["narrator", `${TIME_LABELS[state.timeOfDay]} fills the lodge lobby. The route cards wait by the desk like they know exactly how strange this is.`],
+      ["player", "All right. Where are we going from here?"]
+    ],
+    choices: () => [
+      ...loveInterestChoices(),
+      { label: "Go to the check-in desk.", next: "dev_skip_to_checkin" }
+    ]
+  },
   checkin_travel_event: {
     label: () => state.flags.returningEarly ? `${TIME_LABELS[state.timeOfDay]} Lodge Lobby` : `${TIME_LABELS[state.timeOfDay]} Check-In`,
     background: () => ({ location: state.flags.returningEarly ? "lodge" : "checkIn", time: state.timeOfDay }),
@@ -2180,6 +2243,7 @@ const els = {
   devBtn: document.getElementById("devBtn"),
   backBtn: document.getElementById("backBtn"),
   skipBtn: document.getElementById("skipBtn"),
+  skipToBtn: document.getElementById("skipToBtn"),
   devPanel: document.getElementById("devPanel"),
   devScores: document.getElementById("devScores"),
   devChoicePreview: document.getElementById("devChoicePreview"),
@@ -2290,6 +2354,10 @@ function bindEvents() {
   els.skipBtn.addEventListener("click", event => {
     event.stopPropagation();
     skipCurrentInteraction();
+  });
+  els.skipToBtn.addEventListener("click", event => {
+    event.stopPropagation();
+    showDevSkipToPicker();
   });
   els.backBtn.addEventListener("click", event => {
     event.stopPropagation();
@@ -2645,6 +2713,98 @@ function skipCurrentInteraction() {
   }
 
   toast("Skip stopped before finding a new setting.");
+}
+
+function showDevSkipToPicker() {
+  if (els.dayTransition.classList.contains("active")) {
+    startDayFromTransition();
+    return;
+  }
+  if (els.gameScreen.classList.contains("establishing-pause")) return;
+  pushDevHistory();
+  state.choiceReactionBackground = resolveValue(scenes[state.sceneId]?.background) || { location: "lodge", time: state.timeOfDay };
+  playSfx("advance");
+  renderScene("dev_skip_to_picker");
+}
+
+function buildDevSkipToChoices() {
+  return Object.keys(backgroundCatalog)
+    .filter(location => location !== "black")
+    .flatMap(location => TIMES.map(time => ({
+      label: `${SKIP_TO_LOCATION_LABELS[location] || location} - ${TIME_LABELS[time]}`,
+      action: () => startDevSkipToSetting(location, time)
+    })));
+}
+
+function startDevSkipToSetting(location, time) {
+  resetDevSkipToTransientState(time);
+  const destination = SKIP_TO_VISIT_DESTINATIONS[location];
+  const sceneTarget = SKIP_TO_SCENE_TARGETS[location];
+
+  if (destination) {
+    state.pendingDestination = destination;
+    state.selectedRoute = destination;
+    state.visitTime = time;
+    state.visitStartMood = relationshipState(destination);
+    renderScene("main_visit_arrival");
+    toast(`Skipped to ${SKIP_TO_LOCATION_LABELS[location]} at ${TIME_LABELS[time].toLowerCase()}.`);
+    return;
+  }
+
+  if (location === "checkIn") {
+    renderScene("dev_skip_to_checkin");
+    toast(`Skipped to check-in at ${TIME_LABELS[time].toLowerCase()}.`);
+    return;
+  }
+
+  if (location === "lodge") {
+    renderScene("dev_skip_to_lodge");
+    toast(`Skipped to the lodge at ${TIME_LABELS[time].toLowerCase()}.`);
+    return;
+  }
+
+  if (sceneTarget) {
+    const character = fullLoveSceneCharacterFor(sceneTarget);
+    if (character) {
+      state.pendingDestination = character;
+      state.selectedRoute = character;
+      state.pendingFullLoveScene = character;
+      state.visitTime = time;
+      state.visitStartMood = "high";
+    }
+    renderScene(sceneTarget);
+    toast(`Skipped to ${SKIP_TO_LOCATION_LABELS[location] || location}.`);
+    return;
+  }
+
+  state.choiceReactionBackground = { location, time };
+  renderScene("dev_skip_to_picker");
+}
+
+function resetDevSkipToTransientState(time) {
+  state.timeOfDay = time;
+  state.pendingDestination = null;
+  state.pendingEncounter = null;
+  state.pendingFullLoveScene = null;
+  state.visitTime = null;
+  state.visitBeat = 0;
+  state.visitStartMood = null;
+  state.visitLastChoice = null;
+  state.visitLastReaction = null;
+  state.choiceReactionLines = null;
+  state.choiceReactionNext = null;
+  state.choiceReactionBackground = null;
+  state.choiceReactionLabel = null;
+}
+
+function fullLoveSceneCharacterFor(sceneId) {
+  const entry = Object.entries(fullLoveScenes).find(([, config]) => config.entryScene === sceneId);
+  if (entry) return entry[0];
+  if (sceneId.includes("_jack_")) return "jack";
+  if (sceneId.includes("_caleb_")) return "caleb";
+  if (sceneId.includes("_sierra_")) return "sierra";
+  if (sceneId.includes("_natai_")) return "natai";
+  return null;
 }
 
 function skipOneStep() {
@@ -3152,6 +3312,7 @@ function updateDevPanel() {
   els.backBtn.hidden = !state.devBackButton;
   els.backBtn.disabled = devHistory.length === 0;
   els.skipBtn.hidden = !state.devSkipButton;
+  els.skipToBtn.hidden = !state.devSkipButton;
   updateCopyControls();
   els.devScores.innerHTML = LOVE_INTEREST_KEYS.map(key => {
     const score = state.feelings[key] ?? 5;

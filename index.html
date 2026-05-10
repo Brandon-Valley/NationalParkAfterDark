@@ -934,17 +934,27 @@
       display: flex;
       justify-content: space-between;
       align-items: center;
-      gap: 12px;
+      gap: 8px;
       padding: 5px 0;
       border-top: 1px solid rgba(92, 54, 23, .16);
       font-size: 13px;
       font-weight: 800;
     }
 
+    .dev-score-name {
+      display: flex;
+      align-items: center;
+      gap: 5px;
+      min-width: 0;
+      flex: 1 1 auto;
+      white-space: nowrap;
+    }
+
     .dev-score-control {
       display: flex;
       align-items: center;
       gap: 4px;
+      flex: 0 0 auto;
     }
 
     .dev-score input {
@@ -958,6 +968,24 @@
       font-size: 13px;
       font-weight: 900;
       text-align: center;
+    }
+
+    .dev-full-love-btn {
+      min-height: 20px;
+      padding: 2px 5px;
+      border-radius: 5px;
+      border: 1px solid rgba(157, 47, 37, .28);
+      background: linear-gradient(180deg, rgba(255, 240, 224, .98), rgba(232, 176, 134, .95));
+      color: #7b2f24;
+      box-shadow: none;
+      font-size: 10px;
+      font-weight: 900;
+      line-height: 1;
+      white-space: nowrap;
+    }
+
+    .dev-full-love-btn:hover {
+      filter: brightness(1.06);
     }
 
     .dev-toggle {

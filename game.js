@@ -1617,6 +1617,13 @@ function bindEvents() {
     const score = setFeelingScore(input.dataset.devFeelingKey, input.value);
     input.value = score;
   });
+  els.devScores.addEventListener("click", event => {
+    const button = event.target.closest("[data-dev-full-love-key]");
+    if (!button) return;
+    event.preventDefault();
+    event.stopPropagation();
+    startDevFullLoveScene(button.dataset.devFullLoveKey);
+  });
   els.dialogueCopyBtn.addEventListener("click", event => {
     event.stopPropagation();
     copyCurrentDialogueLine();
@@ -1988,6 +1995,27 @@ function startFullLoveScene(character) {
   renderScene(config.entryScene);
 }
 
+function startDevFullLoveScene(character) {
+  const config = fullLoveScenes[character];
+  if (!config) return;
+  state.pendingDestination = character;
+  state.selectedRoute = character;
+  state.pendingFullLoveScene = character;
+  state.pendingEncounter = null;
+  state.timeOfDay = config.times?.[0] || state.timeOfDay || "night";
+  state.visitTime = state.timeOfDay;
+  state.visitBeat = 0;
+  state.visitStartMood = "high";
+  state.visitLastChoice = null;
+  state.visitLastReaction = null;
+  state.choiceReactionLines = null;
+  state.choiceReactionNext = null;
+  state.choiceReactionBackground = null;
+  state.choiceReactionLabel = null;
+  renderScene(config.entryScene);
+  toast(`${characters[character].shortName}'s full love scene loaded.`);
+}
+
 function completeFullLoveScene() {
   const completedTime = state.visitTime || state.timeOfDay;
   state.pendingFullLoveScene = null;
@@ -2028,6 +2056,11 @@ function isFullLoveSceneAvailable(character) {
   if (state.flags?.[config.completedFlag]) return false;
   if ((state.feelings[character] ?? 0) < config.requiredFeeling) return false;
   return config.times.includes(state.timeOfDay);
+}
+
+function hasImplementedFullLoveScene(character) {
+  const config = fullLoveScenes[character];
+  return Boolean(config && config.entryScene && scenes[config.entryScene]);
 }
 
 function returnToLodgeEarly() {
@@ -2327,10 +2360,16 @@ function updateDevPanel() {
   els.devScores.innerHTML = LOVE_INTEREST_KEYS.map(key => {
     const score = state.feelings[key] ?? 5;
     const name = escapeHtml(characters[key].shortName);
+    const fullLoveButton = hasImplementedFullLoveScene(key)
+      ? `<button class="dev-full-love-btn" type="button" data-dev-full-love-key="${escapeHtml(key)}" aria-label="Go to ${name}'s full love scene">Full scene</button>`
+      : "";
     return `
-      <label class="dev-score" for="devFeeling-${escapeHtml(key)}">
-        <span>${name}</span>
-        <span class="dev-score-control">
+      <div class="dev-score">
+        <span class="dev-score-name">
+          <span>${name}</span>
+          ${fullLoveButton}
+        </span>
+        <label class="dev-score-control" for="devFeeling-${escapeHtml(key)}">
           <input
             id="devFeeling-${escapeHtml(key)}"
             type="number"
@@ -2343,8 +2382,8 @@ function updateDevPanel() {
             aria-label="${name} feeling score"
           >
           <span>/10</span>
-        </span>
-      </label>`;
+        </label>
+      </div>`;
   }).join("");
 }
 

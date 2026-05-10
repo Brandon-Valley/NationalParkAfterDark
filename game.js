@@ -90,7 +90,18 @@ const characters = {
     color: "#8b3f63"
   },
   dakota: { name: "Dakota", shortName: "Dakota", park: "Sequoia", location: "sequoia", sprites: characterSprites("dakota"), color: "#704719" },
-  natai: { name: "Natai", shortName: "Natai", park: "Zion", location: "zion", sprites: characterSprites("natai"), color: "#245f76" }
+  natai: {
+    name: "Natai",
+    shortName: "Natai",
+    park: "Zion",
+    location: "zion",
+    sprites: {
+      ...characterSprites("natai"),
+      sleepingBagRomantic: "assets/charactures/natai/full_love/sleeping_bag_romantic.png",
+      emptySleepingBag: "assets/charactures/natai/full_love/empty_sleeping_bag.png"
+    },
+    color: "#245f76"
+  }
 };
 
 const backgroundCatalog = {
@@ -129,6 +140,11 @@ const backgroundCatalog = {
     sunset: "assets/backgrounds/special/yosemite_meadow_night.png",
     night: "assets/backgrounds/special/yosemite_meadow_night.png"
   },
+  zionClearingNight: {
+    daytime: "assets/backgrounds/special/natai/zion_clearing_night.png",
+    sunset: "assets/backgrounds/special/natai/zion_clearing_night.png",
+    night: "assets/backgrounds/special/natai/zion_clearing_night.png"
+  },
   jackCabinNight: {
     daytime: "assets/backgrounds/special/jack/cabin_interior_night.png",
     sunset: "assets/backgrounds/special/jack/cabin_interior_night.png",
@@ -161,6 +177,7 @@ const backgroundClasses = {
   yellowstoneMisty: "bg-yellowstone",
   yosemite: "bg-yosemite",
   yosemiteMeadowNight: "bg-yosemite",
+  zionClearingNight: "bg-zion",
   jackCabinNight: "bg-smoky",
   jackCabinDay: "bg-smoky",
   sequoia: "bg-smoky",
@@ -182,6 +199,8 @@ const musicThemes = {
   sierraFullLoveMeadow: { src: "assets/audio/music/There is Romance.mp3", loopStart: 2.0, loopEnd: 193.0, volume: 0.42 },
   sierraFullLoveGood: { src: "assets/audio/music/Sardana.mp3", loopStart: 2.0, loopEnd: 187.0, volume: 0.4 },
   dakota: { src: "assets/audio/music/Fireflies and Stardust.mp3", loopStart: 9.0, loopEnd: 244.5, volume: 0.5 },
+  nataiFullLoveCanyon: { src: "assets/audio/music/Native American Spirit Ritual.mp3", loopStart: 0.0, loopEnd: 278.0, volume: 0.52 },
+  nataiFullLoveGood: { src: "assets/audio/music/Firesong.mp3", loopStart: 8.0, loopEnd: 210.0, volume: 0.38 },
   natai: { src: "assets/audio/music/Crowd Hammer.mp3", loopStart: 7.5, loopEnd: 198.5, volume: 0.45 }
 };
 
@@ -197,7 +216,8 @@ const locationMusic = {
   yosemite: "sierra",
   yosemiteMeadowNight: "sierra",
   sequoia: "dakota",
-  zion: "natai"
+  zion: "natai",
+  zionClearingNight: "natai"
 };
 
 const sfxTracks = {
@@ -218,7 +238,8 @@ const ambientTracks = {
   bus: { src: "assets/audio/sfx/bus/school_bus_country_road_loop.ogg", volume: 0.32, delayMs: 1400, fadeMs: 2600 },
   rainForest: { src: "assets/audio/sfx/ambient/rain_forest_loop.ogg", volume: 0.34, fadeMs: 1800, stopFadeMs: 1600 },
   rainRoof: { src: "assets/audio/sfx/ambient/rain_roof_loop.mp3", volume: 0.42, fadeMs: 1800, stopFadeMs: 3600 },
-  morningBirds: { src: "assets/audio/sfx/ambient/morning_birds_loop.wav", volume: 0.34, fadeMs: 2200, stopFadeMs: 1800 }
+  morningBirds: { src: "assets/audio/sfx/ambient/morning_birds_loop.wav", volume: 0.34, fadeMs: 2200, stopFadeMs: 1800 },
+  nataiMorning: { src: "assets/audio/sfx/ambient/subtle_morning_birds.wav", volume: 0.3, fadeMs: 1800, stopFadeMs: 2400 }
 };
 
 const cgLibrary = {
@@ -229,7 +250,8 @@ const cgLibrary = {
   sierraWaterfall: { title: "No Filter Needed", image: "assets/backgrounds/time_variants/yosemite/sunset.png" },
   sierraFullLoveGood: { title: "Where The Quiet Lands", image: "assets/backgrounds/special/yosemite_meadow_night.png" },
   dakotaGrove: { title: "Forest Protector", image: "assets/backgrounds/time_variants/sequoia/daytime.png" },
-  nataiCanyon: { title: "Permit Approved", image: "assets/backgrounds/time_variants/zion/night.png" }
+  nataiCanyon: { title: "Permit Approved", image: "assets/backgrounds/time_variants/zion/night.png" },
+  nataiFullLoveGood: { title: "Only One Sleeping Bag", image: "assets/charactures/natai/full_love/sleeping_bag_romantic.png" }
 };
 
 const fullLoveScenes = {
@@ -253,6 +275,13 @@ const fullLoveScenes = {
     times: ["night"],
     entryScene: "full_love_sierra_start",
     completedFlag: "sierraFullLoveGood"
+  },
+  natai: {
+    character: "natai",
+    requiredFeeling: 10,
+    times: ["night"],
+    entryScene: "full_love_natai_start",
+    completedFlag: "nataiFullLoveGood"
   }
 };
 
@@ -1851,6 +1880,207 @@ const scenes = {
     ],
     nextAction: completeFullLoveScene
   },
+  full_love_natai_start: {
+    label: "Zion After Dark",
+    background: () => ({ location: "zion", time: "night" }),
+    music: "nataiFullLoveCanyon",
+    onEnter: () => { state.visitTime = "night"; state.pendingDestination = "natai"; state.pendingFullLoveScene = "natai"; },
+    lines: [
+      ["narrator", "The heart on Natai's route card warms under your thumb. The kiosk prints a ticket, pauses, and adds: NIGHT PERMIT APPROVED. DO NOT MAKE IT WEIRD."],
+      ["narrator", "Zion opens around you in moonlit sandstone and black sky. The canyon walls hold the day's last warmth like a secret they are not technically authorized to share."],
+      ["player", "Natai?"],
+      ["narrator", "Natai steps out beside the route sign, familiar and composed, with a lantern in one hand and the look of someone who has already judged the kiosk's paperwork.", "natai"],
+      ["natai", "You are on time.", "natai"],
+      ["player", "That sounded almost pleased.", "natai"],
+      ["natai", "Do not become reckless with one data point.", "natai:blushing"],
+      ["narrator", "Their mouth almost gives them away. Almost. The lantern light finds the warm edge of their smile anyway.", "natai:blushing"],
+      ["natai", "I found a quieter place above the wash. Less traffic. Better stars. Flat ground, by some miracle, so the canyon cannot accuse us of poor planning.", "natai"],
+      ["player", "So this is a rescue mission for the stars.", "natai"],
+      ["natai", "For the stars. For my patience. Possibly for you.", "natai:blushing"]
+    ],
+    next: "full_love_natai_camp"
+  },
+  full_love_natai_camp: {
+    label: "Zion Backcountry",
+    background: () => ({ location: "zionClearingNight", time: "night" }),
+    music: "nataiFullLoveCanyon",
+    lines: [
+      ["narrator", "Natai leads you off the main route, lantern low, through a narrow turn in the brush where the canyon suddenly opens into a sheltered shelf of sand and stone."],
+      ["narrator", "The clearing waits under moonlight: flat ground, warm lanterns, two enamel cups on a rock, and enough sky overhead to make the stars feel close."],
+      ["player", "Did you make a romantic checklist?", "natai"],
+      ["natai", "No.", "natai"],
+      ["natai", "It is a romantic-adjacent risk assessment.", "natai:blushing"],
+      ["player", "That is somehow better.", "natai:blushing"],
+      ["narrator", "Natai pours tea from a thermos. The steam curls silver in the lantern light, and for a while the two of you sit with your shoulders nearly touching, watching the canyon turn into shape, shadow, and stars.", "natai"],
+      ["natai", "The desert is honest at night. No glare. No performance. Just stone, air, distance.", "natai"],
+      ["player", "And us?", "natai"],
+      ["natai", "I am trying to decide whether I can include us in a sentence without sounding foolish.", "natai:blushing"],
+      ["player", "How is that going?", "natai:blushing"],
+      ["natai", "Poorly.", "natai:blushing"],
+      ["narrator", "They look at you then, and the usual sharpness is still there, but it has warmed into something careful enough to trust.", "natai:blushing"]
+    ],
+    next: "full_love_natai_sleeping_bag"
+  },
+  full_love_natai_sleeping_bag: {
+    label: "Zion Backcountry",
+    background: () => ({ location: "zionClearingNight", time: "night" }),
+    music: "nataiFullLoveCanyon",
+    lines: [
+      ["narrator", "A cold wind moves over the stone. Natai rises with abrupt purpose and checks the camp bundle beside the lantern."],
+      ["natai", "Hm.", "natai:grumpy"],
+      ["player", "That was an ominous hm.", "natai:grumpy"],
+      ["natai", "It was a precise hm.", "natai:grumpy"],
+      ["narrator", "They unroll one sleeping bag. One. Singular. The canyon offers no comment, which feels unsporting.", "natai:sleepingBagRomantic"],
+      ["natai", "Oh no.", "natai:sleepingBagRomantic"],
+      ["player", "Natai.", "natai:sleepingBagRomantic"],
+      ["natai", "There is only one sleeping bag.", "natai:sleepingBagRomantic"],
+      ["player", "You sound suspiciously calm about that.", "natai:sleepingBagRomantic"],
+      ["natai", "Panic wastes heat.", "natai:sleepingBagRomantic"],
+      ["narrator", "They settle half inside the bag, hair loose over one shoulder, trying and failing to look like this is a normal piece of field logistics.", "natai:sleepingBagRomantic"],
+      ["natai", "For warmth, proximity is the rational solution.", "natai:sleepingBagRomantic"],
+      ["player", "Rational.", "natai:sleepingBagRomantic"],
+      ["natai", "Do not make me say it twice. I am already using more eye contact than recommended.", "natai:sleepingBagRomantic"]
+    ],
+    next: "full_love_natai_prompt"
+  },
+  full_love_natai_prompt: {
+    label: "Zion Backcountry",
+    background: () => ({ location: "zionClearingNight", time: "night" }),
+    music: "nataiFullLoveCanyon",
+    lines: [
+      ["narrator", "The open sleeping bag waits in the lantern light, absurdly practical and suddenly impossible to ignore. Natai holds your gaze without retreating.", "natai:sleepingBagRomantic"],
+      ["natai", "If you want to stay close, say it plainly. I will understand plainly.", "natai:sleepingBagRomantic"]
+    ],
+    choices: [
+      {
+        label: "Tell them you want to stay, and you want them, clearly.",
+        next: "full_love_natai_good",
+        unlockCG: "nataiFullLoveGood",
+        flags: { nataiFullLoveGood: true }
+      },
+      {
+        label: "Ask whether the safety checklist has a section for fake camping emergencies.",
+        next: "full_love_natai_bad_pause",
+        feelings: { natai: -6 },
+        fadeOutMusicUntilScene: { sceneId: "day_wake", fadeOutMs: 2400, resumeFadeMs: 5600 }
+      }
+    ]
+  },
+  full_love_natai_good: {
+    label: "Zion Backcountry",
+    background: () => ({ location: "zionClearingNight", time: "night" }),
+    music: "nataiFullLoveGood",
+    lines: [
+      ["narrator", "Natai exhales like the canyon has finally stopped asking them to be composed.", "natai:sleepingBagRomantic"],
+      ["player", "I want to stay. I want you. Clearly.", "natai:sleepingBagRomantic"],
+      ["natai", "Good.", "natai:sleepingBagRomantic"],
+      ["player", "That is all?", "natai:sleepingBagRomantic"],
+      ["natai", "No. That is the part I can say without embarrassing both of us and possibly the moon.", "natai:sleepingBagRomantic"],
+      ["narrator", "Their hand finds yours at the edge of the sleeping bag. Warm. Certain. Less steady than Natai would ever admit.", "natai:sleepingBagRomantic"],
+      ["natai", "Come here. Slowly.", "natai:sleepingBagRomantic"],
+      ["narrator", "The first kiss is careful enough to be a question. The second is not. Natai draws you closer, and the lantern light catches the exact moment their control gives way to hunger.", "natai:sleepingBagRomantic"],
+      ["narrator", "The sleeping bag rustles around both of you. It should be ridiculous. It is ridiculous. But Natai's hand settles at your back, firm and hot through your clothes, and suddenly the joke has no air left in it.", "natai:sleepingBagRomantic"],
+      ["player", "Still calling this proximity?", "natai:sleepingBagRomantic"],
+      ["natai", "No.", "natai:sleepingBagRomantic"],
+      ["natai", "Now I am calling it wanting you so badly I am grateful the canyon is too polite to comment.", "natai:sleepingBagRomantic"],
+      ["narrator", "They kiss you again, slower this time, like they are learning exactly how much patience makes wanting worse. Their thumb traces your wrist once, then again, and every measured touch feels less like restraint and more like a promise.", "natai:sleepingBagRomantic"],
+      ["player", "You are very quiet.", "natai:sleepingBagRomantic"],
+      ["natai", "I am concentrating.", "natai:sleepingBagRomantic"],
+      ["player", "On survival?", "natai:sleepingBagRomantic"],
+      ["natai", "On not making a sound the canyon will remember.", "natai:sleepingBagRomantic"],
+      ["narrator", "The sleeping bag turns the cold night impossibly warm. There is the brush of hair against your cheek, the rough edge of Natai's breath, the startling softness of their mouth finding yours again and again.", "natai:sleepingBagRomantic"],
+      ["narrator", "Outside the circle of lantern light, Zion stays vast and ancient. Inside it, everything is close: your knees tangled together, Natai's laugh breaking low against your neck, the shared heat building until the night feels held in both hands.", "natai:sleepingBagRomantic"],
+      ["natai", "Tell me if you want me to stop.", "natai:sleepingBagRomantic"],
+      ["player", "I do not want you to stop.", "natai:sleepingBagRomantic"],
+      ["natai", "Good.", "natai:sleepingBagRomantic"],
+      ["narrator", "That one word lands rougher than it should. Natai hears what it does to you, and their composure flickers into something openly pleased before their mouth finds yours again.", "natai:sleepingBagRomantic"],
+      ["narrator", "Everything narrows to heat and trust: hands learning permission, laughter breaking into quiet, Natai's voice low at your ear like restraint has finally lost the argument.", "natai:sleepingBagRomantic"],
+      ["narrator", "For a while there is no route, no checklist, no clever thing either of you needs to say. Only the soft drag of breath, the warmth of skin through shifting fabric, and Natai holding you like they have finally stopped pretending distance was safer.", "natai:sleepingBagRomantic"],
+      ["natai", "For the record, this remains an excellent survival decision.", "natai:sleepingBagRomantic"],
+      ["player", "Extremely practical.", "natai:sleepingBagRomantic"],
+      ["natai", "There really is only one sleeping bag.", "natai:sleepingBagRomantic"]
+    ],
+    next: "full_love_natai_good_sleep_fade"
+  },
+  full_love_natai_good_sleep_fade: {
+    label: "Zion Backcountry",
+    background: () => ({ location: "zionClearingNight", time: "night" }),
+    music: "nataiFullLoveGood",
+    lines: [
+      ["narrator", "", "natai:sleepingBagRomantic", { dialogueHidden: true, autoAdvanceMs: 850 }],
+      ["narrator", "", "natai:sleepingBagRomantic", { dialogueHidden: true, fadeOutSprite: true, autoAdvanceMs: 1400 }]
+    ],
+    next: "full_love_natai_sleep_line"
+  },
+  full_love_natai_sleep_line: {
+    label: "Zion Backcountry",
+    background: () => ({ location: "zionClearingNight", time: "night" }),
+    music: "nataiFullLoveGood",
+    lines: [
+      ["narrator", "You fall asleep there because there is only one sleeping bag, after all, and because Natai's arm around you feels like the safest route through the dark.", null, { dialogueSlowFade: true }]
+    ],
+    next: "full_love_natai_sleep_fade"
+  },
+  full_love_natai_sleep_fade: {
+    label: "Zion Backcountry",
+    background: () => ({ location: "zionClearingNight", time: "night" }),
+    music: "nataiFullLoveGood",
+    lines: [
+      ["narrator", "", null, { dialogueHidden: true, fadeOutMusicUntilScene: { sceneId: "day_wake", fadeOutMs: 2800, resumeFadeMs: 5200 }, autoAdvanceMs: 2800 }]
+    ],
+    next: "full_love_natai_morning_return"
+  },
+  full_love_natai_morning_return: {
+    label: "Morning",
+    background: () => ({ location: "black", time: "daytime" }),
+    ambient: "nataiMorning",
+    character: null,
+    lines: [
+      ["narrator", "Morning comes pale and warm over Zion, but the sleeping bag keeps the last of the night tucked close a little longer.", null, { dialogueSlowFade: true }],
+      ["narrator", "Natai is still asleep beside you, hair loose and face unguarded in a way they would probably call a security breach."],
+      ["player", "You let them sleep. You leave the checklist weighted under the thermos with one note: Route decision approved."],
+      ["narrator", "By the time you reach the lodge lobby, morning has fully arrived, and the desert seems to have sent some warmth back with you."]
+    ],
+    nextAction: completeNataiFullLoveMorning
+  },
+  full_love_natai_bad_pause: {
+    label: "Zion Backcountry",
+    background: () => ({ location: "zionClearingNight", time: "night" }),
+    music: "nataiFullLoveCanyon",
+    lines: [
+      ["narrator", "", "natai:sleepingBagRomantic", { dialogueHidden: true, autoAdvanceMs: 3000 }],
+      ["narrator", "...", "natai:sleepingBagRomantic", { dialogueSlowFade: true, autoAdvanceMs: 2600 }]
+    ],
+    next: "full_love_natai_bad_sleeping_bag"
+  },
+  full_love_natai_bad_sleeping_bag: {
+    label: "Zion Backcountry",
+    background: () => ({ location: "zionClearingNight", time: "night" }),
+    music: "nataiFullLoveCanyon",
+    lines: [
+      ["narrator", "The canyon holds very, very still.", "natai:sleepingBagRomantic"],
+      ["narrator", "", "natai:sleepingBagRomantic", { propCue: "natai:emptySleepingBag", dialogueHidden: true, sleepingBagRise: true, autoAdvanceMs: 4600 }],
+      ["natai", "I have discovered a second sleeping bag after all.", "natai:sleepingBagRomantic", { propCue: "natai:emptySleepingBag", dialogueSlowFade: true }],
+      ["natai", "It was resting under the first one. A compact storage decision. Unremarkable, apparently.", "natai:sleepingBagRomantic", { propCue: "natai:emptySleepingBag" }],
+      ["player", "Oh my god.", "natai:sleepingBagRomantic", { propCue: "natai:emptySleepingBag" }],
+      ["natai", "The problem is solved. No one has to share anything they would rather interrogate.", "natai:sleepingBagRomantic", { propCue: "natai:emptySleepingBag" }],
+      ["player", "I cannot believe I got stared down by an emergency backup sleeping bag.", "natai:sleepingBagRomantic", { propCue: "natai:emptySleepingBag" }],
+      ["narrator", "Natai does not get up. They remain exactly where they are, half inside the first sleeping bag, watching you process the arrival of the second one with painful composure.", "natai:sleepingBagRomantic", { propCue: "natai:emptySleepingBag" }],
+      ["natai", "The route marker is downhill. The path is lit.", "natai:sleepingBagRomantic", { propCue: "natai:emptySleepingBag" }],
+      ["player", "Great. Perfect. Love a well-lit retreat.", "natai:sleepingBagRomantic", { propCue: "natai:emptySleepingBag" }],
+      ["narrator", "You go home to the lodge lobby embarrassed, a little mad, and newly suspicious of all rolled camping gear.", "natai:sleepingBagRomantic", { propCue: "natai:emptySleepingBag" }]
+    ],
+    next: "full_love_natai_bad_exit"
+  },
+  full_love_natai_bad_exit: {
+    label: "Zion Backcountry",
+    background: () => ({ location: "zionClearingNight", time: "night" }),
+    music: "nataiFullLoveCanyon",
+    lines: [
+      ["narrator", "", "natai:sleepingBagRomantic", { propCue: "natai:emptySleepingBag", dialogueHidden: true, fadeOutSprite: true, fadeOutProp: true, autoAdvanceMs: 1400 }]
+    ],
+    nextAction: completeFullLoveScene
+  },
   transition_to_sunset_checkin: {
     label: "On The Route",
     background: () => ({ location: "black", time: "sunset" }),
@@ -1937,6 +2167,7 @@ const els = {
   backdrop: document.getElementById("backdrop"),
   backdropNext: document.getElementById("backdropNext"),
   sprite: document.getElementById("sprite"),
+  propSprite: document.getElementById("propSprite"),
   placeholderSprite: document.getElementById("placeholderSprite"),
   speakerName: document.getElementById("speakerName"),
   sceneLabel: document.getElementById("sceneLabel"),
@@ -2048,6 +2279,8 @@ function bindEvents() {
     if (!button) return;
     event.preventDefault();
     event.stopPropagation();
+    els.devPanel.classList.remove("open");
+    state.devPanelOpen = false;
     startDevFullLoveScene(button.dataset.devFullLoveKey);
   });
   els.dialogueCopyBtn.addEventListener("click", event => {
@@ -2101,7 +2334,7 @@ function validateSceneEstablishingRules() {
 
 function isContinuationScene(sceneId) {
   // These are follow-up beats inside the same setting, not fresh arrivals.
-  return /(_two|_three|_wrap|_wrapup|_reaction|_prompt|_pause|_departure|_rain|_cabin|_shirt|_good|_bad)$/.test(sceneId) || sceneId === "choice_reaction";
+  return /(_two|_three|_wrap|_wrapup|_reaction|_prompt|_pause|_departure|_rain|_cabin|_shirt|_good|_bad|_fade|_return|_sleeping_bag|_line|_exit)$/.test(sceneId) || sceneId === "choice_reaction";
 }
 
 function startGame() {
@@ -2177,6 +2410,7 @@ function renderCurrentLine() {
   // Do not fall back to scene.character here, or new locations will feel like
   // the player teleported directly into someone's face.
   const characterCue = line.length > 2 ? line[2] : null;
+  updatePropSprite(lineOptions.propCue || null);
   updateSprite(characterCue);
   els.speakerName.textContent = resolveName(speaker);
   els.speakerName.style.color = speaker.color || "#f3b85b";
@@ -2223,9 +2457,14 @@ function applyLinePresentation(options = {}) {
   els.gameScreen.classList.toggle("dialogue-hidden", Boolean(options.dialogueHidden));
   els.gameScreen.classList.toggle("dialogue-slow-fade", Boolean(options.dialogueSlowFade));
   els.gameScreen.classList.toggle("sprite-drift-up", Boolean(options.spriteDriftUp));
+  els.gameScreen.classList.toggle("sleeping-bag-rise", Boolean(options.sleepingBagRise));
   if (options.fadeOutSprite) {
     requestAnimationFrame(() => els.sprite.classList.add("hidden"));
   }
+  if (options.fadeOutProp) {
+    requestAnimationFrame(() => els.propSprite.classList.add("hidden"));
+  }
+  if (options.fadeOutMusicUntilScene) fadeOutMusicUntilScene(options.fadeOutMusicUntilScene);
   els.gameScreen.classList.remove("screen-flash");
   if (options.screenFlash) {
     void els.gameScreen.offsetWidth;
@@ -2401,6 +2640,7 @@ function skipCurrentInteraction() {
       toast("No next setting found.");
       return;
     }
+    if (els.dayTransition.classList.contains("active")) return;
     if (currentBackgroundKey() !== startingBackground) return;
   }
 
@@ -2558,6 +2798,18 @@ function completeSierraFullLoveMorning() {
   startNewDay();
 }
 
+function completeNataiFullLoveMorning() {
+  state.pendingFullLoveScene = null;
+  state.pendingDestination = null;
+  state.visitTime = null;
+  state.visitBeat = 0;
+  state.visitStartMood = null;
+  state.visitLastChoice = null;
+  state.visitLastReaction = null;
+  state.day += 1;
+  startNewDay();
+}
+
 function completeJackFullLoveNight() {
   state.day += 1;
   renderScene("full_love_jack_morning_wake");
@@ -2663,6 +2915,7 @@ function startDayFromTransition() {
   pushDevHistory();
   const onStart = showDayTransition.onStart;
   showDayTransition.onStart = null;
+  stopAmbient();
   if (onStart) onStart();
   els.dayTransition.classList.add("leaving");
   window.clearTimeout(startDayFromTransition.timer);
@@ -2992,12 +3245,14 @@ function updateSprite(characterCue) {
       els.sprite.removeAttribute("src");
       els.sprite.alt = "";
       els.sprite.dataset.spriteUrl = "";
-      els.sprite.classList.remove("sierra-stargazing-sprite", "sierra-stargazing-close");
+      els.sprite.classList.remove("sierra-stargazing-sprite", "sierra-stargazing-close", "natai-sleeping-bag-romantic", "natai-empty-sleeping-bag");
     }, 620);
     return;
   }
   els.sprite.classList.toggle("sierra-stargazing-sprite", characterKey === "sierra" && String(expression || "").startsWith("stargazingStep"));
   els.sprite.classList.toggle("sierra-stargazing-close", characterKey === "sierra" && expression === "stargazingStep4");
+  els.sprite.classList.toggle("natai-sleeping-bag-romantic", characterKey === "natai" && expression === "sleepingBagRomantic");
+  els.sprite.classList.toggle("natai-empty-sleeping-bag", characterKey === "natai" && expression === "emptySleepingBag");
   const spriteUrl = new URL(sprite, window.location.href).href;
   const characterName = resolveName(character);
   if (els.sprite.dataset.spriteUrl === spriteUrl && !els.sprite.classList.contains("hidden")) {
@@ -3036,6 +3291,52 @@ function updateSprite(characterCue) {
   preload.decoding = "async";
   preload.onload = () => window.setTimeout(revealSprite, hadVisibleSprite ? 180 : 0);
   preload.onerror = showMissingSprite;
+  preload.src = spriteUrl;
+}
+
+function updatePropSprite(propCue) {
+  const { key: characterKey, expression } = parseCharacterCue(propCue);
+  const character = characters[characterKey];
+  const sprite = character && resolveSprite(character, expression);
+  els.gameScreen.classList.toggle("prop-visible", Boolean(sprite));
+  if (!sprite) {
+    els.propSprite.classList.add("hidden");
+    window.setTimeout(() => {
+      if (els.gameScreen.classList.contains("prop-visible")) return;
+      els.propSprite.removeAttribute("src");
+      els.propSprite.alt = "";
+      els.propSprite.dataset.spriteUrl = "";
+      els.propSprite.className = "prop-sprite hidden";
+    }, 520);
+    return;
+  }
+
+  els.propSprite.classList.toggle("natai-empty-sleeping-bag", characterKey === "natai" && expression === "emptySleepingBag");
+  const spriteUrl = new URL(sprite, window.location.href).href;
+  const characterName = resolveName(character);
+  if (els.propSprite.dataset.spriteUrl === spriteUrl && !els.propSprite.classList.contains("hidden")) {
+    els.propSprite.alt = characterName;
+    return;
+  }
+
+  els.propSprite.classList.add("hidden");
+  els.propSprite.alt = characterName;
+  els.propSprite.decoding = "async";
+  els.propSprite.loading = "eager";
+  const revealProp = () => {
+    els.propSprite.dataset.spriteUrl = spriteUrl;
+    els.propSprite.src = spriteUrl;
+    void els.propSprite.offsetWidth;
+    requestAnimationFrame(() => requestAnimationFrame(() => els.propSprite.classList.remove("hidden")));
+  };
+  if (els.propSprite.src === spriteUrl) {
+    window.setTimeout(revealProp, 120);
+    return;
+  }
+  const preload = new Image();
+  preload.decoding = "async";
+  preload.onload = () => window.setTimeout(revealProp, 120);
+  preload.onerror = () => els.propSprite.classList.add("hidden");
   preload.src = spriteUrl;
 }
 
@@ -3231,7 +3532,7 @@ function stopAmbient(immediate = false) {
   audioEngine.ambientKey = null;
   audioEngine.ambientPlayer = null;
   if (!immediate && config?.stopFadeMs && audioEngine.enabled) {
-    fadePlayer(player, 0, config.stopFadeMs, () => {
+    fadeDetachedPlayer(player, 0, config.stopFadeMs, () => {
       player.pause();
       player.currentTime = 0;
     });
@@ -3460,6 +3761,20 @@ function fadePlayer(player, targetVolume, duration, onComplete) {
     }
   }, 16);
   audioEngine.fadeTimerIds.push(timerId);
+}
+
+function fadeDetachedPlayer(player, targetVolume, duration, onComplete) {
+  const startVolume = player.volume;
+  const startTime = performance.now();
+  const timerId = window.setInterval(() => {
+    const elapsed = performance.now() - startTime;
+    const progress = Math.min(1, elapsed / duration);
+    player.volume = startVolume + (targetVolume - startVolume) * progress;
+    if (progress >= 1) {
+      window.clearInterval(timerId);
+      if (onComplete) onComplete();
+    }
+  }, 16);
 }
 
 function resolveValue(value) {

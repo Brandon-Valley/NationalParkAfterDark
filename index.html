@@ -277,6 +277,52 @@
       max-width: min(98vw, 1240px);
     }
 
+    .sprite.natai-sleeping-bag-romantic {
+      height: min(70vh, 760px);
+      max-width: min(96vw, 1260px);
+      transform: translateY(38px) scale(1);
+      transform-origin: center bottom;
+      transition: opacity .55s ease, transform 5.25s cubic-bezier(.19, 1, .22, 1), filter .7s ease;
+    }
+
+    .sprite.natai-sleeping-bag-romantic.hidden {
+      transform: translateY(48px) scale(.985);
+    }
+
+    #gameScreen.prop-visible .sprite.natai-sleeping-bag-romantic {
+      transform: translate(-13vw, 44px) scale(.84);
+    }
+
+    .prop-sprite {
+      position: absolute;
+      right: min(4vw, 48px);
+      bottom: -2px;
+      display: block;
+      height: min(31vh, 330px);
+      max-width: min(48vw, 560px);
+      width: auto;
+      object-fit: contain;
+      filter: drop-shadow(0 22px 30px rgba(0, 0, 0, .52));
+      transform: translateY(18px) scale(1);
+      transition: opacity .45s ease, transform .6s cubic-bezier(.19, 1, .22, 1), filter .6s ease;
+      opacity: 1;
+      z-index: 2;
+      pointer-events: none;
+    }
+
+    .prop-sprite.hidden {
+      opacity: 0;
+      transform: translateY(44px) scale(.985);
+    }
+
+    .prop-sprite.natai-empty-sleeping-bag {
+      transform-origin: center bottom;
+    }
+
+    .prop-sprite.natai-empty-sleeping-bag.hidden {
+      transform: translateY(44px) scale(.985);
+    }
+
     #gameScreen.dialogue-hidden .dialogue,
     #gameScreen.dialogue-hidden .choices {
       opacity: 0;
@@ -290,6 +336,10 @@
 
     #gameScreen.sprite-drift-up .sprite.sierra-stargazing-close {
       animation: sierraSilentExit 4.1s ease-in forwards;
+    }
+
+    #gameScreen.sleeping-bag-rise .prop-sprite.natai-empty-sleeping-bag {
+      animation: sleepingBagRise 4.3s cubic-bezier(.2, .82, .22, 1) forwards;
     }
 
     @keyframes dialogueSlowReveal {
@@ -313,6 +363,20 @@
       100% {
         opacity: 0;
         transform: translateY(-115vh) scale(1);
+      }
+    }
+
+    @keyframes sleepingBagRise {
+      0% {
+        opacity: 0;
+        transform: translateY(92vh) scale(.98);
+      }
+      22% {
+        opacity: 1;
+      }
+      100% {
+        opacity: 1;
+        transform: translateY(18px) scale(1);
       }
     }
 
@@ -1286,6 +1350,7 @@
       <div class="stage">
         <div class="character-zone">
           <img id="sprite" class="sprite hidden" alt="">
+          <img id="propSprite" class="prop-sprite hidden" alt="">
           <div id="placeholderSprite" class="placeholder-sprite"><strong></strong></div>
           <div class="choices" id="choices"></div>
         </div>

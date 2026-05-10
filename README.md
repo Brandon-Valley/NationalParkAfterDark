@@ -30,6 +30,8 @@ The app falls back to CSS backgrounds and character name cards if image assets a
 
 Music:
 "Almost Bliss", "Clear Air", "Evening", "Windswept", "On My Way", "Morning", "Fireflies and Stardust", "Crowd Hammer", "There is Romance", "Anamalie", "Slow Burn", "Sardana", "Heartwarming", "Your Call", and "Volatile Reaction" by Kevin MacLeod ([Incompetech](https://incompetech.com/)), licensed under [CC BY 4.0](https://creativecommons.org/licenses/by/4.0/).
+"Firesong" by Kevin MacLeod ([Incompetech](https://incompetech.com/)), licensed under [CC BY 3.0](https://creativecommons.org/licenses/by/3.0/).
+"Native American Spirit Ritual" by Sounova Music ([Pixabay](https://pixabay.com/music/)), royalty-free under the Pixabay Content License.
 
 Sound effects:
 "Button Click Sound Effect (CC0/Public Domain)" by qubodup ([OpenGameArt](https://opengameart.org/content/button-click-sound-effect-cc0public-domain)), CC0.
@@ -38,3 +40,4 @@ Sound effects:
 "Chimey UI Sounds" by MouseBYTE ([OpenGameArt](https://opengameart.org/content/chimey-ui-sounds)), CC0.
 "Rain (loopable)" by Ylmir ([OpenGameArt](https://opengameart.org/content/rain-loopable)), CC0.
 "Rain On The Roof" by Roman Lipatov ([Directory.Audio](https://directory.audio/sound-effects/weather/1372-rain-on-the-roof)), CC0.
+"Bird chirping sounds" by syncopika ([OpenGameArt](https://opengameart.org/content/bird-chirping-sounds)), CC0.

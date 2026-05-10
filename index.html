@@ -1251,10 +1251,37 @@
       .topbar {
         align-items: start;
       }
+      .control-row {
+        flex-wrap: wrap;
+        justify-content: flex-end;
+        align-content: flex-start;
+        row-gap: 6px;
+      }
       .brand-subtitle { display: none; }
       .text-btn { display: none; }
+      #backBtn,
+      #skipBtn,
+      #skipToBtn,
+      #devBtn {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        min-width: 44px;
+        padding: 0 10px;
+        font-size: 12px;
+      }
+      #skipToBtn { min-width: 58px; }
+      #backBtn[hidden],
+      #skipBtn[hidden],
+      #skipToBtn[hidden],
+      #devBtn[hidden] {
+        display: none;
+      }
       .stage {
-        padding-top: 72px;
+        padding-top: 112px;
+      }
+      .dev-panel {
+        top: calc(max(12px, env(safe-area-inset-top)) + 92px);
       }
       .sprite {
         height: min(56vh, 520px);

@@ -1220,6 +1220,21 @@
       box-shadow: none;
     }
 
+    .dev-audio-status {
+      margin-top: 12px;
+      padding-top: 10px;
+      border-top: 1px solid rgba(92, 54, 23, .2);
+      color: rgba(47, 32, 21, .78);
+      font-size: 12px;
+      font-weight: 800;
+      line-height: 1.35;
+      overflow-wrap: anywhere;
+    }
+
+    .dev-audio-status div + div {
+      margin-top: 4px;
+    }
+
     @media (min-width: 760px) {
       .stage {
         padding-top: 84px;
@@ -1382,6 +1397,7 @@
           <input type="checkbox" id="devSkipButton">
           Add Skip Button
         </label>
+        <div class="dev-audio-status" id="devAudioStatus" aria-live="polite"></div>
       </aside>
       <div class="stage">
         <div class="character-zone">

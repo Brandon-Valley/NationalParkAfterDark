@@ -2246,6 +2246,7 @@ const els = {
   skipToBtn: document.getElementById("skipToBtn"),
   devPanel: document.getElementById("devPanel"),
   devScores: document.getElementById("devScores"),
+  devAudioStatus: document.getElementById("devAudioStatus"),
   devChoicePreview: document.getElementById("devChoicePreview"),
   devEasyCopy: document.getElementById("devEasyCopy"),
   devBackButton: document.getElementById("devBackButton"),
@@ -2276,6 +2277,7 @@ const audioEngine = {
   ambientTimerId: null,
   ambientFadeTimerId: null,
   ambientToken: 0,
+  activeSfxPlayers: [],
   sfxChannels: {},
   enabled: true
 };
@@ -3342,11 +3344,79 @@ function updateDevPanel() {
         </label>
       </div>`;
   }).join("");
+  if (els.devAudioStatus) {
+    const { music, sfx } = currentAudioDebugLines();
+    els.devAudioStatus.innerHTML = `
+      <div>Music: ${escapeHtml(music)}</div>
+      <div>SFX: ${escapeHtml(sfx)}</div>`;
+  }
 }
 
 function updateCopyControls() {
   if (!els.dialogueCopyBtn) return;
   els.dialogueCopyBtn.hidden = !state.devEasyCopy;
+}
+
+function currentAudioDebugLines() {
+  const currentMusic = unique(
+    audioEngine.enabled
+      ? audioEngine.musicPlayers
+        .filter(player => player && player.src && !player.paused && !player.ended)
+        .map(player => audioFileName(player.src))
+        .filter(Boolean)
+      : []
+  );
+  const currentSfx = unique(
+    audioEngine.activeSfxPlayers
+      .filter(entry => entry.player && !entry.player.paused && !entry.player.ended)
+      .map(entry => audioFileName(entry.src))
+      .filter(Boolean)
+  );
+  return {
+    music: currentMusic.length ? currentMusic.join(", ") : "None",
+    sfx: currentSfx.length ? currentSfx.join(", ") : "None"
+  };
+}
+
+function trackSfxPlayer(player, src, kind = "sfx") {
+  audioEngine.activeSfxPlayers = audioEngine.activeSfxPlayers.filter(entry => entry.player !== player);
+  audioEngine.activeSfxPlayers.push({ player, src, kind });
+  const cleanup = () => {
+    untrackSfxPlayer(player);
+  };
+  player.addEventListener("ended", cleanup, { once: true });
+  player.addEventListener("error", cleanup, { once: true });
+}
+
+function untrackSfxPlayer(player) {
+  const nextPlayers = audioEngine.activeSfxPlayers.filter(entry => entry.player !== player);
+  if (nextPlayers.length === audioEngine.activeSfxPlayers.length) return;
+  audioEngine.activeSfxPlayers = nextPlayers;
+  updateDevPanel();
+}
+
+function stopTrackedSfxPlayers() {
+  const players = audioEngine.activeSfxPlayers.map(entry => entry.player).filter(Boolean);
+  audioEngine.activeSfxPlayers = [];
+  players.forEach(player => {
+    player.pause();
+    player.currentTime = 0;
+  });
+}
+
+function audioFileName(src) {
+  if (!src) return "";
+  const path = String(src).split(/[?#]/)[0].replaceAll("\\", "/");
+  const fileName = path.split("/").pop() || path;
+  try {
+    return decodeURIComponent(fileName);
+  } catch (error) {
+    return fileName;
+  }
+}
+
+function unique(items) {
+  return [...new Set(items)];
 }
 
 function resolveBackground(input) {
@@ -3648,9 +3718,11 @@ function updateAmbient(key) {
     player.loop = true;
     player.volume = config.fadeMs ? 0 : config.volume;
     audioEngine.ambientPlayer = player;
+    trackSfxPlayer(player, config.src, "ambient");
     player.play().then(() => {
       if (config.fadeMs) fadeAmbient(player, config.volume, config.fadeMs, ambientToken);
-    }).catch(() => {});
+      updateDevPanel();
+    }).catch(() => untrackSfxPlayer(player));
   };
   if (config.delayMs) {
     audioEngine.ambientTimerId = window.setTimeout(startAmbient, config.delayMs);
@@ -3696,11 +3768,15 @@ function stopAmbient(immediate = false) {
     fadeDetachedPlayer(player, 0, config.stopFadeMs, () => {
       player.pause();
       player.currentTime = 0;
+      untrackSfxPlayer(player);
     });
+    updateDevPanel();
     return;
   }
   player.pause();
   player.currentTime = 0;
+  untrackSfxPlayer(player);
+  updateDevPanel();
 }
 
 function stopSfxChannel(channel) {
@@ -3709,6 +3785,8 @@ function stopSfxChannel(channel) {
   player.pause();
   player.currentTime = 0;
   delete audioEngine.sfxChannels[channel];
+  untrackSfxPlayer(player);
+  updateDevPanel();
 }
 
 function playLineAudioCue(cue) {
@@ -3768,6 +3846,7 @@ function stopMusicLoop() {
   audioEngine.musicResumeFadeMs = null;
   stopAmbient(true);
   Object.keys(audioEngine.sfxChannels).forEach(stopSfxChannel);
+  stopTrackedSfxPlayers();
   audioEngine.trackChangeToken += 1;
   window.clearInterval(audioEngine.loopTimerId);
   audioEngine.fadeTimerIds.forEach(id => window.clearInterval(id));
@@ -3782,6 +3861,7 @@ function stopMusicLoop() {
   audioEngine.currentTheme = null;
   audioEngine.musicKey = null;
   audioEngine.musicOverrideKey = null;
+  updateDevPanel();
 }
 
 function fadeOutMusicUntilLocationChange(duration = 2200) {
@@ -3810,10 +3890,12 @@ function fadeOutCurrentMusic(duration = 2200) {
   const players = audioEngine.musicPlayers.filter(player => player && !player.paused && player.volume > 0);
   audioEngine.currentTheme = null;
   audioEngine.musicKey = null;
+  updateDevPanel();
   if (!players.length) return;
   players.forEach(player => {
     fadePlayer(player, 0, duration, () => {
       player.pause();
+      updateDevPanel();
     });
   });
 }
@@ -3823,11 +3905,11 @@ function playSfx(type) {
   const config = sfxTracks[type];
   if (!config) return;
   if (config.channel && audioEngine.sfxChannels[config.channel]) {
-    audioEngine.sfxChannels[config.channel].pause();
-    audioEngine.sfxChannels[config.channel].currentTime = 0;
+    stopSfxChannel(config.channel);
   }
   const effect = new Audio(config.src);
   effect.volume = config.volume;
+  trackSfxPlayer(effect, config.src, "sfx");
   if (config.channel) {
     audioEngine.sfxChannels[config.channel] = effect;
     effect.addEventListener("ended", () => {
@@ -3838,7 +3920,7 @@ function playSfx(type) {
     if (config.startAt) {
       try { effect.currentTime = config.startAt; } catch (error) {}
     }
-    effect.play().catch(() => {});
+    effect.play().then(updateDevPanel).catch(() => untrackSfxPlayer(effect));
   };
   if (config.startAt) {
     if (effect.readyState >= 1) startPlayback();
@@ -3846,7 +3928,7 @@ function playSfx(type) {
     effect.load();
     return;
   }
-  effect.play().catch(() => {});
+  effect.play().then(updateDevPanel).catch(() => untrackSfxPlayer(effect));
 }
 
 function resolveMusicKey() {
@@ -3886,12 +3968,14 @@ function playMusicTrack(musicKey) {
     if (outgoing) fadePlayer(outgoing, 0, 1800, () => {
       outgoing.pause();
       outgoing.currentTime = theme.loopStart;
+      updateDevPanel();
     });
     audioEngine.currentTheme = theme;
     audioEngine.musicKey = musicKey;
     audioEngine.activeMusicIndex = incomingIndex;
     audioEngine.transitioning = false;
     audioEngine.loopTimerId = window.setInterval(checkMusicLoop, 120);
+    updateDevPanel();
   };
   audioEngine.transitioning = Boolean(outgoing);
   if (incoming.readyState >= 2) startPlayback();

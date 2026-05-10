@@ -13,6 +13,7 @@ const defaultState = {
   returnTime: null,
   pendingDestination: null,
   pendingEncounter: null,
+  pendingFullLoveScene: null,
   visitTime: null,
   visitBeat: 0,
   visitStartMood: null,
@@ -47,7 +48,18 @@ const characters = {
   player: { name: () => state.playerName, sprite: "", color: "#7b2f24" },
   narrator: { name: "Narrator", sprite: "", color: "#5f3a19" },
   jack: { name: "Jack", shortName: "Jack", park: "Olympic", location: "olympic", sprites: characterSprites("jack"), color: "#8f3f24" },
-  caleb: { name: "Caleb", shortName: "Caleb", park: "Yellowstone", location: "yellowstone", sprites: characterSprites("caleb"), color: "#276345" },
+  caleb: {
+    name: "Caleb",
+    shortName: "Caleb",
+    park: "Yellowstone",
+    location: "yellowstone",
+    sprites: {
+      ...characterSprites("caleb"),
+      fullLoveRomantic: "assets/charactures/caleb/full_love_romantic.png",
+      fullLoveRage: "assets/charactures/caleb/full_love_rage.png"
+    },
+    color: "#276345"
+  },
   sierra: { name: "Sierra", shortName: "Sierra", park: "Yosemite", location: "yosemite", sprites: { ...characterSprites("sierra"), sly: "assets/charactures/sierra/sly.png" }, color: "#8b3f63" },
   dakota: { name: "Dakota", shortName: "Dakota", park: "Sequoia", location: "sequoia", sprites: characterSprites("dakota"), color: "#704719" },
   natai: { name: "Natai", shortName: "Natai", park: "Zion", location: "zion", sprites: characterSprites("natai"), color: "#245f76" }
@@ -74,6 +86,11 @@ const backgroundCatalog = {
     sunset: "assets/backgrounds/time_variants/yellowstone/sunset.png",
     night: "assets/backgrounds/time_variants/yellowstone/night.png"
   },
+  yellowstoneMisty: {
+    daytime: "assets/backgrounds/special/yellowstone_night_misty.png",
+    sunset: "assets/backgrounds/special/yellowstone_night_misty.png",
+    night: "assets/backgrounds/special/yellowstone_night_misty.png"
+  },
   yosemite: {
     daytime: "assets/backgrounds/time_variants/yosemite/daytime.png",
     sunset: "assets/backgrounds/time_variants/yosemite/sunset.png",
@@ -98,6 +115,7 @@ const backgroundClasses = {
   checkIn: "bg-lodge",
   olympic: "bg-smoky",
   yellowstone: "bg-yellowstone",
+  yellowstoneMisty: "bg-yellowstone",
   yosemite: "bg-yosemite",
   sequoia: "bg-smoky",
   zion: "bg-zion"
@@ -120,6 +138,7 @@ const locationMusic = {
   checkIn: "checkIn",
   olympic: "jack",
   yellowstone: "caleb",
+  yellowstoneMisty: "caleb",
   yosemite: "sierra",
   sequoia: "dakota",
   zion: "natai"
@@ -145,9 +164,20 @@ const ambientTracks = {
 const cgLibrary = {
   jackCabin: { title: "Rain-Soaked Cabin", image: "assets/backgrounds/time_variants/olympic/daytime.png" },
   calebSteam: { title: "Boardwalk Boundaries", image: "assets/backgrounds/time_variants/yellowstone/daytime.png" },
+  calebFullLoveGood: { title: "Steam, Sparks, and Footnotes", image: "assets/backgrounds/special/yellowstone_night_misty.png" },
   sierraWaterfall: { title: "No Filter Needed", image: "assets/backgrounds/time_variants/yosemite/sunset.png" },
   dakotaGrove: { title: "Forest Protector", image: "assets/backgrounds/time_variants/sequoia/daytime.png" },
   nataiCanyon: { title: "Permit Approved", image: "assets/backgrounds/time_variants/zion/night.png" }
+};
+
+const fullLoveScenes = {
+  caleb: {
+    character: "caleb",
+    requiredFeeling: 10,
+    times: ["night"],
+    entryScene: "full_love_caleb_start",
+    completedFlag: "calebFullLoveGood"
+  }
 };
 
 const parkFlavor = {
@@ -1190,7 +1220,7 @@ const scenes = {
   day_wake: {
     label: () => `Day ${state.day}`,
     background: () => ({ location: "lodge", time: "daytime" }),
-    onEnter: () => { state.timeOfDay = "daytime"; state.pendingDestination = null; state.pendingEncounter = null; state.visitTime = null; state.visitBeat = 0; state.visitStartMood = null; state.visitLastChoice = null; state.visitLastReaction = null; },
+    onEnter: () => { state.timeOfDay = "daytime"; state.pendingDestination = null; state.pendingEncounter = null; state.pendingFullLoveScene = null; state.visitTime = null; state.visitBeat = 0; state.visitStartMood = null; state.visitLastChoice = null; state.visitLastReaction = null; },
     lines: () => {
       const nataiLow = relationshipState("natai") === "low";
       const chatter = nataiLow ? [
@@ -1304,6 +1334,105 @@ const scenes = {
     character: () => state.pendingDestination,
     lines: () => buildVisitWrapupLines(state.pendingDestination),
     nextAction: completeVisit
+  },
+  full_love_caleb_start: {
+    label: "Yellowstone After Dark",
+    background: () => ({ location: "yellowstoneMisty", time: "night" }),
+    onEnter: () => { state.visitTime = "night"; state.pendingDestination = "caleb"; state.pendingFullLoveScene = "caleb"; },
+    lines: [
+      ["narrator", "The heart on Caleb's route card glows warm under your thumb, and the kiosk responds by printing a ticket that simply reads: AFTER DARK. VERY SCIENTIFIC."],
+      ["narrator", "Yellowstone opens around you in blue-black mist. The boardwalk shines with dew, steam sliding low over the rails like the park is trying to keep a secret."],
+      ["player", "Caleb?"],
+      ["narrator", "A shape moves through the steam. Caleb steps into the boardwalk light shirtless, soaked, scuffed with ash, and smiling like he has just survived a peer-reviewed miracle.", "caleb:fullLoveRomantic"],
+      ["player", "What happened to you?"],
+      ["caleb", "Short version: geyser. Heroic version: I rescued a tourist's engagement ring from a very bad boardwalk bounce, redirected a rolling backpack away from a thermal runoff channel, and then Castle Geyser expressed an opinion about my timing.", "caleb:fullLoveRomantic"],
+      ["player", "You got hit by a geyser while saving romance jewelry and defeating luggage?"],
+      ["caleb", "Recovering romance jewelry. Stabilizing luggage. I am choosing precise verbs because my shirt is gone and I need structure.", "caleb:fullLoveRomantic"],
+      ["player", "I am trying very hard to be sympathetic, but you are wet, shirtless, a little bit on fire, and the story has a backpack villain."],
+      ["caleb", "Tiny controlled hair flame. Mostly symbolic.", "caleb:fullLoveRomantic"]
+    ],
+    next: "full_love_caleb_two"
+  },
+  full_love_caleb_two: {
+    label: "Yellowstone After Dark",
+    background: () => ({ location: "yellowstoneMisty", time: "night" }),
+    lines: [
+      ["narrator", "He pats at the little flame in his hair. It refuses to surrender with theatrical dignity."],
+      ["caleb", "I should be embarrassed. I planned a careful walk. A clean shirt. One, maybe two, facts delivered with emotional restraint.", "caleb:fullLoveRomantic"],
+      ["player", "Instead you arrived like Yellowstone wrote a romance novel and forgot workplace safety."],
+      ["caleb", "Yellowstone would never forget workplace safety. It would include an appendix.", "caleb:fullLoveRomantic"],
+      ["narrator", "You laugh, and Caleb's expression changes. The brilliant, frantic part of him softens into something quieter than steam."],
+      ["caleb", "I wanted tonight to matter. Not because you got the score high enough, although I noticed, statistically and personally.", "caleb:fullLoveRomantic"],
+      ["caleb", "Because you kept listening. You made room for the facts, and somehow that made room for me.", "caleb:fullLoveRomantic"],
+      ["player", "Caleb."],
+      ["caleb", "I am damp, lightly singed, and having a sincere moment on a boardwalk. Please do not say my name like that unless you intend to damage me further.", "caleb:fullLoveRomantic"],
+      ["player", "What if I do?"],
+      ["narrator", "The mist curls around his shoulders. His eyes drop to your mouth, then back up, careful and wanting all at once."],
+      ["caleb", "Then I would like to be damaged responsibly. Behind the rail. With enthusiastic consent. And possibly after confirming you remember one extremely important Yellowstone fact.", "caleb:fullLoveRomantic"]
+    ],
+    next: "full_love_caleb_prompt"
+  },
+  full_love_caleb_prompt: {
+    label: "Yellowstone After Dark",
+    background: () => ({ location: "yellowstoneMisty", time: "night" }),
+    lines: [
+      ["player", "There is a quiz right now."],
+      ["caleb", "A small one. Emotionally load-bearing. Old Faithful has celebrity status, but what have I told you about Yellowstone's geysers?", "caleb:fullLoveRomantic"]
+    ],
+    choices: [
+      {
+        label: "Say Yellowstone has more than half of the world's active geysers.",
+        next: "full_love_caleb_good",
+        unlockCG: "calebFullLoveGood",
+        flags: { calebFullLoveGood: true }
+      },
+      {
+        label: "Say Old Faithful is the largest geyser in Yellowstone.",
+        next: "full_love_caleb_bad",
+        feelings: { caleb: -3 }
+      }
+    ]
+  },
+  full_love_caleb_good: {
+    label: "Yellowstone After Dark",
+    background: () => ({ location: "yellowstoneMisty", time: "night" }),
+    lines: [
+      ["narrator", "Caleb goes very still. For one suspended second, even the steam seems to behave."],
+      ["caleb", "More than half. Yes.", "caleb:fullLoveRomantic"],
+      ["player", "Old Faithful is famous, not the biggest. A punctual celebrity, if I remember the exact Caleb phrasing."],
+      ["caleb", "You remembered the phrasing.", "caleb:fullLoveRomantic"],
+      ["narrator", "His smile breaks open, warm enough to make the night feel less cold. He steps closer, every movement careful, asking without making you carry all the words."],
+      ["player", "I remembered because it was you saying it."],
+      ["caleb", "That is unfairly effective.", "caleb:fullLoveRomantic"],
+      ["narrator", "He kisses you like he is still astonished that wonder can have mechanics and still become magic. The boardwalk, the mist, the little stubborn flame in his hair: all of it narrows to warmth, laughter, and the sweet pressure of being chosen."],
+      ["caleb", "For the record, this is not how I expected tonight to go.", "caleb:fullLoveRomantic"],
+      ["player", "Too much geyser?"],
+      ["caleb", "An irresponsible amount. But the result is... compelling.", "caleb:fullLoveRomantic"],
+      ["narrator", "The rest of the night stays private in the way good things sometimes deserve: hands linked behind the rail, soft jokes against damp skin, Caleb's facts turning tender whenever his courage needs somewhere to stand."],
+      ["player", "You leave Yellowstone with steam in your hair, Caleb's smile burned bright in your chest, and the powerful knowledge that correct trivia can be extremely romantic."]
+    ],
+    nextAction: completeFullLoveScene
+  },
+  full_love_caleb_bad: {
+    label: "Yellowstone After Dark",
+    background: () => ({ location: "yellowstoneMisty", time: "night" }),
+    lines: [
+      ["narrator", "Caleb's face changes so fast it should come with a weather advisory."],
+      ["caleb", "Old Faithful is WHAT.", "caleb:fullLoveRage"],
+      ["player", "The largest geyser in Yellowstone?"],
+      ["caleb", "NO. No. Absolutely not. I am shirtless, emotionally available, damp in a narratively significant way, and you choose this moment to slander Steamboat Geyser?", "caleb:fullLoveRage"],
+      ["player", "I am sorry, did you say slander?"],
+      ["caleb", "Steamboat is the tallest active geyser in the world. Old Faithful is famous because it is regular, not because it is the biggest. We have covered this. My heart made flashcards.", "caleb:fullLoveRage"],
+      ["narrator", "The tiny flame in his hair flares as if it, too, has strong feelings about hydrothermal accuracy."],
+      ["caleb", "I had a sentimental speech. There was going to be hand-holding. Possibly a respectful amount of shirt-related escalation. Now I have to go stare into the dark and recover as a scientist and as a man.", "caleb:fullLoveRage"],
+      ["player", "That feels a little dramatic."],
+      ["caleb", "Yellowstone is dramatic. I am being locally appropriate.", "caleb:fullLoveRage"],
+      ["narrator", "He marches you back toward the route marker with wet, furious dignity, still staying between you and every unsafe edge because even betrayed Caleb is professionally incapable of letting you wander into boiling ground."],
+      ["player", "I really thought something steamy was going to happen."],
+      ["narrator", "A geyser coughs in the distance."],
+      ["player", "Not like that."]
+    ],
+    nextAction: completeFullLoveScene
   },
   transition_to_sunset_checkin: {
     label: "On The Route",
@@ -1638,9 +1767,10 @@ function renderChoices(choices) {
     const wrap = document.createElement("div");
     wrap.className = "choice-wrap";
     const button = document.createElement("button");
-    button.className = "choice";
+    button.className = `choice${choice.className ? ` ${choice.className}` : ""}`;
     const preview = state.devChoicePreview ? choiceImpactHtml(choice) : "";
-    button.innerHTML = `${escapeHtml(choice.label)}${preview}`;
+    const icon = choice.icon ? `<span class="choice-icon" aria-hidden="true">${escapeHtml(choice.icon)}</span>` : "";
+    button.innerHTML = `${icon}<span class="choice-label">${escapeHtml(choice.label)}</span>${preview}`;
     button.addEventListener("click", event => {
       event.stopPropagation();
       applyChoiceEffects(choice);
@@ -1811,15 +1941,24 @@ function currentBackgroundKey() {
 }
 
 function loveInterestChoices() {
-  return LOVE_INTEREST_KEYS.map(key => ({
-    label: `Visit ${characters[key].shortName} at ${characters[key].park}.`,
-    action: () => startTravel(key)
-  }));
+  return LOVE_INTEREST_KEYS.map(key => {
+    const fullLoveAvailable = isFullLoveSceneAvailable(key);
+    return {
+      label: `Visit ${characters[key].shortName} at ${characters[key].park}.`,
+      icon: fullLoveAvailable ? "♥" : "",
+      className: fullLoveAvailable ? "full-love-choice" : "",
+      action: () => startTravel(key)
+    };
+  });
 }
 
 function startTravel(destination) {
   state.pendingDestination = destination;
   state.selectedRoute = destination;
+  if (isFullLoveSceneAvailable(destination)) {
+    startFullLoveScene(destination);
+    return;
+  }
   if (state.timeOfDay !== "night" && Math.random() < 0.5) {
     state.pendingEncounter = rollCheckInEvent(destination);
     renderScene("checkin_travel_event");
@@ -1837,6 +1976,36 @@ function continueToPendingDestination() {
   renderScene("main_visit_arrival");
 }
 
+function startFullLoveScene(character) {
+  const config = fullLoveScenes[character];
+  state.pendingFullLoveScene = character;
+  state.pendingEncounter = null;
+  state.visitTime = state.timeOfDay;
+  state.visitBeat = 0;
+  state.visitStartMood = "high";
+  state.visitLastChoice = null;
+  state.visitLastReaction = null;
+  renderScene(config.entryScene);
+}
+
+function completeFullLoveScene() {
+  const completedTime = state.visitTime || state.timeOfDay;
+  state.pendingFullLoveScene = null;
+  state.pendingDestination = null;
+  state.visitTime = null;
+  state.visitBeat = 0;
+  state.visitStartMood = null;
+  state.visitLastChoice = null;
+  state.visitLastReaction = null;
+  if (completedTime === "daytime") {
+    renderScene("transition_to_sunset_checkin");
+  } else if (completedTime === "sunset") {
+    renderScene("transition_to_night_checkin");
+  } else {
+    renderScene("night_lodge_return");
+  }
+}
+
 function completeVisit() {
   const completedTime = state.visitTime || state.timeOfDay;
   state.visitTime = null;
@@ -1851,6 +2020,14 @@ function completeVisit() {
   } else {
     renderScene("night_lodge_return");
   }
+}
+
+function isFullLoveSceneAvailable(character) {
+  const config = fullLoveScenes[character];
+  if (!config) return false;
+  if (state.flags?.[config.completedFlag]) return false;
+  if ((state.feelings[character] ?? 0) < config.requiredFeeling) return false;
+  return config.times.includes(state.timeOfDay);
 }
 
 function returnToLodgeEarly() {

@@ -421,6 +421,36 @@
       padding-right: 48px;
     }
 
+    .choice-label {
+      display: block;
+      min-width: 0;
+    }
+
+    .choice.full-love-choice {
+      display: grid;
+      grid-template-columns: auto 1fr;
+      align-items: center;
+      gap: 10px;
+      background:
+        linear-gradient(135deg, rgba(255, 211, 137, .98), rgba(204, 79, 95, .98));
+      box-shadow:
+        0 10px 24px rgba(0, 0, 0, .24),
+        inset 0 0 0 2px rgba(255, 245, 217, .34);
+    }
+
+    .choice-icon {
+      width: 28px;
+      height: 28px;
+      display: inline-grid;
+      place-items: center;
+      border-radius: 999px;
+      background: rgba(255, 245, 217, .92);
+      color: #a7283e;
+      line-height: 1;
+      font-size: 18px;
+      box-shadow: 0 5px 12px rgba(74, 19, 29, .24);
+    }
+
     .choice-wrap .copy-btn {
       position: absolute;
       right: 8px;

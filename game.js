@@ -1,7 +1,7 @@
 const SAVE_KEY = "parkAfterDarkSaveV4";
 const TIMES = ["daytime", "sunset", "night"];
 const TIME_LABELS = { daytime: "Daytime", sunset: "Sunset", night: "Night" };
-const LOVE_INTEREST_KEYS = ["jack", "caleb", "sierra", "bruno", "river"];
+const LOVE_INTEREST_KEYS = ["jack", "caleb", "sierra", "dakota", "natai"];
 
 const defaultState = {
   playerName: "You",
@@ -32,8 +32,8 @@ const defaultState = {
     jack: 5,
     caleb: 5,
     sierra: 5,
-    bruno: 5,
-    river: 2
+    dakota: 5,
+    natai: 2
   },
   flags: {},
   unlockedCG: [],
@@ -46,11 +46,11 @@ let spriteLoadToken = 0;
 const characters = {
   player: { name: () => state.playerName, sprite: "", color: "#7b2f24" },
   narrator: { name: "Narrator", sprite: "", color: "#5f3a19" },
-  jack: { name: "Jack Everett", shortName: "Jack", park: "Olympic", location: "olympic", sprites: characterSprites("jack_everett"), color: "#8f3f24" },
-  caleb: { name: "Caleb Ranger", shortName: "Caleb", park: "Yellowstone", location: "yellowstone", sprites: characterSprites("caleb_ranger"), color: "#276345" },
+  jack: { name: "Jack", shortName: "Jack", park: "Olympic", location: "olympic", sprites: characterSprites("jack"), color: "#8f3f24" },
+  caleb: { name: "Caleb", shortName: "Caleb", park: "Yellowstone", location: "yellowstone", sprites: characterSprites("caleb"), color: "#276345" },
   sierra: { name: "Sierra", shortName: "Sierra", park: "Yosemite", location: "yosemite", sprites: characterSprites("sierra"), color: "#8b3f63" },
-  bruno: { name: "Bruno Bear", shortName: "Bruno", park: "Sequoia", location: "sequoia", sprites: characterSprites("bruno_bear"), color: "#704719" },
-  river: { name: "River Hawk", shortName: "River", park: "Zion", location: "zion", sprites: characterSprites("river_hawk"), color: "#245f76" }
+  dakota: { name: "Dakota", shortName: "Dakota", park: "Sequoia", location: "sequoia", sprites: characterSprites("dakota"), color: "#704719" },
+  natai: { name: "Natai", shortName: "Natai", park: "Zion", location: "zion", sprites: characterSprites("natai"), color: "#245f76" }
 };
 
 const backgroundCatalog = {
@@ -110,8 +110,8 @@ const musicThemes = {
   jack: { src: "assets/audio/music/Windswept.mp3", loopStart: 9.6, loopEnd: 199.8, volume: 0.5 },
   caleb: { src: "assets/audio/music/On My Way.mp3", loopStart: 11.2, loopEnd: 243.8, volume: 0.5 },
   sierra: { src: "assets/audio/music/Morning.mp3", loopStart: 6.0, loopEnd: 146.0, volume: 0.54 },
-  bruno: { src: "assets/audio/music/Fireflies and Stardust.mp3", loopStart: 9.0, loopEnd: 244.5, volume: 0.5 },
-  river: { src: "assets/audio/music/Crowd Hammer.mp3", loopStart: 7.5, loopEnd: 198.5, volume: 0.45 }
+  dakota: { src: "assets/audio/music/Fireflies and Stardust.mp3", loopStart: 9.0, loopEnd: 244.5, volume: 0.5 },
+  natai: { src: "assets/audio/music/Crowd Hammer.mp3", loopStart: 7.5, loopEnd: 198.5, volume: 0.45 }
 };
 
 const locationMusic = {
@@ -121,8 +121,8 @@ const locationMusic = {
   olympic: "jack",
   yellowstone: "caleb",
   yosemite: "sierra",
-  sequoia: "bruno",
-  zion: "river"
+  sequoia: "dakota",
+  zion: "natai"
 };
 
 const sfxTracks = {
@@ -146,8 +146,8 @@ const cgLibrary = {
   jackCabin: { title: "Rain-Soaked Cabin", image: "assets/backgrounds/time_variants/olympic/daytime.png" },
   calebSteam: { title: "Boardwalk Boundaries", image: "assets/backgrounds/time_variants/yellowstone/daytime.png" },
   sierraWaterfall: { title: "No Filter Needed", image: "assets/backgrounds/time_variants/yosemite/sunset.png" },
-  brunoGrove: { title: "Forest Protector", image: "assets/backgrounds/time_variants/sequoia/daytime.png" },
-  riverCanyon: { title: "Permit Approved", image: "assets/backgrounds/time_variants/zion/night.png" }
+  dakotaGrove: { title: "Forest Protector", image: "assets/backgrounds/time_variants/sequoia/daytime.png" },
+  nataiCanyon: { title: "Permit Approved", image: "assets/backgrounds/time_variants/zion/night.png" }
 };
 
 const parkFlavor = {
@@ -227,54 +227,54 @@ const parkFlavor = {
       high: ["Sierra appears at check-in with waterfall mist still in her hair. 'I was not waiting for you. I was waiting dramatically near your path.'"]
     }
   },
-  bruno: {
+  dakota: {
     place: "the Sequoia grove",
     visit: {
       daytime: {
-        low: ["Bruno stands among the giant trees with a rake over one shoulder and a very measured expression.", "The sequoias make even awkward silence feel ancient."],
-        neutral: ["Bruno shows you the grove slowly, giving each giant tree the kind of respect most people reserve for grandparents.", "He talks about shade, patience, and not leaving snacks where chaos can smell them."],
-        high: ["Bruno beams when you arrive, huge and warm under the sequoias.", "He has saved you a quiet spot where the grove feels like a cathedral that prefers flannel."]
+        low: ["Dakota stands among the giant trees with a rake over one shoulder and a very measured expression.", "The sequoias make even awkward silence feel ancient."],
+        neutral: ["Dakota shows you the grove slowly, giving each giant tree the kind of respect most people reserve for grandparents.", "He talks about shade, patience, and not leaving snacks where chaos can smell them."],
+        high: ["Dakota beams when you arrive, huge and warm under the sequoias.", "He has saved you a quiet spot where the grove feels like a cathedral that prefers flannel."]
       },
       sunset: {
-        low: ["Sunset filters through the trees. Bruno keeps the conversation gentle, but he does not hand you trust like a souvenir.", "He checks an old fire ring with careful, practiced hands."],
-        neutral: ["The grove deepens to amber while Bruno talks about keeping old things alive without smothering them.", "It should sound heavy. From him, it sounds kind."],
-        high: ["Sunset makes the sequoias glow, and Bruno looks at you like you are part of the warm light.", "He admits he likes when you visit because the grove feels less quiet after."]
+        low: ["Sunset filters through the trees. Dakota keeps the conversation gentle, but he does not hand you trust like a souvenir.", "He checks an old fire ring with careful, practiced hands."],
+        neutral: ["The grove deepens to amber while Dakota talks about keeping old things alive without smothering them.", "It should sound heavy. From him, it sounds kind."],
+        high: ["Sunset makes the sequoias glow, and Dakota looks at you like you are part of the warm light.", "He admits he likes when you visit because the grove feels less quiet after."]
       },
       night: {
-        low: ["At night, Bruno's lantern swings low between the tree trunks. He is polite, watchful, and hard to fool.", "The grove absorbs your footsteps like it is considering you."],
-        neutral: ["Bruno leads you through the night grove, where the giant trunks vanish upward into stars.", "He tells a soft joke about trees being excellent listeners and terrible texters."],
-        high: ["The sequoias stand black against the stars. Bruno offers his hand without fanfare, steady as a railing.", "With him, the dark feels less empty and more held."]
+        low: ["At night, Dakota's lantern swings low between the tree trunks. He is polite, watchful, and hard to fool.", "The grove absorbs your footsteps like it is considering you."],
+        neutral: ["Dakota leads you through the night grove, where the giant trunks vanish upward into stars.", "He tells a soft joke about trees being excellent listeners and terrible texters."],
+        high: ["The sequoias stand black against the stars. Dakota offers his hand without fanfare, steady as a railing.", "With him, the dark feels less empty and more held."]
       }
     },
     surprise: {
-      low: ["Bruno is at check-in replacing a lantern wick. 'Even small fires need attention,' he says, not quite looking at you."],
-      neutral: ["Bruno is arranging trail snacks by allergy label. 'Take one. Caring is easier when nobody is hungry.'"],
-      high: ["Bruno brightens when he sees you at check-in and offers a warm biscuit wrapped in a napkin. 'Road fuel. Strictly professional biscuiting.'"]
+      low: ["Dakota is at check-in replacing a lantern wick. 'Even small fires need attention,' he says, not quite looking at you."],
+      neutral: ["Dakota is arranging trail snacks by allergy label. 'Take one. Caring is easier when nobody is hungry.'"],
+      high: ["Dakota brightens when he sees you at check-in and offers a warm biscuit wrapped in a napkin. 'Road fuel. Strictly professional biscuiting.'"]
     }
   },
-  river: {
+  natai: {
     place: "the Zion canyon route",
     visit: {
       daytime: {
-        low: ["River waits beneath red canyon walls, checking the permit board with surgical calm.", "The desert light is sharp. So are they."],
-        neutral: ["River guides you through Zion's sandstone corridor, naming hazards like old rivals.", "They are dry, exact, and quietly pleased when you keep up."],
-        high: ["River stands in desert light bright enough to turn every edge honest.", "They glance at you and say, 'Good. You made the canyon less smug.'"]
+        low: ["Natai waits beneath red canyon walls, checking the permit board with surgical calm.", "The desert light is sharp. So are they."],
+        neutral: ["Natai guides you through Zion's sandstone corridor, naming hazards like old rivals.", "They are dry, exact, and quietly pleased when you keep up."],
+        high: ["Natai stands in desert light bright enough to turn every edge honest.", "They glance at you and say, 'Good. You made the canyon less smug.'"]
       },
       sunset: {
-        low: ["Sunset sets the sandstone burning. River lets the view do the heavy lifting and keeps their answers spare.", "You get the sense they are waiting to see what you do with beauty when nobody grades you."],
-        neutral: ["Zion at sunset is all copper walls and cooling air. River slows beside you without announcing it.", "They say the canyon has excellent taste in dramatic timing."],
-        high: ["The canyon glows red around River, and their usual reserve thins into something almost tender.", "They tell you the desert keeps what matters and burns off the rest."]
+        low: ["Sunset sets the sandstone burning. Natai lets the view do the heavy lifting and keeps their answers spare.", "You get the sense they are waiting to see what you do with beauty when nobody grades you."],
+        neutral: ["Zion at sunset is all copper walls and cooling air. Natai slows beside you without announcing it.", "They say the canyon has excellent taste in dramatic timing."],
+        high: ["The canyon glows red around Natai, and their usual reserve thins into something almost tender.", "They tell you the desert keeps what matters and burns off the rest."]
       },
       night: {
-        low: ["At night, River's route becomes shadow, stars, and firm boundaries.", "They do not dislike the silence. They may currently prefer it to you."],
-        neutral: ["River takes you to a night-sky overlook where Zion becomes shape and hush.", "They point out constellations with the same precision they use for permits."],
-        high: ["Under the dark Zion sky, River lets the silence stretch until it feels chosen.", "They stand close enough for warmth and say, 'Do not make me say this is nice.'"]
+        low: ["At night, Natai's route becomes shadow, stars, and firm boundaries.", "They do not dislike the silence. They may currently prefer it to you."],
+        neutral: ["Natai takes you to a night-sky overlook where Zion becomes shape and hush.", "They point out constellations with the same precision they use for permits."],
+        high: ["Under the dark Zion sky, Natai lets the silence stretch until it feels chosen.", "They stand close enough for warmth and say, 'Do not make me say this is nice.'"]
       }
     },
     surprise: {
-      low: ["River is at check-in arguing with the kiosk in a voice too calm to be safe. 'It has more routing confidence than judgment.'"],
-      neutral: ["River studies the check-in map, then taps your destination. 'Efficient. Emotionally suspicious, but efficient.'"],
-      high: ["River catches you at check-in and silently adjusts your route card. 'There. Better odds of surviving your own charm.'"]
+      low: ["Natai is at check-in arguing with the kiosk in a voice too calm to be safe. 'It has more routing confidence than judgment.'"],
+      neutral: ["Natai studies the check-in map, then taps your destination. 'Efficient. Emotionally suspicious, but efficient.'"],
+      high: ["Natai catches you at check-in and silently adjusts your route card. 'There. Better odds of surviving your own charm.'"]
     }
   }
 };
@@ -298,7 +298,7 @@ const arrivalFlavor = {
   jack: {
     daytime: [
       ["narrator", "Olympic opens in layers of wet green: ferns slick with rain, cedar trunks vanishing upward, a cabin roof ticking softly under the weather."],
-      ["player", "The air smells like moss, coffee, and Jack Everett pretending he did not plan this reunion down to the mug."],
+      ["player", "The air smells like moss, coffee, and Jack pretending he did not plan this reunion down to the mug."],
       ["narrator", "A porch board creaks. Jack steps out from under the eaves, broad-shouldered and bright-eyed, like the forest has been hiding your oldest friend for dramatic timing.", "jack"]
     ],
     sunset: [
@@ -346,38 +346,38 @@ const arrivalFlavor = {
       ["narrator", "Sierra's flashlight bobs along the trail before she appears, already moving like stillness owes her money.", "sierra"]
     ]
   },
-  bruno: {
+  dakota: {
     daytime: [
       ["narrator", "The Sequoia grove receives you in shade and quiet, each giant trunk making the world feel slower and older."],
       ["player", "I am suddenly aware that I have never been patient enough for a tree to approve of me."],
-      ["narrator", "Bruno steps from behind a massive trunk carrying a coil of rope and a smile too warm for the cool air.", "bruno"]
+      ["narrator", "Dakota steps from behind a massive trunk carrying a coil of rope and a smile too warm for the cool air.", "dakota"]
     ],
     sunset: [
       ["narrator", "Sunset filters through the Sequoia canopy in long amber shafts, turning dust motes into tiny sparks."],
       ["player", "This place makes ordinary breathing feel like a respectful activity."],
-      ["narrator", "Bruno kneels by an old fire ring, checking it with gentle seriousness before he notices you.", "bruno"]
+      ["narrator", "Dakota kneels by an old fire ring, checking it with gentle seriousness before he notices you.", "dakota"]
     ],
     night: [
       ["narrator", "The night grove is quiet enough to make every footstep ask permission."],
       ["player", "The trees disappear upward into the stars. I feel very small, but not in a bad way."],
-      ["narrator", "A lantern glow rounds one trunk, and Bruno follows it, steady as a promise.", "bruno"]
+      ["narrator", "A lantern glow rounds one trunk, and Dakota follows it, steady as a promise.", "dakota"]
     ]
   },
-  river: {
+  natai: {
     daytime: [
       ["narrator", "Zion's canyon walls rise red and clean around the trail, the desert light sharpening every edge."],
       ["player", "The whole place looks like it was carved by someone with excellent taste and no interest in subtlety."],
-      ["narrator", "River stands by the permit board, marking a route with the precision of a person who has opinions about shortcuts.", "river"]
+      ["narrator", "Natai stands by the permit board, marking a route with the precision of a person who has opinions about shortcuts.", "natai"]
     ],
     sunset: [
       ["narrator", "Sunset sets Zion's sandstone glowing copper, cooling the air while the canyon keeps the heat of the day."],
       ["player", "This view is extremely rude. It knows exactly what it is doing."],
-      ["narrator", "River waits at the trail split, arms folded, watching the light change like it owes them an answer.", "river"]
+      ["narrator", "Natai waits at the trail split, arms folded, watching the light change like it owes them an answer.", "natai"]
     ],
     night: [
       ["narrator", "At night, Zion becomes dark stone, pale trail dust, and a sky crowded with stars."],
       ["player", "The canyon is quieter now. Or maybe it is just making me listen harder."],
-      ["narrator", "River's silhouette appears against the starlit route sign, still enough to seem carved there.", "river"]
+      ["narrator", "Natai's silhouette appears against the starlit route sign, still enough to seem carved there.", "natai"]
     ]
   }
 };
@@ -397,7 +397,7 @@ const visitBeats = {
       choicesByMood: {
         low: [
           { label: "Promise to stay on the marked trail because worrying him is unfair.", feelings: { jack: 1 }, tone: "warm", reaction: [["jack", "Thank you. My heart is large, hardworking, and only has maybe four brain cells supervising it.", "jack:grumpy"], ["narrator", "He starts walking, still guarded, but the old softness finds its way back into his shoulders.", "jack:grumpy"]] },
-          { label: "Ask whether every rule is really necessary.", feelings: { jack: -3 }, tone: "bad", reaction: [["jack", "Yes. I checked with Caleb, River, and a sign. The sign was the most polite about it.", "jack:grumpy"], ["narrator", "He tries to smile, but worry keeps winning.", "jack:grumpy"]] }
+          { label: "Ask whether every rule is really necessary.", feelings: { jack: -3 }, tone: "bad", reaction: [["jack", "Yes. I checked with Caleb, Natai, and a sign. The sign was the most polite about it.", "jack:grumpy"], ["narrator", "He tries to smile, but worry keeps winning.", "jack:grumpy"]] }
         ]
       },
       reactions: {
@@ -590,144 +590,144 @@ const visitBeats = {
       }
     }
   ],
-  bruno: [
+  dakota: [
     {
       prompt: {
-        low: ["bruno", "The grove is quiet today. I would like to keep it that way.", "bruno:grumpy"],
-        neutral: ["bruno", "Walk slow here. The trees have been patient longer than any of us.", "bruno"],
-        high: ["bruno", "I saved you the shaded path. It is the one that makes people whisper without being asked.", "bruno:blushing"]
+        low: ["dakota", "The grove is quiet today. I would like to keep it that way.", "dakota:grumpy"],
+        neutral: ["dakota", "Walk slow here. The trees have been patient longer than any of us.", "dakota"],
+        high: ["dakota", "I saved you the shaded path. It is the one that makes people whisper without being asked.", "dakota:blushing"]
       },
       choices: [
-        { label: "Lower your voice and match his pace.", feelings: { bruno: 2 }, tone: "warm" },
-        { label: "Ask if there is a faster way through.", feelings: { bruno: -2 }, tone: "bad" }
+        { label: "Lower your voice and match his pace.", feelings: { dakota: 2 }, tone: "warm" },
+        { label: "Ask if there is a faster way through.", feelings: { dakota: -2 }, tone: "bad" }
       ],
       choicesByMood: {
         low: [
-          { label: "Lower your voice and ask where he wants you to walk.", feelings: { bruno: 1 }, tone: "warm", reaction: [["bruno", "Thank you. Quiet is easier to share when nobody has to wrestle it into place.", "bruno"], ["narrator", "His expression softens, slow and cautious.", "bruno"]] },
-          { label: "Ask if the trees can really tell the difference.", feelings: { bruno: -3 }, tone: "bad", reaction: [["bruno", "I can.", "bruno:grumpy"], ["narrator", "The two words land softly and somehow sink deep.", "bruno:grumpy"]] }
+          { label: "Lower your voice and ask where he wants you to walk.", feelings: { dakota: 1 }, tone: "warm", reaction: [["dakota", "Thank you. Quiet is easier to share when nobody has to wrestle it into place.", "dakota"], ["narrator", "His expression softens, slow and cautious.", "dakota"]] },
+          { label: "Ask if the trees can really tell the difference.", feelings: { dakota: -3 }, tone: "bad", reaction: [["dakota", "I can.", "dakota:grumpy"], ["narrator", "The two words land softly and somehow sink deep.", "dakota:grumpy"]] }
         ]
       },
       reactions: {
-        warm: [["bruno", "Thank you. Some places ask gently, but they still ask.", "bruno"], ["narrator", "His smile comes slow and real.", "bruno"]],
-        flirt: [["bruno", "That may be the nicest height joke I have ever received.", "bruno:laughing"], ["player", "I am a respectful innovator.", "bruno:laughing"]],
-        bad: [["bruno", "Through, yes. With, no.", "bruno:grumpy"], ["narrator", "He does not sound angry. Somehow that makes it land harder.", "bruno:grumpy"]]
+        warm: [["dakota", "Thank you. Some places ask gently, but they still ask.", "dakota"], ["narrator", "His smile comes slow and real.", "dakota"]],
+        flirt: [["dakota", "That may be the nicest height joke I have ever received.", "dakota:laughing"], ["player", "I am a respectful innovator.", "dakota:laughing"]],
+        bad: [["dakota", "Through, yes. With, no.", "dakota:grumpy"], ["narrator", "He does not sound angry. Somehow that makes it land harder.", "dakota:grumpy"]]
       }
     },
     {
       prompt: {
-        low: ["narrator", "Bruno stops by an old fire ring and checks the stones with careful hands.", "bruno:grumpy"],
-        neutral: ["narrator", "The trail opens around a sequoia so wide it makes the air feel ceremonial.", "bruno"],
-        high: ["narrator", "Bruno pauses beside a giant trunk, resting one hand against the bark like greeting an old friend.", "bruno:blushing"]
+        low: ["narrator", "Dakota stops by an old fire ring and checks the stones with careful hands.", "dakota:grumpy"],
+        neutral: ["narrator", "The trail opens around a sequoia so wide it makes the air feel ceremonial.", "dakota"],
+        high: ["narrator", "Dakota pauses beside a giant trunk, resting one hand against the bark like greeting an old friend.", "dakota:blushing"]
       },
       choices: [
-        { label: "Ask him to teach you the fire-safety check.", feelings: { bruno: 2 }, tone: "warm" },
-        { label: "Joke that one tiny ember cannot matter much.", feelings: { bruno: -2 }, tone: "bad" }
+        { label: "Ask him to teach you the fire-safety check.", feelings: { dakota: 2 }, tone: "warm" },
+        { label: "Joke that one tiny ember cannot matter much.", feelings: { dakota: -2 }, tone: "bad" }
       ],
       choicesByMood: {
         low: [
-          { label: "Ask before touching the fire ring stones.", feelings: { bruno: 1 }, tone: "warm", reaction: [["bruno", "Yes. Here, feel for warmth with the back of your hand first.", "bruno"], ["narrator", "He teaches you carefully, pleased by the asking more than he says.", "bruno"]] },
-          { label: "Kick ash aside to see if anything is still hot.", feelings: { bruno: -3 }, tone: "bad", reaction: [["bruno", "Stop.", "bruno:grumpy"], ["narrator", "His gentleness disappears just long enough to show you the line.", "bruno:grumpy"]] }
+          { label: "Ask before touching the fire ring stones.", feelings: { dakota: 1 }, tone: "warm", reaction: [["dakota", "Yes. Here, feel for warmth with the back of your hand first.", "dakota"], ["narrator", "He teaches you carefully, pleased by the asking more than he says.", "dakota"]] },
+          { label: "Kick ash aside to see if anything is still hot.", feelings: { dakota: -3 }, tone: "bad", reaction: [["dakota", "Stop.", "dakota:grumpy"], ["narrator", "His gentleness disappears just long enough to show you the line.", "dakota:grumpy"]] }
         ]
       },
       reactions: {
-        warm: [["bruno", "Gladly. Caring is easier when your hands know what to do.", "bruno:laughing"], ["narrator", "He guides you through the check with patient pride.", "bruno:laughing"]],
-        flirt: [["bruno", "Oh. That is... I am going to inspect this perfectly safe bark now.", "bruno:blushing"], ["narrator", "He turns pink enough that even the sunset would be jealous.", "bruno:blushing"]],
-        bad: [["bruno", "Every big fire starts by being small enough to ignore.", "bruno:grumpy"], ["narrator", "His voice stays gentle, but the grove seems to hold its breath.", "bruno:grumpy"]]
+        warm: [["dakota", "Gladly. Caring is easier when your hands know what to do.", "dakota:laughing"], ["narrator", "He guides you through the check with patient pride.", "dakota:laughing"]],
+        flirt: [["dakota", "Oh. That is... I am going to inspect this perfectly safe bark now.", "dakota:blushing"], ["narrator", "He turns pink enough that even the sunset would be jealous.", "dakota:blushing"]],
+        bad: [["dakota", "Every big fire starts by being small enough to ignore.", "dakota:grumpy"], ["narrator", "His voice stays gentle, but the grove seems to hold its breath.", "dakota:grumpy"]]
       }
     },
     {
       prompt: {
-        low: ["bruno", "I should walk you back. The grove has had enough noise for one visit.", "bruno:grumpy"],
-        neutral: ["bruno", "We should head back while the route is easy to read.", "bruno"],
-        high: ["bruno", "One last quiet minute, then I will stop selfishly keeping you under my favorite trees.", "bruno:blushing"]
+        low: ["dakota", "I should walk you back. The grove has had enough noise for one visit.", "dakota:grumpy"],
+        neutral: ["dakota", "We should head back while the route is easy to read.", "dakota"],
+        high: ["dakota", "One last quiet minute, then I will stop selfishly keeping you under my favorite trees.", "dakota:blushing"]
       },
       choices: [
-        { label: "Tell him the grove feels safer because he cares for it.", feelings: { bruno: 2 }, tone: "warm" },
-        { label: "Ask if favorite trees count as date witnesses.", feelings: { bruno: 2 }, tone: "flirt" },
-        { label: "Say you are ready to go because it all looks the same.", feelings: { bruno: -2 }, tone: "bad" }
+        { label: "Tell him the grove feels safer because he cares for it.", feelings: { dakota: 2 }, tone: "warm" },
+        { label: "Ask if favorite trees count as date witnesses.", feelings: { dakota: 2 }, tone: "flirt" },
+        { label: "Say you are ready to go because it all looks the same.", feelings: { dakota: -2 }, tone: "bad" }
       ],
       choicesByMood: {
         low: [
-          { label: "Thank him for trusting you with even a little of the grove.", feelings: { bruno: 1 }, tone: "warm", reaction: [["bruno", "A little trust is still trust. It matters.", "bruno"], ["narrator", "He lets the words rest between you like a lantern set down carefully.", "bruno"]] },
-          { label: "Ask if everyone gets this disappointed-tree speech.", feelings: { bruno: -3 }, tone: "bad", reaction: [["bruno", "No. I usually save my disappointment for people I hoped would understand.", "bruno:grumpy"], ["narrator", "The walk back feels longer after that.", "bruno:grumpy"]] }
+          { label: "Thank him for trusting you with even a little of the grove.", feelings: { dakota: 1 }, tone: "warm", reaction: [["dakota", "A little trust is still trust. It matters.", "dakota"], ["narrator", "He lets the words rest between you like a lantern set down carefully.", "dakota"]] },
+          { label: "Ask if everyone gets this disappointed-tree speech.", feelings: { dakota: -3 }, tone: "bad", reaction: [["dakota", "No. I usually save my disappointment for people I hoped would understand.", "dakota:grumpy"], ["narrator", "The walk back feels longer after that.", "dakota:grumpy"]] }
         ]
       },
       reactions: {
-        warm: [["bruno", "That means more than you know.", "bruno:blushing"], ["narrator", "He walks you back with a shy smile and the steady glow of the lantern.", "bruno:blushing"]],
-        flirt: [["bruno", "They are very discreet. Terrible at gossip.", "bruno:laughing"], ["narrator", "His laugh rolls through the grove, warm and low.", "bruno:laughing"]],
-        bad: [["bruno", "Then I hope one day it does not.", "bruno:grumpy"], ["narrator", "He leads the way back, quiet settling between you like fallen needles.", "bruno:grumpy"]]
+        warm: [["dakota", "That means more than you know.", "dakota:blushing"], ["narrator", "He walks you back with a shy smile and the steady glow of the lantern.", "dakota:blushing"]],
+        flirt: [["dakota", "They are very discreet. Terrible at gossip.", "dakota:laughing"], ["narrator", "His laugh rolls through the grove, warm and low.", "dakota:laughing"]],
+        bad: [["dakota", "Then I hope one day it does not.", "dakota:grumpy"], ["narrator", "He leads the way back, quiet settling between you like fallen needles.", "dakota:grumpy"]]
       }
     }
   ],
-  river: [
+  natai: [
     {
       prompt: {
-        low: ["river", "Before we begin, are you here to follow the route or argue with geology?", "river:grumpy"],
-        neutral: ["river", "The canyon is simple if you respect it. People complicate things.", "river"],
-        high: ["river", "You came. Good. The canyon was becoming insufferable without competition.", "river:blushing"]
+        low: ["natai", "Before we begin, are you here to follow the route or argue with geology?", "natai:grumpy"],
+        neutral: ["natai", "The canyon is simple if you respect it. People complicate things.", "natai"],
+        high: ["natai", "You came. Good. The canyon was becoming insufferable without competition.", "natai:blushing"]
       },
       choices: [
-        { label: "Tell them you will respect the route without requiring applause.", feelings: { river: 1 }, tone: "warm" },
-        { label: "Ask how strict the permit rules really are.", feelings: { river: -3 }, tone: "bad" }
+        { label: "Tell them you will respect the route without requiring applause.", feelings: { natai: 1 }, tone: "warm" },
+        { label: "Ask how strict the permit rules really are.", feelings: { natai: -3 }, tone: "bad" }
       ],
       choicesByMood: {
         low: [
-          { label: "State the route rules back and ask what you missed.", feelings: { river: 1 }, tone: "warm", reaction: [["river", "You missed that I dislike being impressed. Continue anyway.", "river:grumpy"], ["narrator", "They turn toward the trail, still sharp, but no longer dismissing you outright.", "river:grumpy"]] },
-          { label: "Ask if they are always this hostile to guests.", feelings: { river: -3 }, tone: "bad", reaction: [["river", "Only the ones who confuse boundaries with hostility.", "river:grumpy"], ["narrator", "The canyon seems to remove several degrees from the air.", "river:grumpy"]] },
-          { label: "Suggest skipping the permit board and improvising.", feelings: { river: -4 }, tone: "bad", reaction: [["river", "Absolutely not. I am now revising my estimate of your survival instincts downward.", "river:grumpy"], ["narrator", "They mark the route with enough force to make the pencil sound offended.", "river:grumpy"]] }
+          { label: "State the route rules back and ask what you missed.", feelings: { natai: 1 }, tone: "warm", reaction: [["natai", "You missed that I dislike being impressed. Continue anyway.", "natai:grumpy"], ["narrator", "They turn toward the trail, still sharp, but no longer dismissing you outright.", "natai:grumpy"]] },
+          { label: "Ask if they are always this hostile to guests.", feelings: { natai: -3 }, tone: "bad", reaction: [["natai", "Only the ones who confuse boundaries with hostility.", "natai:grumpy"], ["narrator", "The canyon seems to remove several degrees from the air.", "natai:grumpy"]] },
+          { label: "Suggest skipping the permit board and improvising.", feelings: { natai: -4 }, tone: "bad", reaction: [["natai", "Absolutely not. I am now revising my estimate of your survival instincts downward.", "natai:grumpy"], ["narrator", "They mark the route with enough force to make the pencil sound offended.", "natai:grumpy"]] }
         ]
       },
       reactions: {
-        warm: [["river", "Adequate. I am choosing to treat adequate as promising, against precedent.", "river"], ["narrator", "They turn before the compliment can become recognizable.", "river"]],
-        flirt: [["river", "It cannot. But it has seniority, which you lack.", "river:laughing"], ["player", "A formidable opponent.", "river:laughing"]],
-        bad: [["river", "Strict enough that I become unpleasant in defense of them.", "river:grumpy"], ["narrator", "Their calm is somehow sharper than yelling, and twice as hard to recover from.", "river:grumpy"]]
+        warm: [["natai", "Adequate. I am choosing to treat adequate as promising, against precedent.", "natai"], ["narrator", "They turn before the compliment can become recognizable.", "natai"]],
+        flirt: [["natai", "It cannot. But it has seniority, which you lack.", "natai:laughing"], ["player", "A formidable opponent.", "natai:laughing"]],
+        bad: [["natai", "Strict enough that I become unpleasant in defense of them.", "natai:grumpy"], ["narrator", "Their calm is somehow sharper than yelling, and twice as hard to recover from.", "natai:grumpy"]]
       }
     },
     {
       prompt: {
-        low: ["narrator", "River stops where the canyon narrows, letting the silence make its own argument.", "river:grumpy"],
-        neutral: ["narrator", "The sandstone walls hold the day's warmth while River traces the route with one precise finger.", "river"],
-        high: ["narrator", "River slows at a bend where the canyon light turns deep red and private.", "river:blushing"]
+        low: ["narrator", "Natai stops where the canyon narrows, letting the silence make its own argument.", "natai:grumpy"],
+        neutral: ["narrator", "The sandstone walls hold the day's warmth while Natai traces the route with one precise finger.", "natai"],
+        high: ["narrator", "Natai slows at a bend where the canyon light turns deep red and private.", "natai:blushing"]
       },
       choices: [
-        { label: "Ask what the desert taught them to notice first.", feelings: { river: 1 }, tone: "warm" },
-        { label: "Kick a loose stone down the trail.", feelings: { river: -4 }, tone: "bad" }
+        { label: "Ask what the desert taught them to notice first.", feelings: { natai: 1 }, tone: "warm" },
+        { label: "Kick a loose stone down the trail.", feelings: { natai: -4 }, tone: "bad" }
       ],
       choicesByMood: {
         low: [
-          { label: "Ask what the canyon needs from you right now.", feelings: { river: 1 }, tone: "warm", reaction: [["river", "Attention. Foot placement. Less ornamental confidence.", "river:grumpy"], ["narrator", "It is not warmth, exactly, but it is instruction instead of dismissal.", "river:grumpy"]] },
-          { label: "Tell them they make silence feel like a punishment.", feelings: { river: -3 }, tone: "bad", reaction: [["river", "No. Your discomfort is doing that independently.", "river:grumpy"], ["narrator", "The words land clean and leave no handles.", "river:grumpy"]] },
-          { label: "Say this would be more fun with music.", feelings: { river: -4 }, tone: "bad", reaction: [["river", "Then go find a place shallow enough to need a soundtrack.", "river:grumpy"], ["narrator", "They do not raise their voice. They do not have to.", "river:grumpy"]] }
+          { label: "Ask what the canyon needs from you right now.", feelings: { natai: 1 }, tone: "warm", reaction: [["natai", "Attention. Foot placement. Less ornamental confidence.", "natai:grumpy"], ["narrator", "It is not warmth, exactly, but it is instruction instead of dismissal.", "natai:grumpy"]] },
+          { label: "Tell them they make silence feel like a punishment.", feelings: { natai: -3 }, tone: "bad", reaction: [["natai", "No. Your discomfort is doing that independently.", "natai:grumpy"], ["narrator", "The words land clean and leave no handles.", "natai:grumpy"]] },
+          { label: "Say this would be more fun with music.", feelings: { natai: -4 }, tone: "bad", reaction: [["natai", "Then go find a place shallow enough to need a soundtrack.", "natai:grumpy"], ["narrator", "They do not raise their voice. They do not have to.", "natai:grumpy"]] }
         ]
       },
       reactions: {
-        warm: [["river", "Water. Even when it is absent, it explains the shape of everything.", "river"], ["narrator", "They say it softly, then look annoyed that softness escaped.", "river"]],
-        flirt: [["river", "That is the most tolerable thing anyone has said about paperwork.", "river:laughing"], ["narrator", "Their smile is quick, rare, and gone before it can be used against them.", "river:laughing"]],
-        bad: [["river", "Do not make gravity responsible for your boredom.", "river:grumpy"], ["narrator", "The stone clicks into silence. River waits until you feel every click.", "river:grumpy"]]
+        warm: [["natai", "Water. Even when it is absent, it explains the shape of everything.", "natai"], ["narrator", "They say it softly, then look annoyed that softness escaped.", "natai"]],
+        flirt: [["natai", "That is the most tolerable thing anyone has said about paperwork.", "natai:laughing"], ["narrator", "Their smile is quick, rare, and gone before it can be used against them.", "natai:laughing"]],
+        bad: [["natai", "Do not make gravity responsible for your boredom.", "natai:grumpy"], ["narrator", "The stone clicks into silence. Natai waits until you feel every click.", "natai:grumpy"]]
       }
     },
     {
       prompt: {
-        low: ["river", "We are turning back. I prefer ending visits before they become reports.", "river:grumpy"],
-        neutral: ["river", "One final overlook. Then I return you to civilization, such as it is.", "river"],
-        high: ["river", "One last overlook. Do not make me admit I chose the romantic one.", "river:blushing"]
+        low: ["natai", "We are turning back. I prefer ending visits before they become reports.", "natai:grumpy"],
+        neutral: ["natai", "One final overlook. Then I return you to civilization, such as it is.", "natai"],
+        high: ["natai", "One last overlook. Do not make me admit I chose the romantic one.", "natai:blushing"]
       },
       choices: [
-        { label: "Thank them for showing you the desert's quiet side.", feelings: { river: 1 }, tone: "warm" },
-        { label: "Promise not to tell anyone they chose the romantic route.", feelings: { river: 1 }, tone: "flirt" },
-        { label: "Say the canyon is mostly just rocks.", feelings: { river: -4 }, tone: "bad" }
+        { label: "Thank them for showing you the desert's quiet side.", feelings: { natai: 1 }, tone: "warm" },
+        { label: "Promise not to tell anyone they chose the romantic route.", feelings: { natai: 1 }, tone: "flirt" },
+        { label: "Say the canyon is mostly just rocks.", feelings: { natai: -4 }, tone: "bad" }
       ],
       choicesByMood: {
         low: [
-          { label: "Thank them for not giving up on the visit.", feelings: { river: 1 }, tone: "warm", reaction: [["river", "Do not romanticize endurance. But... noted.", "river"], ["narrator", "They look at the canyon instead of you, which from River feels almost merciful.", "river"]] },
-          { label: "Ask why they make affection feel like a final exam.", feelings: { river: -3 }, tone: "bad", reaction: [["river", "Affection is not on the syllabus.", "river:grumpy"], ["narrator", "The overlook suddenly has plenty of room and none of it feels close.", "river:grumpy"]] },
-          { label: "Suggest they would be happier if they relaxed.", feelings: { river: -4 }, tone: "bad", reaction: [["river", "I would be happier if people stopped mistaking control for damage.", "river:grumpy"], ["narrator", "For once, the anger is not cold. It is worse.", "river:grumpy"]] }
+          { label: "Thank them for not giving up on the visit.", feelings: { natai: 1 }, tone: "warm", reaction: [["natai", "Do not romanticize endurance. But... noted.", "natai"], ["narrator", "They look at the canyon instead of you, which from Natai feels almost merciful.", "natai"]] },
+          { label: "Ask why they make affection feel like a final exam.", feelings: { natai: -3 }, tone: "bad", reaction: [["natai", "Affection is not on the syllabus.", "natai:grumpy"], ["narrator", "The overlook suddenly has plenty of room and none of it feels close.", "natai:grumpy"]] },
+          { label: "Suggest they would be happier if they relaxed.", feelings: { natai: -4 }, tone: "bad", reaction: [["natai", "I would be happier if people stopped mistaking control for damage.", "natai:grumpy"], ["narrator", "For once, the anger is not cold. It is worse.", "natai:grumpy"]] }
         ]
       },
       reactions: {
-        warm: [["river", "Good. The loud side gets enough attention.", "river"], ["narrator", "They walk you back slowly, as if you have earned one unhurried thing.", "river"]],
-        flirt: [["river", "Wise. I know where all the difficult switchbacks are.", "river:blushing"], ["narrator", "Their shoulder almost brushes yours, then does not. River makes even restraint feel deliberate.", "river:blushing"]],
-        bad: [["river", "And people are mostly water. Reduction is a boring hobby.", "river:grumpy"], ["narrator", "They turn toward the return route with magnificent restraint.", "river:grumpy"]]
+        warm: [["natai", "Good. The loud side gets enough attention.", "natai"], ["narrator", "They walk you back slowly, as if you have earned one unhurried thing.", "natai"]],
+        flirt: [["natai", "Wise. I know where all the difficult switchbacks are.", "natai:blushing"], ["narrator", "Their shoulder almost brushes yours, then does not. Natai makes even restraint feel deliberate.", "natai:blushing"]],
+        bad: [["natai", "And people are mostly water. Reduction is a boring hobby.", "natai:grumpy"], ["narrator", "They turn toward the return route with magnificent restraint.", "natai:grumpy"]]
       }
     }
   ]
@@ -743,7 +743,7 @@ const scenes = {
       ["player", "Somewhere beyond the glass, a country road keeps unspooling under the tires. Fence posts. Pines. The occasional mailbox leaning like it has survived gossip."],
       ["player", "Two weeks ago, I was editing a sunrise video at three in the morning and arguing with strangers about whether a cliff looked better in vertical or horizontal."],
       ["player", "Then one of my posts went viral for all the wrong reasons: one careless shortcut, one badly framed apology, and one comment section that turned into a controlled burn."],
-      ["player", "That is when Jack Everett called. My Jack Everett, technically. Old friend, Olympic route lead, human campfire with biceps, once asked me whether email needed stamps."],
+      ["player", "That is when Jack called. My Jack, technically. Old friend, Olympic route lead, human campfire with biceps, once asked me whether email needed stamps."],
       ["player", "He said the retreat had one open spot, that I needed somewhere kinder than the internet to learn from the mistake, and that he would be there if I wanted a familiar face."],
       ["player", "He did not say he missed me. Jack is good-hearted enough to carry three coolers at once and bad enough at subtext to trip over a feeling in broad daylight."],
       ["player", "So now I am on a bus to Viral Vista Lodge, where five national park route leads are apparently going to teach me how to look at a place without turning it into a backdrop."],
@@ -779,35 +779,35 @@ const scenes = {
     ],
     nextAction: showNameEntry
   },
-  intro_river_checkin: {
+  intro_natai_checkin: {
     label: "Check-In",
     background: () => ({ location: "checkIn", time: "daytime" }),
-    character: "river",
+    character: "natai",
     lines: [
       ["narrator", "The badge printer spits out your name with a tiny mechanical cough."],
-      ["narrator", "Before you can pin it on straight, someone steps out from the shade beside the route map, arms folded, expression already disappointed in several things.", "river:grumpy"],
-      ["river", "{playerName}. That is either your name or the kiosk has begun inventing evidence. Neither outcome comforts me.", "river:grumpy"],
-      ["player", "Nice to meet you too. I usually wait until the third sentence before accusing office supplies of crimes.", "river:grumpy"],
-      ["river", "That was not an accusation. That was pattern recognition.", "river:grumpy"],
-      ["player", "Ah. A data-driven grudge. Very professional.", "river:grumpy"],
-      ["river", "Hah.", "river:laughing"],
-      ["narrator", "It escapes them before they can stop it: one short laugh, sharp and unwillingly real.", "river:laughing"],
-      ["river", "No. Do not look pleased. I am not encouraging this.", "river:grumpy"],
-      ["player", "Too late. I have been encouraged at a dangerously low threshold.", "river:grumpy"],
-      ["river", "River Hawk. Zion route lead. Sandstone, permits, heat, flash floods, and the part where charm does not improve your odds.", "river:grumpy"],
-      ["player", "Noted. Charm filed under non-essential survival gear.", "river"],
-      ["river", "File it under litter if it gets in the way.", "river:grumpy"],
-      ["narrator", "They adjust one corner of the route map by half an inch, glare at the kiosk like it personally lowered standards, and walk off toward the canyon trail.", "river:grumpy"]
+      ["narrator", "Before you can pin it on straight, someone steps out from the shade beside the route map, arms folded, expression already disappointed in several things.", "natai:grumpy"],
+      ["natai", "{playerName}. That is either your name or the kiosk has begun inventing evidence. Neither outcome comforts me.", "natai:grumpy"],
+      ["player", "Nice to meet you too. I usually wait until the third sentence before accusing office supplies of crimes.", "natai:grumpy"],
+      ["natai", "That was not an accusation. That was pattern recognition.", "natai:grumpy"],
+      ["player", "Ah. A data-driven grudge. Very professional.", "natai:grumpy"],
+      ["natai", "Hah.", "natai:laughing"],
+      ["narrator", "It escapes them before they can stop it: one short laugh, sharp and unwillingly real.", "natai:laughing"],
+      ["natai", "No. Do not look pleased. I am not encouraging this.", "natai:grumpy"],
+      ["player", "Too late. I have been encouraged at a dangerously low threshold.", "natai:grumpy"],
+      ["natai", "Natai. Zion route lead. Sandstone, permits, heat, flash floods, and the part where charm does not improve your odds.", "natai:grumpy"],
+      ["player", "Noted. Charm filed under non-essential survival gear.", "natai"],
+      ["natai", "File it under litter if it gets in the way.", "natai:grumpy"],
+      ["narrator", "They adjust one corner of the route map by half an inch, glare at the kiosk like it personally lowered standards, and walk off toward the canyon trail.", "natai:grumpy"]
     ],
-    next: "intro_after_river_checkin"
+    next: "intro_after_natai_checkin"
   },
-  intro_after_river_checkin: {
+  intro_after_natai_checkin: {
     label: "Check-In",
     background: () => ({ location: "checkIn", time: "daytime" }),
     lines: [
       ["player", "That was weird."],
       ["player", "Informative. Hostile. Weird."],
-      ["player", "Jack once said River was 'friendly like a locked shed with snacks inside.' I thought that was Jack being Jack. Apparently, no. Field note confirmed."],
+      ["player", "Jack once said Natai was 'friendly like a locked shed with snacks inside.' I thought that was Jack being Jack. Apparently, no. Field note confirmed."],
       ["player", "I guess I better head over to the lodge lobby next, before the badge printer tells someone I have been loitering."]
     ],
     next: "intro_lodge_walk"
@@ -836,17 +836,17 @@ const scenes = {
     lines: [
       ["narrator", "Inside the lodge lobby, cedar beams glow over a stone fireplace and a wall map crowded with impossible route pins."],
       ["narrator", "The whole place feels like summer camp if summer camp had better lighting and one unresolved friendship standing near the check-in table."],
-      ["narrator", "Jack Everett looks up from a welcome packet, red flannel stretched across shoulders that once moved an entire fallen log because a kid lost a hat under it.", "jack"],
+      ["narrator", "Jack looks up from a welcome packet, red flannel stretched across shoulders that once moved an entire fallen log because a kid lost a hat under it.", "jack"],
       ["jack", "{playerName}. Hey. You made it. I mean, obviously you made it, you are standing there. Unless I am hallucinating, which would be rude of my brain.", "jack:blushing"],
       ["player", "Still you, then.", "jack"],
       ["jack", "Still me. Bigger beard, same amount of map confidence, which Caleb says is 'not enough to operate machinery.'", "jack:laughing"],
       ["narrator", "He pulls you into a hug before either of you can overthink it. Jack hugs like shelter: warm, solid, and completely unaware of subtlety.", "jack"],
       ["player", "Thanks for inviting me. I was not sure I deserved a soft landing.", "jack"],
       ["jack", "Everybody deserves somewhere to do better. Also I missed you, which is not professional retreat language but is true language.", "jack:blushing"],
-      ["player", "Before I cry in the lobby, is River Hawk always like that?", "jack"],
-      ["jack", "Like a storm cloud learned policy enforcement? Yeah. River's heart is in the right place; they just keep it behind three locked gates and a permit form. A nice permit form. Probably laminated.", "jack:laughing"],
+      ["player", "Before I cry in the lobby, is Natai always like that?", "jack"],
+      ["jack", "Like a storm cloud learned policy enforcement? Yeah. Natai's heart is in the right place; they just keep it behind three locked gates and a permit form. A nice permit form. Probably laminated.", "jack:laughing"],
       ["player", "They laughed at one joke and then looked furious about the paperwork of enjoying it.", "jack"],
-      ["jack", "That means it went well. River laughing is like seeing a comet with cheekbones.", "jack:laughing"],
+      ["jack", "That means it went well. Natai laughing is like seeing a comet with cheekbones.", "jack:laughing"],
       ["player", "Comforting. I think.", "jack"],
       ["jack", "You'll get used to them. Or you will develop better posture from bracing yourself. Either way, growth. I learned that word in a staff meeting and I am using it responsibly.", "jack"],
       ["player", "I thought there would be a check-in packet.", "jack"],
@@ -1077,63 +1077,63 @@ const scenes = {
       ["player", "It is officially late. If this kiosk starts glowing any harder, I am charging it rent for living in my nerves."],
       ["player", "Last visit, then sleep. That is a responsible sentence, probably."]
     ],
-    next: "intro_zion_river"
+    next: "intro_zion_natai"
   },
-  intro_zion_river: {
+  intro_zion_natai: {
     label: "Red Rock",
     background: () => ({ location: "zion", time: "night" }),
     lines: [
       ["narrator", "The red rock route waits under a sky packed with stars. Canyon walls rise around you like the dark has architecture."],
       ["player", "The desert is quieter than I expected. Not empty. Just extremely selective."],
-      ["narrator", "Someone stands beside the route sign, still as sandstone until they turn their head.", "river:grumpy"],
-      ["river", "You are late.", "river:grumpy"],
-      ["player", "By... the amount of time it took the kiosk to bend space?", "river:grumpy"],
-      ["river", "I do not grade excuses on a curve.", "river:grumpy"],
-      ["player", "Is this your welcome speech?", "river:grumpy"],
-      ["river", "No. That was me deciding whether to have one.", "river:grumpy"],
-      ["river", "Everett vouched for you. He used the phrase 'good person, temporarily on fire.' I assume he meant metaphorically, because even Jack understands some nouns.", "river:grumpy"],
-      ["player", "Some nouns is generous.", "river"]
+      ["narrator", "Someone stands beside the route sign, still as sandstone until they turn their head.", "natai:grumpy"],
+      ["natai", "You are late.", "natai:grumpy"],
+      ["player", "By... the amount of time it took the kiosk to bend space?", "natai:grumpy"],
+      ["natai", "I do not grade excuses on a curve.", "natai:grumpy"],
+      ["player", "Is this your welcome speech?", "natai:grumpy"],
+      ["natai", "No. That was me deciding whether to have one.", "natai:grumpy"],
+      ["natai", "Jack vouched for you. He used the phrase 'good person, temporarily on fire.' I assume he meant metaphorically, because even Jack understands some nouns.", "natai:grumpy"],
+      ["player", "Some nouns is generous.", "natai"]
     ],
     choices: [
-      { label: "Apologize once, then ask for the route rules.", next: "intro_zion_river_two", feelings: { river: 1 }, reaction: [["river", "Efficient recovery. Do not make me regret acknowledging it.", "river:grumpy"], ["narrator", "They hand you the route card like trust is a very small, very breakable object.", "river:grumpy"]] },
-      { label: "Ask if they are always this charming with guests.", next: "intro_zion_river_two", feelings: { river: -3 }, reaction: [["river", "No. Sometimes guests earn charming.", "river:grumpy"], ["narrator", "The canyon holds the silence with impressive commitment.", "river:grumpy"]] },
-      { label: "Joke that permits are just paperwork cosplay.", next: "intro_zion_river_two", feelings: { river: -4 }, reaction: [["river", "Paperwork is what keeps rescue from becoming archaeology.", "river:grumpy"], ["narrator", "Their voice goes so flat the desert seems to flinch on your behalf.", "river:grumpy"]] }
+      { label: "Apologize once, then ask for the route rules.", next: "intro_zion_natai_two", feelings: { natai: 1 }, reaction: [["natai", "Efficient recovery. Do not make me regret acknowledging it.", "natai:grumpy"], ["narrator", "They hand you the route card like trust is a very small, very breakable object.", "natai:grumpy"]] },
+      { label: "Ask if they are always this charming with guests.", next: "intro_zion_natai_two", feelings: { natai: -3 }, reaction: [["natai", "No. Sometimes guests earn charming.", "natai:grumpy"], ["narrator", "The canyon holds the silence with impressive commitment.", "natai:grumpy"]] },
+      { label: "Joke that permits are just paperwork cosplay.", next: "intro_zion_natai_two", feelings: { natai: -4 }, reaction: [["natai", "Paperwork is what keeps rescue from becoming archaeology.", "natai:grumpy"], ["narrator", "Their voice goes so flat the desert seems to flinch on your behalf.", "natai:grumpy"]] }
     ]
   },
-  intro_zion_river_two: {
+  intro_zion_natai_two: {
     label: "Red Rock",
     background: () => ({ location: "zion", time: "night" }),
     lines: [
-      ["narrator", "River leads you along a pale ribbon of trail where the canyon walls hold the day's heat like a memory.", "river"],
-      ["river", "People call deserts empty when they do not know how to read quiet.", "river:grumpy"],
-      ["player", "And you read it fluently?", "river"]
+      ["narrator", "Natai leads you along a pale ribbon of trail where the canyon walls hold the day's heat like a memory.", "natai"],
+      ["natai", "People call deserts empty when they do not know how to read quiet.", "natai:grumpy"],
+      ["player", "And you read it fluently?", "natai"]
     ],
     choices: [
-      { label: "Ask what the quiet is saying tonight.", next: "intro_zion_river_three", feelings: { river: 1 }, reaction: [["river", "That the air is cooling, the trail is stable, and you are trying harder than expected.", "river"], ["player", "The desert said all that?", "river"], ["river", "I paraphrased. Generously.", "river"]] },
-      { label: "Ask if all this silence is supposed to be impressive.", next: "intro_zion_river_three", feelings: { river: -4 }, reaction: [["river", "No. It is supposed to be left alone by people who need constant applause.", "river:grumpy"], ["narrator", "The route keeps going. The conversation does not recover quickly.", "river:grumpy"]] }
+      { label: "Ask what the quiet is saying tonight.", next: "intro_zion_natai_three", feelings: { natai: 1 }, reaction: [["natai", "That the air is cooling, the trail is stable, and you are trying harder than expected.", "natai"], ["player", "The desert said all that?", "natai"], ["natai", "I paraphrased. Generously.", "natai"]] },
+      { label: "Ask if all this silence is supposed to be impressive.", next: "intro_zion_natai_three", feelings: { natai: -4 }, reaction: [["natai", "No. It is supposed to be left alone by people who need constant applause.", "natai:grumpy"], ["narrator", "The route keeps going. The conversation does not recover quickly.", "natai:grumpy"]] }
     ]
   },
-  intro_zion_river_three: {
+  intro_zion_natai_three: {
     label: "Red Rock",
     background: () => ({ location: "zion", time: "night" }),
     lines: [
-      ["narrator", "The route reaches a night-sky overlook. Above the canyon, stars crowd the dark until the silence feels deliberate.", "river"],
-      ["river", "Last stop. After this, you go back to the lodge before exhaustion makes you poetic in a legally concerning way.", "river:grumpy"],
-      ["player", "Too late, probably.", "river"]
+      ["narrator", "The route reaches a night-sky overlook. Above the canyon, stars crowd the dark until the silence feels deliberate.", "natai"],
+      ["natai", "Last stop. After this, you go back to the lodge before exhaustion makes you poetic in a legally concerning way.", "natai:grumpy"],
+      ["player", "Too late, probably.", "natai"]
     ],
     choices: [
-      { label: "Thank them for showing you the desert instead of explaining it.", next: "intro_zion_wrap", feelings: { river: 1 }, reaction: [["river", "Good. Explanations are where people start lying to sound complete.", "river"], ["narrator", "They look up at the stars, and for once their stillness almost lets you stand beside it.", "river"]] },
-      { label: "Say the overlook is pretty, but not worth the attitude.", next: "intro_zion_wrap", feelings: { river: -4 }, reaction: [["river", "Then admire it quickly.", "river:grumpy"], ["narrator", "The stars remain spectacular. River gives you none of them.", "river:grumpy"]] }
+      { label: "Thank them for showing you the desert instead of explaining it.", next: "intro_zion_wrap", feelings: { natai: 1 }, reaction: [["natai", "Good. Explanations are where people start lying to sound complete.", "natai"], ["narrator", "They look up at the stars, and for once their stillness almost lets you stand beside it.", "natai"]] },
+      { label: "Say the overlook is pretty, but not worth the attitude.", next: "intro_zion_wrap", feelings: { natai: -4 }, reaction: [["natai", "Then admire it quickly.", "natai:grumpy"], ["narrator", "The stars remain spectacular. Natai gives you none of them.", "natai:grumpy"]] }
     ]
   },
   intro_zion_wrap: {
     label: "Red Rock",
     background: () => ({ location: "zion", time: "night" }),
     lines: [
-      ["narrator", "River walks you back through the dark with the quiet confidence of someone who knows every stone by reputation.", "river"],
-      ["river", "That is enough canyon for a first night. Any more and you will start assigning symbolism to boulders.", "river:grumpy"],
-      ["player", "This one does look judgmental.", "river"],
-      ["river", "It is. It also has better timing than most people.", "river:grumpy"]
+      ["narrator", "Natai walks you back through the dark with the quiet confidence of someone who knows every stone by reputation.", "natai"],
+      ["natai", "That is enough canyon for a first night. Any more and you will start assigning symbolism to boulders.", "natai:grumpy"],
+      ["player", "This one does look judgmental.", "natai"],
+      ["natai", "It is. It also has better timing than most people.", "natai:grumpy"]
     ],
     next: "intro_first_night_lodge"
   },
@@ -1153,10 +1153,10 @@ const scenes = {
         ["narrator", "Jack is by the fireplace, stacking route cards into a tidy pile that immediately leans sideways. He frowns at it with heroic commitment.", "jack"],
         ["player", "I am a little sad I did not get to see your park tonight.", "jack"],
         jackReply,
-        ["player", "I did meet River.", "jack"],
+        ["player", "I did meet Natai.", "jack"],
         ["jack", "Ah. Zion's most scenic locked gate.", "jack:laughing"],
         ["player", "So it is not just me?", "jack:laughing"],
-        ["jack", "River thinks warm welcomes are how people get complacent. Do not take the first frost personally. Do take the route rules personally. I am very pro-rule when rules keep you intact.", "jack"],
+        ["jack", "Natai thinks warm welcomes are how people get complacent. Do not take the first frost personally. Do take the route rules personally. I am very pro-rule when rules keep you intact.", "jack"],
         ["player", "You sound like you rehearsed that.", "jack"],
         ["jack", "I did. Into a spoon because it looked reflective enough to be eye contact.", "jack:laughing"],
         ["jack", "Go sleep, {playerName}. Tomorrow gives you three chances to make something happen. Maybe four, if one of the things is breakfast.", "jack"],
@@ -1181,19 +1181,19 @@ const scenes = {
     background: () => ({ location: "lodge", time: "daytime" }),
     onEnter: () => { state.timeOfDay = "daytime"; state.pendingDestination = null; state.pendingEncounter = null; state.visitTime = null; state.visitBeat = 0; state.visitStartMood = null; state.visitLastChoice = null; state.visitLastReaction = null; },
     lines: () => {
-      const riverLow = relationshipState("river") === "low";
-      const chatter = riverLow ? [
-        ["caleb", "If you are headed to Zion, remember River's default expression is not a medical emergency."],
+      const nataiLow = relationshipState("natai") === "low";
+      const chatter = nataiLow ? [
+        ["caleb", "If you are headed to Zion, remember Natai's default expression is not a medical emergency."],
         ["sierra", "It is more of a weather system with cheekbones."],
-        ["bruno", "They are not unkind. They just trust slowly and correct quickly."]
+        ["dakota", "They are not unkind. They just trust slowly and correct quickly."]
       ] : [];
       const jackMood = relationshipState("jack");
       const jackChatter = jackMood === "high" ? [
         ["sierra", "Jack tried to make you coffee this morning and put the grounds in the mug. Not the machine. The mug."],
         ["caleb", "He was distracted. Deeply, visibly, historically distracted."],
-        ["bruno", "He asked whether looking happy was unprofessional. I told him kindness has never been the problem."]
+        ["dakota", "He asked whether looking happy was unprofessional. I told him kindness has never been the problem."]
       ] : jackMood === "low" ? [
-        ["bruno", "Jack was up early checking the Olympic route twice. He worries more when he is hurt."],
+        ["dakota", "Jack was up early checking the Olympic route twice. He worries more when he is hurt."],
         ["caleb", "He is not complicated. He cares, then his brain tries to build a shed around it."]
       ] : [
         ["sierra", "Jack asked if anyone knew a casual way to say 'I am glad my old friend is here.' He rejected all answers for being too casual."],
@@ -1522,7 +1522,7 @@ function completeLegacySetup() {
   audioEngine.enabled = state.audioEnabled;
   ensureAudio();
   showScreen("gameScreen");
-  renderScene("intro_river_checkin");
+  renderScene("intro_natai_checkin");
 }
 
 function showNameEntry() {
@@ -1965,7 +1965,7 @@ function buildVisitWrapupLines(character) {
     return [
       ["narrator", timeExit, characterExpression(character, mood)],
       ["narrator", jackMoodLine, characterExpression(character, mood)],
-      ["player", `You leave ${place} with Olympic rain on your sleeves and years of knowing Jack Everett rearranging themselves into something brighter.`]
+      ["player", `You leave ${place} with Olympic rain on your sleeves and years of knowing Jack rearranging themselves into something brighter.`]
     ];
   }
   const moodLine = {
@@ -2008,6 +2008,48 @@ function sanitizeFeelings(savedFeelings) {
     }
   });
   return clean;
+}
+
+function migrateLegacyCharacterKeys(saved) {
+  if (!saved || typeof saved !== "object") return {};
+  const migrated = clone(saved);
+  const legacyDakotaKey = ["b", "runo"].join("");
+  const legacyNataiKey = ["r", "iver"].join("");
+  const remapKey = value => {
+    if (value === legacyDakotaKey) return "dakota";
+    if (value === legacyNataiKey) return "natai";
+    return value;
+  };
+  const remapId = value => typeof value === "string"
+    ? value.replaceAll(legacyDakotaKey, "dakota").replaceAll(legacyNataiKey, "natai")
+    : value;
+
+  migrated.selectedRoute = remapKey(migrated.selectedRoute);
+  migrated.pendingDestination = remapKey(migrated.pendingDestination);
+  migrated.pendingEncounter = remapKey(migrated.pendingEncounter);
+  migrated.sceneId = remapId(migrated.sceneId);
+  migrated.choiceReactionNext = remapId(migrated.choiceReactionNext);
+  migrated.introReturnScene = remapId(migrated.introReturnScene);
+  migrated.choiceReactionBackground = remapKey(migrated.choiceReactionBackground);
+  migrated.choiceReactionLabel = remapId(migrated.choiceReactionLabel);
+
+  if (migrated.feelings) {
+    migrated.feelings = Object.assign({}, migrated.feelings);
+    if (migrated.feelings[legacyDakotaKey] !== undefined && migrated.feelings.dakota === undefined) {
+      migrated.feelings.dakota = migrated.feelings[legacyDakotaKey];
+    }
+    if (migrated.feelings[legacyNataiKey] !== undefined && migrated.feelings.natai === undefined) {
+      migrated.feelings.natai = migrated.feelings[legacyNataiKey];
+    }
+    delete migrated.feelings[legacyDakotaKey];
+    delete migrated.feelings[legacyNataiKey];
+  }
+
+  if (Array.isArray(migrated.unlockedCG)) {
+    migrated.unlockedCG = migrated.unlockedCG.map(remapId);
+  }
+
+  return migrated;
 }
 
 function choiceImpactHtml(choice) {
@@ -2186,7 +2228,7 @@ function loadGame() {
     return;
   }
   try {
-    const saved = JSON.parse(raw);
+    const saved = migrateLegacyCharacterKeys(JSON.parse(raw));
     state = Object.assign(clone(defaultState), saved);
     state.playerName = String(state.playerName || "").trim() || defaultState.playerName;
     state.feelings = sanitizeFeelings(saved.feelings);

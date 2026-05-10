@@ -887,13 +887,18 @@
     }
 
     .setup-card {
-      width: min(520px, 100%);
-      padding: clamp(24px, 5vw, 38px);
-      background:
-        linear-gradient(180deg, rgba(255, 248, 224, .96), rgba(232, 199, 137, .93));
-      border: 1px solid rgba(255, 242, 208, .68);
-      box-shadow: 0 24px 70px rgba(0, 0, 0, .48);
-      backdrop-filter: blur(12px);
+      width: min(560px, 100%);
+      min-height: min(360px, calc(100dvh - 72px));
+      display: grid;
+      align-content: center;
+      justify-items: center;
+      padding: clamp(30px, 7vw, 54px);
+      background: transparent;
+      border: 0;
+      box-shadow: none;
+      color: #fff4dc;
+      text-align: center;
+      filter: none;
       z-index: 1;
     }
 
@@ -925,16 +930,21 @@
 
     .setup-card h2 {
       font-family: Georgia, "Times New Roman", serif;
-      font-size: clamp(34px, 8vw, 52px);
-      line-height: .92;
-      color: #5c271f;
+      font-size: clamp(56px, 12vw, 104px);
+      line-height: .86;
+      letter-spacing: 0;
+      color: #fff4dc;
+      text-shadow: 0 8px 34px rgba(0, 0, 0, .82);
+      white-space: nowrap;
     }
 
     .checkin-copy {
-      margin: 0 0 18px;
-      color: rgba(66, 45, 27, .78);
-      font-size: 15px;
-      line-height: 1.45;
+      margin: 16px auto 18px;
+      max-width: 38ch;
+      color: rgba(255, 247, 226, .92);
+      font-size: clamp(15px, 2.8vw, 19px);
+      line-height: 1.38;
+      text-shadow: 0 3px 16px rgba(0, 0, 0, .84);
     }
 
     label {
@@ -960,6 +970,30 @@
     input:focus {
       border-color: rgba(168, 79, 92, .75);
       box-shadow: 0 0 0 3px rgba(168, 79, 92, .18), inset 0 2px 8px rgba(92, 54, 23, .08);
+    }
+
+    .setup-card label {
+      margin: 0 0 8px;
+      color: rgba(255, 228, 164, .9);
+      font-size: clamp(12px, 2.4vw, 15px);
+      letter-spacing: .12em;
+      text-shadow: 0 3px 18px rgba(0, 0, 0, .82);
+      text-transform: uppercase;
+    }
+
+    .setup-card input {
+      max-width: 360px;
+      border-color: rgba(255, 242, 208, .42);
+      background: rgba(22, 17, 16, .54);
+      color: #fff7e8;
+      box-shadow: 0 16px 34px rgba(0, 0, 0, .32), inset 0 1px 0 rgba(255, 255, 255, .08);
+      text-align: center;
+      backdrop-filter: blur(8px);
+    }
+
+    .setup-card input:focus {
+      border-color: rgba(255, 228, 164, .76);
+      box-shadow: 0 0 0 3px rgba(255, 228, 164, .18), 0 16px 34px rgba(0, 0, 0, .32), inset 0 1px 0 rgba(255, 255, 255, .08);
     }
 
     .setup-card .primary,
@@ -989,6 +1023,7 @@
 
     .setup-card .setup-actions {
       grid-template-columns: 1fr;
+      width: min(240px, 100%);
     }
 
     @keyframes setup-card-enter {
@@ -1286,7 +1321,7 @@
           <h2>Check-In</h2>
           <p class="checkin-copy">Your badge is waiting at the check-in desk. Choose the name the route leads will try very hard to say normally.</p>
           <label for="playerName">Name</label>
-          <input id="playerName" maxlength="24" placeholder="Name" autocomplete="off" required>
+          <input id="playerName" maxlength="24" autocomplete="off" required>
           <div class="setup-actions">
             <button class="primary" id="beginBtn">OK</button>
           </div>

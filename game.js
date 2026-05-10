@@ -180,26 +180,26 @@ const parkFlavor = {
     place: "the Yellowstone boardwalk",
     visit: {
       daytime: {
-        low: ["Caleb waits beside the Yellowstone boardwalk with arms folded and eyes on your shoes.", "Steam rolls over the thermal pools, beautiful enough to make bad decisions look cinematic. Caleb is immune."],
-        neutral: ["Caleb walks you past turquoise pools and hissing vents, narrating danger with the calm of someone who has seen tourists test fate and lose.", "He is strict, but the strictness has warmth under it."],
-        high: ["Caleb saves you the best view of the boardwalk, where the steam curls around him like he negotiated with it.", "He says your name softly, then ruins the moment by reminding you not to become soup."]
+        low: ["Caleb waits beside the Yellowstone boardwalk with three maps, two laminated diagrams, and the brittle calm of a man trying not to explain a caldera to someone who may not listen.", "Steam rolls over the thermal pools. He still points out the microbial mats, because being hurt has not cured him of wanting the place understood."],
+        neutral: ["Caleb walks you past turquoise pools and hissing vents, narrating the route like Yellowstone is a beloved fantasy saga with footnotes.", "He starts with safety, detours into supervolcano history, and somehow makes both sound like flirting."],
+        high: ["Caleb saves you the best view of the boardwalk, where the steam curls around him and his whole face lights up before he says the words 'hydrothermal plumbing.'", "He says your name softly, then blushes because he has written three mental fun facts about this exact moment and none of them are socially normal."]
       },
       sunset: {
-        low: ["Sunset stains the geyser steam orange. Caleb's patience is present, but wearing a hard hat.", "He asks you to repeat the boardwalk rule before he lets the conversation go anywhere personal."],
-        neutral: ["Yellowstone glows at sunset, all mineral color and long shadows. Caleb relaxes when you stay behind the rail without being asked.", "He tells you the park is dramatic enough without visitors improvising."]
+        low: ["Sunset stains the geyser steam orange. Caleb's patience is present, but currently organized into bullet points.", "He asks whether you know why the colors around hot springs change by temperature, then looks wounded when he realizes he made it sound like a quiz."],
+        neutral: ["Yellowstone glows at sunset, all mineral color and long shadows. Caleb relaxes when you stay behind the rail without being asked.", "He tells you the park has more than half the world's active geysers, then admits he was saving that fact for someone he wanted to impress."]
       ,
-        high: ["At sunset, Caleb's smile appears through the steam like a rare thermal feature with a safety railing.", "He admits he likes showing you the park because you make him want to explain less and feel more."]
+        high: ["At sunset, Caleb's smile appears through the steam like a rare thermal feature with a safety railing and excellent timing.", "He admits he likes showing you the park because you ask the kind of questions that make his whole brain sit up straighter."]
       },
       night: {
-        low: ["The boardwalk is quiet at night. Caleb gives you a flashlight and a look that says this is not the hour for stunts.", "A distant geyser exhales. Caleb does not soften much, but he keeps you safe."],
-        neutral: ["Night settles over Yellowstone in cool blue layers. Caleb points out the stars between columns of steam.", "His voice gets gentler when the crowds disappear."],
-        high: ["Under the night sky, Caleb stands close while the hot springs breathe around you.", "He says the park is dangerous, gorgeous, and not half as hard to read as you are."]
+        low: ["The boardwalk is quiet at night. Caleb gives you a flashlight and a very exact history of why people should not underestimate quiet ground.", "A distant geyser exhales. He does not soften much, but when a coyote calls far off, he still whispers the fact he thinks you would like."],
+        neutral: ["Night settles over Yellowstone in cool blue layers. Caleb points out the stars between columns of steam, then the steam, then the old eruption records he has memorized by season.", "His voice gets gentler when the crowds disappear, like trivia is the path he trusts toward tenderness."],
+        high: ["Under the night sky, Caleb stands close while the hot springs breathe around you.", "He says Yellowstone is dangerous, gorgeous, full of patterns, and the first thing in years that has made him brave enough to be this obvious about liking someone."]
       }
     },
     surprise: {
-      low: ["Caleb is sanitizing the check-in pen with unsettling focus. 'If you are about to visit someone, please do not make them draft paperwork.'"],
-      neutral: ["Caleb is refilling the emergency sunscreen basket. He gives you one and says, 'Prepared is romantic in several climates.'"],
-      high: ["Caleb catches you at check-in and presses a trail snack into your hand. 'For later. I am pretending this is logistics.'"]
+      low: ["Caleb is correcting a tiny typo on a Yellowstone fact card. 'If you are about to visit someone, please try not to call geysers hot-spring fountains where I can hear you.'"],
+      neutral: ["Caleb is refilling the emergency sunscreen basket while explaining that Yellowstone was established in 1872. He gives you one and says, 'Prepared is romantic in several climates.'"],
+      high: ["Caleb catches you at check-in and presses a trail snack into your hand. 'For later. Also, did you know Old Faithful is not the largest geyser, only the most punctual celebrity? I am pretending both statements are logistics.'"]
     }
   },
   sierra: {
@@ -316,17 +316,17 @@ const arrivalFlavor = {
     daytime: [
       ["narrator", "Yellowstone arrives in steam and mineral color, the boardwalk cutting a careful line through beautiful danger."],
       ["player", "Everything here looks like it could kill me and then be photogenic about it."],
-      ["narrator", "Caleb appears at the rail with a clipboard tucked under one arm and the posture of a man prepared to save lives through scolding.", "caleb"]
+      ["narrator", "Caleb appears at the rail with a clipboard, a pocket field guide, and the bright, helpless focus of a man one question away from explaining the whole park.", "caleb"]
     ],
     sunset: [
       ["narrator", "Sunset turns the geyser steam peach and gold, softening everything except the warning signs."],
-      ["player", "The park is glowing. The signs are still yelling. Balance."],
-      ["narrator", "Caleb checks the boardwalk gate, then looks up like he knew exactly when you would arrive.", "caleb"]
+      ["player", "The park is glowing. The signs are still yelling. Somewhere Caleb is probably delighted by both."],
+      ["narrator", "Caleb checks the boardwalk gate, then looks up from a notebook labeled 'Things Yellowstone Is Doing Today' like he knew exactly when you would arrive.", "caleb"]
     ],
     night: [
       ["narrator", "Yellowstone after dark is blue steam, low boardwalk lights, and distant thermal breaths in the cold."],
       ["player", "The hot springs sound alive. That is gorgeous and deeply not reassuring."],
-      ["narrator", "Caleb steps into the light with a flashlight and a very serious expression doing a poor job hiding relief.", "caleb"]
+      ["narrator", "Caleb steps into the light with a flashlight, a star chart folded into his pocket, and a very serious expression doing a poor job hiding relief.", "caleb"]
     ]
   },
   sierra: {
@@ -397,7 +397,7 @@ const visitBeats = {
       choicesByMood: {
         low: [
           { label: "Promise to stay on the marked trail because worrying him is unfair.", feelings: { jack: 1 }, tone: "warm", reaction: [["jack", "Thank you. My heart is large, hardworking, and only has maybe four brain cells supervising it.", "jack:grumpy"], ["narrator", "He starts walking, still guarded, but the old softness finds its way back into his shoulders.", "jack:grumpy"]] },
-          { label: "Ask whether every rule is really necessary.", feelings: { jack: -3 }, tone: "bad", reaction: [["jack", "Yes. I checked with Caleb, Natai, and a sign. The sign was the most polite about it.", "jack:grumpy"], ["narrator", "He tries to smile, but worry keeps winning.", "jack:grumpy"]] }
+          { label: "Ask whether every rule is really necessary.", feelings: { jack: -3 }, tone: "bad", reaction: [["jack", "Yes. I checked with Caleb, Natai, and a sign. Caleb had citations. The sign was the most polite about it.", "jack:grumpy"], ["narrator", "He tries to smile, but worry keeps winning.", "jack:grumpy"]] }
         ]
       },
       reactions: {
@@ -455,69 +455,70 @@ const visitBeats = {
   caleb: [
     {
       prompt: {
-        low: ["caleb", "Before we start, I need verbal confirmation that you understand the boardwalk is not decorative.", "caleb:grumpy"],
-        neutral: ["caleb", "Boardwalk rule first. Beautiful things can still be dangerous.", "caleb"],
-        high: ["caleb", "I am glad you came. I am also legally obligated to keep you from becoming a cautionary plaque.", "caleb:blushing"]
+        low: ["caleb", "Before we start, I need verbal confirmation that you understand the boardwalk is not decorative, and also that Yellowstone is not a volcano joke with scenery attached.", "caleb:grumpy"],
+        neutral: ["caleb", "Boardwalk rule first. Beautiful things can still be dangerous. Second rule: if I say 'quick fact,' nobody in staff believes me, but I mean it with hope.", "caleb"],
+        high: ["caleb", "I am glad you came. I prepared one safety reminder, one charming fact about microbial mats, and zero normal ways to arrange my face around you.", "caleb:blushing"]
       },
       choices: [
-        { label: "Promise both feet stay on the boardwalk.", feelings: { caleb: 2 }, tone: "warm" },
-        { label: "Say rules ruin the mood.", feelings: { caleb: -2 }, tone: "bad" }
+        { label: "Promise both feet stay on the boardwalk and ask for the quick fact.", feelings: { caleb: 2 }, tone: "warm" },
+        { label: "Tell him Yellowstone trivia is killing the mood.", feelings: { caleb: -2 }, tone: "bad" }
       ],
       choicesByMood: {
         low: [
-          { label: "Repeat the boardwalk rule back to him exactly.", feelings: { caleb: 1 }, tone: "warm", reaction: [["caleb", "Thank you. I know it is not glamorous, but neither is an evacuation form.", "caleb:grumpy"], ["narrator", "His shoulders lower a little, which feels like earning a permit.", "caleb:grumpy"]] },
-          { label: "Step close to the rail to prove you are listening.", feelings: { caleb: -3 }, tone: "bad", reaction: [["caleb", "Back. Listening does not require a demonstration.", "caleb:grumpy"], ["narrator", "His fear shows through the anger for one sharp second.", "caleb:grumpy"]] }
+          { label: "Repeat the boardwalk rule and ask him to explain the caldera properly.", feelings: { caleb: 1 }, tone: "warm", reaction: [["caleb", "Properly? That is a dangerous word to say to me. Yellowstone's caldera is roughly thirty by forty-five miles, and I am showing restraint by not drawing it in the dust.", "caleb:grumpy"], ["narrator", "His shoulders lower a little, which feels like earning both a permit and a lecture hall seat.", "caleb:grumpy"]] },
+          { label: "Say you already skimmed the signs, so he can relax.", feelings: { caleb: -3 }, tone: "bad", reaction: [["caleb", "Skimming is for grant reports and diner menus, not boiling ground.", "caleb:grumpy"], ["narrator", "His disappointment lands sharper because it is tangled up with how much he wanted to show you everything.", "caleb:grumpy"]] }
         ]
       },
       reactions: {
-        warm: [["caleb", "Excellent. That sentence just improved my blood pressure.", "caleb:laughing"], ["narrator", "He gestures you forward, visibly pleased despite the professional face he is attempting.", "caleb"]],
-        flirt: [["caleb", "No. Sometimes I make it sound terrifying. Depends who is listening.", "caleb:blushing"], ["player", "I am listening very respectfully.", "caleb:blushing"]],
-        bad: [["caleb", "Thermal burns also ruin the mood.", "caleb:grumpy"], ["narrator", "The steam hisses behind him like Yellowstone agrees.", "caleb:grumpy"]]
+        warm: [["caleb", "Excellent. Quick fact: those orange edges are heat-loving microbes, not mineral paint, which means the pretty colors are basically a living temperature chart. Sorry. That was... almost quick.", "caleb:laughing"], ["narrator", "He gestures you forward, visibly pleased that you asked for the part of him that keeps spilling over.", "caleb"]],
+        flirt: [["caleb", "No. Sometimes I make it sound terrifying. Depends who is listening. You listening is statistically damaging to my composure.", "caleb:blushing"], ["player", "I am listening very respectfully.", "caleb:blushing"]],
+        bad: [["caleb", "Then the mood can file a complaint with hydrothermal reality.", "caleb:grumpy"], ["narrator", "The steam hisses behind him like Yellowstone has prepared a peer-reviewed rebuttal.", "caleb:grumpy"]]
       }
     },
     {
       prompt: {
-        low: ["narrator", "Caleb stops near a milky blue pool, leaving enough space between you and the rail to imply he has measured it.", "caleb:grumpy"],
-        neutral: ["narrator", "Steam drifts across the boardwalk. Caleb names each pool with careful affection, like introducing complicated friends.", "caleb"],
-        high: ["narrator", "At the overlook, Caleb lowers his voice so the steam and the two of you share the same small world.", "caleb:blushing"]
+        low: ["narrator", "Caleb stops near a milky blue pool, leaving enough space between you and the rail to imply he has measured it and resented the need.", "caleb:grumpy"],
+        neutral: ["narrator", "Steam drifts across the boardwalk. Caleb names each pool with careful affection, like introducing complicated friends who have published several papers.", "caleb"],
+        high: ["narrator", "At the overlook, Caleb lowers his voice so the steam, the hot spring, and the two of you share the same small world of facts he trusts enough to make intimate.", "caleb:blushing"]
       },
       choices: [
         { label: "Ask what first made him fall for Yellowstone.", feelings: { caleb: 2 }, tone: "warm" },
+        { label: "Ask if he has a favorite geyser and why.", feelings: { caleb: 2 }, tone: "flirt" },
         { label: "Lean over the rail for a better look.", feelings: { caleb: -2 }, tone: "bad" }
       ],
       choicesByMood: {
         low: [
-          { label: "Ask him what the pool is doing under the surface.", feelings: { caleb: 1 }, tone: "warm", reaction: [["caleb", "Circulating heat, minerals, pressure. Beautiful things are usually busy under the surface.", "caleb"], ["narrator", "He hears himself getting sincere and decides to allow it.", "caleb"]] },
-          { label: "Say the steam would look better from past the rope.", feelings: { caleb: -3 }, tone: "bad", reaction: [["caleb", "Then the photo can remain hypothetical.", "caleb:grumpy"], ["narrator", "He moves between you and the rope with ranger-final authority.", "caleb:grumpy"]] }
+          { label: "Ask him what the pool is doing under the surface.", feelings: { caleb: 1 }, tone: "warm", reaction: [["caleb", "Circulating heat, minerals, pressure. Water sinks, heats, rises, and carries dissolved silica like the world's least relaxing elevator.", "caleb"], ["narrator", "He hears himself getting excited and lets the excitement stay, wary but grateful.", "caleb"]] },
+          { label: "Say the steam would look better from past the rope.", feelings: { caleb: -3 }, tone: "bad", reaction: [["caleb", "Then the photo can remain hypothetical, which is also the safest kind of bad idea.", "caleb:grumpy"], ["narrator", "He moves between you and the rope with ranger-final authority and wounded nerd dignity.", "caleb:grumpy"]] }
         ]
       },
       reactions: {
-        warm: [["caleb", "The first geyser I saw. It looked chaotic, but it was following a pattern older than me.", "caleb"], ["narrator", "He sounds almost shy about the sincerity of it.", "caleb:blushing"]],
-        flirt: [["caleb", "The steam is not a licensed assistant, but I will pass along the compliment.", "caleb:laughing"], ["narrator", "He laughs before he can stop himself.", "caleb:laughing"]],
-        bad: [["caleb", "Back. Now.", "caleb:grumpy"], ["narrator", "His hand catches your sleeve, firm and frightened under the anger.", "caleb:grumpy"]]
+        warm: [["caleb", "The first geyser I saw. It looked chaotic, but it was following a pattern older than me. I think I fell for the idea that wonder could have mechanics.", "caleb"], ["narrator", "He sounds almost shy about the sincerity of it, like he has just handed you the annotated edition of his heart.", "caleb:blushing"]],
+        flirt: [["caleb", "Castle Geyser. Obviously. It has a cone that looks like a ruined fortress, eruptions that can last half an hour, and absolutely no idea how attractive commitment to structure can be.", "caleb:laughing"], ["narrator", "He realizes halfway through that he may not be talking only about geysers, and the blush is immediate.", "caleb:blushing"]],
+        bad: [["caleb", "Back. Now. Curiosity does not require trespassing.", "caleb:grumpy"], ["narrator", "His hand catches your sleeve, firm and frightened under the anger.", "caleb:grumpy"]]
       }
     },
     {
       prompt: {
-        low: ["caleb", "I am walking you back before you discover another way to age me.", "caleb:grumpy"],
-        neutral: ["caleb", "Last stop. Then I should get you back before the light changes the route markers.", "caleb"],
-        high: ["caleb", "One more view. Then I release you back into the wild, reluctantly and with snacks.", "caleb:blushing"]
+        low: ["caleb", "I am walking you back before my emotional regulation becomes a ranger program called So You Dismissed A Man's Special Interest.", "caleb:grumpy"],
+        neutral: ["caleb", "Last stop. Then I should get you back before the light changes the route markers. Also before I explain the entire 1988 fire season unprompted.", "caleb"],
+        high: ["caleb", "One more view. Then I release you back into the wild, reluctantly, with snacks, and with only the top five Yellowstone facts I have restrained myself from saying.", "caleb:blushing"]
       },
       choices: [
-        { label: "Tell him careful people make beautiful places easier to love.", feelings: { caleb: 2 }, tone: "warm" },
-        { label: "Ask if the snack comes with another date.", feelings: { caleb: 2 }, tone: "flirt" },
-        { label: "Say you still think the warnings are overkill.", feelings: { caleb: -2 }, tone: "bad" }
+        { label: "Tell him his facts make the park easier to love.", feelings: { caleb: 2 }, tone: "warm" },
+        { label: "Ask if the snack comes with another date and another top five list.", feelings: { caleb: 2 }, tone: "flirt" },
+        { label: "Say you still think the warnings and lectures are overkill.", feelings: { caleb: -2 }, tone: "bad" }
       ],
       choicesByMood: {
         low: [
-          { label: "Thank him for being patient when you made it difficult.", feelings: { caleb: 1 }, tone: "warm", reaction: [["caleb", "I appreciate you saying that. I prefer difficult conversations to preventable injuries.", "caleb"], ["narrator", "The warmth returns carefully, like steam thinning after a gust.", "caleb"]] },
-          { label: "Ask if you can skip the safety talk next time.", feelings: { caleb: -3 }, tone: "bad", reaction: [["caleb", "No. Especially next time.", "caleb:grumpy"], ["narrator", "Whatever softness had gathered between you vents away into the dark.", "caleb:grumpy"]] }
+          { label: "Thank him for still sharing the park with you.", feelings: { caleb: 1 }, tone: "warm", reaction: [["caleb", "I appreciate you saying that. I know I can be a lot. Yellowstone is also a lot, and I have made peace with being thematically consistent.", "caleb"], ["narrator", "The warmth returns carefully, like steam thinning after a gust.", "caleb"]] },
+          { label: "Ask if you can skip the facts next time.", feelings: { caleb: -3 }, tone: "bad", reaction: [["caleb", "No. But you may skip me, if that is what you actually want.", "caleb:grumpy"], ["narrator", "Whatever softness had gathered between you vents away into the dark.", "caleb:grumpy"]] }
         ]
       },
       reactions: {
-        warm: [["caleb", "That is... exactly why I do this.", "caleb:blushing"], ["narrator", "For once, Caleb has no statistic ready. Just a smile he cannot file away.", "caleb:blushing"]],
-        flirt: [["caleb", "It can. For safety reasons, obviously.", "caleb:laughing"], ["narrator", "He hands you the snack like it is evidence.", "caleb:laughing"]],
-        bad: [["caleb", "Then I have not explained them well enough, and that is on me to fix later.", "caleb:grumpy"], ["narrator", "He guides you back with professional precision and personal disappointment.", "caleb:grumpy"]]
+        warm: [["caleb", "That is... exactly why I do this. Not the romance part. I mean, possibly the romance part. Statistically emerging.", "caleb:blushing"], ["narrator", "For once, Caleb has no clean citation ready. Just a smile he cannot file away.", "caleb:blushing"]],
+        flirt: [["caleb", "It can. The top five list has subcategories, but I can make eye contact through at least forty percent of it.", "caleb:laughing"], ["narrator", "He hands you the snack like it is evidence and looks absurdly pleased when your fingers brush.", "caleb:laughing"]],
+        bad: [["caleb", "Then I have not explained them well enough, or you have decided not to hear me. I can only fix one of those.", "caleb:grumpy"], ["narrator", "He guides you back with professional precision and personal disappointment.", "caleb:grumpy"]]
       }
     }
   ],
@@ -839,7 +840,7 @@ const scenes = {
       ["narrator", "Jack looks up from a welcome packet, red flannel stretched across shoulders that once moved an entire fallen log because a kid lost a hat under it.", "jack"],
       ["jack", "{playerName}. Hey. You made it. I mean, obviously you made it, you are standing there. Unless I am hallucinating, which would be rude of my brain.", "jack:blushing"],
       ["player", "Still you, then.", "jack"],
-      ["jack", "Still me. Bigger beard, same amount of map confidence, which Caleb says is 'not enough to operate machinery.'", "jack:laughing"],
+      ["jack", "Still me. Bigger beard, same amount of map confidence, which Caleb says is 'less reliable than an unsourced geyser prediction.' I do not know what that means, but he looked proud.", "jack:laughing"],
       ["narrator", "He pulls you into a hug before either of you can overthink it. Jack hugs like shelter: warm, solid, and completely unaware of subtlety.", "jack"],
       ["player", "Thanks for inviting me. I was not sure I deserved a soft landing.", "jack"],
       ["jack", "Everybody deserves somewhere to do better. Also I missed you, which is not professional retreat language but is true language.", "jack:blushing"],
@@ -872,7 +873,7 @@ const scenes = {
     ],
     choices: [
       { label: "Ask what Olympic means to him after all these years.", next: "intro_lodge_jack_three", feelings: { jack: 2 }, reaction: [["jack", "Rain, mostly. Then trees old enough to make your problems feel badly scheduled. And the place I kept wanting to show you properly.", "jack"], ["narrator", "He says it like a joke, but there is devotion under the weather report and your name tucked inside it.", "jack:blushing"]] },
-      { label: "Joke that visitors keep parks relevant.", next: "intro_lodge_jack_three", feelings: { jack: -2 }, reaction: [["jack", "Parks were relevant before any of us learned to point a camera at them. Sorry. That came out stern. My brain put on Caleb's hat.", "jack:grumpy"], ["narrator", "He looks apologetic immediately, but the correction still lands.", "jack:grumpy"]] }
+      { label: "Joke that visitors keep parks relevant.", next: "intro_lodge_jack_three", feelings: { jack: -2 }, reaction: [["jack", "Parks were relevant before any of us learned to point a camera at them. Sorry. That came out stern. My brain put on Caleb's debate cardigan.", "jack:grumpy"], ["narrator", "He looks apologetic immediately, but the correction still lands.", "jack:grumpy"]] }
     ]
   },
   intro_lodge_jack_three: {
@@ -910,7 +911,7 @@ const scenes = {
       ["jack", "This desk is the center point between all the park routes. You come here, pick a direction, and the kiosk handles the rest.", "jack"],
       ["jack", "There is also the part where it bends space and time so you can jump between parks that are thousands of miles apart almost instantly. I asked how. They gave me a binder. I chose peace.", "jack:laughing"],
       ["player", "Wait, what?", "jack"],
-      ["jack", "Anyway. Caleb is waiting at Yellowstone. Boardwalk rules, geothermal hazards, very handsome scolding. You will love it. Platonically or not-platonically, your business. I am being mature.", "jack"],
+      ["jack", "Anyway. Caleb is waiting at Yellowstone. Boardwalk rules, geothermal hazards, very handsome encyclopedia energy. Ask him one question and he starts glowing like a ranger station with Wi-Fi.", "jack"],
       ["player", "We are just moving on from the space-time thing?", "jack"],
       ["jack", "Already did. One foot in front of the other. That is how I survive both hiking and concepts.", "jack:laughing"]
     ],
@@ -925,16 +926,16 @@ const scenes = {
     lines: [
       ["narrator", "Yellowstone opens around you in steam, boardwalk rails, and blue pools that look too pretty to be allowed near human foolishness."],
       ["player", "The air smells like minerals, heat, and a warning label someone made scenic."],
-      ["narrator", "A ranger at the rail turns as you approach, one hand already hovering near the nearest safety sign.", "caleb"],
-      ["caleb", "Welcome to the boardwalk. It is here because the ground is fragile, hot, and not interested in influencer culture.", "caleb"],
-      ["player", "Noted. The beautiful danger has boundaries.", "caleb"],
-      ["caleb", "Exactly. Stay on the path and I become much more charming.", "caleb:blushing"],
-      ["caleb", "Jack asked me to be nice to you. His exact words were, 'Be normal nice, not scary handsome nice.' I chose to interpret that scientifically.", "caleb"],
-      ["player", "That sounds painfully Jack.", "caleb"]
+      ["narrator", "A ranger at the rail turns as you approach, one hand on the nearest safety sign and the other holding a notebook bristling with color-coded tabs.", "caleb"],
+      ["caleb", "Welcome to the boardwalk. It exists because the crust here can be thin, hot, and wildly uninterested in human confidence. Also because hydrothermal areas are basically Yellowstone's dramatic circulatory system.", "caleb"],
+      ["player", "That was two warnings and a metaphor before hello.", "caleb"],
+      ["caleb", "Hello. Sorry. I start in the middle when I am excited.", "caleb:blushing"],
+      ["caleb", "Jack asked me to be nice to you. His exact words were, 'Be normal nice, not Yellowstone TED Talk nice.' I chose to interpret that as a challenge.", "caleb"],
+      ["player", "That sounds painfully Jack and dangerously you.", "caleb"]
     ],
     choices: [
-      { label: "Promise Caleb both feet are staying on the boardwalk.", next: "intro_yellowstone_caleb_two", feelings: { caleb: 2 }, reaction: [["caleb", "Good. I like my visitors alive and my paperwork boring.", "caleb:laughing"], ["narrator", "His smile is quick, but it cuts cleanly through the steam.", "caleb:laughing"]] },
-      { label: "Joke about stepping off for a better angle.", next: "intro_yellowstone_caleb_two", feelings: { caleb: -2 }, reaction: [["caleb", "Please do not make me tackle you in front of a thermal feature.", "caleb:grumpy"], ["narrator", "The look he gives you could laminate a safety poster.", "caleb:grumpy"]] }
+      { label: "Promise Caleb both feet are staying on the boardwalk and ask for a fact.", next: "intro_yellowstone_caleb_two", feelings: { caleb: 2 }, reaction: [["caleb", "Good. Fact: Yellowstone has more geysers than the rest of the world combined. Also, I like you already for asking, which is premature data but compelling.", "caleb:laughing"], ["narrator", "His smile is quick, bright, and almost immediately embarrassed by itself.", "caleb:laughing"]] },
+      { label: "Joke that you came for views, not a science lecture.", next: "intro_yellowstone_caleb_two", feelings: { caleb: -2 }, reaction: [["caleb", "Then I will make the lecture scenic and tragically concise.", "caleb:grumpy"], ["narrator", "The look he gives you could laminate a safety poster and annotate it in the margins.", "caleb:grumpy"]] }
     ]
   },
   intro_yellowstone_caleb_two: {
@@ -942,12 +943,13 @@ const scenes = {
     background: () => ({ location: "yellowstone", time: "daytime" }),
     lines: [
       ["narrator", "Caleb leads you a few careful steps down the boardwalk, where steam curls over the rail and vanishes into the sun.", "caleb"],
-      ["caleb", "People think Yellowstone is trying to impress them. It is not. It is busy being itself.", "caleb"],
-      ["player", "That sounds like something you admire.", "caleb"]
+      ["caleb", "People think Yellowstone is trying to impress them. It is not. It is busy being itself, which includes sitting on one of the largest active volcanic systems on Earth like that is a reasonable personality trait.", "caleb"],
+      ["player", "You admire it for being dramatic and well-documented.", "caleb"]
     ],
     choices: [
-      { label: "Ask what first made him love the park.", next: "intro_yellowstone_caleb_three", feelings: { caleb: 2 }, reaction: [["caleb", "A geyser eruption when I was twelve. It scared me half to death, then made everything else feel too small.", "caleb:blushing"], ["narrator", "He looks embarrassed by how honest that was, which makes it worse in the best way.", "caleb:blushing"]] },
-      { label: "Ask whether every rule really matters.", next: "intro_yellowstone_caleb_three", feelings: { caleb: -2 }, reaction: [["caleb", "Here? Yes.", "caleb:grumpy"], ["narrator", "The answer is short enough to leave steam hissing into the silence after it.", "caleb:grumpy"]] }
+      { label: "Ask what first made him love the park.", next: "intro_yellowstone_caleb_three", feelings: { caleb: 2 }, reaction: [["caleb", "A geyser eruption when I was twelve. It scared me half to death, then made everything else feel too small. I went home and memorized the map instead of admitting I had feelings.", "caleb:blushing"], ["narrator", "He looks embarrassed by how honest that was, which makes it worse in the best way.", "caleb:blushing"]] },
+      { label: "Ask whether he has always been this nerdy about Yellowstone.", next: "intro_yellowstone_caleb_three", feelings: { caleb: 2 }, reaction: [["caleb", "No. As a child I was worse. I made my family observe Old Faithful predictions during dinner. Indoors. In Ohio.", "caleb:laughing"], ["narrator", "He laughs like he has chosen to find himself endearing and is only slightly surprised you seem to agree.", "caleb:laughing"]] },
+      { label: "Ask whether every rule really matters.", next: "intro_yellowstone_caleb_three", feelings: { caleb: -2 }, reaction: [["caleb", "Here? Yes. Also I can provide a short historical appendix titled People Who Learned This Incorrectly.", "caleb:grumpy"], ["narrator", "The answer is short enough to leave steam hissing into the silence after it. The appendix, somehow, is implied.", "caleb:grumpy"]] }
     ]
   },
   intro_yellowstone_caleb_three: {
@@ -955,11 +957,12 @@ const scenes = {
     background: () => ({ location: "yellowstone", time: "daytime" }),
     lines: [
       ["narrator", "The boardwalk opens to one last pool, blue at the center and ringed with impossible color.", "caleb"],
-      ["caleb", "This is usually where people stop talking.", "caleb"],
-      ["player", "I can see why.", "caleb"]
+      ["caleb", "This is usually where people stop talking. I support quiet, but I also need you to know the blue means it is absorbing every color except blue because of depth and clarity, not because nature owns a drama department.", "caleb"],
+      ["player", "You are physically incapable of leaving wonder unexplained.", "caleb"]
     ],
     choices: [
-      { label: "Stand quietly with him and let the place be enough.", next: "intro_yellowstone_wrap", feelings: { caleb: 2 }, reaction: [["caleb", "Thank you.", "caleb"], ["narrator", "He says it softly, like quiet is something you did together.", "caleb:blushing"]] },
+      { label: "Tell him the explanation makes the wonder better.", next: "intro_yellowstone_wrap", feelings: { caleb: 2 }, reaction: [["caleb", "That is a very unfair thing to say to a man trying to remain professionally composed.", "caleb:blushing"], ["narrator", "He says it softly, like you just found the main trail into him.", "caleb:blushing"]] },
+      { label: "Ask him to stand quietly with you anyway.", next: "intro_yellowstone_wrap", feelings: { caleb: 1 }, reaction: [["caleb", "I can do quiet. I may think loudly, but I can do quiet.", "caleb"], ["narrator", "For a few breaths, he lets the pool be itself beside you, and the restraint feels like trust.", "caleb:blushing"]] },
       { label: "Admit you still want one closer picture.", next: "intro_yellowstone_wrap", feelings: { caleb: -2 }, reaction: [["caleb", "Then I am walking you back before wanting becomes doing.", "caleb:grumpy"], ["narrator", "He is not cruel about it. Somehow that makes disappointing him worse.", "caleb:grumpy"]] }
     ]
   },
@@ -967,9 +970,9 @@ const scenes = {
     label: "Yellowstone",
     background: () => ({ location: "yellowstone", time: "daytime" }),
     lines: [
-      ["narrator", "Caleb checks the route card, then nods toward the boardwalk entrance where the impossible path back waits.", "caleb"],
-      ["caleb", "That is your Yellowstone introduction. Short enough to keep you safe, long enough that I hope you remember more than the warnings.", "caleb"],
-      ["player", "I will. The warnings had excellent cheekbones.", "caleb"],
+      ["narrator", "Caleb checks the route card, then tucks his notebook under one arm like he is trying to look casual about the tabs.", "caleb"],
+      ["caleb", "That is your Yellowstone introduction. Short enough to keep you safe, long enough that I hope you remember the microbes, the caldera, and at least one emotionally significant geyser.", "caleb"],
+      ["player", "I will. The facts had excellent cheekbones.", "caleb"],
       ["narrator", "He laughs despite himself, and the sound follows you back through the steam."]
     ],
     next: "intro_to_sunset_return"
@@ -1199,10 +1202,23 @@ const scenes = {
         ["sierra", "Jack asked if anyone knew a casual way to say 'I am glad my old friend is here.' He rejected all answers for being too casual."],
         ["caleb", "For Jack, that is advanced emotional engineering."]
       ];
+      const calebMood = relationshipState("caleb");
+      const calebChatter = calebMood === "high" ? [
+        ["sierra", "Caleb spent breakfast trying to pretend he did not make you a Yellowstone reading list called 'casual follow-up.'"],
+        ["jack", "It has tabs. Romantic tabs. I did not know tabs could look hopeful."],
+        ["dakota", "He asked whether five facts was too many for a good morning note. Sierra said five was his version of restraint."]
+      ] : calebMood === "low" ? [
+        ["natai", "Caleb rewrote a safety card at dawn. That is what he does when someone mistakes his care for noise."],
+        ["sierra", "He is acting fine, which for Caleb means alphabetizing hurt feelings by geyser basin."]
+      ] : [
+        ["dakota", "Caleb labeled the muffin tray by geologic era again."],
+        ["sierra", "And then looked personally betrayed when I moved the blueberry muffins out of the Pleistocene."]
+      ];
       return [
         ["narrator", "Morning fills the lodge lobby with clean light and the low murmur of maps being unfolded."],
         ...chatter,
         ...jackChatter,
+        ...calebChatter,
         ["player", state.day === 1 ? "A new day. Three chances to make something happen." : `Day ${state.day}. Same impossible kiosk. New chances.`]
       ];
     },
@@ -1966,6 +1982,18 @@ function buildVisitWrapupLines(character) {
       ["narrator", timeExit, characterExpression(character, mood)],
       ["narrator", jackMoodLine, characterExpression(character, mood)],
       ["player", `You leave ${place} with Olympic rain on your sleeves and years of knowing Jack rearranging themselves into something brighter.`]
+    ];
+  }
+  if (character === "caleb") {
+    const calebMoodLine = {
+      low: "Caleb walks you back carefully, notebook tucked tight against his side. He still answers one question about the steam, but the answer is shorter than his affection wants to be.",
+      neutral: "Caleb walks beside you, visibly restraining at least four facts until you ask for one. The quiet between you has footnotes now.",
+      high: "Caleb lingers at the route marker like goodbye is a field study he has not finished. He gives you one last Yellowstone fact and somehow makes it sound like wanting you to stay."
+    }[mood];
+    return [
+      ["narrator", timeExit, characterExpression(character, mood)],
+      ["narrator", calebMoodLine, characterExpression(character, mood)],
+      ["player", `You leave ${place} with steam in your hair, Yellowstone facts rearranging the view, and Caleb's earnest attention following closer than expected.`]
     ];
   }
   const moodLine = {

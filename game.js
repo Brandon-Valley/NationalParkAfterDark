@@ -48,7 +48,7 @@ const characters = {
   narrator: { name: "Narrator", sprite: "", color: "#5f3a19" },
   jack: { name: "Jack", shortName: "Jack", park: "Olympic", location: "olympic", sprites: characterSprites("jack"), color: "#8f3f24" },
   caleb: { name: "Caleb", shortName: "Caleb", park: "Yellowstone", location: "yellowstone", sprites: characterSprites("caleb"), color: "#276345" },
-  sierra: { name: "Sierra", shortName: "Sierra", park: "Yosemite", location: "yosemite", sprites: characterSprites("sierra"), color: "#8b3f63" },
+  sierra: { name: "Sierra", shortName: "Sierra", park: "Yosemite", location: "yosemite", sprites: { ...characterSprites("sierra"), sly: "assets/charactures/sierra/sly.png" }, color: "#8b3f63" },
   dakota: { name: "Dakota", shortName: "Dakota", park: "Sequoia", location: "sequoia", sprites: characterSprites("dakota"), color: "#704719" },
   natai: { name: "Natai", shortName: "Natai", park: "Zion", location: "zion", sprites: characterSprites("natai"), color: "#245f76" }
 };
@@ -206,25 +206,25 @@ const parkFlavor = {
     place: "the Yosemite waterfall trail",
     visit: {
       daytime: {
-        low: ["Sierra bounds ahead on the Yosemite trail, then stops to make sure you are not turning the overlook into a performance piece.", "Granite cliffs rise clean and enormous behind her. She looks unimpressed on their behalf."],
-        neutral: ["Sierra leads you toward a waterfall throwing mist into the sun. She moves like the trail is a dance floor with consequences.", "She teases you into looking up from the obvious view to the better one."],
-        high: ["Sierra waits at the waterfall overlook, bright-eyed and wind-tossed, like Yosemite personally gave her good lighting.", "She grins when mist catches in your hair and says it suits you."]
+        low: ["Sierra bounds ahead on the Yosemite trail, then stops to make sure you are not turning the overlook into a performance piece.", "Granite cliffs rise clean and enormous behind her. She says they are hard to impress, but you are welcome to keep trying on both of them."],
+        neutral: ["Sierra leads you toward a waterfall throwing mist into the sun. She moves like the trail is a dance floor with consequences.", "She teases you into looking up from the obvious view to the better one, then adds that your focusing face is trouble."],
+        high: ["Sierra waits at the waterfall overlook, bright-eyed and wind-tossed, like Yosemite personally gave her good lighting.", "She grins when mist catches in your hair and says Yosemite is flirting with you. Then she says she was there first."]
       },
       sunset: {
-        low: ["Sunset paints the granite pink. Sierra loves the view too much to stay annoyed, but she gives you no free points.", "She asks whether you can appreciate a cliff without making it about yourself."],
-        neutral: ["The Yosemite cliffs warm to gold as Sierra slows down for once.", "She says sunset is when the park stops showing off and starts telling the truth."],
-        high: ["Sierra pulls you to a viewpoint just as the granite catches fire with sunset.", "For a second she is quiet, and the quiet feels like a gift she does not hand out often."]
+        low: ["Sunset paints the granite pink. Sierra loves the view too much to stay annoyed, but she gives you no free points.", "She asks whether you can appreciate a cliff without making it about yourself, then smiles like she might grade the answer on charm."],
+        neutral: ["The Yosemite cliffs warm to gold as Sierra slows down for once.", "She says sunset is when the park stops showing off and starts telling the truth, which is also her favorite time to make people blush."],
+        high: ["Sierra pulls you to a viewpoint just as the granite catches fire with sunset.", "For a second she is quiet. Then she ruins the solemnity beautifully by saying the view is almost as distracting as you."]
       },
       night: {
-        low: ["The waterfall is a pale line in the dark. Sierra keeps the pace brisk and the conversation sharper.", "She is still dazzling, just currently using it as a weapon."],
-        neutral: ["At night, Yosemite turns spare and echoing. Sierra points out the sound of water before you can see it.", "She likes that you listen."],
-        high: ["Moonlight turns the waterfall silver. Sierra takes your hand for one tricky step and does not immediately let go.", "She says some views work better when nobody is trying to caption them."]
+        low: ["The waterfall is a pale line in the dark. Sierra keeps the pace brisk and the conversation sharper.", "She is still dazzling, just currently using it as a weapon with excellent aim."],
+        neutral: ["At night, Yosemite turns spare and echoing. Sierra points out the sound of water before you can see it.", "She likes that you listen, and she tells you so in a voice designed to make listening difficult."],
+        high: ["Moonlight turns the waterfall silver. Sierra takes your hand for one tricky step and does not immediately let go.", "She says some views work better when nobody is trying to caption them, especially when one of the views is you."]
       }
     },
     surprise: {
-      low: ["Sierra is perched near check-in, lacing her boots. 'Going somewhere? Try not to make the landscape carry the conversation.'"],
-      neutral: ["Sierra jogs past check-in, then doubles back. 'Hydrate. Also, if you see a dramatic cliff, say hello for me.'"],
-      high: ["Sierra appears at check-in with waterfall mist still in her hair. 'I was not waiting for you. I was waiting dramatically near your path.'"]
+      low: ["Sierra is perched near check-in, lacing her boots. 'Going somewhere? Try not to make the landscape carry the conversation. You have a nice mouth; use it responsibly.'"],
+      neutral: ["Sierra jogs past check-in, then doubles back. 'Hydrate. Also, if you see a dramatic cliff, say hello for me. If it flirts back, I taught it everything.'"],
+      high: ["Sierra appears at check-in with waterfall mist still in her hair. 'I was not waiting for you. I was waiting dramatically near your path because subtlety looked boring on me.'"]
     }
   },
   dakota: {
@@ -332,18 +332,18 @@ const arrivalFlavor = {
   sierra: {
     daytime: [
       ["narrator", "Yosemite rises around you in granite, pine, and waterfall mist that catches the sun in a thousand small flashes."],
-      ["player", "Okay. I understand why people write poems and then pretend they did not."],
-      ["narrator", "Sierra jogs down from the overlook, bright as the spray behind her.", "sierra"]
+      ["player", "Okay. I understand why people write poems and then pretend they did not. Also why Sierra would absolutely catch me doing it."],
+      ["narrator", "Sierra jogs down from the overlook, bright as the spray behind her and already smiling like she has decided you are the fun part of the trail.", "sierra"]
     ],
     sunset: [
       ["narrator", "Sunset slides across Yosemite's granite faces, turning the cliffs warm enough to look impossible."],
-      ["player", "The whole valley is showing off. Honestly, respect."],
-      ["narrator", "Sierra leans against a trail sign, wind in her hair and challenge in her grin.", "sierra"]
+      ["player", "The whole valley is showing off. Honestly, respect. Sierra is going to make that competitive somehow."],
+      ["narrator", "Sierra leans against a trail sign, wind in her hair and a slow, dangerous grin aimed directly at you.", "sierra"]
     ],
     night: [
       ["narrator", "At night, Yosemite becomes a shape of cliffs and water sounds, huge and close in the dark."],
-      ["player", "The waterfall is louder when I cannot see all of it. That feels like a metaphor with hiking boots."],
-      ["narrator", "Sierra's flashlight bobs along the trail before she appears, already moving like stillness owes her money.", "sierra"]
+      ["player", "The waterfall is louder when I cannot see all of it. That feels like a metaphor with hiking boots and Sierra's fingerprints on it."],
+      ["narrator", "Sierra's flashlight bobs along the trail before she appears, already moving like stillness owes her money and you owe her your full attention.", "sierra"]
     ]
   },
   dakota: {
@@ -525,69 +525,74 @@ const visitBeats = {
   sierra: [
     {
       prompt: {
-        low: ["sierra", "Tell me you came here to actually see Yosemite, not just use it as proof you went somewhere.", "sierra:grumpy"],
-        neutral: ["sierra", "Rule one: look up. Yosemite hates being treated like wallpaper.", "sierra"],
-        high: ["sierra", "You made it. Good. The waterfall was getting impatient, and so was I.", "sierra:blushing"]
+        low: ["sierra", "Tell me you came here to actually see Yosemite, not just use it as proof you went somewhere. Lie prettily if you must; I will still know.", "sierra:sly"],
+        neutral: ["sierra", "Rule one: look up. Yosemite hates being treated like wallpaper, and I hate competing with wallpaper for your eyes.", "sierra:sly"],
+        high: ["sierra", "You made it. Good. The waterfall was getting impatient, and so was I. Mine is cuter.", "sierra:sly"]
       },
       choices: [
         { label: "Look up before answering and let the view land.", feelings: { sierra: 2 }, tone: "warm" },
+        { label: "Tell her your eyes are up, but she is making it complicated.", feelings: { sierra: 2 }, tone: "flirt" },
         { label: "Start framing a perfect post instead.", feelings: { sierra: -2 }, tone: "bad" }
       ],
       choicesByMood: {
         low: [
-          { label: "Put the camera away and look before you speak.", feelings: { sierra: 1 }, tone: "warm", reaction: [["sierra", "Okay. That was almost suspiciously growth-oriented.", "sierra"], ["narrator", "She still looks guarded, but the grin stops hiding quite so hard.", "sierra"]] },
-          { label: "Say the view will still be there after you get the shot.", feelings: { sierra: -3 }, tone: "bad", reaction: [["sierra", "And I will still be here judging you accurately.", "sierra:grumpy"], ["narrator", "Her disappointment moves faster than the waterfall mist.", "sierra:grumpy"]] }
+          { label: "Put the camera away and look before you speak.", feelings: { sierra: 1 }, tone: "warm", reaction: [["sierra", "Okay. That was almost suspiciously growth-oriented.", "sierra"], ["sierra", "Careful, that look is annoyingly good on you.", "sierra:sly"], ["narrator", "She still looks guarded, but the grin stops hiding quite so hard.", "sierra"]] },
+          { label: "Tell her even her judgment has unfair charisma.", feelings: { sierra: 1 }, tone: "flirt", reaction: [["sierra", "Oh.", "sierra:blushing"], ["sierra", "Flattery during probation? Risky. Unfortunately, I respect dangerous trail behavior only when it is verbal.", "sierra:sly"], ["narrator", "Her eyes narrow, but the corner of her mouth gives the whole performance away.", "sierra"]] },
+          { label: "Say the view will still be there after you get the shot.", feelings: { sierra: -3 }, tone: "bad", reaction: [["sierra", "And I will still be here judging you accurately. Do not worry, I make disappointment look fantastic.", "sierra:sly"], ["narrator", "Her disappointment moves faster than the waterfall mist, even when she weaponizes the smile.", "sierra:grumpy"]] }
         ]
       },
       reactions: {
-        warm: [["sierra", "There. That pause? That is the good stuff.", "sierra"], ["narrator", "She smiles like you found a trail marker hidden in plain sight.", "sierra:laughing"]],
-        flirt: [["sierra", "Correct answer. Reckless, but correct.", "sierra:blushing"], ["player", "I respect the terrain.", "sierra:blushing"]],
-        bad: [["sierra", "Oh, we are doing this the hard way.", "sierra:grumpy"], ["narrator", "She steps between you and the shot with athletic precision.", "sierra:grumpy"]]
+        warm: [["sierra", "There. That pause? That is the good stuff.", "sierra"], ["sierra", "See, I knew there was a romantic lead hiding under all that screen glare.", "sierra:sly"], ["narrator", "She smiles like you found a trail marker hidden in plain sight.", "sierra"]],
+        flirt: [["sierra", "Oh, that was smooth.", "sierra:blushing"], ["sierra", "Complicated is my best angle. Keep looking up, though. I want Yosemite to think it still has a chance.", "sierra:sly"], ["player", "I respect the terrain.", "sierra:blushing"]],
+        bad: [["sierra", "Oh, we are doing this the hard way. Fine. I look incredible when I am right.", "sierra:sly"], ["narrator", "She steps between you and the shot with athletic precision.", "sierra:grumpy"]]
       }
     },
     {
       prompt: {
-        low: ["narrator", "Sierra leads you up the trail at a pace that suggests forgiveness has cardio requirements.", "sierra:grumpy"],
-        neutral: ["narrator", "The waterfall throws cool mist across the trail. Sierra slows just enough for you to catch the rainbow in it.", "sierra"],
-        high: ["narrator", "Sierra takes the steep steps two at a time, then waits at the top pretending she did not check whether you followed.", "sierra:blushing"]
+        low: ["narrator", "Sierra leads you up the trail at a pace that suggests forgiveness has cardio requirements and flirtation has endurance training.", "sierra:grumpy"],
+        neutral: ["narrator", "The waterfall throws cool mist across the trail. Sierra slows just enough for you to catch the rainbow in it, and maybe the way she checks your reaction.", "sierra"],
+        high: ["narrator", "Sierra takes the steep steps two at a time, then waits at the top pretending she did not check whether you followed or whether you enjoyed the view.", "sierra:blushing"]
       },
       choices: [
         { label: "Ask her what part of the trail most people miss.", feelings: { sierra: 2 }, tone: "warm" },
+        { label: "Ask if keeping up with her always feels like being flirted with by a mountain.", feelings: { sierra: 2 }, tone: "flirt" },
         { label: "Complain that the climb is too much work.", feelings: { sierra: -2 }, tone: "bad" }
       ],
       choicesByMood: {
         low: [
-          { label: "Ask what you should notice before the obvious overlook.", feelings: { sierra: 1 }, tone: "warm", reaction: [["sierra", "The mist on the leaves. The sound bouncing off granite. Your own breathing, if you can stand being sincere.", "sierra"], ["narrator", "She says it sharply, but she slows so you can see it.", "sierra"]] },
-          { label: "Lag behind to film her walking ahead.", feelings: { sierra: -3 }, tone: "bad", reaction: [["sierra", "Do not turn me into scenery because you are losing the plot.", "sierra:grumpy"], ["narrator", "The waterfall suddenly feels much louder.", "sierra:grumpy"]] }
+          { label: "Ask what you should notice before the obvious overlook.", feelings: { sierra: 1 }, tone: "warm", reaction: [["sierra", "The mist on the leaves. The sound bouncing off granite. Your own breathing, if you can stand being sincere.", "sierra"], ["sierra", "Yours is cute when you stop performing.", "sierra:sly"], ["narrator", "She says it sharply, but she slows so you can see it.", "sierra"]] },
+          { label: "Ask whether she always scolds people this attractively.", feelings: { sierra: 1 }, tone: "flirt", reaction: [["sierra", "Wow. Starting there?", "sierra:blushing"], ["sierra", "Only the ones with survival potential and terrible timing.", "sierra:sly"], ["narrator", "She turns uphill before you can answer, but her laugh stays behind long enough to count.", "sierra:laughing"]] },
+          { label: "Lag behind to film her walking ahead.", feelings: { sierra: -3 }, tone: "bad", reaction: [["sierra", "Do not turn me into scenery because you are losing the plot. I am the plot twist, sweetheart.", "sierra:sly"], ["narrator", "The waterfall suddenly feels much louder.", "sierra:grumpy"]] }
         ]
       },
       reactions: {
-        warm: [["sierra", "The sound. Everyone photographs the water. Fewer people listen to it arrive.", "sierra"], ["narrator", "For a moment, she lets the trail go quiet around you.", "sierra"]],
-        flirt: [["sierra", "Bold. Wrong, probably, but bold.", "sierra:laughing"], ["narrator", "She laughs and darts ahead, daring you to keep up.", "sierra:laughing"]],
-        bad: [["sierra", "The view is not a vending machine. You do have to move toward it.", "sierra:grumpy"], ["narrator", "Her expression could cut switchbacks.", "sierra:grumpy"]]
+        warm: [["sierra", "The sound. Everyone photographs the water. Fewer people listen to it arrive.", "sierra"], ["sierra", "Fewer still look that good doing it.", "sierra:sly"], ["narrator", "For a moment, she lets the trail go quiet around you.", "sierra"]],
+        flirt: [["sierra", "A mountain?", "sierra:laughing"], ["sierra", "Please. Mountains are subtle compared to me.", "sierra:sly"], ["narrator", "She laughs and darts ahead, daring you to keep up.", "sierra:laughing"]],
+        bad: [["sierra", "The view is not a vending machine. You do have to move toward it. Same rule applies to me, inconveniently.", "sierra:sly"], ["narrator", "Her expression could cut switchbacks.", "sierra:grumpy"]]
       }
     },
     {
       prompt: {
-        low: ["sierra", "We are almost done. Try to leave with one genuine memory.", "sierra:grumpy"],
-        neutral: ["sierra", "Last overlook. Then I return you before the trail decides we are part of it.", "sierra"],
-        high: ["sierra", "One more overlook. No captions. Just us and an unreasonable amount of granite.", "sierra:blushing"]
+        low: ["sierra", "We are almost done. Try to leave with one genuine memory. Bonus points if it involves me being unfairly memorable.", "sierra:sly"],
+        neutral: ["sierra", "Last overlook. Then I return you before the trail decides we are part of it. Though I do like the sound of being difficult to leave.", "sierra:sly"],
+        high: ["sierra", "One more overlook. No captions. Just us, an unreasonable amount of granite, and me behaving with almost heroic restraint.", "sierra:sly"]
       },
       choices: [
         { label: "Thank her for making you slow down.", feelings: { sierra: 2 }, tone: "warm" },
-        { label: "Say you would follow her to a worse view too.", feelings: { sierra: 2 }, tone: "flirt" },
+        { label: "Tell her she is the harder view to walk away from.", feelings: { sierra: 2 }, tone: "flirt" },
         { label: "Say the photos will be the best part.", feelings: { sierra: -2 }, tone: "bad" }
       ],
       choicesByMood: {
         low: [
-          { label: "Tell her one real memory beat one perfect post today.", feelings: { sierra: 1 }, tone: "warm", reaction: [["sierra", "Finally. Was that so painful?", "sierra"], ["player", "A little. Worth it.", "sierra"]] },
-          { label: "Ask her to move so you can get a cleaner shot.", feelings: { sierra: -3 }, tone: "bad", reaction: [["sierra", "Wow. You really found the trapdoor under the floor.", "sierra:grumpy"], ["narrator", "She steps aside, but the space she leaves feels colder than shade.", "sierra:grumpy"]] }
+          { label: "Tell her one real memory beat one perfect post today.", feelings: { sierra: 1 }, tone: "warm", reaction: [["sierra", "Finally. Was that so painful?", "sierra"], ["sierra", "You survived sincerity and still look pretty. Inspiring.", "sierra:sly"], ["player", "A little. Worth it.", "sierra:blushing"]] },
+          { label: "Admit she is making it difficult to look at anything else.", feelings: { sierra: 1 }, tone: "flirt", reaction: [["sierra", "...Oh.", "sierra:blushing"], ["sierra", "That is the first bad trail decision today that I might reward.", "sierra:sly"], ["narrator", "The waterfall mist catches in her grin like the park itself is encouraging bad ideas.", "sierra"]] },
+          { label: "Ask her to move so you can get a cleaner shot.", feelings: { sierra: -3 }, tone: "bad", reaction: [["sierra", "Wow. You really found the trapdoor under the floor. And here I was, looking gorgeous near your redemption arc.", "sierra:sly"], ["narrator", "She steps aside, but the space she leaves feels colder than shade.", "sierra:grumpy"]] }
         ]
       },
       reactions: {
-        warm: [["sierra", "Do not make it weird, but... you are welcome.", "sierra:blushing"], ["narrator", "She looks away at the waterfall, smiling where you can still see it.", "sierra:blushing"]],
-        flirt: [["sierra", "Impossible. I do not do worse views.", "sierra:laughing"], ["narrator", "She bumps your shoulder with hers before starting down.", "sierra:laughing"]],
-        bad: [["sierra", "That is a sad little sentence, and I reject it on behalf of the cliff.", "sierra:grumpy"], ["narrator", "She heads back with the pace of someone outrunning disappointment.", "sierra:grumpy"]]
+        warm: [["sierra", "Do not make it weird, but... you are welcome.", "sierra:blushing"], ["sierra", "Actually, make it a little weird. I enjoy evidence of impact.", "sierra:sly"], ["narrator", "She looks away at the waterfall, smiling where you can still see it.", "sierra:blushing"]],
+        flirt: [["sierra", "Careful.", "sierra:blushing"], ["sierra", "Talk like that and I will start believing you have taste.", "sierra:sly"], ["narrator", "She bumps your shoulder with hers before starting down, slow enough that it feels intentional.", "sierra"]],
+        bad: [["sierra", "That is a sad little sentence, and I reject it on behalf of the cliff. Also on behalf of my cheekbones.", "sierra:sly"], ["narrator", "She heads back with the pace of someone outrunning disappointment.", "sierra:grumpy"]]
       }
     }
   ],
@@ -1003,53 +1008,56 @@ const scenes = {
     lines: [
       ["narrator", "Yosemite greets you with waterfall mist, huge granite walls, and sunset light doing absolutely nothing subtle."],
       ["player", "The whole valley looks like it knows it is the main character."],
-      ["narrator", "A woman jogs down from the overlook as if gravity signed a waiver for her.", "sierra"],
-      ["sierra", "You made it. Good. The cliff was starting to think you were intimidated.", "sierra:laughing"],
-      ["player", "I am intimidated. I am just being stylish about it.", "sierra"],
-      ["sierra", "Acceptable. Keep up.", "sierra"],
-      ["sierra", "Also, Jack told me not to let you undersell yourself. He said it with his whole face, which is how Jack says everything.", "sierra:laughing"],
-      ["player", "He has never owned a subtle expression in his life.", "sierra"]
+      ["narrator", "A woman jogs down from the overlook as if gravity signed a waiver for her, then slows with a grin that feels personally illegal.", "sierra"],
+      ["sierra", "You made it. Good. The cliff was starting to think you were intimidated. I told it to wait until you saw me.", "sierra:sly"],
+      ["player", "I am intimidated. I am just being stylish about it.", "sierra:laughing"],
+      ["sierra", "Excellent. Fear with presentation. Keep up, pretty thing.", "sierra:sly"],
+      ["sierra", "Also, Jack told me not to let you undersell yourself. He said it with his whole face, which is how Jack says everything. Cute, but exhausting.", "sierra:sly"],
+      ["player", "He has never owned a subtle expression in his life.", "sierra:laughing"]
     ],
     choices: [
-      { label: "Match Sierra's pace and compliment the view without making it a bit.", next: "intro_yosemite_sierra_two", feelings: { sierra: 2 }, reaction: [["sierra", "Look at you, having a genuine experience. Dangerous. Attractive.", "sierra:laughing"], ["narrator", "She grins and lets the trail open toward the waterfall.", "sierra:laughing"]] },
-      { label: "Try to turn the waterfall into content immediately.", next: "intro_yosemite_sierra_two", feelings: { sierra: -2 }, reaction: [["sierra", "The waterfall is not your unpaid intern.", "sierra:grumpy"], ["player", "That is... fair.", "sierra:grumpy"]] }
+      { label: "Match Sierra's pace and compliment the view without making it a bit.", next: "intro_yosemite_sierra_two", feelings: { sierra: 2 }, reaction: [["sierra", "Look at you, having a genuine experience.", "sierra"], ["sierra", "Dangerous. Attractive. Try not to make me proud this early.", "sierra:sly"], ["narrator", "She grins and lets the trail open toward the waterfall.", "sierra"]] },
+      { label: "Tell Sierra the view has competition.", next: "intro_yosemite_sierra_two", feelings: { sierra: 2 }, reaction: [["sierra", "Oh.", "sierra:blushing"], ["sierra", "Finally, someone respecting Yosemite by bringing ambition.", "sierra:sly"], ["narrator", "She points up the trail, but her smile stays on you another second.", "sierra:blushing"]] },
+      { label: "Try to turn the waterfall into content immediately.", next: "intro_yosemite_sierra_two", feelings: { sierra: -2 }, reaction: [["sierra", "The waterfall is not your unpaid intern.", "sierra:grumpy"], ["sierra", "Neither am I, sweetheart, even when I am carrying the scene.", "sierra:sly"], ["player", "That is... fair.", "sierra:grumpy"]] }
     ]
   },
   intro_yosemite_sierra_two: {
     label: "Yosemite",
     background: () => ({ location: "yosemite", time: "sunset" }),
     lines: [
-      ["narrator", "Sierra leads you toward a small overlook where waterfall mist turns gold at the edges.", "sierra"],
-      ["sierra", "Most people aim at the biggest thing in front of them. Yosemite rewards peripheral vision.", "sierra"],
-      ["player", "That sounds suspiciously like life advice.", "sierra"]
+      ["narrator", "Sierra leads you toward a small overlook where waterfall mist turns gold at the edges, checking over her shoulder like she knows exactly what that does to you.", "sierra"],
+      ["sierra", "Most people aim at the biggest thing in front of them. Yosemite rewards peripheral vision. I reward eye contact.", "sierra:sly"],
+      ["player", "That sounds suspiciously like life advice.", "sierra:laughing"]
     ],
     choices: [
-      { label: "Ask what most people miss here.", next: "intro_yosemite_sierra_three", feelings: { sierra: 2 }, reaction: [["sierra", "The sound before the view. The water announces itself, and everyone still waits for proof.", "sierra"], ["narrator", "She says it lightly, but the answer has roots.", "sierra"]] },
-      { label: "Tell her she notices things like someone in love with the place.", next: "intro_yosemite_sierra_three", feelings: { sierra: 1 }, reaction: [["sierra", "Obviously. Have you seen it?", "sierra:laughing"], ["narrator", "She laughs, but there is a blush tucked behind the bravado.", "sierra:blushing"]] },
-      { label: "Say the biggest thing is usually the best shot.", next: "intro_yosemite_sierra_three", feelings: { sierra: -2 }, reaction: [["sierra", "That is how people come home with twelve identical photos and no memory.", "sierra:grumpy"], ["player", "Point taken.", "sierra:grumpy"]] }
+      { label: "Ask what most people miss here.", next: "intro_yosemite_sierra_three", feelings: { sierra: 2 }, reaction: [["sierra", "The sound before the view. The water announces itself, and everyone still waits for proof.", "sierra"], ["sierra", "Same mistake people make with chemistry.", "sierra:sly"], ["narrator", "She says it lightly, but the answer has roots and a wink at the end.", "sierra"]] },
+      { label: "Tell her she notices things like someone in love with the place.", next: "intro_yosemite_sierra_three", feelings: { sierra: 1 }, reaction: [["sierra", "Obviously. Have you seen it?", "sierra:laughing"], ["sierra", "I am loyal to beauty. Present company included, if you keep behaving.", "sierra:sly"], ["narrator", "She laughs, but there is a blush tucked behind the bravado.", "sierra:blushing"]] },
+      { label: "Tell her eye contact sounds like a dangerous reward.", next: "intro_yosemite_sierra_three", feelings: { sierra: 2 }, reaction: [["sierra", "Mm.", "sierra:blushing"], ["sierra", "It is. Yosemite has cliffs; I have follow-through.", "sierra:sly"], ["narrator", "She says it without missing a step, devastatingly casual.", "sierra"]] },
+      { label: "Say the biggest thing is usually the best shot.", next: "intro_yosemite_sierra_three", feelings: { sierra: -2 }, reaction: [["sierra", "That is how people come home with twelve identical photos and no memory.", "sierra:grumpy"], ["sierra", "Tragic, especially when I am standing right here with narrative tension.", "sierra:sly"], ["player", "Point taken.", "sierra:grumpy"]] }
     ]
   },
   intro_yosemite_sierra_three: {
     label: "Yosemite",
     background: () => ({ location: "yosemite", time: "sunset" }),
     lines: [
-      ["narrator", "The trail steepens for one last push. Sierra stops at the top and waits, pretending not to check whether you are winded.", "sierra"],
-      ["sierra", "Final test. What do you do when a place is bigger than your ability to describe it?", "sierra"],
-      ["player", "That feels like a trap with excellent scenery.", "sierra"]
+      ["narrator", "The trail steepens for one last push. Sierra stops at the top and waits, pretending not to check whether you are winded or flustered.", "sierra"],
+      ["sierra", "Final test. What do you do when a place is bigger than your ability to describe it? Careful. I am judging the answer and the delivery.", "sierra:sly"],
+      ["player", "That feels like a trap with excellent scenery.", "sierra:laughing"]
     ],
     choices: [
-      { label: "Admit you shut up and let it be bigger.", next: "intro_yosemite_wrap", feelings: { sierra: 2 }, reaction: [["sierra", "Good. There may be hope for you yet.", "sierra:blushing"], ["narrator", "She looks at the granite instead of you, but her smile gives her away.", "sierra:blushing"]] },
-      { label: "Say you make the caption work anyway.", next: "intro_yosemite_wrap", feelings: { sierra: -2 }, reaction: [["sierra", "The cliff is disappointed, and so am I.", "sierra:grumpy"], ["narrator", "She says it like a joke, but only half of it is joking.", "sierra:grumpy"]] }
+      { label: "Admit you shut up and let it be bigger.", next: "intro_yosemite_wrap", feelings: { sierra: 2 }, reaction: [["sierra", "Good. There may be hope for you yet.", "sierra:blushing"], ["sierra", "Unfortunately for my composure, hope looks good on you.", "sierra:sly"], ["narrator", "She looks at the granite instead of you, but her smile gives her away.", "sierra:blushing"]] },
+      { label: "Say you would describe Sierra first and fail just as badly.", next: "intro_yosemite_wrap", feelings: { sierra: 2 }, reaction: [["sierra", "Ridiculous answer.", "sierra:blushing"], ["sierra", "Ten out of ten. Yosemite and I accept your surrender.", "sierra:sly"], ["narrator", "She laughs, and the sunset seems to take credit.", "sierra:laughing"]] },
+      { label: "Say you make the caption work anyway.", next: "intro_yosemite_wrap", feelings: { sierra: -2 }, reaction: [["sierra", "The cliff is disappointed, and so am I.", "sierra:grumpy"], ["sierra", "I am hotter when disappointed, but that does not make you correct.", "sierra:sly"], ["narrator", "She says it like a joke, but only half of it is joking.", "sierra:grumpy"]] }
     ]
   },
   intro_yosemite_wrap: {
     label: "Yosemite",
     background: () => ({ location: "yosemite", time: "sunset" }),
     lines: [
-      ["narrator", "Sierra walks you back down as sunset thins along the trail, her pace finally easy enough to feel companionable.", "sierra"],
-      ["sierra", "That is the Yosemite sampler. Cliffs, water, humility. Very balanced program.", "sierra:laughing"],
-      ["player", "And cardio.", "sierra"],
-      ["sierra", "Cardio is how the park knows you meant it.", "sierra:laughing"]
+      ["narrator", "Sierra walks you back down as sunset thins along the trail, her pace finally easy enough to feel companionable and still deliberately hard to ignore.", "sierra"],
+      ["sierra", "That is the Yosemite sampler. Cliffs, water, humility, and one charming guide making heroic sacrifices for your character development.", "sierra:sly"],
+      ["player", "And cardio.", "sierra:laughing"],
+      ["sierra", "Cardio is how the park knows you meant it. Blushing is how I know you were listening.", "sierra:sly"]
     ],
     next: "intro_return_sunset_two"
   },
@@ -1187,32 +1195,32 @@ const scenes = {
       const nataiLow = relationshipState("natai") === "low";
       const chatter = nataiLow ? [
         ["caleb", "If you are headed to Zion, remember Natai's default expression is not a medical emergency."],
-        ["sierra", "It is more of a weather system with cheekbones."],
+        ["sierra", "It is more of a weather system with cheekbones. Speaking of weather systems, if you survive Zion, come find me and I will ruin your forecast.", "sierra:sly"],
         ["dakota", "They are not unkind. They just trust slowly and correct quickly."]
       ] : [];
       const jackMood = relationshipState("jack");
       const jackChatter = jackMood === "high" ? [
-        ["sierra", "Jack tried to make you coffee this morning and put the grounds in the mug. Not the machine. The mug."],
+        ["sierra", "Jack tried to make you coffee this morning and put the grounds in the mug. Not the machine. The mug. Adorable, but I would flirt with you using an actual beverage.", "sierra:sly"],
         ["caleb", "He was distracted. Deeply, visibly, historically distracted."],
         ["dakota", "He asked whether looking happy was unprofessional. I told him kindness has never been the problem."]
       ] : jackMood === "low" ? [
         ["dakota", "Jack was up early checking the Olympic route twice. He worries more when he is hurt."],
         ["caleb", "He is not complicated. He cares, then his brain tries to build a shed around it."]
       ] : [
-        ["sierra", "Jack asked if anyone knew a casual way to say 'I am glad my old friend is here.' He rejected all answers for being too casual."],
+        ["sierra", "Jack asked if anyone knew a casual way to say 'I am glad my old friend is here.' I suggested 'wow, look who got prettier,' but apparently that was my brand, not his.", "sierra:sly"],
         ["caleb", "For Jack, that is advanced emotional engineering."]
       ];
       const calebMood = relationshipState("caleb");
       const calebChatter = calebMood === "high" ? [
-        ["sierra", "Caleb spent breakfast trying to pretend he did not make you a Yellowstone reading list called 'casual follow-up.'"],
+        ["sierra", "Caleb spent breakfast trying to pretend he did not make you a Yellowstone reading list called 'casual follow-up.' Personally, I prefer direct eye contact and plausible deniability.", "sierra:sly"],
         ["jack", "It has tabs. Romantic tabs. I did not know tabs could look hopeful."],
         ["dakota", "He asked whether five facts was too many for a good morning note. Sierra said five was his version of restraint."]
       ] : calebMood === "low" ? [
         ["natai", "Caleb rewrote a safety card at dawn. That is what he does when someone mistakes his care for noise."],
-        ["sierra", "He is acting fine, which for Caleb means alphabetizing hurt feelings by geyser basin."]
+        ["sierra", "He is acting fine, which for Caleb means alphabetizing hurt feelings by geyser basin. If you need a less alphabetical distraction later, I volunteer.", "sierra:sly"]
       ] : [
         ["dakota", "Caleb labeled the muffin tray by geologic era again."],
-        ["sierra", "And then looked personally betrayed when I moved the blueberry muffins out of the Pleistocene."]
+        ["sierra", "And then looked personally betrayed when I moved the blueberry muffins out of the Pleistocene. I saved you one from the flirty modern era.", "sierra:sly"]
       ];
       return [
         ["narrator", "Morning fills the lodge lobby with clean light and the low murmur of maps being unfolded."],
@@ -1865,7 +1873,7 @@ function buildCheckInEventLines() {
         ? "The walk back should be simple. Naturally, the lodge lobby chooses this moment to become socially complicated."
         : "The route should be simple. Naturally, the check-in kiosk chooses this moment to become socially complicated."],
       ["narrator", `${characters[character].shortName} is already near the desk when you arrive, turning a quick stop into a small collision of plans.`, character],
-      ...parkFlavor[character].surprise[mood].map((text, index) => [index === 0 ? character : "narrator", text, characterExpression(character, mood)])
+      ...parkFlavor[character].surprise[mood].map((text, index) => [index === 0 ? character : "narrator", text, character === "sierra" && index === 0 ? "sierra:sly" : characterExpression(character, mood)])
     ];
   }
   if (returningEarly) {
@@ -1994,6 +2002,24 @@ function buildVisitWrapupLines(character) {
       ["narrator", timeExit, characterExpression(character, mood)],
       ["narrator", calebMoodLine, characterExpression(character, mood)],
       ["player", `You leave ${place} with steam in your hair, Yellowstone facts rearranging the view, and Caleb's earnest attention following closer than expected.`]
+    ];
+  }
+  if (character === "sierra") {
+    const sierraMoodLine = {
+      low: "Sierra walks you back with care and a smile sharp enough to prove she is still annoyed. Even mad, she flirts like it is a second trail system and she knows every switchback.",
+      neutral: "Sierra walks beside you, Yosemite quiet around her and mischief bright in her eyes. She points out one star, then says it is trying too hard because you already looked up.",
+      high: "Sierra lingers at the route marker like goodbye is a game she fully intends to win. She tells you the waterfall can have the scenery, because she is keeping your attention."
+    }[mood];
+    const sierraExitLine = {
+      low: "For the record, I am still annoyed. Unfortunately for both of us, annoyed is a very good look on me.",
+      neutral: "Come back later. Yosemite likes repeat visitors, and I like watching you pretend that sentence was only about the park.",
+      high: "Go on. Leave before I start making the waterfall jealous on purpose."
+    }[mood];
+    return [
+      ["narrator", timeExit, characterExpression(character, mood)],
+      ["narrator", sierraMoodLine, characterExpression(character, mood)],
+      ["sierra", sierraExitLine, "sierra:sly"],
+      ["player", `You leave ${place} with mist on your skin, Yosemite still enormous behind you, and Sierra's grin following closer than expected.`, mood === "low" ? "sierra:grumpy" : "sierra:blushing"]
     ];
   }
   const moodLine = {

@@ -155,25 +155,25 @@ const parkFlavor = {
     place: "the rain cabin",
     visit: {
       daytime: {
-        low: ["Jack keeps one shoulder between you and a mossy social trail like he expects you to start a bad idea at any second.", "The rainforest is silver-green and dripping. He points out nurse logs, elk tracks, and exactly zero shortcuts."],
-        neutral: ["Jack walks you through a curtain of Olympic rain, explaining which boards are slick and which puddles are deeper than they look.", "He makes the forest feel private without making it small."],
-        high: ["Jack meets you under the cedar eaves with two coffees and a smile that makes the rain seem rehearsed.", "The old-growth trail smells like moss, cedar, and the kind of trouble that knows the rules by heart."]
+        low: ["Jack walks beside you like he has since the old volunteer trail days: broad shoulders, gentle voice, and one boot ready to block any terrible idea.", "The rainforest is silver-green and dripping. He points out nurse logs, elk tracks, and a mushroom he confidently calls a 'forest pancake.'"],
+        neutral: ["Jack walks you through Olympic rain with the easy warmth of an old friend, explaining which boards are slick and which puddles are secretly lakes with ambition.", "He makes the forest feel familiar without making it smaller."],
+        high: ["Jack meets you under the cedar eaves with two coffees, remembers exactly how you take yours, and nearly walks into a post while smiling at you.", "The old-growth trail smells like moss, coffee, and feelings that have apparently been waiting years to become inconvenient."]
       },
       sunset: {
-        low: ["At sunset, Jack's cabin windows glow warm, but his welcome stays carefully weatherproof.", "He corrects your footing twice and lets the rain do most of the talking."],
-        neutral: ["Gold light catches the rain in thin bright threads while Jack checks the trail markers.", "He admits Olympic is best when the weather looks dramatic enough to have an agenda."],
-        high: ["Sunset turns the wet cedar trunks copper. Jack watches you watch them and forgets to pretend he is unaffected.", "He says the forest only gets this pretty for people who listen."]
+        low: ["At sunset, Jack's cabin windows glow warm, and even when he is disappointed, he still saves you the dry side of the porch.", "He corrects your footing twice, then apologizes to the mud for blaming it out loud."],
+        neutral: ["Gold light catches the rain in thin bright threads while Jack checks the trail markers and forgets whether east is left if he is facing south.", "He laughs at himself, then admits Olympic is best when the weather looks dramatic enough to need a hug."],
+        high: ["Sunset turns the wet cedar trunks copper. Jack watches you watch them with the same open, baffled tenderness he used to save for stray dogs and broken camp chairs.", "He says the forest only gets this pretty for people who listen, then blushes because he clearly meant you."]
       },
       night: {
-        low: ["Night folds around the cabin. Jack gives you a lantern and a professional amount of space.", "Somewhere in the trees, water moves over stone like it has better secrets."],
-        neutral: ["Jack leads a short lantern walk through the rain-dark forest and keeps his voice low enough for the frogs to stay in charge.", "He points out how the trail changes after dark: familiar, but not forgiving."],
-        high: ["By lantern light, Jack's grin is all rain and dare. He walks close enough that your sleeves brush.", "Olympic at night feels less like a park and more like a confession with good drainage."]
+        low: ["Night folds around the cabin. Jack gives you the brighter lantern because he still cannot stop taking care of you, even when his feelings look bruised.", "Somewhere in the trees, water moves over stone like it has better secrets."],
+        neutral: ["Jack leads a short lantern walk through the rain-dark forest, voice low, hand hovering near your elbow whenever the boardwalk shines wet.", "He points out how the trail changes after dark, then admits he once got turned around for ten minutes because two cedars looked 'emotionally identical.'"],
+        high: ["By lantern light, Jack's grin is all rain and helpless honesty. He walks close enough that your sleeves brush and then looks amazed by sleeves as a concept.", "Olympic at night feels less like a park and more like a friendship finally saying the quiet part out loud."]
       }
     },
     surprise: {
-      low: ["Jack is at check-in, scowling at a damp stack of maps. He notices you and says, 'Try not to make the kiosk file an incident report.'"],
-      neutral: ["Jack is taping down a rain-smudged route card. 'The kiosk works better if you do not insult it where it can hear you.'"],
-      high: ["Jack leans against the check-in kiosk, rain in his hair. 'I was going to say be careful, but you make careful sound less fun.'"]
+      low: ["Jack is at check-in, frowning at a damp stack of maps like they personally betrayed him. He notices you and says, 'Hey. Please do not make me worry in three directions at once.'"],
+      neutral: ["Jack is taping down a rain-smudged route card. 'The kiosk works better if you do not insult it where it can hear you. I think. I have never proved ears are not involved.'"],
+      high: ["Jack leans against the check-in kiosk, rain in his hair and affection all over his face. 'I was going to say be careful, but then I saw you and forgot the other half of the sentence.'"]
     }
   },
   caleb: {
@@ -298,18 +298,18 @@ const arrivalFlavor = {
   jack: {
     daytime: [
       ["narrator", "Olympic opens in layers of wet green: ferns slick with rain, cedar trunks vanishing upward, a cabin roof ticking softly under the weather."],
-      ["player", "The air smells like moss, coffee, and consequences that own a good jacket."],
-      ["narrator", "A porch board creaks. Jack steps out from under the eaves like the forest has been keeping him for dramatic timing.", "jack"]
+      ["player", "The air smells like moss, coffee, and Jack Everett pretending he did not plan this reunion down to the mug."],
+      ["narrator", "A porch board creaks. Jack steps out from under the eaves, broad-shouldered and bright-eyed, like the forest has been hiding your oldest friend for dramatic timing.", "jack"]
     ],
     sunset: [
       ["narrator", "Sunset catches in the Olympic rain until every drop looks briefly lit from inside."],
-      ["player", "This is unfairly pretty. Even the puddles have emotional range."],
-      ["narrator", "Jack waits beside the cabin steps, sleeves rolled, watching the trail more carefully than he needs to.", "jack"]
+      ["player", "This is unfairly pretty. Even the puddles have emotional range. Jack is going to call one of them majestic."],
+      ["narrator", "Jack waits beside the cabin steps, sleeves rolled, watching the trail with the loyal focus of someone who has always looked for you first.", "jack"]
     ],
     night: [
       ["narrator", "At night, the Olympic route narrows to lantern glow, black cedar shapes, and rain whispering in the dark."],
-      ["player", "This is either romantic or how a cautionary tale gets excellent production design."],
-      ["narrator", "Jack lifts a lantern from the porch rail, his smile barely visible under the brim of shadow.", "jack"]
+      ["player", "This is either romantic or how a cautionary tale gets excellent production design. With Jack, honestly, it could be both by accident."],
+      ["narrator", "Jack lifts a lantern from the porch rail, his smile soft and immediate when he sees you.", "jack"]
     ]
   },
   caleb: {
@@ -386,69 +386,69 @@ const visitBeats = {
   jack: [
     {
       prompt: {
-        low: ["jack", "Before we go anywhere, are you planning to treat the trail like a trail today?", "jack:grumpy"],
-        neutral: ["jack", "First rule out here: the forest gets a vote. You willing to listen?", "jack"],
-        high: ["jack", "I was hoping you would show up. Try not to make me too obvious about it.", "jack:blushing"]
+        low: ["jack", "Before we go anywhere, best-friend question with ranger muscles attached: are you going to treat the trail like a trail today?", "jack:grumpy"],
+        neutral: ["jack", "First rule out here: the forest gets a vote. Second rule: I am still bad at pretending I am normal around you.", "jack"],
+        high: ["jack", "I was hoping you would show up. I practiced saying that casually and then forgot what casual means.", "jack:blushing"]
       },
       choices: [
-        { label: "Tell him you will follow the marked trail and his lead.", feelings: { jack: 1 }, tone: "warm" },
-        { label: "Say a little risk makes better stories.", feelings: { jack: -2 }, tone: "bad" }
+        { label: "Promise him you will follow the marked trail like old times.", feelings: { jack: 1 }, tone: "warm" },
+        { label: "Tease that a little risk always made your adventures better.", feelings: { jack: -2 }, tone: "bad" }
       ],
       choicesByMood: {
         low: [
-          { label: "Promise to stay on the marked trail without making him repeat himself.", feelings: { jack: 1 }, tone: "warm", reaction: [["jack", "Good. I am trying very hard to believe you on the first try.", "jack:grumpy"], ["narrator", "He starts walking, still guarded, but no longer braced for immediate disaster.", "jack:grumpy"]] },
-          { label: "Ask whether every rule is really necessary.", feelings: { jack: -3 }, tone: "bad", reaction: [["jack", "Yes. Especially when someone asks that like a challenge.", "jack:grumpy"], ["narrator", "His voice stays even, which somehow makes the setback worse.", "jack:grumpy"]] }
+          { label: "Promise to stay on the marked trail because worrying him is unfair.", feelings: { jack: 1 }, tone: "warm", reaction: [["jack", "Thank you. My heart is large, hardworking, and only has maybe four brain cells supervising it.", "jack:grumpy"], ["narrator", "He starts walking, still guarded, but the old softness finds its way back into his shoulders.", "jack:grumpy"]] },
+          { label: "Ask whether every rule is really necessary.", feelings: { jack: -3 }, tone: "bad", reaction: [["jack", "Yes. I checked with Caleb, River, and a sign. The sign was the most polite about it.", "jack:grumpy"], ["narrator", "He tries to smile, but worry keeps winning.", "jack:grumpy"]] }
         ]
       },
       reactions: {
-        warm: [["jack", "Good. I like not rescuing people from problems they introduced themselves to.", "jack:laughing"], ["narrator", "He says it dryly, but his shoulders loosen as he starts down the slick boardwalk.", "jack"]],
-        flirt: [["jack", "Careful. That is dangerously close to an excellent question.", "jack:blushing"], ["narrator", "He holds your gaze for one rain-bright second before pretending to inspect the trail.", "jack:blushing"]],
-        bad: [["jack", "Stories are better when everyone gets home to tell them.", "jack:grumpy"], ["narrator", "The rain seems to get colder around the edge of his voice.", "jack:grumpy"]]
+        warm: [["jack", "Good. I like our adventures best when nobody has to carry anybody unless it is romantic or you twist an ankle. Wait. Not hoping for the ankle part.", "jack:laughing"], ["narrator", "He laughs at himself, warm and embarrassed, then offers his hand over the slick first step.", "jack"]],
+        flirt: [["jack", "Careful. That is dangerously close to making me forget all my trail facts except 'wow.'", "jack:blushing"], ["narrator", "He holds your gaze for one rain-bright second before pointing at a fern like it just saved him.", "jack:blushing"]],
+        bad: [["jack", "Stories are better when everyone gets home to tell them. Also when my chest does not do the scary drum thing.", "jack:grumpy"], ["narrator", "He is not trying to scold you. That somehow makes it worse.", "jack:grumpy"]]
       }
     },
     {
       prompt: {
-        low: ["narrator", "The trail bends through sword ferns and dripping cedar. Jack stops beside a mossy side path, blocking it with one boot.", "jack:grumpy"],
-        neutral: ["narrator", "Rain beads on the cedar rail while Jack points out elk tracks pressed into the mud.", "jack"],
-        high: ["narrator", "Jack slows where the old-growth canopy turns the rain into a soft, private percussion.", "jack:blushing"]
+        low: ["narrator", "The trail bends through sword ferns and dripping cedar. Jack stops beside a mossy side path, blocking it with one boot and the worried patience you know too well.", "jack:grumpy"],
+        neutral: ["narrator", "Rain beads on the cedar rail while Jack points out elk tracks, then briefly loses the word for hoof and calls them 'moose fingerprints.'", "jack"],
+        high: ["narrator", "Jack slows where the old-growth canopy turns the rain into a soft, private percussion, his hand close enough to yours to make years of friendship feel suddenly delicate.", "jack:blushing"]
       },
       choices: [
-        { label: "Notice the tiny seedlings growing from a nurse log.", feelings: { jack: 2 }, tone: "warm" },
-        { label: "Step toward the side path just to see his reaction.", feelings: { jack: -2 }, tone: "bad" }
+        { label: "Notice the tiny seedlings because he taught you to look for them.", feelings: { jack: 2 }, tone: "warm" },
+        { label: "Step toward the side path just to make him fuss over you.", feelings: { jack: -2 }, tone: "bad" }
       ],
       choicesByMood: {
         low: [
-          { label: "Point out the nurse log and ask before stepping closer.", feelings: { jack: 1 }, tone: "warm", reaction: [["jack", "Asking first. Excellent endangered behavior.", "jack"], ["narrator", "He gives you the smallest smile, like sunlight briefly found the understory.", "jack"]] },
-          { label: "Say the closed path would make a better shot.", feelings: { jack: -3 }, tone: "bad", reaction: [["jack", "Then take a worse shot and a better hint.", "jack:grumpy"], ["narrator", "He plants himself between you and the side path like weather with boots.", "jack:grumpy"]] }
+          { label: "Point out the nurse log and ask before stepping closer.", feelings: { jack: 1 }, tone: "warm", reaction: [["jack", "Asking first. Look at us. Growth. Emotional fertilizer. That sounded better before I said it.", "jack"], ["narrator", "The smallest smile breaks through, familiar as an old trail song.", "jack"]] },
+          { label: "Say the closed path would make a better shot.", feelings: { jack: -3 }, tone: "bad", reaction: [["jack", "Then take a worse shot and a better hint. I can lift a fallen branch. I cannot lift you out of bad judgment every time.", "jack:grumpy"], ["narrator", "He plants himself between you and the side path, gentle but immovable.", "jack:grumpy"]] }
         ]
       },
       reactions: {
-        warm: [["jack", "Most people miss those. The forest is very good at starting over quietly.", "jack"], ["narrator", "His voice softens, almost proud, like you passed a test he did not admit he was giving.", "jack"]],
-        flirt: [["jack", "I contain multitudes. Some of them know how to read a trail closure.", "jack:laughing"], ["player", "A devastating combination.", "jack:laughing"]],
-        bad: [["jack", "No.", "jack:grumpy"], ["narrator", "One word. Not loud. Completely immovable.", "jack:grumpy"]]
+        warm: [["jack", "You remembered. I mean, of course you remembered. You remember the good stuff.", "jack:blushing"], ["narrator", "His voice softens with pride so plain it makes the rain feel like privacy.", "jack:blushing"]],
+        flirt: [["jack", "I contain multitudes. Some of them know how to read a trail closure. Some of them are currently thinking about your face and cannot be trusted with navigation.", "jack:laughing"], ["player", "A devastating combination.", "jack:laughing"]],
+        bad: [["jack", "Nope. Nope with love. A strong, respectful nope.", "jack:grumpy"], ["narrator", "He says it gently and still somehow becomes an entire locked gate.", "jack:grumpy"]]
       }
     },
     {
       prompt: {
-        low: ["jack", "We are heading back before the weather decides to make a point.", "jack:grumpy"],
-        neutral: ["jack", "There is a viewpoint ahead, then I should get you back before the route changes mood.", "jack"],
-        high: ["jack", "One more overlook. Then I return you to the impossible kiosk like a responsible adult, tragically.", "jack:blushing"]
+        low: ["jack", "We are heading back before the weather decides to make a point. Weather points are wet and I do not know how to argue with clouds.", "jack:grumpy"],
+        neutral: ["jack", "There is a viewpoint ahead, then I should get you back before the route changes mood. Routes have moods. I learned that after losing to one.", "jack"],
+        high: ["jack", "One more overlook. Then I return you to the impossible kiosk like a responsible adult, which I am approximately seventy percent of the time around you.", "jack:blushing"]
       },
       choices: [
-        { label: "Thank him for showing you the park instead of just the danger.", feelings: { jack: 2 }, tone: "warm" },
-        { label: "Say you are already looking for an excuse to come back.", feelings: { jack: 2 }, tone: "flirt" },
+        { label: "Thank him for showing you the park the way he always promised.", feelings: { jack: 2 }, tone: "warm" },
+        { label: "Say you are already looking for an excuse to come back to him.", feelings: { jack: 2 }, tone: "flirt" },
         { label: "Say the rain is kind of ruining the aesthetic.", feelings: { jack: -2 }, tone: "bad" }
       ],
       choicesByMood: {
         low: [
-          { label: "Thank him for keeping you safe even while annoyed.", feelings: { jack: 1 }, tone: "warm", reaction: [["jack", "Annoyed and careful are compatible. Lucky for you.", "jack"], ["narrator", "His expression eases by a fraction, and out here a fraction counts.", "jack"]] },
-          { label: "Complain that this visit was mostly rules.", feelings: { jack: -3 }, tone: "bad", reaction: [["jack", "Because you kept auditioning for consequences.", "jack:grumpy"], ["narrator", "The walk back becomes very scenic and very quiet.", "jack:grumpy"]] }
+          { label: "Thank him for keeping you safe even while hurt.", feelings: { jack: 1 }, tone: "warm", reaction: [["jack", "I can be hurt and still care about you. I have a lot of room in here. Not a lot of shelving, but room.", "jack"], ["narrator", "His expression eases by a fraction, and with Jack a fraction is already honest.", "jack"]] },
+          { label: "Complain that this visit was mostly rules.", feelings: { jack: -3 }, tone: "bad", reaction: [["jack", "Because you kept auditioning for consequences, and I am trying not to clap.", "jack:grumpy"], ["narrator", "The walk back becomes very scenic and very quiet.", "jack:grumpy"]] }
         ]
       },
       reactions: {
-        warm: [["jack", "That is the trick. Respect the danger, then you get to notice everything else.", "jack"], ["narrator", "He walks you back slowly, letting the forest have the last word.", "jack"]],
-        flirt: [["jack", "I can probably manufacture one. I am resourceful in weather-related emergencies.", "jack:blushing"], ["narrator", "His smile follows you all the way back to the route marker.", "jack:blushing"]],
-        bad: [["jack", "The rain is the aesthetic.", "jack:grumpy"], ["narrator", "He turns toward the return trail before the conversation can get any wetter.", "jack:grumpy"]]
+        warm: [["jack", "I did promise. I also promised I would learn the banjo, but this one worked out better for everybody.", "jack:laughing"], ["narrator", "He walks you back slowly, happy and bashful in a way friendship alone never used to explain.", "jack:laughing"]],
+        flirt: [["jack", "To me. Right. I heard that. My brain is waving a tiny flag and falling down.", "jack:blushing"], ["narrator", "His smile follows you all the way back to the route marker, helpless and shining.", "jack:blushing"]],
+        bad: [["jack", "The rain is the aesthetic. Also it worked really hard today. Probably.", "jack:grumpy"], ["narrator", "He turns toward the return trail, still kind, but quieter than before.", "jack:grumpy"]]
       }
     }
   ],
@@ -743,8 +743,11 @@ const scenes = {
       ["player", "Somewhere beyond the glass, a country road keeps unspooling under the tires. Fence posts. Pines. The occasional mailbox leaning like it has survived gossip."],
       ["player", "Two weeks ago, I was editing a sunrise video at three in the morning and arguing with strangers about whether a cliff looked better in vertical or horizontal."],
       ["player", "Then one of my posts went viral for all the wrong reasons: one careless shortcut, one badly framed apology, and one comment section that turned into a controlled burn."],
+      ["player", "That is when Jack Everett called. My Jack Everett, technically. Old friend, Olympic route lead, human campfire with biceps, once asked me whether email needed stamps."],
+      ["player", "He said the retreat had one open spot, that I needed somewhere kinder than the internet to learn from the mistake, and that he would be there if I wanted a familiar face."],
+      ["player", "He did not say he missed me. Jack is good-hearted enough to carry three coolers at once and bad enough at subtext to trip over a feeling in broad daylight."],
       ["player", "So now I am on a bus to Viral Vista Lodge, where five national park route leads are apparently going to teach me how to look at a place without turning it into a backdrop."],
-      ["player", "A creator retreat. A second chance. A very scenic consequence."]
+      ["player", "A creator retreat. A second chance. A very scenic consequence. And Jack, waiting somewhere ahead, which is somehow the comforting part and the terrifying part."]
     ],
     next: "intro_bus_arrival"
   },
@@ -758,7 +761,8 @@ const scenes = {
       ["player", "It seems we've arrived."],
       ["narrator", "The bus door folds open. You step down into cool mountain air."],
       ["narrator", "Behind you, the engine rises again. The bus pulls away, fading down the road until the quiet has room to move back in.", null, { audio: "busDeparture" }],
-      ["player", "No easy ride back now. Maybe that is the point."]
+      ["player", "No easy ride back now. Maybe that is the point."],
+      ["player", "Okay, Jack. Please let this be one of your good ideas. Statistically, you are due."]
     ],
     next: "intro_checkin_arrival"
   },
@@ -803,6 +807,7 @@ const scenes = {
     lines: [
       ["player", "That was weird."],
       ["player", "Informative. Hostile. Weird."],
+      ["player", "Jack once said River was 'friendly like a locked shed with snacks inside.' I thought that was Jack being Jack. Apparently, no. Field note confirmed."],
       ["player", "I guess I better head over to the lodge lobby next, before the badge printer tells someone I have been loitering."]
     ],
     next: "intro_lodge_walk"
@@ -817,6 +822,7 @@ const scenes = {
       ["narrator", "At last, the trees open around a broad timber lodge with cedar siding, a deep wraparound porch, and tall windows glowing warm behind green-painted trim."],
       ["narrator", "A stone chimney climbs one side of the building, big enough to explain the fireplace you can already smell in the air."],
       ["player", "Okay. That looks like the kind of building where someone either hands you cocoa or a quest."],
+      ["player", "Jack would absolutely try to do both and spill the cocoa while explaining the quest."],
       ["narrator", "You look around for a welcome committee. The porch is empty. The rocking chairs are still. Even the hanging ferns seem sworn to secrecy."],
       ["player", "Right. Cool. More mysterious hospitality."],
       ["narrator", "You climb the porch steps, take the heavy brass handle, and open the lodge door.", null, { audio: "door" }]
@@ -829,23 +835,28 @@ const scenes = {
     character: "jack",
     lines: [
       ["narrator", "Inside the lodge lobby, cedar beams glow over a stone fireplace and a wall map crowded with impossible route pins."],
-      ["narrator", "The whole place feels like summer camp if summer camp had better lighting and significantly more romantic tension."],
-      ["narrator", "A broad-shouldered man in a red flannel leans over the check-in table, sleeves rolled, one hand braced beside your name badge.", "jack"],
-      ["jack", "You must be {playerName}. I'm Jack Everett, the Olympic route lead. Think old-growth forest, a mossy cabin, and rain that makes everyone honest eventually.", "jack"],
-      ["player", "Before we get to rain honesty, is River Hawk always like that?", "jack"],
-      ["jack", "Like a storm cloud learned policy enforcement? Yeah. River's heart is in the right place; they just keep it behind three locked gates and a permit form.", "jack:laughing"],
+      ["narrator", "The whole place feels like summer camp if summer camp had better lighting and one unresolved friendship standing near the check-in table."],
+      ["narrator", "Jack Everett looks up from a welcome packet, red flannel stretched across shoulders that once moved an entire fallen log because a kid lost a hat under it.", "jack"],
+      ["jack", "{playerName}. Hey. You made it. I mean, obviously you made it, you are standing there. Unless I am hallucinating, which would be rude of my brain.", "jack:blushing"],
+      ["player", "Still you, then.", "jack"],
+      ["jack", "Still me. Bigger beard, same amount of map confidence, which Caleb says is 'not enough to operate machinery.'", "jack:laughing"],
+      ["narrator", "He pulls you into a hug before either of you can overthink it. Jack hugs like shelter: warm, solid, and completely unaware of subtlety.", "jack"],
+      ["player", "Thanks for inviting me. I was not sure I deserved a soft landing.", "jack"],
+      ["jack", "Everybody deserves somewhere to do better. Also I missed you, which is not professional retreat language but is true language.", "jack:blushing"],
+      ["player", "Before I cry in the lobby, is River Hawk always like that?", "jack"],
+      ["jack", "Like a storm cloud learned policy enforcement? Yeah. River's heart is in the right place; they just keep it behind three locked gates and a permit form. A nice permit form. Probably laminated.", "jack:laughing"],
       ["player", "They laughed at one joke and then looked furious about the paperwork of enjoying it.", "jack"],
-      ["jack", "That means it went well. If River truly disliked you, the temperature would have dropped and the kiosk would have asked to be unplugged.", "jack:laughing"],
+      ["jack", "That means it went well. River laughing is like seeing a comet with cheekbones.", "jack:laughing"],
       ["player", "Comforting. I think.", "jack"],
-      ["jack", "You'll get used to them. Or you will develop better posture from bracing yourself. Either way, growth.", "jack"],
+      ["jack", "You'll get used to them. Or you will develop better posture from bracing yourself. Either way, growth. I learned that word in a staff meeting and I am using it responsibly.", "jack"],
       ["player", "I thought there would be a check-in packet.", "jack"],
-      ["jack", "There is. It says welcome, hydrate, do not wander off trail, and if a sign says no, take it personally.", "jack:laughing"],
-      ["player", "That is a lot of emotional labor from signage.", "jack"],
-      ["jack", "Signs care because I care. Which brings us to your first important choice of the retreat.", "jack"]
+      ["jack", "There is. It says welcome, hydrate, do not wander off trail, and if a sign says no, take it personally because signs are boundaries with tiny hats.", "jack:laughing"],
+      ["player", "Signs do not have hats.", "jack"],
+      ["jack", "Some of them do in spirit. Which brings us to your first important choice of the retreat.", "jack"]
     ],
     choices: [
-      { label: "Tell him no means no, even from a trail sign.", next: "intro_lodge_jack_two", feelings: { jack: 2 }, reaction: [["jack", "That is the kind of sentence that keeps my blood pressure scenic.", "jack:laughing"], ["narrator", "He taps your welcome packet against his palm, smiling like you just passed the first trail marker.", "jack:laughing"]] },
-      { label: "Say rules are flexible if the shot is good enough.", next: "intro_lodge_jack_two", feelings: { jack: -2 }, reaction: [["jack", "No shot is good enough to make a rescue team hate your name.", "jack:grumpy"], ["narrator", "The warmth in his face does not vanish, but it does step back.", "jack:grumpy"]] }
+      { label: "Tell him no means no, even from a trail sign in an invisible hat.", next: "intro_lodge_jack_two", feelings: { jack: 2 }, reaction: [["jack", "That is the kind of sentence that makes my whole chest do a high five.", "jack:laughing"], ["narrator", "He taps your welcome packet against his palm, smiling at you with years of affection and absolutely no poker face.", "jack:laughing"]] },
+      { label: "Say rules are flexible if the shot is good enough.", next: "intro_lodge_jack_two", feelings: { jack: -2 }, reaction: [["jack", "No shot is good enough to make a rescue team hate your name. I like your name. I would like it absent from incident reports.", "jack:grumpy"], ["narrator", "The warmth in his face stays, but worry steps in front of it.", "jack:grumpy"]] }
     ]
   },
   intro_lodge_jack_two: {
@@ -853,13 +864,15 @@ const scenes = {
     background: () => ({ location: "lodge", time: "daytime" }),
     lines: [
       ["narrator", "Jack walks you past the lobby map, where pins mark parks that should not fit on the same afternoon.", "jack"],
-      ["jack", "Each route lead gets protective of their place. Occupational hazard of loving something that visitors keep trying to simplify.", "jack"],
+      ["jack", "Each route lead gets protective of their place. Occupational hazard of loving something visitors keep trying to simplify. I practiced that sentence three times and only said occupational wrong twice.", "jack"],
       ["player", "And you? Protective or hazard?", "jack"],
-      ["jack", "Both, on a good day.", "jack:laughing"]
+      ["jack", "Both, on a good day. Also strong enough to move the snack crates, which is why they keep me.", "jack:laughing"],
+      ["player", "They keep you because you are kind.", "jack"],
+      ["jack", "That too. I forget that one because it is not a muscle group.", "jack:blushing"]
     ],
     choices: [
-      { label: "Ask what Olympic means to him.", next: "intro_lodge_jack_three", feelings: { jack: 2 }, reaction: [["jack", "Rain, mostly. Then trees old enough to make your problems feel badly scheduled.", "jack"], ["narrator", "He says it like a joke, but there is devotion under the weather report.", "jack:blushing"]] },
-      { label: "Joke that visitors keep parks relevant.", next: "intro_lodge_jack_three", feelings: { jack: -2 }, reaction: [["jack", "Parks were relevant before any of us learned to point a camera at them.", "jack:grumpy"], ["narrator", "His voice stays calm, which somehow makes the correction sharper.", "jack:grumpy"]] }
+      { label: "Ask what Olympic means to him after all these years.", next: "intro_lodge_jack_three", feelings: { jack: 2 }, reaction: [["jack", "Rain, mostly. Then trees old enough to make your problems feel badly scheduled. And the place I kept wanting to show you properly.", "jack"], ["narrator", "He says it like a joke, but there is devotion under the weather report and your name tucked inside it.", "jack:blushing"]] },
+      { label: "Joke that visitors keep parks relevant.", next: "intro_lodge_jack_three", feelings: { jack: -2 }, reaction: [["jack", "Parks were relevant before any of us learned to point a camera at them. Sorry. That came out stern. My brain put on Caleb's hat.", "jack:grumpy"], ["narrator", "He looks apologetic immediately, but the correction still lands.", "jack:grumpy"]] }
     ]
   },
   intro_lodge_jack_three: {
@@ -868,12 +881,12 @@ const scenes = {
     lines: [
       ["narrator", "The lobby settles around you: low fire, old beams, route cards fanned across the desk like invitations with consequences.", "jack"],
       ["jack", "Before I hand you to the kiosk, one more thing. What are you actually hoping to get from this retreat?", "jack"],
-      ["player", "Besides surviving the welcome packet?", "jack"],
-      ["jack", "Ambitious. I like it.", "jack:laughing"]
+      ["player", "Besides surviving the welcome packet and your sign theology?", "jack"],
+      ["jack", "Ambitious. I like it. I also like you. As a person. Historically. Currently. Wow, this sentence has too many branches.", "jack:laughing"]
     ],
     choices: [
-      { label: "Say you want to learn how to make people care without flattening the place.", next: "intro_lodge_jack_wrap", feelings: { jack: 2 }, reaction: [["jack", "That is... a better answer than I expected this early.", "jack:blushing"], ["narrator", "For a moment, he looks at you like the retreat might have brought him a good surprise.", "jack:blushing"]] },
-      { label: "Say you mostly want better numbers and better views.", next: "intro_lodge_jack_wrap", feelings: { jack: -2 }, reaction: [["jack", "Then I hope the views do some work on you before the numbers do.", "jack:grumpy"], ["narrator", "He gathers the route cards with a little more force than necessary.", "jack:grumpy"]] }
+      { label: "Say you want to learn how to make people care without flattening the place.", next: "intro_lodge_jack_wrap", feelings: { jack: 2 }, reaction: [["jack", "That is... yeah. That is you when you let yourself be brave instead of loud.", "jack:blushing"], ["narrator", "He looks at you like he knows the old version of you and is already rooting for the next one.", "jack:blushing"]] },
+      { label: "Say you mostly want better numbers and better views.", next: "intro_lodge_jack_wrap", feelings: { jack: -2 }, reaction: [["jack", "Then I hope the views do some work on you before the numbers do. I mean that kindly. The sentence is wearing work boots, but kindly.", "jack:grumpy"], ["narrator", "He gathers the route cards carefully, trying not to look as worried as he is.", "jack:grumpy"]] }
     ]
   },
   intro_lodge_jack_wrap: {
@@ -883,7 +896,7 @@ const scenes = {
       ["narrator", "Jack slides a route card into your welcome packet, then nods toward the lobby doors.", "jack"],
       ["jack", "Come on. The real check-in desk is outside, and if I leave the kiosk alone too long, it gets theatrical.", "jack"],
       ["player", "That sounds like a joke I am going to understand too late.", "jack"],
-      ["jack", "Almost definitely.", "jack:laughing"]
+      ["jack", "Almost definitely. I only understand it halfway and I work here.", "jack:laughing"]
     ],
     next: "intro_jack_checkin"
   },
@@ -895,15 +908,15 @@ const scenes = {
       ["narrator", "Outside again, the check-in kiosk waits under the trees, cheerful and unbothered by normal geography."],
       ["narrator", "Jack taps the route map with the corner of his clipboard.", "jack"],
       ["jack", "This desk is the center point between all the park routes. You come here, pick a direction, and the kiosk handles the rest.", "jack"],
-      ["jack", "There is also the part where it bends space and time so you can jump between parks that are thousands of miles apart almost instantly.", "jack:laughing"],
+      ["jack", "There is also the part where it bends space and time so you can jump between parks that are thousands of miles apart almost instantly. I asked how. They gave me a binder. I chose peace.", "jack:laughing"],
       ["player", "Wait, what?", "jack"],
-      ["jack", "Anyway. Caleb is waiting at Yellowstone. Boardwalk rules, geothermal hazards, very handsome scolding. You will love it.", "jack"],
+      ["jack", "Anyway. Caleb is waiting at Yellowstone. Boardwalk rules, geothermal hazards, very handsome scolding. You will love it. Platonically or not-platonically, your business. I am being mature.", "jack"],
       ["player", "We are just moving on from the space-time thing?", "jack"],
-      ["jack", "Already did.", "jack:laughing"]
+      ["jack", "Already did. One foot in front of the other. That is how I survive both hiking and concepts.", "jack:laughing"]
     ],
     choices: [
-      { label: "Tell Jack you respect a man who refuses to explain the plot device.", next: "intro_yellowstone_caleb", feelings: { jack: 2 }, reaction: [["jack", "That is the healthiest possible relationship with this kiosk.", "jack:laughing"], ["narrator", "He looks extremely pleased to have explained nothing.", "jack:laughing"]] },
-      { label: "Demand a full scientific explanation right now.", next: "intro_yellowstone_caleb", feelings: { jack: -2 }, reaction: [["jack", "I would love to, but then the kiosk gets smug.", "jack"], ["narrator", "He turns the route card over before you can object, committing fully to evasion.", "jack"]] }
+      { label: "Tell Jack you respect a man who knows his limits.", next: "intro_yellowstone_caleb", feelings: { jack: 2 }, reaction: [["jack", "Thank you. My limits are clearly labeled and sometimes decorated with caution tape.", "jack:laughing"], ["narrator", "He looks extremely pleased to be appreciated for explaining nothing.", "jack:laughing"]] },
+      { label: "Demand a full scientific explanation right now.", next: "intro_yellowstone_caleb", feelings: { jack: -2 }, reaction: [["jack", "I would love to, but then the kiosk gets smug and I have to respect enemies I understand.", "jack"], ["narrator", "He turns the route card over before you can object, committing fully to cheerful evasion.", "jack"]] }
     ]
   },
   intro_yellowstone_caleb: {
@@ -915,7 +928,9 @@ const scenes = {
       ["narrator", "A ranger at the rail turns as you approach, one hand already hovering near the nearest safety sign.", "caleb"],
       ["caleb", "Welcome to the boardwalk. It is here because the ground is fragile, hot, and not interested in influencer culture.", "caleb"],
       ["player", "Noted. The beautiful danger has boundaries.", "caleb"],
-      ["caleb", "Exactly. Stay on the path and I become much more charming.", "caleb:blushing"]
+      ["caleb", "Exactly. Stay on the path and I become much more charming.", "caleb:blushing"],
+      ["caleb", "Jack asked me to be nice to you. His exact words were, 'Be normal nice, not scary handsome nice.' I chose to interpret that scientifically.", "caleb"],
+      ["player", "That sounds painfully Jack.", "caleb"]
     ],
     choices: [
       { label: "Promise Caleb both feet are staying on the boardwalk.", next: "intro_yellowstone_caleb_two", feelings: { caleb: 2 }, reaction: [["caleb", "Good. I like my visitors alive and my paperwork boring.", "caleb:laughing"], ["narrator", "His smile is quick, but it cuts cleanly through the steam.", "caleb:laughing"]] },
@@ -988,7 +1003,9 @@ const scenes = {
       ["narrator", "A woman jogs down from the overlook as if gravity signed a waiver for her.", "sierra"],
       ["sierra", "You made it. Good. The cliff was starting to think you were intimidated.", "sierra:laughing"],
       ["player", "I am intimidated. I am just being stylish about it.", "sierra"],
-      ["sierra", "Acceptable. Keep up.", "sierra"]
+      ["sierra", "Acceptable. Keep up.", "sierra"],
+      ["sierra", "Also, Jack told me not to let you undersell yourself. He said it with his whole face, which is how Jack says everything.", "sierra:laughing"],
+      ["player", "He has never owned a subtle expression in his life.", "sierra"]
     ],
     choices: [
       { label: "Match Sierra's pace and compliment the view without making it a bit.", next: "intro_yosemite_sierra_two", feelings: { sierra: 2 }, reaction: [["sierra", "Look at you, having a genuine experience. Dangerous. Attractive.", "sierra:laughing"], ["narrator", "She grins and lets the trail open toward the waterfall.", "sierra:laughing"]] },
@@ -1073,7 +1090,9 @@ const scenes = {
       ["player", "By... the amount of time it took the kiosk to bend space?", "river:grumpy"],
       ["river", "I do not grade excuses on a curve.", "river:grumpy"],
       ["player", "Is this your welcome speech?", "river:grumpy"],
-      ["river", "No. That was me deciding whether to have one.", "river:grumpy"]
+      ["river", "No. That was me deciding whether to have one.", "river:grumpy"],
+      ["river", "Everett vouched for you. He used the phrase 'good person, temporarily on fire.' I assume he meant metaphorically, because even Jack understands some nouns.", "river:grumpy"],
+      ["player", "Some nouns is generous.", "river"]
     ],
     choices: [
       { label: "Apologize once, then ask for the route rules.", next: "intro_zion_river_two", feelings: { river: 1 }, reaction: [["river", "Efficient recovery. Do not make me regret acknowledging it.", "river:grumpy"], ["narrator", "They hand you the route card like trust is a very small, very breakable object.", "river:grumpy"]] },
@@ -1125,20 +1144,22 @@ const scenes = {
     lines: () => {
       const mood = relationshipState("jack");
       const jackReply = {
-        low: ["jack", "Probably for the best tonight. Olympic rewards patience, and I am fresh out of spare patience.", "jack:grumpy"],
-        neutral: ["jack", "You will. Olympic is not going anywhere, and neither is the rain. Get some sleep first.", "jack"],
-        high: ["jack", "You will see it later. I prefer showing off my park when I can pretend I am not showing off for you.", "jack:blushing"]
+        low: ["jack", "You will. I am still going to show you the good moss. I am just... worried at you right now, which is different from mad. I think.", "jack:grumpy"],
+        neutral: ["jack", "You will. Olympic is not going anywhere, and neither is the rain. I am also not going anywhere, unless I trip over that rug again.", "jack"],
+        high: ["jack", "You will see it later. I have been saving my favorite trail for you for years, which sounds normal until I hear it outside my head.", "jack:blushing"]
       }[mood];
       return [
         ["narrator", "The lodge lobby is quiet when you return, fireplace low, windows dark, the whole building smelling like cedar and sleep."],
-        ["narrator", "Jack is by the fireplace, stacking route cards into a tidy pile that immediately leans sideways.", "jack"],
+        ["narrator", "Jack is by the fireplace, stacking route cards into a tidy pile that immediately leans sideways. He frowns at it with heroic commitment.", "jack"],
         ["player", "I am a little sad I did not get to see your park tonight.", "jack"],
         jackReply,
         ["player", "I did meet River.", "jack"],
         ["jack", "Ah. Zion's most scenic locked gate.", "jack:laughing"],
         ["player", "So it is not just me?", "jack:laughing"],
-        ["jack", "River thinks warm welcomes are how people get complacent. Do not take the first frost personally. Do take the route rules personally.", "jack"],
-        ["jack", "Go sleep, {playerName}. Tomorrow gives you three chances to make something happen.", "jack"],
+        ["jack", "River thinks warm welcomes are how people get complacent. Do not take the first frost personally. Do take the route rules personally. I am very pro-rule when rules keep you intact.", "jack"],
+        ["player", "You sound like you rehearsed that.", "jack"],
+        ["jack", "I did. Into a spoon because it looked reflective enough to be eye contact.", "jack:laughing"],
+        ["jack", "Go sleep, {playerName}. Tomorrow gives you three chances to make something happen. Maybe four, if one of the things is breakfast.", "jack"],
         ["narrator", "You climb the lodge stairs with park dust on your shoes and too many voices still bright in your head."]
       ];
     },
@@ -1166,9 +1187,22 @@ const scenes = {
         ["sierra", "It is more of a weather system with cheekbones."],
         ["bruno", "They are not unkind. They just trust slowly and correct quickly."]
       ] : [];
+      const jackMood = relationshipState("jack");
+      const jackChatter = jackMood === "high" ? [
+        ["sierra", "Jack tried to make you coffee this morning and put the grounds in the mug. Not the machine. The mug."],
+        ["caleb", "He was distracted. Deeply, visibly, historically distracted."],
+        ["bruno", "He asked whether looking happy was unprofessional. I told him kindness has never been the problem."]
+      ] : jackMood === "low" ? [
+        ["bruno", "Jack was up early checking the Olympic route twice. He worries more when he is hurt."],
+        ["caleb", "He is not complicated. He cares, then his brain tries to build a shed around it."]
+      ] : [
+        ["sierra", "Jack asked if anyone knew a casual way to say 'I am glad my old friend is here.' He rejected all answers for being too casual."],
+        ["caleb", "For Jack, that is advanced emotional engineering."]
+      ];
       return [
         ["narrator", "Morning fills the lodge lobby with clean light and the low murmur of maps being unfolded."],
         ...chatter,
+        ...jackChatter,
         ["player", state.day === 1 ? "A new day. Three chances to make something happen." : `Day ${state.day}. Same impossible kiosk. New chances.`]
       ];
     },
@@ -1922,6 +1956,18 @@ function buildVisitWrapupLines(character) {
     sunset: "The last light thins along the trail, turning the route marker into a dark shape against the sky.",
     night: "The night has settled fully by the time the return path finds the edge of the route."
   }[time];
+  if (character === "jack") {
+    const jackMoodLine = {
+      low: "Jack walks you back with care, but the old ease between you has mud on its boots. He still watches every slick board before you step on it.",
+      neutral: "Jack walks beside you with that familiar, shoulder-bumping warmth, only now the quiet keeps catching on things neither of you has named yet.",
+      high: "Jack lingers at the route marker like goodbye is a log he could lift if he just found the right grip. For once, even he knows this is not only friendship."
+    }[mood];
+    return [
+      ["narrator", timeExit, characterExpression(character, mood)],
+      ["narrator", jackMoodLine, characterExpression(character, mood)],
+      ["player", `You leave ${place} with Olympic rain on your sleeves and years of knowing Jack Everett rearranging themselves into something brighter.`]
+    ];
+  }
   const moodLine = {
     low: `${characters[character].shortName} walks you back with care, but not much softness. The visit ends because the trail does, not because either of you found an easy answer.`,
     neutral: `${characters[character].shortName} walks beside you, the quiet comfortable enough to count as progress.`,

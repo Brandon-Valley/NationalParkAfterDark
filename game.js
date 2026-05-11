@@ -45,13 +45,23 @@ const defaultState = {
 let state = clone(defaultState);
 let spriteLoadToken = 0;
 let lineAutoAdvanceTimer = null;
+let lineAmbientTimer = null;
 let establishingPauseTimer = null;
+let choiceAutoSelectTimer = null;
+let choiceCountdownTimer = null;
 const DEV_HISTORY_LIMIT = 100;
 let devHistory = [];
 
 const characters = {
   player: { name: () => state.playerName, sprite: "", color: "#7b2f24" },
   narrator: { name: "Narrator", sprite: "", color: "#5f3a19" },
+  dakotaNatai: {
+    name: "Dakota & Natai",
+    shortName: "Dakota & Natai",
+    sprite: "assets/charactures/shared/dakota_natai_reconciliation_full_body.png",
+    sprites: { neutral: "assets/charactures/shared/dakota_natai_reconciliation_full_body.png" },
+    color: "#5f3a19"
+  },
   jack: {
     name: "Jack",
     shortName: "Jack",
@@ -89,7 +99,24 @@ const characters = {
     },
     color: "#8b3f63"
   },
-  dakota: { name: "Dakota", shortName: "Dakota", park: "Sequoia", location: "sequoia", sprites: characterSprites("dakota"), color: "#704719" },
+  dakota: {
+    name: "Dakota",
+    shortName: "Dakota",
+    park: "Sequoia",
+    location: "sequoia",
+    sprites: {
+      ...characterSprites("dakota"),
+      sadExplaining: "assets/charactures/dakota/sad_explaining.png",
+      flattered: "assets/charactures/dakota/flattered.png",
+      transformationSequence: "assets/charactures/dakota/full_love/transformation_sequence.png",
+      humanHappyShock: "assets/charactures/dakota/full_love/human_happy_shock.png",
+      humanConfidentFlex: "assets/charactures/dakota/full_love/human_confident_flex.png",
+      bearTouchedFlex: "assets/charactures/dakota/full_love/bear_touched_flex.png",
+      bearFlexSmolderBlush: "assets/charactures/dakota/full_love/bear_flex_smolder_blush.png",
+      walkingCloserSmolder: "assets/charactures/dakota/full_love/walking_closer_smolder.png"
+    },
+    color: "#704719"
+  },
   natai: {
     name: "Natai",
     shortName: "Natai",
@@ -97,6 +124,7 @@ const characters = {
     location: "zion",
     sprites: {
       ...characterSprites("natai"),
+      angryExplaining: "assets/charactures/natai/story/angry_explaining.png",
       sleepingBagRomantic: "assets/charactures/natai/full_love/sleeping_bag_romantic.png",
       emptySleepingBag: "assets/charactures/natai/full_love/empty_sleeping_bag.png"
     },
@@ -212,7 +240,8 @@ const SKIP_TO_SCENE_TARGETS = {
   yosemiteMeadowNight: "full_love_sierra_meadow",
   zionClearingNight: "full_love_natai_camp",
   jackCabinNight: "full_love_jack_cabin",
-  jackCabinDay: "full_love_jack_morning_wake"
+  jackCabinDay: "full_love_jack_morning_wake",
+  sequoia: "full_love_dakota_start"
 };
 
 const musicThemes = {
@@ -230,6 +259,9 @@ const musicThemes = {
   sierraFullLoveMeadow: { src: "assets/audio/music/There is Romance.mp3", loopStart: 2.0, loopEnd: 193.0, volume: 0.42 },
   sierraFullLoveGood: { src: "assets/audio/music/Sardana.mp3", loopStart: 2.0, loopEnd: 187.0, volume: 0.4 },
   dakota: { src: "assets/audio/music/Fireflies and Stardust.mp3", loopStart: 9.0, loopEnd: 244.5, volume: 0.5 },
+  dakotaFullLoveTender: { src: "assets/audio/music/Promises to Keep.mp3", loopStart: 4.0, loopEnd: 178.0, volume: 0.36 },
+  dakotaFullLoveDesire: { src: "assets/audio/music/Slow Burn.mp3", loopStart: 4.0, loopEnd: 224.0, volume: 0.4 },
+  brothersReconcile: { src: "assets/audio/music/Heartwarming.mp3", loopStart: 1.2, loopEnd: 69.0, volume: 0.48 },
   nataiFullLoveCanyon: { src: "assets/audio/music/Native American Spirit Ritual.mp3", loopStart: 0.0, loopEnd: 278.0, volume: 0.52 },
   nataiFullLoveGood: { src: "assets/audio/music/Firesong.mp3", loopStart: 8.0, loopEnd: 210.0, volume: 0.38 },
   natai: { src: "assets/audio/music/Crowd Hammer.mp3", loopStart: 7.5, loopEnd: 198.5, volume: 0.45 }
@@ -259,7 +291,9 @@ const sfxTracks = {
   character: { src: "assets/audio/sfx/qubodup-click/qubodup-click/qubodup-click1.wav", volume: 0.2 },
   save: { src: "assets/audio/sfx/chimey/Chime_Save.mp3", volume: 0.58 },
   door: { src: "assets/audio/sfx/creaky_door_hinge.wav", volume: 0.68 },
+  dakotaRoar: { src: "assets/audio/sfx/animals/bear_roar.mp3", volume: 0.62 },
   thunderFlash: { src: "assets/audio/sfx/ambient/thunder_flash.wav", volume: 0.76 },
+  magicTransform: { src: "assets/audio/sfx/chimey/Chime_LevelUp.mp3", volume: 0.74 },
   busApproachStop: { src: "assets/audio/sfx/bus/bus_approach_stop.mp3", volume: 0.62, channel: "bus" },
   busIdle: { src: "assets/audio/sfx/bus/bus_idle.mp3", volume: 0.45, channel: "bus" },
   busDeparture: { src: "assets/audio/sfx/bus/bus_departure.mp3", volume: 0.62, channel: "bus" }
@@ -270,7 +304,9 @@ const ambientTracks = {
   rainForest: { src: "assets/audio/sfx/ambient/rain_forest_loop.ogg", volume: 0.34, fadeMs: 1800, stopFadeMs: 1600 },
   rainRoof: { src: "assets/audio/sfx/ambient/rain_roof_loop.mp3", volume: 0.42, fadeMs: 1800, stopFadeMs: 3600 },
   morningBirds: { src: "assets/audio/sfx/ambient/morning_birds_loop.wav", volume: 0.34, fadeMs: 2200, stopFadeMs: 1800 },
-  nataiMorning: { src: "assets/audio/sfx/ambient/subtle_morning_birds.wav", volume: 0.3, fadeMs: 1800, stopFadeMs: 2400 }
+  nataiMorning: { src: "assets/audio/sfx/ambient/subtle_morning_birds.wav", volume: 0.3, fadeMs: 1800, stopFadeMs: 2400 },
+  dakotaMorning: { src: "assets/audio/sfx/ambient/subtle_morning_birds.wav", volume: 0.3, fadeMs: 1800, stopFadeMs: 2400 },
+  dakotaDryGrassWalk: { src: "assets/audio/sfx/ambient/dry_grass_walking_late_night.mp3", volume: 0.3, fadeMs: 1800, stopFadeMs: 1700 }
 };
 
 const cgLibrary = {
@@ -281,6 +317,8 @@ const cgLibrary = {
   sierraWaterfall: { title: "No Filter Needed", image: "assets/backgrounds/time_variants/yosemite/sunset.png" },
   sierraFullLoveGood: { title: "Where The Quiet Lands", image: "assets/backgrounds/special/yosemite_meadow_night.png" },
   dakotaGrove: { title: "Forest Protector", image: "assets/backgrounds/time_variants/sequoia/daytime.png" },
+  dakotaFullLoveGood: { title: "True Form", image: "assets/charactures/dakota/full_love/bear_touched_flex.png" },
+  brothersReconciled: { title: "Brothers Again", image: "assets/charactures/shared/dakota_natai_reconciliation_full_body.png" },
   nataiCanyon: { title: "Permit Approved", image: "assets/backgrounds/time_variants/zion/night.png" },
   nataiFullLoveGood: { title: "Only One Sleeping Bag", image: "assets/charactures/natai/full_love/sleeping_bag_romantic.png" }
 };
@@ -313,6 +351,13 @@ const fullLoveScenes = {
     times: ["night"],
     entryScene: "full_love_natai_start",
     completedFlag: "nataiFullLoveGood"
+  },
+  dakota: {
+    character: "dakota",
+    requiredFeeling: 10,
+    times: ["sunset"],
+    entryScene: "full_love_dakota_start",
+    completedFlag: "dakotaFullLoveGood"
   }
 };
 
@@ -397,50 +442,50 @@ const parkFlavor = {
     place: "the Sequoia grove",
     visit: {
       daytime: {
-        low: ["Dakota stands among the giant trees with a rake over one shoulder and a very measured expression.", "The sequoias make even awkward silence feel ancient."],
-        neutral: ["Dakota shows you the grove slowly, giving each giant tree the kind of respect most people reserve for grandparents.", "He talks about shade, patience, and not leaving snacks where chaos can smell them."],
-        high: ["Dakota beams when you arrive, huge and warm under the sequoias.", "He has saved you a quiet spot where the grove feels like a cathedral that prefers flannel."]
+        low: ["Dakota stands among the giant trees with a rake over one shoulder and a careful, distant expression.", "The sequoias make even awkward silence feel ancient."],
+        neutral: ["Dakota shows you the grove slowly, choosing every word like he is afraid one wrong sentence could start a fire.", "He talks about shade, patience, and how some mistakes keep following long after the smoke is gone."],
+        high: ["Dakota waits under the giant trees with a soft, guarded smile.", "He has saved you a quiet path through the grove, but even happy, he keeps part of himself just out of reach."]
       },
       sunset: {
-        low: ["Sunset filters through the trees. Dakota keeps the conversation gentle, but he does not hand you trust like a souvenir.", "He checks an old fire ring with careful, practiced hands."],
-        neutral: ["The grove deepens to amber while Dakota talks about keeping old things alive without smothering them.", "It should sound heavy. From him, it sounds kind."],
-        high: ["Sunset makes the sequoias glow, and Dakota looks at you like you are part of the warm light.", "He admits he likes when you visit because the grove feels less quiet after."]
+        low: ["Sunset filters through the trees. Dakota keeps the conversation gentle, but he does not hand you trust like a souvenir.", "He checks an old fire ring with careful, practiced hands and a sadness too practiced to be only professional."],
+        neutral: ["The grove deepens to amber while Dakota talks about keeping old things alive without pretending damage never happened.", "It should sound heavy. From him, it sounds like someone trying to earn a gentler future one quiet task at a time."],
+        high: ["Sunset makes the sequoias glow, and Dakota looks at you like he wants to step closer before old shame pulls him back.", "He admits he likes when you visit because the grove feels less quiet after, then immediately pretends the bark needs inspection."]
       },
       night: {
-        low: ["At night, Dakota's lantern swings low between the tree trunks. He is polite, watchful, and hard to fool.", "The grove absorbs your footsteps like it is considering you."],
-        neutral: ["Dakota leads you through the night grove, where the giant trunks vanish upward into stars.", "He tells a soft joke about trees being excellent listeners and terrible texters."],
-        high: ["The sequoias stand black against the stars. Dakota offers his hand without fanfare, steady as a railing.", "With him, the dark feels less empty and more held."]
+        low: ["At night, Dakota's lantern swings low between the tree trunks. He is polite, watchful, and hard to fool.", "The grove absorbs your footsteps while he keeps glancing toward the dark as if something there once knew his name."],
+        neutral: ["Dakota leads you through the night grove, where the giant trunks vanish upward into stars.", "He tells a soft joke about trees being excellent listeners, then falls quiet when the wind sounds almost like an old voice."],
+        high: ["The sequoias stand black against the stars. Dakota offers his hand without fanfare, steady as a railing.", "With him, the dark feels less empty and more held, though he still lets go first."]
       }
     },
     surprise: {
       low: ["Dakota is at check-in replacing a lantern wick. 'Even small fires need attention,' he says, not quite looking at you."],
-      neutral: ["Dakota is arranging trail snacks by allergy label. 'Take one. Caring is easier when nobody is hungry.'"],
-      high: ["Dakota brightens when he sees you at check-in and offers a warm biscuit wrapped in a napkin. 'Road fuel. Strictly professional biscuiting.'"]
+      neutral: ["Dakota is arranging trail snacks by allergy label. 'Take one. Caring is easier when nobody is hungry.' His paw lingers on the food basket a second too long."],
+      high: ["Dakota brightens when he sees you and offers a warm biscuit wrapped in a napkin. 'Road fuel. Strictly professional biscuiting.' Then he catches sight of a Zion route card and goes quiet."]
     }
   },
   natai: {
     place: "the Zion canyon route",
     visit: {
       daytime: {
-        low: ["Natai waits beneath red canyon walls, checking the permit board with surgical calm.", "The desert light is sharp. So are they."],
-        neutral: ["Natai guides you through Zion's sandstone corridor, naming hazards like old rivals.", "They are dry, exact, and quietly pleased when you keep up."],
-        high: ["Natai stands in desert light bright enough to turn every edge honest.", "They glance at you and say, 'Good. You made the canyon less smug.'"]
+        low: ["Natai waits beneath red canyon walls, checking the permit board with surgical calm.", "The desert light is sharp. So are they, though the anger underneath looks older than the morning."],
+        neutral: ["Natai guides you through Zion's sandstone corridor, naming hazards like old rivals.", "They are dry, exact, and quietly pleased when you keep up, but they go silent at any mention of brothers."],
+        high: ["Natai stands in desert light bright enough to turn every edge honest.", "They glance at you and say, 'Good. You made the canyon less smug,' then ruins the warmth by pretending they said nothing vulnerable."]
       },
       sunset: {
-        low: ["Sunset sets the sandstone burning. Natai lets the view do the heavy lifting and keeps their answers spare.", "You get the sense they are waiting to see what you do with beauty when nobody grades you."],
-        neutral: ["Zion at sunset is all copper walls and cooling air. Natai slows beside you without announcing it.", "They say the canyon has excellent taste in dramatic timing."],
-        high: ["The canyon glows red around Natai, and their usual reserve thins into something almost tender.", "They tell you the desert keeps what matters and burns off the rest."]
+        low: ["Sunset sets the sandstone burning. Natai lets the view do the heavy lifting and keeps their answers spare.", "You get the sense they are listening for an apology that has been years late."],
+        neutral: ["Zion at sunset is all copper walls and cooling air. Natai slows beside you without announcing it.", "They say the canyon has excellent taste in dramatic timing, then looks furious with themself for sounding wistful."],
+        high: ["The canyon glows red around Natai, and their usual reserve thins into something almost tender.", "They tell you the desert keeps what matters and burns off the rest. Some things, apparently, refuse to burn."]
       },
       night: {
-        low: ["At night, Natai's route becomes shadow, stars, and firm boundaries.", "They do not dislike the silence. They may currently prefer it to you."],
-        neutral: ["Natai takes you to a night-sky overlook where Zion becomes shape and hush.", "They point out constellations with the same precision they use for permits."],
-        high: ["Under the dark Zion sky, Natai lets the silence stretch until it feels chosen.", "They stand close enough for warmth and say, 'Do not make me say this is nice.'"]
+        low: ["At night, Natai's route becomes shadow, stars, and firm boundaries.", "They do not dislike the silence. They may currently prefer it to any question that sounds like forgiveness."],
+        neutral: ["Natai takes you to a night-sky overlook where Zion becomes shape and hush.", "They point out constellations with the same precision they use for permits, then admit they once knew someone reckless enough to name them wrong on purpose."],
+        high: ["Under the dark Zion sky, Natai lets the silence stretch until it feels chosen.", "They stand close enough for warmth and say, 'Do not make me say this is nice,' which from Natai is basically a campfire."]
       }
     },
     surprise: {
       low: ["Natai is at check-in arguing with the kiosk in a voice too calm to be safe. 'It has more routing confidence than judgment.'"],
-      neutral: ["Natai studies the check-in map, then taps your destination. 'Efficient. Emotionally suspicious, but efficient.'"],
-      high: ["Natai catches you at check-in and silently adjusts your route card. 'There. Better odds of surviving your own charm.'"]
+      neutral: ["Natai studies the check-in map, then taps your destination. 'Efficient. Emotionally suspicious, but efficient.' Their finger avoids Sequoia entirely."],
+      high: ["Natai catches you at check-in and silently adjusts your route card. 'There. Better odds of surviving your own charm.' Then they notice Dakota's handwriting on a supply tag and their expression shuts."]
     }
   }
 };
@@ -516,29 +561,29 @@ const arrivalFlavor = {
     daytime: [
       ["narrator", "The Sequoia grove receives you in shade and quiet, each giant trunk making the world feel slower and older."],
       ["player", "I am suddenly aware that I have never been patient enough for a tree to approve of me."],
-      ["narrator", "Dakota steps from behind a massive trunk carrying a coil of rope and a smile too warm for the cool air.", "dakota"]
+      ["narrator", "Dakota steps from behind a massive trunk carrying a coil of rope and a smile that arrives carefully, like it asked permission first.", "dakota"]
     ],
     sunset: [
       ["narrator", "Sunset filters through the Sequoia canopy in long amber shafts, turning dust motes into tiny sparks."],
       ["player", "This place makes ordinary breathing feel like a respectful activity."],
-      ["narrator", "Dakota kneels by an old fire ring, checking it with gentle seriousness before he notices you.", "dakota"]
+      ["narrator", "Dakota kneels by an old fire ring, checking it with gentle seriousness before he notices you and hides something sad behind a polite nod.", "dakota"]
     ],
     night: [
       ["narrator", "The night grove is quiet enough to make every footstep ask permission."],
       ["player", "The trees disappear upward into the stars. I feel very small, but not in a bad way."],
-      ["narrator", "A lantern glow rounds one trunk, and Dakota follows it, steady as a promise.", "dakota"]
+      ["narrator", "A lantern glow rounds one trunk, and Dakota follows it, steady as a promise he still does not think he deserves to make.", "dakota"]
     ]
   },
   natai: {
     daytime: [
       ["narrator", "Zion's canyon walls rise red and clean around the trail, the desert light sharpening every edge."],
       ["player", "The whole place looks like it was carved by someone with excellent taste and no interest in subtlety."],
-      ["narrator", "Natai stands by the permit board, marking a route with the precision of a person who has opinions about shortcuts.", "natai"]
+      ["narrator", "Natai stands by the permit board, marking a route with the precision of a person who has opinions about shortcuts and unresolved wars with them.", "natai"]
     ],
     sunset: [
       ["narrator", "Sunset sets Zion's sandstone glowing copper, cooling the air while the canyon keeps the heat of the day."],
       ["player", "This view is extremely rude. It knows exactly what it is doing."],
-      ["narrator", "Natai waits at the trail split, arms folded, watching the light change like it owes them an answer.", "natai"]
+      ["narrator", "Natai waits at the trail split, arms folded, watching the light change like it owes them an answer and has refused to pay for years.", "natai"]
     ],
     night: [
       ["narrator", "At night, Zion becomes dark stone, pale trail dust, and a sky crowded with stars."],
@@ -767,32 +812,34 @@ const visitBeats = {
       prompt: {
         low: ["dakota", "The grove is quiet today. I would like to keep it that way.", "dakota:grumpy"],
         neutral: ["dakota", "Walk slow here. The trees have been patient longer than any of us.", "dakota"],
-        high: ["dakota", "I saved you the shaded path. It is the one that makes people whisper without being asked.", "dakota:blushing"]
+        high: ["dakota", "I saved you the shaded path. It is the one that makes people whisper without being asked.", "dakota:flattered"]
       },
       choices: [
-        { label: "Lower your voice and match his pace.", feelings: { dakota: 2 }, tone: "warm" },
-        { label: "Ask if there is a faster way through.", feelings: { dakota: -2 }, tone: "bad" }
+        { label: "Lower your voice and match his pace.", feelings: { dakota: 1 }, tone: "warm" },
+        { label: "Ask whether he always walks like he is apologizing to the ground.", feelings: { dakota: 0 }, tone: "flirt" },
+        { label: "Ask if there is a faster way through.", feelings: { dakota: -1 }, tone: "bad" }
       ],
       choicesByMood: {
         low: [
           { label: "Lower your voice and ask where he wants you to walk.", feelings: { dakota: 1 }, tone: "warm", reaction: [["dakota", "Thank you. Quiet is easier to share when nobody has to wrestle it into place.", "dakota"], ["narrator", "His expression softens, slow and cautious.", "dakota"]] },
-          { label: "Ask if the trees can really tell the difference.", feelings: { dakota: -3 }, tone: "bad", reaction: [["dakota", "I can.", "dakota:grumpy"], ["narrator", "The two words land softly and somehow sink deep.", "dakota:grumpy"]] }
+          { label: "Ask if the trees can really tell the difference.", feelings: { dakota: -2 }, tone: "bad", reaction: [["dakota", "I can.", "dakota:grumpy"], ["narrator", "The two words land softly and somehow sink deep.", "dakota:grumpy"]] }
         ]
       },
       reactions: {
-        warm: [["dakota", "Thank you. Some places ask gently, but they still ask.", "dakota"], ["narrator", "His smile comes slow and real.", "dakota"]],
-        flirt: [["dakota", "That may be the nicest height joke I have ever received.", "dakota:laughing"], ["player", "I am a respectful innovator.", "dakota:laughing"]],
+        warm: [["dakota", "Thank you. Some places ask gently, but they still ask.", "dakota"], ["narrator", "His smile comes slow and real, then retreats before it can become too visible.", "dakota"]],
+        flirt: [["dakota", "I suppose I do. Old habit.", "dakota:flattered"], ["player", "It is a little charming.", "dakota:flattered"], ["dakota", "That is dangerous feedback. I will file it where I cannot accidentally enjoy it.", "dakota:flattered"]],
         bad: [["dakota", "Through, yes. With, no.", "dakota:grumpy"], ["narrator", "He does not sound angry. Somehow that makes it land harder.", "dakota:grumpy"]]
       }
     },
     {
       prompt: {
         low: ["narrator", "Dakota stops by an old fire ring and checks the stones with careful hands.", "dakota:grumpy"],
-        neutral: ["narrator", "The trail opens around a sequoia so wide it makes the air feel ceremonial.", "dakota"],
-        high: ["narrator", "Dakota pauses beside a giant trunk, resting one hand against the bark like greeting an old friend.", "dakota:blushing"]
+        neutral: ["narrator", "The trail opens around a sequoia so wide it makes the air feel ceremonial. Dakota rests one paw near an old scorch mark and goes still.", "dakota"],
+        high: ["narrator", "Dakota pauses beside a giant trunk, resting one hand against the bark like greeting an old friend who knows too much.", "dakota:flattered"]
       },
       choices: [
-        { label: "Ask him to teach you the fire-safety check.", feelings: { dakota: 2 }, tone: "warm" },
+        { label: "Ask him to teach you the fire-safety check.", feelings: { dakota: 1 }, tone: "warm" },
+        { label: "Ask gently if he has seen a fire get out of control.", feelings: { dakota: 0 }, tone: "flirt" },
         { label: "Joke that one tiny ember cannot matter much.", feelings: { dakota: -2 }, tone: "bad" }
       ],
       choicesByMood: {
@@ -802,8 +849,8 @@ const visitBeats = {
         ]
       },
       reactions: {
-        warm: [["dakota", "Gladly. Caring is easier when your hands know what to do.", "dakota:laughing"], ["narrator", "He guides you through the check with patient pride.", "dakota:laughing"]],
-        flirt: [["dakota", "Oh. That is... I am going to inspect this perfectly safe bark now.", "dakota:blushing"], ["narrator", "He turns pink enough that even the sunset would be jealous.", "dakota:blushing"]],
+        warm: [["dakota", "Gladly. Caring is easier when your hands know what to do.", "dakota:laughing"], ["narrator", "He guides you through the check with patient pride, but his attention keeps returning to the blackened stones.", "dakota:laughing"]],
+        flirt: [["dakota", "Yes.", "dakota:sadExplaining"], ["narrator", "The answer is so quiet it feels pulled out of him by the trees.", "dakota:sadExplaining"], ["dakota", "A long time ago. Someone younger than me thought anger could solve danger. It did not.", "dakota:sadExplaining"], ["player", "Someone you knew?", "dakota:sadExplaining"], ["dakota", "Someone I was responsible for remembering honestly.", "dakota:sadExplaining"]],
         bad: [["dakota", "Every big fire starts by being small enough to ignore.", "dakota:grumpy"], ["narrator", "His voice stays gentle, but the grove seems to hold its breath.", "dakota:grumpy"]]
       }
     },
@@ -811,11 +858,11 @@ const visitBeats = {
       prompt: {
         low: ["dakota", "I should walk you back. The grove has had enough noise for one visit.", "dakota:grumpy"],
         neutral: ["dakota", "We should head back while the route is easy to read.", "dakota"],
-        high: ["dakota", "One last quiet minute, then I will stop selfishly keeping you under my favorite trees.", "dakota:blushing"]
+        high: ["dakota", "One last quiet minute, then I will stop selfishly keeping you under my favorite trees.", "dakota:flattered"]
       },
       choices: [
-        { label: "Tell him the grove feels safer because he cares for it.", feelings: { dakota: 2 }, tone: "warm" },
-        { label: "Ask if favorite trees count as date witnesses.", feelings: { dakota: 2 }, tone: "flirt" },
+        { label: "Tell him the grove feels safer because he cares for it.", feelings: { dakota: 1 }, tone: "warm" },
+        { label: "Ask if favorite trees count as date witnesses.", feelings: { dakota: 1 }, tone: "flirt" },
         { label: "Say you are ready to go because it all looks the same.", feelings: { dakota: -2 }, tone: "bad" }
       ],
       choicesByMood: {
@@ -825,8 +872,8 @@ const visitBeats = {
         ]
       },
       reactions: {
-        warm: [["dakota", "That means more than you know.", "dakota:blushing"], ["narrator", "He walks you back with a shy smile and the steady glow of the lantern.", "dakota:blushing"]],
-        flirt: [["dakota", "They are very discreet. Terrible at gossip.", "dakota:laughing"], ["narrator", "His laugh rolls through the grove, warm and low.", "dakota:laughing"]],
+        warm: [["dakota", "That means more than you know.", "dakota:flattered"], ["narrator", "He walks you back with a shy smile and the steady glow of the lantern, still careful not to let the moment become too easy.", "dakota:flattered"]],
+        flirt: [["dakota", "They are very discreet. Terrible at gossip.", "dakota:flattered"], ["narrator", "His laugh rolls through the grove, warm and low, then folds back into quiet like he is afraid joy might ask questions.", "dakota:flattered"]],
         bad: [["dakota", "Then I hope one day it does not.", "dakota:grumpy"], ["narrator", "He leads the way back, quiet settling between you like fallen needles.", "dakota:grumpy"]]
       }
     }
@@ -840,6 +887,7 @@ const visitBeats = {
       },
       choices: [
         { label: "Tell them you will respect the route without requiring applause.", feelings: { natai: 1 }, tone: "warm" },
+        { label: "Ask whether they trust the canyon more than people.", feelings: { natai: 1 }, tone: "flirt" },
         { label: "Ask how strict the permit rules really are.", feelings: { natai: -3 }, tone: "bad" }
       ],
       choicesByMood: {
@@ -851,7 +899,7 @@ const visitBeats = {
       },
       reactions: {
         warm: [["natai", "Adequate. I am choosing to treat adequate as promising, against precedent.", "natai"], ["narrator", "They turn before the compliment can become recognizable.", "natai"]],
-        flirt: [["natai", "It cannot. But it has seniority, which you lack.", "natai:laughing"], ["player", "A formidable opponent.", "natai:laughing"]],
+        flirt: [["natai", "Yes.", "natai"], ["player", "That was fast.", "natai"], ["natai", "The canyon has never abandoned me with a mess it helped make.", "natai:angryExplaining"], ["narrator", "The anger flashes hot and personal before Natai locks it away.", "natai:angryExplaining"]],
         bad: [["natai", "Strict enough that I become unpleasant in defense of them.", "natai:grumpy"], ["narrator", "Their calm is somehow sharper than yelling, and twice as hard to recover from.", "natai:grumpy"]]
       }
     },
@@ -863,6 +911,7 @@ const visitBeats = {
       },
       choices: [
         { label: "Ask what the desert taught them to notice first.", feelings: { natai: 1 }, tone: "warm" },
+        { label: "Ask if they ever miss someone they are still angry at.", feelings: { natai: 1 }, tone: "flirt" },
         { label: "Kick a loose stone down the trail.", feelings: { natai: -4 }, tone: "bad" }
       ],
       choicesByMood: {
@@ -874,7 +923,7 @@ const visitBeats = {
       },
       reactions: {
         warm: [["natai", "Water. Even when it is absent, it explains the shape of everything.", "natai"], ["narrator", "They say it softly, then look annoyed that softness escaped.", "natai"]],
-        flirt: [["natai", "That is the most tolerable thing anyone has said about paperwork.", "natai:laughing"], ["narrator", "Their smile is quick, rare, and gone before it can be used against them.", "natai:laughing"]],
+        flirt: [["natai", "That question has teeth.", "natai:angryExplaining"], ["player", "You do not have to answer.", "natai:angryExplaining"], ["natai", "I had two brothers. One was brave. One was young enough to confuse pride with courage. I am still deciding what to call the person I became after both of them left.", "natai:angryExplaining"]],
         bad: [["natai", "Do not make gravity responsible for your boredom.", "natai:grumpy"], ["narrator", "The stone clicks into silence. Natai waits until you feel every click.", "natai:grumpy"]]
       }
     },
@@ -898,7 +947,7 @@ const visitBeats = {
       },
       reactions: {
         warm: [["natai", "Good. The loud side gets enough attention.", "natai"], ["narrator", "They walk you back slowly, as if you have earned one unhurried thing.", "natai"]],
-        flirt: [["natai", "Wise. I know where all the difficult switchbacks are.", "natai:blushing"], ["narrator", "Their shoulder almost brushes yours, then does not. Natai makes even restraint feel deliberate.", "natai:blushing"]],
+        flirt: [["natai", "Wise. I know where all the difficult switchbacks are.", "natai:blushing"], ["narrator", "Their shoulder almost brushes yours, then does not. Natai makes even restraint feel deliberate.", "natai:blushing"], ["natai", "For what it is worth, I do miss him. That changes nothing, which is why feelings are such poor administrators.", "natai:angryExplaining"]],
         bad: [["natai", "And people are mostly water. Reduction is a boring hobby.", "natai:grumpy"], ["narrator", "They turn toward the return route with magnificent restraint.", "natai:grumpy"]]
       }
     }
@@ -1442,6 +1491,49 @@ const scenes = {
       renderScene(next);
     }
   },
+  brothers_reconciliation_start: {
+    label: "Check-In",
+    background: () => ({ location: "checkIn", time: "daytime" }),
+    music: "brothersReconcile",
+    character: null,
+    lines: () => {
+      const first = state.flags.brotherGoodFirst || (state.flags.dakotaFullLoveGood ? "dakota" : "natai");
+      const dakotaFirst = first === "dakota";
+      return [
+        ["narrator", "The day-transition card clears, and the check-in desk comes into focus with morning light across the maps."],
+        ["player", "Okay. New day. Normal kiosk. Please let normal be available in the drop-down menu."],
+        ["narrator", "Two route cards print at once. Sequoia. Zion. The kiosk chirps like it has orchestrated something and expects applause."],
+        ["narrator", "Dakota steps in from the lodge path at the same moment Natai arrives from the canyon route.", "dakota"],
+        ["natai", "No.", "natai:grumpy"],
+        ["dakota", "Natai.", "dakota:sadExplaining"],
+        ["natai", "Do not say my name like you are testing whether it still belongs to me.", "natai:angryExplaining"],
+        ["narrator", "Dakota lowers his head. Natai looks ready to cut the morning in half just to avoid how much it hurts.", "dakota:sadExplaining"],
+        ...(dakotaFirst ? [
+          ["dakota", "{playerName} helped me understand that shame was not responsibility. It was just another way to keep running.", "dakota:sadExplaining"],
+          ["dakota", "I am done running from you. I am sorry I left you alone with the ashes, with our brother's absence, with all the anger I was too cowardly to face.", "dakota:sadExplaining"],
+          ["natai", "I wanted to hate you forever.", "natai:angryExplaining"],
+          ["natai", "It was efficient. It gave the grief a job.", "natai:angryExplaining"]
+        ] : [
+          ["natai", "{playerName} helped me understand that anger was not loyalty. It was just grief with its fists up.", "natai:angryExplaining"],
+          ["natai", "I am still furious you ran. I am also tired of pretending fury is the only evidence I loved our brother.", "natai:angryExplaining"],
+          ["dakota", "I deserved your anger.", "dakota:sadExplaining"],
+          ["natai", "Yes. And I deserved more than being left alone with it.", "natai:angryExplaining"]
+        ]),
+        ["dakota", "You did.", "dakota:sadExplaining"],
+        ["dakota", "I cannot give back what the fire took. I can stand here now. I can tell the truth. I can be your brother if you will have me, and keep trying if you cannot yet.", "dakota:sadExplaining"],
+        ["narrator", "Natai's face changes by inches. Anger does not vanish. It steps aside just far enough for love to be seen behind it.", "natai:angryExplaining"],
+        ["natai", "Do not make me regret this by becoming sentimental in public.", "natai:grumpy"],
+        ["dakota", "I will be tastefully sentimental.", "dakota:flattered"],
+        ["natai", "Impossible standard. Proceed anyway.", "natai:blushing"],
+        ["narrator", "Dakota reaches out. Natai stares at his hand like it is both a bridge and an accusation."],
+        ["narrator", "Then Natai takes it.", "dakotaNatai"],
+        ["narrator", "The handshake is fierce, ridiculous, and trembling at the edges. Two brothers, years late and still somehow on time.", "dakotaNatai"],
+        ["player", "The kiosk prints a tiny receipt that says RECONCILIATION PROCESSED. I hate that I am emotionally moved by office equipment.", "dakotaNatai"],
+        ["narrator", "Something in the morning opens. Both Dakota and Natai look lighter, not healed all at once, but finally facing the same direction.", "dakotaNatai"]
+      ];
+    },
+    nextAction: completeBrotherReconciliation
+  },
   main_visit_arrival: {
     label: () => `${characters[state.pendingDestination]?.park || "Park"} Visit`,
     background: () => ({ location: characters[state.pendingDestination].location, time: state.visitTime || state.timeOfDay }),
@@ -1977,9 +2069,18 @@ const scenes = {
       ["narrator", "Natai pours tea from a thermos. The steam curls silver in the lantern light, and for a while the two of you sit with your shoulders nearly touching, watching the canyon turn into shape, shadow, and stars.", "natai"],
       ["natai", "The desert is honest at night. No glare. No performance. Just stone, air, distance.", "natai"],
       ["player", "And us?", "natai"],
-      ["natai", "I am trying to decide whether I can include us in a sentence without sounding foolish.", "natai:blushing"],
-      ["player", "How is that going?", "natai:blushing"],
-      ["natai", "Poorly.", "natai:blushing"],
+      ["natai", "Us is more complicated.", "natai:blushing"],
+      ["player", "I can handle complicated.", "natai:blushing"],
+      ["natai", "Do not say heroic things. I will be forced to respect them.", "natai:blushing"],
+      ["narrator", "They stare into the tea as if it might provide a less humiliating route through honesty.", "natai"],
+      ["natai", "I had brothers. An older brother who made safety look effortless. A younger one who thought danger was applause waiting to happen.", "natai:angryExplaining"],
+      ["natai", "There was a bear. A food cache. A fire set by someone too proud to think. Our oldest brother died getting us out.", "natai:angryExplaining"],
+      ["player", "Natai...", "natai:angryExplaining"],
+      ["natai", "The youngest blamed the bear. I tried to stop him. He went after it anyway.", "natai:angryExplaining"],
+      ["natai", "Something happened in the woods. Something I still cannot make myself describe cleanly. He looked at me like he knew I had seen too much, and then he ran.", "natai:angryExplaining"],
+      ["natai", "Everyone wants anger to be ugly. Mine was practical. It kept me standing. It gave me somewhere to put a grief that would have eaten me hollow.", "natai:angryExplaining"],
+      ["player", "And now?", "natai:angryExplaining"],
+      ["natai", "Now it is tired.", "natai:angryExplaining"],
       ["narrator", "They look at you then, and the usual sharpness is still there, but it has warmed into something careful enough to trust.", "natai:blushing"]
     ],
     next: "full_love_natai_sleeping_bag"
@@ -2033,6 +2134,9 @@ const scenes = {
     label: "Zion Backcountry",
     background: () => ({ location: "zionClearingNight", time: "night" }),
     music: "nataiFullLoveGood",
+    onEnter: () => {
+      if (!state.flags.brotherGoodFirst) state.flags.brotherGoodFirst = "natai";
+    },
     lines: [
       ["narrator", "Natai exhales like the canyon has finally stopped asking them to be composed.", "natai:sleepingBagRomantic"],
       ["player", "I want to stay. I want you. Clearly.", "natai:sleepingBagRomantic"],
@@ -2040,6 +2144,9 @@ const scenes = {
       ["player", "That is all?", "natai:sleepingBagRomantic"],
       ["natai", "No. That is the part I can say without embarrassing both of us and possibly the moon.", "natai:sleepingBagRomantic"],
       ["narrator", "Their hand finds yours at the edge of the sleeping bag. Warm. Certain. Less steady than Natai would ever admit.", "natai:sleepingBagRomantic"],
+      ["natai", "For years I thought letting anyone close meant giving up the anger that kept me alive.", "natai:sleepingBagRomantic"],
+      ["player", "You do not have to give it up all at once.", "natai:sleepingBagRomantic"],
+      ["natai", "No. But I can stop letting it choose every route.", "natai:sleepingBagRomantic"],
       ["natai", "Come here. Slowly.", "natai:sleepingBagRomantic"],
       ["narrator", "The first kiss is careful enough to be a question. The second is not. Natai draws you closer, and the lantern light catches the exact moment their control gives way to hunger.", "natai:sleepingBagRomantic"],
       ["narrator", "The sleeping bag rustles around both of you. It should be ridiculous. It is ridiculous. But Natai's hand settles at your back, firm and hot through your clothes, and suddenly the joke has no air left in it.", "natai:sleepingBagRomantic"],
@@ -2143,6 +2250,308 @@ const scenes = {
       ["narrator", "", "natai:sleepingBagRomantic", { propCue: "natai:emptySleepingBag", dialogueHidden: true, fadeOutSprite: true, fadeOutProp: true, autoAdvanceMs: 1400 }]
     ],
     nextAction: completeFullLoveScene
+  },
+  full_love_dakota_start: {
+    label: "Sequoia Sunset",
+    background: () => ({ location: "sequoia", time: "sunset" }),
+    music: "dakotaFullLoveTender",
+    onEnter: () => { state.visitTime = "sunset"; state.pendingDestination = "dakota"; state.pendingFullLoveScene = "dakota"; },
+    lines: [
+      ["narrator", "The heart on Dakota's route card warms under your thumb. The kiosk prints: SUNSET GROVE ACCESS. BE GENTLE WITH OLD TREES AND OLDER FEELINGS."],
+      ["narrator", "Sequoia opens around you in amber light. The trunks rise like quiet towers, and the air smells of bark, dust, and day cooling into evening."],
+      ["player", "Dakota?"],
+      ["narrator", "Dakota waits by the old fire ring, hat in his hands, looking both glad you came and frightened by what gladness might ask of him.", "dakota:sadExplaining"],
+      ["dakota", "I was hoping you would come. That is already more honest than I planned to be.", "dakota:sadExplaining"],
+      ["player", "I like honest. Even when it arrives looking nervous.", "dakota:sadExplaining"],
+      ["dakota", "Then I should tell you why I keep stopping at this fire ring like it can sentence me again.", "dakota:sadExplaining"]
+    ],
+    next: "full_love_dakota_confession"
+  },
+  full_love_dakota_confession: {
+    label: "Sequoia Sunset",
+    background: () => ({ location: "sequoia", time: "sunset" }),
+    music: "dakotaFullLoveTender",
+    lines: [
+      ["narrator", "The fire ring waits between you, all old stone and older memory."],
+      ["dakota", "There were three brothers once.", "dakota:sadExplaining"],
+      ["dakota", "The oldest was wise. Protective in the way sunrise is protective. You did not notice how much he held back until he was gone.", "dakota:sadExplaining"],
+      ["dakota", "The middle one was sharp-tongued, fast to anger, impossible to fool. He could make you feel stupid and safe in the same breath.", "dakota:sadExplaining"],
+      ["player", "Natai.", "dakota:sadExplaining"],
+      ["narrator", "Dakota closes his eyes. The name lands like a hand on a bruise.", "dakota:sadExplaining"],
+      ["dakota", "Yes.", "dakota:sadExplaining"],
+      ["dakota", "And the youngest was proud. Reckless. So desperate to be strong that he mistook every warning for an insult.", "dakota:sadExplaining"],
+      ["player", "You.", "dakota:sadExplaining"],
+      ["dakota", "Me.", "dakota:sadExplaining"],
+      ["dakota", "A bear came near our food. I was angry before I was afraid, which is a terrible order for a heart to put things in.", "dakota:sadExplaining"],
+      ["dakota", "I started a fire trying to kill it. The fire spread. My brothers followed to help. Our oldest brother got us out and did not make it out himself.", "dakota:sadExplaining"],
+      ["narrator", "The grove seems to darken around the confession, not judging, only listening.", "dakota:sadExplaining"],
+      ["dakota", "I blamed the bear because blaming myself felt like drowning. Then I hunted it. Killed it. Called it justice because revenge sounded too small and too honest.", "dakota:sadExplaining"],
+      ["dakota", "The spirits saw hatred where responsibility should have been. They made my outside match the creature I had refused to understand.", "dakota:sadExplaining"],
+      ["dakota", "Natai saw it happen. I looked at him. He knew. I knew he knew. And I ran.", "dakota:sadExplaining"],
+      ["player", "Dakota...", "dakota:sadExplaining"],
+      ["dakota", "Years passed. Many new friends and new places were seen. I learned how to live like this. I never learned how to forgive the person who caused it.", "dakota:sadExplaining"],
+      ["dakota", "Then I saw Natai here. We locked eyes like the first time. I ran again, just slower and with a uniform.", "dakota:sadExplaining"],
+      ["player", "You were ashamed.", "dakota:sadExplaining"],
+      ["dakota", "I still am.", "dakota:sadExplaining"]
+    ],
+    next: "full_love_dakota_forgiveness"
+  },
+  full_love_dakota_forgiveness: {
+    label: "Sequoia Sunset",
+    background: () => ({ location: "sequoia", time: "sunset" }),
+    music: "dakotaFullLoveTender",
+    lines: [
+      ["narrator", "Sunset lowers through the branches, turning every needle and stone soft around Dakota's confession."],
+      ["player", "Shame kept you alive, maybe. It does not get to keep owning you.", "dakota:sadExplaining"],
+      ["dakota", "I do not know how to put it down.", "dakota:sadExplaining"],
+      ["player", "Start smaller. Tell the truth without making it a cage.", "dakota:sadExplaining"],
+      ["dakota", "I was reckless. I was grieving. I did something unforgivable, and then I kept punishing everyone by disappearing.", "dakota:sadExplaining"],
+      ["dakota", "But I loved my brother. I loved both of them. I have spent years acting like that love died because I did not deserve it.", "dakota:sadExplaining"],
+      ["player", "It did not die.", "dakota:sadExplaining"],
+      ["dakota", "No.", "dakota:sadExplaining"],
+      ["narrator", "Dakota breathes in. The first breath shakes. The second steadies. The third sounds like something locked inside him finally opening.", "dakota:sadExplaining"],
+      ["dakota", "I forgive the scared, angry boy who started the fire.", "dakota:sadExplaining"],
+      ["dakota", "I will still carry what happened. But I do not have to carry it like proof I should never be loved.", "dakota:sadExplaining"],
+      ["narrator", "The grove answers with sudden gold.", "dakota:transformationSequence", { screenFlash: true, audio: "magicTransform", fadeOutMusicUntilScene: { sceneId: "full_love_dakota_timed_prompt", fadeOutMs: 900, resumeFadeMs: 900 } }]
+    ],
+    next: "full_love_dakota_human"
+  },
+  full_love_dakota_human: {
+    label: "Sequoia Sunset",
+    background: () => ({ location: "sequoia", time: "sunset" }),
+    lines: [
+      ["narrator", "The light clears in a rush of gold, leaving Dakota staring down at himself with wide, disbelieving eyes.", "dakota:humanHappyShock", { screenFlash: true }],
+      ["dakota", "I... have hands.", "dakota:humanHappyShock"],
+      ["dakota", "Human hands. Human face. Human everything.", "dakota:humanHappyShock"],
+      ["player", "Mostly everything. The magic seems to have made a bold shirt-related decision.", "dakota:humanHappyShock"],
+      ["dakota", "My shirt is gone.", "dakota:humanHappyShock"],
+      ["player", "Tragic. Devastating. A great loss for fabric.", "dakota:humanHappyShock"],
+      ["dakota", "You sound only mildly disappointed it stopped there.", "dakota:humanHappyShock"],
+      ["player", "I am processing with dignity.", "dakota:humanHappyShock"],
+      ["dakota", "I feel... good. Not because I look human again. Because I can breathe around myself.", "dakota:humanHappyShock"],
+      ["dakota", "Also, for the record, I look good.", "dakota:humanConfidentFlex"],
+      ["player", "You were always beautiful. Inside and out.", "dakota:humanConfidentFlex"],
+      ["narrator", "The confidence falters into astonishment. Dakota looks at you like that sentence found the last locked door.", "dakota:humanConfidentFlex"],
+      ["dakota", "You mean that.", "dakota:humanConfidentFlex"],
+      ["player", "I do.", "dakota:humanConfidentFlex"],
+      ["narrator", "Another flash rolls through the grove, warmer this time, less like a verdict than a welcome home.", "dakota:bearTouchedFlex", { screenFlash: true, audio: "magicTransform" }],
+      ["dakota", "Oh.", "dakota:bearTouchedFlex"],
+      ["dakota", "I am still me.", "dakota:bearTouchedFlex"],
+      ["player", "You are.", "dakota:bearTouchedFlex"],
+      ["dakota", "And this is me too.", "dakota:bearTouchedFlex"],
+      ["narrator", "He blushes, surprised and victorious, holding the flex like a joke that became a blessing halfway through.", "dakota:bearTouchedFlex"],
+      ["narrator", "Then the joke changes shape. Dakota keeps the pose, but his smile sharpens, slow and warm, as if confidence has finally found somewhere honest to live.", "dakota:bearFlexSmolderBlush"],
+      ["dakota", "You keep looking at me like that and I am going to start believing I am allowed to want things.", "dakota:bearFlexSmolderBlush"],
+      ["player", "Good. Belief looks very good on you.", "dakota:bearFlexSmolderBlush"]
+    ],
+    next: "full_love_dakota_timed_prompt"
+  },
+  full_love_dakota_timed_prompt: {
+    label: "Sequoia Sunset",
+    background: () => ({ location: "sequoia", time: "sunset" }),
+    music: "dakotaFullLoveDesire",
+    lines: [
+      ["narrator", "Dakota's eyes stay on yours, no longer hiding. The shame is gone from his face, and what rushes in behind it is tender, hungry, and very sure.", "dakota:bearFlexSmolderBlush"],
+      ["dakota", "I spent years running from what I wanted. I am done running.", "dakota:walkingCloserSmolder"],
+      ["narrator", "He starts walking toward you, slow enough to be a question and direct enough to make every answer in your body arrive early.", "dakota:walkingCloserSmolder"]
+    ],
+    choices: [
+      {
+        label: "Let it happen.",
+        next: "full_love_dakota_good",
+        className: "timed-default",
+        timedDefault: true,
+        timeoutMs: 5000,
+        unlockCG: "dakotaFullLoveGood",
+        flags: { dakotaFullLoveGood: true }
+      },
+      {
+        label: "Make a very brave excuse about staying friends.",
+        next: "full_love_dakota_bad",
+        flags: { dakotaFullLoveFriend: true }
+      }
+    ]
+  },
+  full_love_dakota_good: {
+    label: "Sequoia Sunset",
+    background: () => ({ location: "black", time: "night" }),
+    music: "dakotaFullLoveDesire",
+    onEnter: () => {
+      state.flags.dakotaFullLoveGood = true;
+      if (!state.flags.brotherGoodFirst) state.flags.brotherGoodFirst = "dakota";
+    },
+    lines: [
+      ["narrator", "You do not move away."],
+      ["narrator", "Dakota reaches you, warm and solid and trembling with the relief of not being rejected by himself or by you."],
+      ["narrator", "The kiss starts soft, almost stunned. Then his arms close around you, and the whole grove seems to exhale into dark."],
+      ["narrator", "After that, the night turns private. There is laughter, heat, fur against your cheek, and Dakota learning that wanting can be gentle and still knock the breath out of both of you."],
+      ["narrator", "He keeps pausing like he expects the old shame to come back and punish him for wanting anything this much. Each time, you pull him close again until the lesson starts to stick."],
+      ["dakota", "Tell me if I get too intense.", null],
+      ["player", "Dakota, if anything, you have been holding back.", null],
+      ["narrator", "That breaks something open in him. A rough laugh catches in his chest, deepens, and rolls out through the trees as a roar that makes the dark shiver.", null, { audio: "dakotaRoar" }],
+      ["dakota", "Sorry. That was... new.", null],
+      ["player", "Do not apologize. I liked knowing the forest was impressed.", null],
+      ["narrator", "He laughs again, softer this time, then gathers you up with a careful strength that makes careful feel wildly unfair as a word."],
+      ["narrator", "The rest of the night finds its own rhythm: warm breath, low murmurs, your hands buried in his fur, his voice going gentle every time he checks that you are still with him."]
+    ],
+    next: "full_love_dakota_rest_line_fade"
+  },
+  full_love_dakota_rest_line_fade: {
+    label: "Sequoia Sunset",
+    background: () => ({ location: "black", time: "night" }),
+    music: "dakotaFullLoveDesire",
+    suppressSceneSfx: true,
+    lines: [
+      ["narrator", "The rest of the night finds its own rhythm: warm breath, low murmurs, your hands buried in his fur, his voice going gentle every time he checks that you are still with him.", null, { dialogueFadeOut: true, autoAdvanceMs: 1100, suppressAdvanceSfx: true }]
+    ],
+    next: "full_love_dakota_sleep_line_fade_in"
+  },
+  full_love_dakota_sleep_line_fade_in: {
+    label: "Sequoia Sunset",
+    background: () => ({ location: "black", time: "night" }),
+    music: "dakotaFullLoveDesire",
+    suppressSceneSfx: true,
+    lines: [
+      ["narrator", "Somewhere between his low voice, the smell of bark, and the impossible comfort of being held by someone who finally came home to himself, you fall asleep.", null, { dialogueSlowFade: true, fadeOutMusicUntilScene: { sceneId: "day_wake", fadeOutMs: 2600, resumeFadeMs: 5600 } }]
+    ],
+    next: "full_love_dakota_sleep_line_fade"
+  },
+  full_love_dakota_sleep_line_fade: {
+    label: "Sequoia Sunset",
+    background: () => ({ location: "black", time: "night" }),
+    music: "dakotaFullLoveDesire",
+    suppressSceneSfx: true,
+    lines: [
+      ["narrator", "Somewhere between his low voice, the smell of bark, and the impossible comfort of being held by someone who finally came home to himself, you fall asleep.", null, { dialogueFadeOut: true, autoAdvanceMs: 1200, suppressAdvanceSfx: true }]
+    ],
+    next: "full_love_dakota_morning_fade_in"
+  },
+  full_love_dakota_morning_fade_in: {
+    label: "Sequoia Morning",
+    background: () => ({ location: "sequoia", time: "daytime" }),
+    silenceMusic: true,
+    suppressSceneSfx: true,
+    character: null,
+    lines: [
+      ["narrator", "", null, { dialogueHidden: true, autoAdvanceMs: 1200, suppressAdvanceSfx: true }]
+    ],
+    next: "full_love_dakota_morning_birds_start"
+  },
+  full_love_dakota_morning_birds_start: {
+    label: "Sequoia Morning",
+    background: () => ({ location: "sequoia", time: "daytime" }),
+    ambient: "dakotaMorning",
+    silenceMusic: true,
+    suppressSceneSfx: true,
+    character: null,
+    lines: [
+      ["narrator", "", null, { dialogueHidden: true, autoAdvanceMs: 900, suppressAdvanceSfx: true }]
+    ],
+    next: "full_love_dakota_morning_return"
+  },
+  full_love_dakota_bad: {
+    label: "Sequoia Sunset",
+    background: () => ({ location: "sequoia", time: "sunset" }),
+    lines: [
+      ["player", "Dakota, I care about you. I really do. But I think tonight I need us to stay friends.", "dakota"],
+      ["narrator", "He stops immediately. The desire stays in his eyes, but so does respect, steady and unmistakable.", "dakota:walkingCloserSmolder"],
+      ["dakota", "Friends is not a punishment.", "dakota"],
+      ["dakota", "Especially not tonight.", "dakota:flattered"],
+      ["player", "You are not disappointed?", "dakota:flattered"],
+      ["dakota", "I am human enough to be a little disappointed and bear enough to survive it with dignity.", "dakota:flattered"],
+      ["player", "You found your shirt again.", "dakota"],
+      ["dakota", "A miracle almost as impressive as emotional maturity.", "dakota:laughing"],
+      ["narrator", "He walks you back laughing softly, free in a way that does not depend on what you choose next.", "dakota:laughing"]
+    ],
+    nextAction: completeFullLoveScene
+  },
+  full_love_dakota_morning_return: {
+    label: "Sequoia Morning",
+    background: () => ({ location: "sequoia", time: "daytime" }),
+    ambient: "dakotaMorning",
+    silenceMusic: true,
+    suppressSceneSfx: true,
+    character: null,
+    lines: [
+      ["narrator", "Morning comes green and gold through the Sequoia grove. No music, no kiosk, no dramatic thunder. Just birds, bark, and the slow return of your own thoughts.", null, { dialogueSlowFade: true }],
+      ["player", "Did I just get mauled by a bear? Is that a thing? Should I be honored or file a very confusing incident report?"],
+      ["narrator", "Dakota is still asleep nearby, enormous and peaceful, one paw tucked under his cheek like the world finally let him rest."],
+      ["player", "You do not wake him. Anyone who spent the night forgiving himself gets to sleep in."]
+    ],
+    next: "full_love_dakota_wake_line_fade"
+  },
+  full_love_dakota_wake_line_fade: {
+    label: "Sequoia Morning",
+    background: () => ({ location: "sequoia", time: "daytime" }),
+    ambient: "dakotaMorning",
+    silenceMusic: true,
+    suppressSceneSfx: true,
+    character: null,
+    lines: [
+      ["player", "You do not wake him. Anyone who spent the night forgiving himself gets to sleep in.", null, { dialogueFadeOut: true, autoAdvanceMs: 1150, suppressAdvanceSfx: true }]
+    ],
+    next: "full_love_dakota_departure_fade_to_black"
+  },
+  full_love_dakota_departure_fade_to_black: {
+    label: "Sequoia Morning",
+    background: () => ({ location: "black", time: "daytime" }),
+    ambient: "dakotaMorning",
+    silenceMusic: true,
+    suppressSceneSfx: true,
+    character: null,
+    lines: [
+      ["narrator", "", null, { dialogueHidden: true, autoAdvanceMs: 1250, suppressAdvanceSfx: true }]
+    ],
+    next: "full_love_dakota_morning_departure"
+  },
+  full_love_dakota_morning_departure: {
+    label: "Sequoia Morning",
+    background: () => ({ location: "black", time: "daytime" }),
+    ambient: "dakotaMorning",
+    silenceMusic: true,
+    suppressSceneSfx: true,
+    character: null,
+    lines: [
+      ["narrator", "You make your way back toward the lodge alone, taking care with every step until the grove gives way to the retreat path.", null, { dialogueSlowFade: true, startOverlayAmbient: "dakotaDryGrassWalk", startOverlayAmbientAfterMs: 1700 }],
+      ["narrator", "By the time the lodge comes into view, morning has fully arrived, and one suspiciously soft strand of fur is still clinging to your sleeve.", null, { stopOverlayAmbientOnAdvance: true }],
+      ["narrator", "You take a deep breath and open the door, ready to take on the day."]
+    ],
+    next: "full_love_dakota_door_line_fade"
+  },
+  full_love_dakota_door_line_fade: {
+    label: "Sequoia Morning",
+    background: () => ({ location: "black", time: "daytime" }),
+    ambient: "dakotaMorning",
+    silenceMusic: true,
+    suppressSceneSfx: true,
+    character: null,
+    lines: [
+      ["narrator", "You take a deep breath and open the door, ready to take on the day.", null, { dialogueFadeOut: true, autoAdvanceMs: 1150, suppressAdvanceSfx: true }]
+    ],
+    next: "full_love_dakota_open_lodge_door"
+  },
+  full_love_dakota_open_lodge_door: {
+    label: "Lodge Door",
+    background: () => ({ location: "black", time: "daytime" }),
+    ambient: "dakotaMorning",
+    silenceMusic: true,
+    suppressSceneSfx: true,
+    character: null,
+    lines: [
+      ["narrator", "", null, { dialogueHidden: true, audio: "door", autoAdvanceMs: 850, suppressAdvanceSfx: true }]
+    ],
+    next: "full_love_dakota_birds_fade"
+  },
+  full_love_dakota_birds_fade: {
+    label: "Lodge Door",
+    background: () => ({ location: "black", time: "daytime" }),
+    silenceMusic: true,
+    suppressSceneSfx: true,
+    character: null,
+    lines: [
+      ["narrator", "", null, { dialogueHidden: true, autoAdvanceMs: 1900, suppressAdvanceSfx: true }]
+    ],
+    nextAction: completeDakotaFullLoveMorning
   },
   transition_to_sunset_checkin: {
     label: "On The Route",
@@ -2277,6 +2686,10 @@ const audioEngine = {
   ambientTimerId: null,
   ambientFadeTimerId: null,
   ambientToken: 0,
+  overlayAmbientKey: null,
+  overlayAmbientPlayer: null,
+  overlayAmbientFadeTimerId: null,
+  overlayAmbientToken: 0,
   activeSfxPlayers: [],
   sfxChannels: {},
   enabled: true
@@ -2341,6 +2754,15 @@ function bindEvents() {
     input.value = score;
   });
   els.devScores.addEventListener("click", event => {
+    const brosButton = event.target.closest("[data-dev-bros-key]");
+    if (brosButton) {
+      event.preventDefault();
+      event.stopPropagation();
+      els.devPanel.classList.remove("open");
+      state.devPanelOpen = false;
+      startDevBrothersReconciliation(brosButton.dataset.devBrosKey);
+      return;
+    }
     const button = event.target.closest("[data-dev-full-love-key]");
     if (!button) return;
     event.preventDefault();
@@ -2442,7 +2864,9 @@ function renderScene(sceneId, options = {}) {
   const scene = scenes[sceneId];
   if (!scene) throw new Error("Missing scene: " + sceneId);
   window.clearTimeout(lineAutoAdvanceTimer);
+  window.clearTimeout(lineAmbientTimer);
   window.clearTimeout(establishingPauseTimer);
+  clearChoiceTimers();
   els.gameScreen.classList.remove("establishing-pause");
   state.sceneId = sceneId;
   state.lineIndex = options.keepLine ? state.lineIndex : 0;
@@ -2453,7 +2877,8 @@ function renderScene(sceneId, options = {}) {
   updateAmbient(scene.ambient || null);
   updateAudioTheme(background.location, null, {
     musicKey: resolveValue(scene.music) || null,
-    suppressSfx: options.suppressSceneSfx
+    silenceMusic: Boolean(scene.silenceMusic),
+    suppressSfx: options.suppressSceneSfx || Boolean(scene.suppressSceneSfx)
   });
   updateDevPanel();
   if (backgroundChanged && !options.keepLine && !options.skipEstablishingPause) {
@@ -2469,6 +2894,8 @@ function renderScene(sceneId, options = {}) {
 
 function renderCurrentLine() {
   window.clearTimeout(lineAutoAdvanceTimer);
+  window.clearTimeout(lineAmbientTimer);
+  clearChoiceTimers();
   const scene = scenes[state.sceneId];
   const lines = resolveValue(scene.lines) || [];
   const line = lines[state.lineIndex] || ["narrator", ""];
@@ -2488,6 +2915,7 @@ function renderCurrentLine() {
   els.lineText.textContent = formatText(line[1] || "");
   applyLinePresentation(lineOptions);
   playLineAudioCue(lineOptions);
+  scheduleLineAmbientCue(lineOptions);
   updateCopyControls();
   els.choices.innerHTML = "";
   els.choices.classList.remove("has-choices");
@@ -2495,37 +2923,42 @@ function renderCurrentLine() {
   els.gameScreen.classList.remove("choices-active");
   if (state.lineIndex >= lines.length - 1) renderChoices(resolveValue(scene.choices) || []);
   if (lineOptions.autoAdvanceMs) {
-    lineAutoAdvanceTimer = window.setTimeout(() => showNextDialogueLine(), lineOptions.autoAdvanceMs);
+    lineAutoAdvanceTimer = window.setTimeout(() => showNextDialogueLine({ suppressSfx: Boolean(lineOptions.suppressAdvanceSfx) }), lineOptions.autoAdvanceMs);
   }
 }
 
-function showNextDialogueLine() {
+function showNextDialogueLine(options = {}) {
   if (els.gameScreen.classList.contains("establishing-pause")) return;
   window.clearTimeout(lineAutoAdvanceTimer);
+  window.clearTimeout(lineAmbientTimer);
   const scene = scenes[state.sceneId];
   if (!scene) return;
   const lines = resolveValue(scene.lines) || [];
+  const currentLine = lines[state.lineIndex] || [];
+  const currentLineOptions = currentLine[3] || {};
+  if (currentLineOptions.stopOverlayAmbientOnAdvance) stopOverlayAmbient();
   if (state.lineIndex >= lines.length - 1) {
     if (scene.nextAction) {
       pushDevHistory();
-      playSfx("advance");
+      if (!options.suppressSfx) playSfx("advance");
       scene.nextAction();
     } else if (scene.next) {
       pushDevHistory();
-      playSfx("advance");
+      if (!options.suppressSfx) playSfx("advance");
       renderScene(scene.next);
     }
     return;
   }
   pushDevHistory();
   state.lineIndex += 1;
-  playSfx("advance");
+  if (!options.suppressSfx) playSfx("advance");
   renderCurrentLine();
 }
 
 function applyLinePresentation(options = {}) {
   els.gameScreen.classList.toggle("dialogue-hidden", Boolean(options.dialogueHidden));
   els.gameScreen.classList.toggle("dialogue-slow-fade", Boolean(options.dialogueSlowFade));
+  els.gameScreen.classList.toggle("dialogue-fade-out", Boolean(options.dialogueFadeOut));
   els.gameScreen.classList.toggle("sprite-drift-up", Boolean(options.spriteDriftUp));
   els.gameScreen.classList.toggle("sleeping-bag-rise", Boolean(options.sleepingBagRise));
   if (options.fadeOutSprite) {
@@ -2542,7 +2975,16 @@ function applyLinePresentation(options = {}) {
   }
 }
 
+function scheduleLineAmbientCue(options = {}) {
+  if (!options.startOverlayAmbient) return;
+  const delay = Number(options.startOverlayAmbientAfterMs) || 0;
+  lineAmbientTimer = window.setTimeout(() => {
+    startOverlayAmbient(options.startOverlayAmbient);
+  }, delay);
+}
+
 function renderChoices(choices) {
+  clearChoiceTimers();
   els.choices.innerHTML = "";
   els.choices.classList.toggle("has-choices", choices.length > 0);
   els.gameScreen.classList.toggle("choices-active", choices.length > 0);
@@ -2557,7 +2999,8 @@ function renderChoices(choices) {
     button.className = `choice${choice.className ? ` ${choice.className}` : ""}`;
     const preview = state.devChoicePreview ? choiceImpactHtml(choice) : "";
     const icon = choice.icon ? `<span class="choice-icon" aria-hidden="true">${escapeHtml(choice.icon)}</span>` : "";
-    button.innerHTML = `${icon}<span class="choice-label">${escapeHtml(choice.label)}</span>${preview}`;
+    const timer = choice.timedDefault ? `<span class="choice-timer" data-choice-timer></span>` : "";
+    button.innerHTML = `${icon}<span class="choice-label">${escapeHtml(choice.label)}</span>${timer}${preview}`;
     button.addEventListener("click", event => {
       event.stopPropagation();
       applyChoiceEffects(choice);
@@ -2569,6 +3012,36 @@ function renderChoices(choices) {
     }
     els.choices.appendChild(wrap);
   });
+  const defaultChoice = choices.find(choice => choice.timedDefault);
+  if (defaultChoice) startTimedChoice(defaultChoice);
+}
+
+function clearChoiceTimers() {
+  window.clearTimeout(choiceAutoSelectTimer);
+  window.clearInterval(choiceCountdownTimer);
+  choiceAutoSelectTimer = null;
+  choiceCountdownTimer = null;
+}
+
+function startTimedChoice(choice) {
+  const duration = Number(choice.timeoutMs) || 5000;
+  const startedAt = Date.now();
+  const update = () => {
+    const remainingMs = Math.max(0, duration - (Date.now() - startedAt));
+    const seconds = Math.ceil(remainingMs / 1000);
+    els.choices.querySelectorAll("[data-choice-timer]").forEach(timer => {
+      timer.textContent = `Auto-selecting in ${seconds}`;
+    });
+    els.choices.querySelectorAll(".timed-default").forEach(button => {
+      button.style.setProperty("--timer-progress", `${(remainingMs / duration) * 100}%`);
+    });
+  };
+  update();
+  choiceCountdownTimer = window.setInterval(update, 180);
+  choiceAutoSelectTimer = window.setTimeout(() => {
+    if (!els.choices.classList.contains("has-choices")) return;
+    applyChoiceEffects(choice);
+  }, duration);
 }
 
 function createCopyButton(text, label) {
@@ -2590,6 +3063,7 @@ function copyIconSvg() {
 }
 
 function applyChoiceEffects(choice) {
+  clearChoiceTimers();
   pushDevHistory();
   playSfx("choice");
   if (choice.feelings) addFeelings(choice.feelings);
@@ -2616,14 +3090,20 @@ function applyChoiceEffects(choice) {
   if (choice.next) renderScene(choice.next);
 }
 
-function startNewDay() {
+function startNewDay(options = {}) {
   state.timeOfDay = "daytime";
   state.pendingDestination = null;
   state.pendingEncounter = null;
+  if (!options.fadeBackdropFromCurrent) {
+    setBackdropInstant({ location: "lodge", time: "daytime" });
+  }
   els.gameScreen.classList.add("day-transitioning");
   showDayTransition(state.day, {
     onStart: () => renderScene("day_wake", { suppressSceneSfx: true })
   });
+  if (options.fadeBackdropFromCurrent) {
+    updateBackdrop({ location: "lodge", time: "daytime" });
+  }
 }
 
 function copyCurrentDialogueLine() {
@@ -2669,6 +3149,10 @@ function goBackOneStep() {
 
   window.clearTimeout(lineAutoAdvanceTimer);
   window.clearTimeout(establishingPauseTimer);
+  window.clearTimeout(startDayFromTransition.timer);
+  clearChoiceTimers();
+  showDayTransition.onStart = null;
+  stopMusicLoop();
   if (els.dayTransition) {
     els.dayTransition.classList.remove("active", "leaving");
     els.dayTransition.setAttribute("aria-hidden", "true");
@@ -2806,6 +3290,7 @@ function fullLoveSceneCharacterFor(sceneId) {
   if (sceneId.includes("_caleb_")) return "caleb";
   if (sceneId.includes("_sierra_")) return "sierra";
   if (sceneId.includes("_natai_")) return "natai";
+  if (sceneId.includes("_dakota_")) return "dakota";
   return null;
 }
 
@@ -2876,6 +3361,11 @@ function loveInterestChoices() {
 function startTravel(destination) {
   state.pendingDestination = destination;
   state.selectedRoute = destination;
+  if (shouldStartBrotherReconciliation()) {
+    state.pendingEncounter = null;
+    renderScene("brothers_reconciliation_start");
+    return;
+  }
   if (isFullLoveSceneAvailable(destination)) {
     startFullLoveScene(destination);
     return;
@@ -2930,6 +3420,30 @@ function startDevFullLoveScene(character) {
   toast(`${characters[character].shortName}'s full love scene loaded.`);
 }
 
+function startDevBrothersReconciliation(firstCharacter) {
+  if (!["dakota", "natai"].includes(firstCharacter)) return;
+  state.pendingDestination = null;
+  state.selectedRoute = null;
+  state.pendingFullLoveScene = null;
+  state.pendingEncounter = null;
+  state.timeOfDay = "daytime";
+  state.visitTime = null;
+  state.visitBeat = 0;
+  state.visitStartMood = null;
+  state.visitLastChoice = null;
+  state.visitLastReaction = null;
+  state.choiceReactionLines = null;
+  state.choiceReactionNext = null;
+  state.choiceReactionBackground = null;
+  state.choiceReactionLabel = null;
+  state.flags.brothersReconciled = false;
+  state.flags.brotherGoodFirst = firstCharacter;
+  state.flags.dakotaFullLoveGood = firstCharacter === "dakota";
+  state.flags.nataiFullLoveGood = firstCharacter === "natai";
+  renderScene("brothers_reconciliation_start");
+  toast(`${characters[firstCharacter].shortName}'s reconciliation variant loaded.`);
+}
+
 function completeFullLoveScene() {
   const completedTime = state.visitTime || state.timeOfDay;
   state.pendingFullLoveScene = null;
@@ -2970,6 +3484,38 @@ function completeNataiFullLoveMorning() {
   state.visitLastReaction = null;
   state.day += 1;
   startNewDay();
+}
+
+function completeDakotaFullLoveMorning() {
+  state.pendingFullLoveScene = null;
+  state.pendingDestination = null;
+  state.visitTime = null;
+  state.visitBeat = 0;
+  state.visitStartMood = null;
+  state.visitLastChoice = null;
+  state.visitLastReaction = null;
+  state.day += 1;
+  startNewDay({ fadeBackdropFromCurrent: true });
+}
+
+function shouldStartBrotherReconciliation() {
+  if (state.flags?.brothersReconciled) return false;
+  return Boolean(state.flags?.dakotaFullLoveGood || state.flags?.nataiFullLoveGood);
+}
+
+function completeBrotherReconciliation() {
+  state.flags.brothersReconciled = true;
+  addFeelings({ dakota: 3, natai: 3 });
+  unlockCG("brothersReconciled");
+  if (state.pendingDestination) {
+    if (isFullLoveSceneAvailable(state.pendingDestination)) {
+      startFullLoveScene(state.pendingDestination);
+      return;
+    }
+    continueToPendingDestination();
+    return;
+  }
+  renderScene("day_wake");
 }
 
 function completeJackFullLoveNight() {
@@ -3067,7 +3613,6 @@ function showDayTransition(day, options = {}) {
   els.gameScreen.classList.add("day-transitioning");
   els.dayTransition.classList.remove("active", "leaving");
   els.dayTransition.setAttribute("aria-hidden", "false");
-  void els.dayTransition.offsetWidth;
   els.dayTransition.classList.add("active");
   if (els.dayTransitionButton) els.dayTransitionButton.focus({ preventScroll: true });
 }
@@ -3322,11 +3867,15 @@ function updateDevPanel() {
     const fullLoveButton = hasImplementedFullLoveScene(key)
       ? `<button class="dev-full-love-btn" type="button" data-dev-full-love-key="${escapeHtml(key)}" aria-label="Go to ${name}'s full love scene">Full scene</button>`
       : "";
+    const brosButton = key === "dakota" || key === "natai"
+      ? `<button class="dev-bros-btn" type="button" data-dev-bros-key="${escapeHtml(key)}" aria-label="Go to ${name}'s brothers reconciliation variant">Bros</button>`
+      : "";
     return `
       <div class="dev-score">
         <span class="dev-score-name">
           <span>${name}</span>
           ${fullLoveButton}
+          ${brosButton}
         </span>
         <label class="dev-score-control" for="devFeeling-${escapeHtml(key)}">
           <input
@@ -3462,6 +4011,22 @@ function updateBackdrop(backgroundInput) {
   return true;
 }
 
+function setBackdropInstant(backgroundInput) {
+  const background = resolveBackground(backgroundInput);
+  const location = background.location || "lodge";
+  const time = background.time || state.timeOfDay || "daytime";
+  const key = `${location}.${time}`;
+  const src = backgroundCatalog[location]?.[time] || "";
+  const cssClass = backgroundClasses[location] || "bg-lodge";
+  const image = src ? `url("${src}")` : "none";
+  els.backdrop.className = `backdrop ${cssClass}`;
+  els.backdrop.style.backgroundImage = image;
+  els.backdrop.dataset.key = key;
+  els.backdropNext.className = `backdrop next ${cssClass}`;
+  els.backdropNext.style.backgroundImage = image;
+  els.backdropNext.dataset.key = key;
+}
+
 function updateSprite(characterCue) {
   const { key: characterKey, expression } = parseCharacterCue(characterCue);
   const character = characters[characterKey];
@@ -3476,7 +4041,7 @@ function updateSprite(characterCue) {
       els.sprite.removeAttribute("src");
       els.sprite.alt = "";
       els.sprite.dataset.spriteUrl = "";
-      els.sprite.classList.remove("sierra-stargazing-sprite", "sierra-stargazing-close", "natai-sleeping-bag-romantic", "natai-empty-sleeping-bag");
+      els.sprite.classList.remove("sierra-stargazing-sprite", "sierra-stargazing-close", "natai-sleeping-bag-romantic", "natai-empty-sleeping-bag", "dakota-natai-reconciliation");
     }, 620);
     return;
   }
@@ -3484,6 +4049,7 @@ function updateSprite(characterCue) {
   els.sprite.classList.toggle("sierra-stargazing-close", characterKey === "sierra" && expression === "stargazingStep4");
   els.sprite.classList.toggle("natai-sleeping-bag-romantic", characterKey === "natai" && expression === "sleepingBagRomantic");
   els.sprite.classList.toggle("natai-empty-sleeping-bag", characterKey === "natai" && expression === "emptySleepingBag");
+  els.sprite.classList.toggle("dakota-natai-reconciliation", characterKey === "dakotaNatai");
   const spriteUrl = new URL(sprite, window.location.href).href;
   const characterName = resolveName(character);
   if (els.sprite.dataset.spriteUrl === spriteUrl && !els.sprite.classList.contains("hidden")) {
@@ -3779,6 +4345,75 @@ function stopAmbient(immediate = false) {
   updateDevPanel();
 }
 
+function startOverlayAmbient(key) {
+  if (!audioEngine.enabled || !key) {
+    stopOverlayAmbient(true);
+    return;
+  }
+  if (audioEngine.overlayAmbientKey === key && audioEngine.overlayAmbientPlayer) return;
+  stopOverlayAmbient(true);
+  const config = ambientTracks[key];
+  if (!config) return;
+  const overlayToken = audioEngine.overlayAmbientToken + 1;
+  audioEngine.overlayAmbientToken = overlayToken;
+  audioEngine.overlayAmbientKey = key;
+  const player = new Audio(config.src);
+  player.loop = true;
+  player.volume = config.fadeMs ? 0 : config.volume;
+  audioEngine.overlayAmbientPlayer = player;
+  trackSfxPlayer(player, config.src, "ambient");
+  player.play().then(() => {
+    if (config.fadeMs) fadeOverlayAmbient(player, config.volume, config.fadeMs, overlayToken);
+    updateDevPanel();
+  }).catch(() => untrackSfxPlayer(player));
+}
+
+function fadeOverlayAmbient(player, targetVolume, duration, overlayToken) {
+  window.clearInterval(audioEngine.overlayAmbientFadeTimerId);
+  const startVolume = player.volume;
+  const startTime = performance.now();
+  audioEngine.overlayAmbientFadeTimerId = window.setInterval(() => {
+    if (audioEngine.overlayAmbientToken !== overlayToken || audioEngine.overlayAmbientPlayer !== player) {
+      window.clearInterval(audioEngine.overlayAmbientFadeTimerId);
+      audioEngine.overlayAmbientFadeTimerId = null;
+      return;
+    }
+    const progress = Math.min(1, (performance.now() - startTime) / duration);
+    player.volume = startVolume + (targetVolume - startVolume) * progress;
+    if (progress >= 1) {
+      window.clearInterval(audioEngine.overlayAmbientFadeTimerId);
+      audioEngine.overlayAmbientFadeTimerId = null;
+    }
+  }, 16);
+}
+
+function stopOverlayAmbient(immediate = false) {
+  audioEngine.overlayAmbientToken += 1;
+  window.clearInterval(audioEngine.overlayAmbientFadeTimerId);
+  audioEngine.overlayAmbientFadeTimerId = null;
+  if (!audioEngine.overlayAmbientPlayer) {
+    audioEngine.overlayAmbientKey = null;
+    return;
+  }
+  const player = audioEngine.overlayAmbientPlayer;
+  const config = ambientTracks[audioEngine.overlayAmbientKey];
+  audioEngine.overlayAmbientKey = null;
+  audioEngine.overlayAmbientPlayer = null;
+  if (!immediate && config?.stopFadeMs && audioEngine.enabled) {
+    fadeDetachedPlayer(player, 0, config.stopFadeMs, () => {
+      player.pause();
+      player.currentTime = 0;
+      untrackSfxPlayer(player);
+    });
+    updateDevPanel();
+    return;
+  }
+  player.pause();
+  player.currentTime = 0;
+  untrackSfxPlayer(player);
+  updateDevPanel();
+}
+
 function stopSfxChannel(channel) {
   const player = audioEngine.sfxChannels[channel];
   if (!player) return;
@@ -3826,6 +4461,15 @@ function updateAudioTheme(locationKey, characterCue, options = {}) {
   audioEngine.characterKey = parseCharacterCue(characterCue).key || null;
   audioEngine.musicOverrideKey = options.musicKey || null;
   if (!audioEngine.enabled) return;
+  if (options.silenceMusic) {
+    audioEngine.musicSuppressedLocationKey = nextLocationKey;
+    audioEngine.musicSuppressedUntilSceneId = null;
+    ensureAudio();
+    fadeOutCurrentMusic(900);
+    if (options.suppressSfx) return;
+    playSfx(characterCue ? "character" : "scene");
+    return;
+  }
   ensureAudio();
   if (!audioEngine.musicSuppressedLocationKey) restartMusicLoop();
   if (options.suppressSfx) return;
@@ -3845,6 +4489,7 @@ function stopMusicLoop() {
   audioEngine.musicSuppressedUntilSceneId = null;
   audioEngine.musicResumeFadeMs = null;
   stopAmbient(true);
+  stopOverlayAmbient(true);
   Object.keys(audioEngine.sfxChannels).forEach(stopSfxChannel);
   stopTrackedSfxPlayers();
   audioEngine.trackChangeToken += 1;

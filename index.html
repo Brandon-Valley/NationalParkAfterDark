@@ -289,6 +289,14 @@
       transform: translateY(48px) scale(.985);
     }
 
+    .sprite.dakota-natai-reconciliation {
+      height: min(82vh, 1040px);
+      width: auto;
+      max-width: min(140vw, 1320px);
+      transform: translateY(clamp(110px, 14vh, 190px)) scale(1);
+      transform-origin: center bottom;
+    }
+
     #gameScreen.prop-visible .sprite.natai-sleeping-bag-romantic {
       transform: translate(-13vw, 44px) scale(.84);
     }
@@ -334,6 +342,10 @@
       animation: dialogueSlowReveal 1.7s ease forwards;
     }
 
+    #gameScreen.dialogue-fade-out .dialogue {
+      animation: dialogueSlowExit 1.1s ease forwards;
+    }
+
     #gameScreen.sprite-drift-up .sprite.sierra-stargazing-close {
       animation: sierraSilentExit 4.1s ease-in forwards;
     }
@@ -345,6 +357,11 @@
     @keyframes dialogueSlowReveal {
       from { opacity: 0; }
       to { opacity: 1; }
+    }
+
+    @keyframes dialogueSlowExit {
+      from { opacity: 1; }
+      to { opacity: 0; }
     }
 
     @keyframes lightningFlash {
@@ -558,6 +575,40 @@
       width: 100%;
       height: 100%;
       padding-right: 48px;
+    }
+
+    .choice.timed-default {
+      position: relative;
+      overflow: hidden;
+      background:
+        linear-gradient(135deg, rgba(255, 220, 152, .98), rgba(197, 83, 67, .98));
+      box-shadow:
+        0 10px 24px rgba(0, 0, 0, .26),
+        inset 0 0 0 2px rgba(255, 247, 226, .36);
+    }
+
+    .choice.timed-default::before {
+      content: "";
+      position: absolute;
+      inset: 0 auto 0 0;
+      width: var(--timer-progress, 100%);
+      background: rgba(255, 246, 218, .28);
+      pointer-events: none;
+      transition: width .18s linear;
+    }
+
+    .choice.timed-default .choice-label,
+    .choice.timed-default .choice-timer {
+      position: relative;
+      z-index: 1;
+    }
+
+    .choice-timer {
+      display: block;
+      margin-top: 4px;
+      font-size: 12px;
+      font-weight: 950;
+      color: rgba(61, 26, 14, .82);
     }
 
     .choice-label {
@@ -1186,13 +1237,11 @@
       text-align: center;
     }
 
-    .dev-full-love-btn {
+    .dev-full-love-btn,
+    .dev-bros-btn {
       min-height: 20px;
       padding: 2px 5px;
       border-radius: 5px;
-      border: 1px solid rgba(157, 47, 37, .28);
-      background: linear-gradient(180deg, rgba(255, 240, 224, .98), rgba(232, 176, 134, .95));
-      color: #7b2f24;
       box-shadow: none;
       font-size: 10px;
       font-weight: 900;
@@ -1200,7 +1249,20 @@
       white-space: nowrap;
     }
 
-    .dev-full-love-btn:hover {
+    .dev-full-love-btn {
+      border: 1px solid rgba(157, 47, 37, .28);
+      background: linear-gradient(180deg, rgba(255, 240, 224, .98), rgba(232, 176, 134, .95));
+      color: #7b2f24;
+    }
+
+    .dev-bros-btn {
+      border: 1px solid rgba(63, 115, 92, .34);
+      background: linear-gradient(180deg, rgba(230, 248, 236, .98), rgba(164, 207, 177, .95));
+      color: #295a44;
+    }
+
+    .dev-full-love-btn:hover,
+    .dev-bros-btn:hover {
       filter: brightness(1.06);
     }
 
@@ -1286,6 +1348,10 @@
       .sprite {
         height: min(56vh, 520px);
         max-width: min(92vw, 430px);
+      }
+      .sprite.dakota-natai-reconciliation {
+        height: min(68vh, 710px);
+        max-width: min(161.5vw, 910px);
       }
       .line {
         font-size: 17px;

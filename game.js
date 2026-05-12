@@ -57,6 +57,7 @@ let devHistory = [];
 let quickRestoreInputTimer = null;
 let dialogueTypewriterTimer = null;
 let dialogueTypewriterState = null;
+let activeLineTransition = null;
 let shouldAnimateNextDialogueEntry = false;
 let nextDialogueEntryDelayMs = 0;
 let nextDialogueRevealDelayMs = 0;
@@ -3240,11 +3241,14 @@ function renderCurrentLine() {
   window.clearTimeout(lineAutoAdvanceTimer);
   window.clearTimeout(lineAmbientTimer);
   clearDialogueTypewriter();
+  clearLineTransition();
   clearChoiceTimers();
   const scene = scenes[state.sceneId];
   const lines = resolveValue(scene.lines) || [];
   const line = lines[state.lineIndex] || ["narrator", ""];
   const lineOptions = line[3] || {};
+  const deferTransitionPresentation = shouldDeferLineTransitionPresentation(lineOptions);
+  const waitForAdvanceToStartTransition = shouldWaitForAdvanceToStartLineTransition(lineOptions);
   const speakerKey = line[0] || "narrator";
   const speaker = characters[speakerKey] || characters.narrator;
   // Establishing shots are a hard story rule: a character sprite only appears
@@ -3257,7 +3261,7 @@ function renderCurrentLine() {
   els.speakerName.textContent = resolveName(speaker);
   els.speakerName.style.color = speaker.color || "#f3b85b";
   els.sceneLabel.textContent = resolveValue(scene.label) || state.sceneId;
-  applyLinePresentation(lineOptions);
+  applyLinePresentation(lineOptions, { deferTransitionEffects: deferTransitionPresentation });
   applyDialogueEntryAnimation(lineOptions);
   playLineAudioCue(lineOptions);
   scheduleLineAmbientCue(lineOptions);
@@ -3269,6 +3273,13 @@ function renderCurrentLine() {
   revealDialogueLine(formatText(line[1] || ""), lineOptions, {
     speakerKey,
     onComplete: () => {
+      if (deferTransitionPresentation && !waitForAdvanceToStartTransition) {
+        startLineTransitionPresentation(lineOptions);
+      }
+      if (waitForAdvanceToStartTransition) {
+        queueLineTransition(lineOptions);
+        return;
+      }
       if (state.lineIndex >= lines.length - 1) renderChoices(resolveValue(scene.choices) || []);
       if (lineOptions.autoAdvanceMs) {
         lineAutoAdvanceTimer = window.setTimeout(() => showNextDialogueLine({ suppressSfx: Boolean(lineOptions.suppressAdvanceSfx) }), lineOptions.autoAdvanceMs);
@@ -3421,12 +3432,75 @@ function clearDialogueTypewriter() {
   setDialogueReadyMarker(false);
 }
 
+function hasLineTransitionPresentation(options = {}) {
+  return Boolean(
+    options.dialogueSlowFade ||
+    options.dialogueFadeOut ||
+    options.fadeOutSprite ||
+    options.fadeOutProp ||
+    options.fadeOutMusicUntilScene
+  );
+}
+
+function shouldDeferLineTransitionPresentation(options = {}) {
+  return !options.dialogueHidden && hasLineTransitionPresentation(options);
+}
+
+function shouldWaitForAdvanceToStartLineTransition(options = {}) {
+  return shouldDeferLineTransitionPresentation(options) && Boolean(options.autoAdvanceMs);
+}
+
+function queueLineTransition(lineOptions = {}) {
+  activeLineTransition = {
+    sceneId: state.sceneId,
+    lineIndex: state.lineIndex,
+    lineOptions,
+    started: false
+  };
+}
+
+function clearLineTransition() {
+  activeLineTransition = null;
+}
+
+function startQueuedLineTransition(options = {}) {
+  const transition = activeLineTransition;
+  if (!transition) return false;
+  if (transition.sceneId !== state.sceneId || transition.lineIndex !== state.lineIndex) {
+    clearLineTransition();
+    return false;
+  }
+  if (transition.started) return !options.transitionAutoAdvance;
+
+  transition.started = true;
+  setDialogueReadyMarker(false);
+  startLineTransitionPresentation(transition.lineOptions);
+
+  const autoAdvanceMs = Number(transition.lineOptions.autoAdvanceMs) || 0;
+  if (autoAdvanceMs > 0) {
+    lineAutoAdvanceTimer = window.setTimeout(() => {
+      clearLineTransition();
+      showNextDialogueLine({
+        forceAdvance: true,
+        transitionAutoAdvance: true,
+        suppressSfx: Boolean(transition.lineOptions.suppressAdvanceSfx)
+      });
+    }, autoAdvanceMs);
+    return true;
+  }
+
+  clearLineTransition();
+  return false;
+}
+
 function setDialogueReadyMarker(isReady) {
   els.dialogueBox.classList.toggle("ready-to-advance", Boolean(isReady));
 }
 
 function shouldShowDialogueAdvanceMarker(lineOptions = {}) {
-  if (lineOptions.dialogueHidden || lineOptions.autoAdvanceMs) return false;
+  if (lineOptions.dialogueHidden) return false;
+  if (shouldWaitForAdvanceToStartLineTransition(lineOptions)) return true;
+  if (lineOptions.autoAdvanceMs) return false;
   const scene = scenes[state.sceneId];
   if (!scene) return false;
   const lines = resolveValue(scene.lines) || [];
@@ -3439,9 +3513,11 @@ function shouldShowDialogueAdvanceMarker(lineOptions = {}) {
 function showNextDialogueLine(options = {}) {
   if (els.gameScreen.classList.contains("establishing-pause")) return;
   if (!options.forceAdvance && completeDialogueTypewriter()) return;
+  if (!options.transitionAutoAdvance && startQueuedLineTransition(options)) return;
   window.clearTimeout(lineAutoAdvanceTimer);
   window.clearTimeout(lineAmbientTimer);
   clearDialogueTypewriter();
+  clearLineTransition();
   const scene = scenes[state.sceneId];
   if (!scene) return;
   const lines = resolveValue(scene.lines) || [];
@@ -3468,8 +3544,18 @@ function showNextDialogueLine(options = {}) {
   renderCurrentLine();
 }
 
-function applyLinePresentation(options = {}) {
+function applyLinePresentation(options = {}, config = {}) {
   els.gameScreen.classList.toggle("dialogue-hidden", Boolean(options.dialogueHidden));
+  els.gameScreen.classList.remove("dialogue-slow-fade", "dialogue-fade-out", "sprite-drift-up", "sleeping-bag-rise");
+  if (!config.deferTransitionEffects) startLineTransitionPresentation(options);
+  els.gameScreen.classList.remove("screen-flash");
+  if (options.screenFlash) {
+    void els.gameScreen.offsetWidth;
+    els.gameScreen.classList.add("screen-flash");
+  }
+}
+
+function startLineTransitionPresentation(options = {}) {
   els.gameScreen.classList.toggle("dialogue-slow-fade", Boolean(options.dialogueSlowFade));
   els.gameScreen.classList.toggle("dialogue-fade-out", Boolean(options.dialogueFadeOut));
   els.gameScreen.classList.toggle("sprite-drift-up", Boolean(options.spriteDriftUp));
@@ -3481,11 +3567,6 @@ function applyLinePresentation(options = {}) {
     requestAnimationFrame(() => els.propSprite.classList.add("hidden"));
   }
   if (options.fadeOutMusicUntilScene) fadeOutMusicUntilScene(options.fadeOutMusicUntilScene);
-  els.gameScreen.classList.remove("screen-flash");
-  if (options.screenFlash) {
-    void els.gameScreen.offsetWidth;
-    els.gameScreen.classList.add("screen-flash");
-  }
 }
 
 function scheduleLineAmbientCue(options = {}) {

@@ -49,6 +49,7 @@ let spriteLoadToken = 0;
 let lineAutoAdvanceTimer = null;
 let lineAmbientTimer = null;
 let establishingPauseTimer = null;
+let establishingRenderTimer = null;
 let choiceAutoSelectTimer = null;
 let choiceCountdownTimer = null;
 const DEV_HISTORY_LIMIT = 100;
@@ -76,6 +77,12 @@ const DIALOGUE_TYPEWRITER = {
   ellipsisPauseMs: 430,
   newlinePauseMs: 270
 };
+
+const ESTABLISHING_PAUSE_MS = 1080;
+const ESTABLISHING_DIALOGUE_RENDER_MS = 920;
+const ESTABLISHING_DIALOGUE_REVEAL_EXTRA_MS = 760;
+const DAY_TRANSITION_EXIT_MS = 980;
+const DAY_TRANSITION_EXIT_WITH_SCENE_MS = 1250;
 
 const QUICK_RESTORE_PREFIX = "NPAD1:";
 const QUICK_RESTORE_STATE_KEYS = [
@@ -346,20 +353,47 @@ const sfxTracks = {
   dakotaRoar: { src: "assets/audio/sfx/animals/bear_roar.mp3", volume: 0.62 },
   thunderFlash: { src: "assets/audio/sfx/ambient/thunder_flash.wav", volume: 0.76 },
   magicTransform: { src: "assets/audio/sfx/chimey/Chime_LevelUp.mp3", volume: 0.74 },
-  busApproachStop: { src: "assets/audio/sfx/bus/bus_approach_stop.mp3", volume: 0.62, channel: "bus" },
-  busIdle: { src: "assets/audio/sfx/bus/bus_idle.mp3", volume: 0.45, channel: "bus" },
-  busDeparture: { src: "assets/audio/sfx/bus/bus_departure.mp3", volume: 0.62, channel: "bus" }
+  busApproachStop: { src: "assets/audio/sfx/bus/bus_approach_stop.mp3", volume: 0.24, channel: "bus" },
+  busIdle: { src: "assets/audio/sfx/bus/bus_idle.mp3", volume: 0.18, channel: "bus" },
+  busDeparture: { src: "assets/audio/sfx/bus/bus_departure.mp3", volume: 0.24, channel: "bus" }
 };
 
 const ambientTracks = {
-  bus: { src: "assets/audio/sfx/bus/school_bus_country_road_loop.ogg", volume: 0.32, delayMs: 1400, fadeMs: 2600 },
+  bus: { src: "assets/audio/sfx/bus/school_bus_country_road_loop.ogg", volume: 0.12, delayMs: 1400, fadeMs: 2600 },
   rainForest: { src: "assets/audio/sfx/ambient/rain_forest_loop.ogg", volume: 0.34, fadeMs: 1800, stopFadeMs: 1600 },
   rainRoof: { src: "assets/audio/sfx/ambient/rain_roof_loop.mp3", volume: 0.42, fadeMs: 1800, stopFadeMs: 3600 },
-  morningBirds: { src: "assets/audio/sfx/ambient/morning_birds_loop.wav", volume: 0.34, fadeMs: 2200, stopFadeMs: 1800 },
+  morningBirds: { src: "assets/audio/sfx/ambient/subtle_morning_birds.wav", volume: 0.3, fadeMs: 2200, stopFadeMs: 1800 },
   nataiMorning: { src: "assets/audio/sfx/ambient/subtle_morning_birds.wav", volume: 0.3, fadeMs: 1800, stopFadeMs: 2400 },
   dakotaMorning: { src: "assets/audio/sfx/ambient/subtle_morning_birds.wav", volume: 0.3, fadeMs: 1800, stopFadeMs: 2400 },
-  dakotaDryGrassWalk: { src: "assets/audio/sfx/ambient/dry_grass_walking_late_night.mp3", volume: 0.3, fadeMs: 1800, stopFadeMs: 1700 }
+  dryGrassWalk: { src: "assets/audio/sfx/ambient/dry_grass_walking_late_night.mp3", volume: 0.26, fadeMs: 1600, stopFadeMs: 1600 }
 };
+
+function walkingAmbient(options = {}) {
+  return {
+    ...options,
+    startOverlayAmbient: "dryGrassWalk",
+    startOverlayAmbientAfterMs: options.startOverlayAmbientAfterMs ?? 250,
+    stopOverlayAmbientOnAdvance: true
+  };
+}
+
+function shouldUseDryGrassWalk(character) {
+  return ["sierra", "dakota", "natai"].includes(character);
+}
+
+function lineSuggestsWalking(line) {
+  const text = Array.isArray(line) ? line[1] || "" : "";
+  return /\b(walks?|walking|leads?|trail|path|pace|steps?)\b/i.test(text);
+}
+
+function addWalkingAmbientToLine(line) {
+  if (!Array.isArray(line)) return line;
+  return [line[0], line[1], line[2], walkingAmbient(line[3] || {})];
+}
+
+function addWalkingAmbientForCharacter(character, line) {
+  return shouldUseDryGrassWalk(character) && lineSuggestsWalking(line) ? addWalkingAmbientToLine(line) : line;
+}
 
 const cgLibrary = {
   jackCabin: { title: "Rain-Soaked Cabin", image: "assets/backgrounds/special/jack/cabin_interior_night.png" },
@@ -1042,6 +1076,7 @@ const scenes = {
   intro_checkin_arrival: {
     label: "Check-In",
     background: () => ({ location: "checkIn", time: "daytime" }),
+    suppressSceneSfx: true,
     lines: [
       ["narrator", "Daylight spills across the outdoor check-in desk, all pine shadows, fresh coffee, and a kiosk humming with suspicious confidence."],
       ["player", "Hello? Retreat person? Person who knows where retreat people go?"],
@@ -1089,7 +1124,7 @@ const scenes = {
     label: "The Path",
     background: () => ({ location: "black", time: "daytime" }),
     lines: [
-      ["narrator", "The path from check-in slips under the trees and keeps going longer than you expect."],
+      ["narrator", "The path from check-in slips under the trees and keeps going longer than you expect.", null, walkingAmbient()],
       ["narrator", "Gravel gives way to packed earth, then to wide stone steps softened by moss at the edges."],
       ["player", "For a place built around first impressions, this retreat is really making me earn the front door."],
       ["narrator", "At last, the trees open around a broad timber lodge with cedar siding, a deep wraparound porch, and tall windows glowing warm behind green-painted trim."],
@@ -1292,7 +1327,7 @@ const scenes = {
     label: "Yosemite",
     background: () => ({ location: "yosemite", time: "sunset" }),
     lines: [
-      ["narrator", "Sierra leads you toward a small overlook where waterfall mist turns gold at the edges, checking over her shoulder like she knows exactly what that does to you.", "sierra"],
+      ["narrator", "Sierra leads you toward a small overlook where waterfall mist turns gold at the edges, checking over her shoulder like she knows exactly what that does to you.", "sierra", walkingAmbient()],
       ["sierra", "Most people aim at the biggest thing in front of them. Yosemite rewards peripheral vision. I reward eye contact.", "sierra:sly"],
       ["player", "That sounds suspiciously like life advice.", "sierra:laughing"]
     ],
@@ -1307,7 +1342,7 @@ const scenes = {
     label: "Yosemite",
     background: () => ({ location: "yosemite", time: "sunset" }),
     lines: [
-      ["narrator", "The trail steepens for one last push. Sierra stops at the top and waits, pretending not to check whether you are winded or flustered.", "sierra"],
+      ["narrator", "The trail steepens for one last push. Sierra stops at the top and waits, pretending not to check whether you are winded or flustered.", "sierra", walkingAmbient()],
       ["sierra", "Final test. What do you do when a place is bigger than your ability to describe it? Careful. I am judging the answer and the delivery.", "sierra:sly"],
       ["player", "That feels like a trap with excellent scenery.", "sierra:laughing"]
     ],
@@ -1321,7 +1356,7 @@ const scenes = {
     label: "Yosemite",
     background: () => ({ location: "yosemite", time: "sunset" }),
     lines: [
-      ["narrator", "Sierra walks you back down as sunset thins along the trail, her pace finally easy enough to feel companionable and still deliberately hard to ignore.", "sierra"],
+      ["narrator", "Sierra walks you back down as sunset thins along the trail, her pace finally easy enough to feel companionable and still deliberately hard to ignore.", "sierra", walkingAmbient()],
       ["sierra", "That is the Yosemite sampler. Cliffs, water, humility, and one charming guide making heroic sacrifices for your character development.", "sierra:sly"],
       ["player", "And cardio.", "sierra:laughing"],
       ["sierra", "Cardio is how the park knows you meant it. Blushing is how I know you were listening.", "sierra:sly"]
@@ -1382,7 +1417,7 @@ const scenes = {
     label: "Red Rock",
     background: () => ({ location: "zion", time: "night" }),
     lines: [
-      ["narrator", "Natai leads you along a pale ribbon of trail where the canyon walls hold the day's heat like a memory.", "natai"],
+      ["narrator", "Natai leads you along a pale ribbon of trail where the canyon walls hold the day's heat like a memory.", "natai", walkingAmbient()],
       ["natai", "People call deserts empty when they do not know how to read quiet.", "natai:grumpy"],
       ["player", "And you read it fluently?", "natai"]
     ],
@@ -1408,7 +1443,7 @@ const scenes = {
     label: "Red Rock",
     background: () => ({ location: "zion", time: "night" }),
     lines: [
-      ["narrator", "Natai walks you back through the dark with the quiet confidence of someone who knows every stone by reputation.", "natai"],
+      ["narrator", "Natai walks you back through the dark with the quiet confidence of someone who knows every stone by reputation.", "natai", walkingAmbient()],
       ["natai", "That is enough canyon for a first night. Any more and you will start assigning symbolism to boulders.", "natai:grumpy"],
       ["player", "This one does look judgmental.", "natai"],
       ["natai", "It is. It also has better timing than most people.", "natai:grumpy"]
@@ -1817,7 +1852,7 @@ const scenes = {
       ["jack", "Hi.", "jack:blushing"],
       ["player", "Hi.", "jack:blushing"],
       ["jack", "I was going to make breakfast sound casual, but I am too happy and I think the eggs would know.", "jack:laughing"],
-      ["narrator", "He walks you back to the lodge through clean morning air, hand warm around yours until the lobby doors come into view."],
+      ["narrator", "He walks you back to the lodge through clean morning air, hand warm around yours until the lobby doors come into view.", null, walkingAmbient()],
       ["narrator", "By the time you step inside Viral Vista Lodge, the normal morning rhythm is waiting, though nothing in your chest feels normal at all."]
     ],
     nextAction: completeJackFullLoveMorning
@@ -1942,7 +1977,7 @@ const scenes = {
       ["player", "Like what?", "sierra:blushing"],
       ["sierra", "Like it was easy.", "sierra:blushing"],
       ["narrator", "She turns her flashlight toward a narrow side trail and offers you her hand.", "sierra"],
-      ["sierra", "Come on. I want to show you the place I go when Yosemite gets too big to explain.", "sierra"]
+      ["sierra", "Come on. I want to show you the place I go when Yosemite gets too big to explain.", "sierra", walkingAmbient()]
     ],
     next: "full_love_sierra_meadow"
   },
@@ -1951,7 +1986,7 @@ const scenes = {
     background: () => ({ location: "yosemiteMeadowNight", time: "night" }),
     music: "sierraFullLoveMeadow",
     lines: [
-      ["narrator", "The trail opens into a high meadow washed in moonlight. Wildflowers silver at the edges. Grass bends softly under the night air. Far across the valley, cliffs rise huge and quiet, and the waterfall glows pale against the dark."],
+      ["narrator", "The trail opens into a high meadow washed in moonlight. Wildflowers silver at the edges. Grass bends softly under the night air. Far across the valley, cliffs rise huge and quiet, and the waterfall glows pale against the dark.", null, walkingAmbient()],
       ["player", "Oh."],
       ["player", "This is beautiful."],
       ["narrator", "The meadow seems to make room around you: grass, stars, cold stone, warm breath, and the impossible feeling of being somewhere meant to be kept quiet."],
@@ -2053,7 +2088,7 @@ const scenes = {
       ["narrator", "Morning comes softly, and the meadow stays behind the dark a little longer."],
       ["narrator", "Sierra is still asleep beside you, one hand tucked in your sleeve, peaceful in a way that makes your chest go quiet."],
       ["player", "You do not wake her. You brush the grass from her hair, kiss her forehead, and leave her resting under the first warm light of Yosemite."],
-      ["narrator", "By the time you reach the lodge lobby, morning has fully arrived, and something tender has followed you back with it."]
+      ["narrator", "By the time you reach the lodge lobby, morning has fully arrived, and something tender has followed you back with it.", null, walkingAmbient()]
     ],
     nextAction: completeSierraFullLoveMorning
   },
@@ -2079,11 +2114,11 @@ const scenes = {
       ["sierra", "I know.", "sierra:stargazingStep4"],
       ["narrator", "She stands and brushes grass from her sleeves with careful hands. The meadow remains beautiful, which somehow makes it worse."],
       ["sierra", "That is the problem, I think. You did not mean to.", "sierra:stargazingStep4"],
-      ["narrator", "She walks you back to the main trail in silence. At the route marker, her flashlight pauses on the path toward the lodge."],
+      ["narrator", "She walks you back to the main trail in silence. At the route marker, her flashlight pauses on the path toward the lodge.", null, walkingAmbient()],
       ["sierra", "You can find your way from here.", "sierra:grumpy"],
       ["player", "I can.", "sierra:grumpy"],
       ["narrator", "She nods once and leaves before either of you can make the night kinder than it was."],
-      ["player", "The walk back feels longer than it should."]
+      ["player", "The walk back feels longer than it should.", null, walkingAmbient()]
     ],
     nextAction: completeFullLoveScene
   },
@@ -2112,7 +2147,7 @@ const scenes = {
     background: () => ({ location: "zionClearingNight", time: "night" }),
     music: "nataiFullLoveCanyon",
     lines: [
-      ["narrator", "Natai leads you off the main route, lantern low, through a narrow turn in the brush where the canyon suddenly opens into a sheltered shelf of sand and stone."],
+      ["narrator", "Natai leads you off the main route, lantern low, through a narrow turn in the brush where the canyon suddenly opens into a sheltered shelf of sand and stone.", null, walkingAmbient()],
       ["narrator", "The clearing waits under moonlight: flat ground, warm lanterns, two enamel cups on a rock, and enough sky overhead to make the stars feel close."],
       ["player", "Did you make a romantic checklist?", "natai"],
       ["natai", "No.", "natai"],
@@ -2261,7 +2296,7 @@ const scenes = {
       ["narrator", "Morning comes pale and warm over Zion, but the sleeping bag keeps the last of the night tucked close a little longer.", null, { dialogueSlowFade: true }],
       ["narrator", "Natai is still asleep beside you, hair loose and face unguarded in a way they would probably call a security breach."],
       ["player", "You let them sleep. You leave the checklist weighted under the thermos with one note: Route decision approved."],
-      ["narrator", "By the time you reach the lodge lobby, morning has fully arrived, and the desert seems to have sent some warmth back with you."]
+      ["narrator", "By the time you reach the lodge lobby, morning has fully arrived, and the desert seems to have sent some warmth back with you.", null, walkingAmbient()]
     ],
     nextAction: completeNataiFullLoveMorning
   },
@@ -2290,7 +2325,7 @@ const scenes = {
       ["narrator", "Natai does not get up. They remain exactly where they are, half inside the first sleeping bag, watching you process the arrival of the second one with painful composure.", "natai:sleepingBagRomantic", { propCue: "natai:emptySleepingBag" }],
       ["natai", "The route marker is downhill. The path is lit.", "natai:sleepingBagRomantic", { propCue: "natai:emptySleepingBag" }],
       ["player", "Great. Perfect. Love a well-lit retreat.", "natai:sleepingBagRomantic", { propCue: "natai:emptySleepingBag" }],
-      ["narrator", "You go home to the lodge lobby embarrassed, a little mad, and newly suspicious of all rolled camping gear.", "natai:sleepingBagRomantic", { propCue: "natai:emptySleepingBag" }]
+      ["narrator", "You go home to the lodge lobby embarrassed, a little mad, and newly suspicious of all rolled camping gear.", "natai:sleepingBagRomantic", walkingAmbient({ propCue: "natai:emptySleepingBag" })]
     ],
     next: "full_love_natai_bad_exit"
   },
@@ -2513,7 +2548,7 @@ const scenes = {
       ["dakota", "I am human enough to be a little disappointed and bear enough to survive it with dignity.", "dakota:flattered"],
       ["player", "You found your shirt again.", "dakota"],
       ["dakota", "A miracle almost as impressive as emotional maturity.", "dakota:laughing"],
-      ["narrator", "He walks you back laughing softly, free in a way that does not depend on what you choose next.", "dakota:laughing"]
+      ["narrator", "He walks you back laughing softly, free in a way that does not depend on what you choose next.", "dakota:laughing", walkingAmbient()]
     ],
     nextAction: completeFullLoveScene
   },
@@ -2564,7 +2599,7 @@ const scenes = {
     suppressSceneSfx: true,
     character: null,
     lines: [
-      ["narrator", "You make your way back toward the lodge alone, taking care with every step until the grove gives way to the retreat path.", null, { dialogueSlowFade: true, startOverlayAmbient: "dakotaDryGrassWalk", startOverlayAmbientAfterMs: 1700 }],
+      ["narrator", "You make your way back toward the lodge alone, taking care with every step until the grove gives way to the retreat path.", null, { dialogueSlowFade: true, startOverlayAmbient: "dryGrassWalk", startOverlayAmbientAfterMs: 1700 }],
       ["narrator", "By the time the lodge comes into view, morning has fully arrived, and one suspiciously soft strand of fur is still clinging to your sleeve.", null, { stopOverlayAmbientOnAdvance: true }],
       ["narrator", "You take a deep breath and open the door, ready to take on the day."]
     ],
@@ -2738,6 +2773,7 @@ const audioEngine = {
   musicSuppressedLocationKey: null,
   musicSuppressedUntilSceneId: null,
   musicResumeFadeMs: null,
+  pendingMusicStartSfx: null,
   justPlayedDoorSfx: false,
   ambientKey: null,
   ambientPlayer: null,
@@ -2959,7 +2995,7 @@ function showNameEntry() {
   input.value = state.playerName === defaultState.playerName ? "" : state.playerName;
   updateBeginButton();
   showScreen("setupScreen");
-  window.setTimeout(() => input.focus(), 30);
+  window.setTimeout(() => input.focus(), 980);
 }
 
 function renderScene(sceneId, options = {}) {
@@ -2968,6 +3004,7 @@ function renderScene(sceneId, options = {}) {
   window.clearTimeout(lineAutoAdvanceTimer);
   window.clearTimeout(lineAmbientTimer);
   window.clearTimeout(establishingPauseTimer);
+  window.clearTimeout(establishingRenderTimer);
   window.clearTimeout(startGameTransitionTimer);
   window.clearTimeout(dialogueEntryTimer);
   clearDialogueTypewriter();
@@ -2977,8 +3014,16 @@ function renderScene(sceneId, options = {}) {
   state.lineIndex = options.keepLine ? state.lineIndex : 0;
   if (!options.keepLine) state.lineAudioCueKey = null;
   if (scene.onEnter && !options.keepLine) scene.onEnter();
+  if (!options.keepLine) {
+    updateSprite(null);
+    updatePropSprite(null);
+  }
   const background = resolveValue(scene.background) || { location: "lodge", time: state.timeOfDay };
   const backgroundChanged = updateBackdrop(background);
+  const shouldPauseForEstablishing = backgroundChanged && !options.keepLine && !options.skipEstablishingPause;
+  if (shouldPauseForEstablishing) {
+    els.gameScreen.classList.add("establishing-pause");
+  }
   updateAmbient(scene.ambient || null);
   updateAudioTheme(background.location, null, {
     musicKey: resolveValue(scene.music) || null,
@@ -2986,15 +3031,18 @@ function renderScene(sceneId, options = {}) {
     suppressSfx: options.suppressSceneSfx || Boolean(scene.suppressSceneSfx)
   });
   updateDevPanel();
-  if (backgroundChanged && !options.keepLine && !options.skipEstablishingPause) {
-    els.gameScreen.classList.add("establishing-pause");
-  }
-  renderCurrentLine();
-  if (backgroundChanged && !options.keepLine && !options.skipEstablishingPause) {
+  if (shouldPauseForEstablishing) {
+    const revealDelay = Math.max(nextDialogueRevealDelayMs, ESTABLISHING_DIALOGUE_REVEAL_EXTRA_MS);
+    establishingRenderTimer = window.setTimeout(() => {
+      nextDialogueRevealDelayMs = revealDelay;
+      renderCurrentLine();
+    }, ESTABLISHING_DIALOGUE_RENDER_MS);
     establishingPauseTimer = window.setTimeout(() => {
       els.gameScreen.classList.remove("establishing-pause");
-    }, 1080);
+    }, ESTABLISHING_PAUSE_MS);
+    return;
   }
+  renderCurrentLine();
 }
 
 function renderCurrentLine() {
@@ -3210,6 +3258,8 @@ function showNextDialogueLine(options = {}) {
   const currentLineOptions = currentLine[3] || {};
   if (currentLineOptions.stopOverlayAmbientOnAdvance) stopOverlayAmbient();
   if (state.lineIndex >= lines.length - 1) {
+    updateSprite(null);
+    updatePropSprite(null);
     if (scene.nextAction) {
       pushDevHistory();
       if (!options.suppressSfx) playSfx("advance");
@@ -3261,6 +3311,8 @@ function renderChoices(choices) {
   els.choices.classList.toggle("has-choices", choices.length > 0);
   els.gameScreen.classList.toggle("choices-active", choices.length > 0);
   if (choices.length > 0) {
+    updateSprite(null);
+    updatePropSprite(null);
     const dialogueHeight = els.dialogueBox.getBoundingClientRect().height;
     els.choices.style.setProperty("--choices-bottom", `${Math.ceil(dialogueHeight + 28)}px`);
   }
@@ -3366,16 +3418,13 @@ function startNewDay(options = {}) {
   state.timeOfDay = "daytime";
   state.pendingDestination = null;
   state.pendingEncounter = null;
-  if (!options.fadeBackdropFromCurrent) {
-    setBackdropInstant({ location: "lodge", time: "daytime" });
-  }
   els.gameScreen.classList.add("day-transitioning");
   showDayTransition(state.day, {
-    onStart: () => renderScene("day_wake", { suppressSceneSfx: true })
+    onStart: () => {
+      setBackdropInstant({ location: "lodge", time: "daytime" });
+      renderScene("day_wake", { suppressSceneSfx: true });
+    }
   });
-  if (options.fadeBackdropFromCurrent) {
-    updateBackdrop({ location: "lodge", time: "daytime" });
-  }
 }
 
 function copyCurrentDialogueLine() {
@@ -3469,6 +3518,7 @@ function goBackOneStep() {
 
   window.clearTimeout(lineAutoAdvanceTimer);
   window.clearTimeout(establishingPauseTimer);
+  window.clearTimeout(establishingRenderTimer);
   window.clearTimeout(startDayFromTransition.timer);
   window.clearTimeout(startGameTransitionTimer);
   window.clearTimeout(dialogueEntryTimer);
@@ -3844,10 +3894,10 @@ function completeBrotherReconciliation() {
 
 function completeJackFullLoveNight() {
   state.day += 1;
-  renderScene("full_love_jack_morning_wake");
   showDayTransition(state.day, {
     kicker: "Morning in Jack's Cabin",
-    caption: "The storm has passed, the cabin is brightening, and the lodge morning is waiting just down the trail."
+    caption: "The storm has passed, the cabin is brightening, and the lodge morning is waiting just down the trail.",
+    onStart: () => renderScene("full_love_jack_morning_wake", { suppressSceneSfx: true })
   });
 }
 
@@ -3954,7 +4004,7 @@ function startDayFromTransition() {
     els.dayTransition.classList.remove("active", "leaving");
     els.dayTransition.setAttribute("aria-hidden", "true");
     els.gameScreen.classList.remove("day-transitioning");
-  }, onStart ? 920 : 680);
+  }, onStart ? DAY_TRANSITION_EXIT_WITH_SCENE_MS : DAY_TRANSITION_EXIT_MS);
 }
 
 function buildArrivalLines(character, time) {
@@ -3980,7 +4030,7 @@ function buildVisitPromptLines(character) {
   const beat = currentVisitBeat(character);
   const mood = state.visitStartMood || relationshipState(character);
   const prompt = beat.prompt[mood] || beat.prompt.neutral;
-  return [prompt];
+  return [addWalkingAmbientForCharacter(character, prompt)];
 }
 
 function buildVisitChoices(character) {
@@ -4001,8 +4051,8 @@ function buildVisitChoices(character) {
 function buildVisitReactionLines(character) {
   const beat = currentVisitBeat(character);
   const tone = state.visitLastChoice || "warm";
-  if (state.visitLastReaction) return state.visitLastReaction;
-  return beat.reactions[tone] || beat.reactions.warm;
+  const lines = state.visitLastReaction || beat.reactions[tone] || beat.reactions.warm;
+  return lines.map(line => addWalkingAmbientForCharacter(character, line));
 }
 
 function advanceVisitBeat() {
@@ -4062,7 +4112,7 @@ function buildVisitWrapupLines(character) {
     }[mood];
     return [
       ["narrator", timeExit, characterExpression(character, mood)],
-      ["narrator", sierraMoodLine, characterExpression(character, mood)],
+      ["narrator", sierraMoodLine, characterExpression(character, mood), walkingAmbient()],
       ["sierra", sierraExitLine, "sierra:sly"],
       ["player", `You leave ${place} with mist on your skin, Yosemite still enormous behind you, and Sierra's grin following closer than expected.`, mood === "low" ? "sierra:grumpy" : "sierra:blushing"]
     ];
@@ -4074,7 +4124,7 @@ function buildVisitWrapupLines(character) {
   }[mood];
   return [
     ["narrator", timeExit, characterExpression(character, mood)],
-    ["narrator", moodLine, characterExpression(character, mood)],
+    addWalkingAmbientForCharacter(character, ["narrator", moodLine, characterExpression(character, mood)]),
     ["player", `You leave ${place} with the place still bright in your mind, and with ${characters[character].shortName}'s reaction following closer than expected.`]
   ];
 }
@@ -4542,6 +4592,7 @@ function restoreStateSnapshot(saved, options = {}) {
   window.clearTimeout(lineAutoAdvanceTimer);
   window.clearTimeout(lineAmbientTimer);
   window.clearTimeout(establishingPauseTimer);
+  window.clearTimeout(establishingRenderTimer);
   window.clearTimeout(startDayFromTransition.timer);
   window.clearTimeout(startGameTransitionTimer);
   window.clearTimeout(dialogueEntryTimer);
@@ -4611,8 +4662,12 @@ function showScreen(id) {
     updateAmbient(null);
   }
   if (!audioEngine.enabled) return;
+  if (id === "startScreen") {
+    stopMusicLoop();
+    return;
+  }
   ensureAudio();
-  if (id === "setupScreen" || id === "startScreen") {
+  if (id === "setupScreen") {
     audioEngine.locationKey = "checkIn";
     audioEngine.characterKey = null;
     restartMusicLoop();
@@ -4824,7 +4879,7 @@ function ensureAudio() {
     player.loop = false;
     player.volume = 0;
   });
-  if (!audioEngine.musicSuppressedLocationKey) restartMusicLoop();
+  if (!els.startScreen.classList.contains("active") && !audioEngine.musicSuppressedLocationKey) restartMusicLoop();
 }
 
 function updateAudioTheme(locationKey, characterCue, options = {}) {
@@ -4887,6 +4942,7 @@ function stopMusicLoop() {
   audioEngine.currentTheme = null;
   audioEngine.musicKey = null;
   audioEngine.musicOverrideKey = null;
+  audioEngine.pendingMusicStartSfx = null;
   updateDevPanel();
 }
 
@@ -4990,6 +5046,10 @@ function playMusicTrack(musicKey) {
     incoming.currentTime = theme.loopStart;
     incoming.volume = 0;
     incoming.play().catch(() => {});
+    if (audioEngine.pendingMusicStartSfx) {
+      playSfx(audioEngine.pendingMusicStartSfx);
+      audioEngine.pendingMusicStartSfx = null;
+    }
     fadePlayer(incoming, theme.volume, incomingFadeMs);
     if (outgoing) fadePlayer(outgoing, 0, 1800, () => {
       outgoing.pause();

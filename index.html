@@ -67,6 +67,12 @@
 
     .screen.active { display: block; }
 
+    #setupScreen {
+      background: url("assets/backgrounds/time_variants/checkIn/daytime.png") center/cover;
+      background-size: cover;
+      background-position: center;
+    }
+
     .start-game-transition {
       position: fixed;
       inset: 0;
@@ -782,11 +788,31 @@
       pointer-events: none;
       opacity: 0;
       visibility: hidden;
+      background: transparent;
+      transition: opacity 1.15s ease, visibility 1.15s ease;
+      overflow: hidden;
+    }
+
+    .day-transition::before,
+    .day-transition::after {
+      content: "";
+      position: absolute;
+      inset: 0;
+      pointer-events: none;
+    }
+
+    .day-transition::before {
+      inset: -8px;
+      background: url("assets/backgrounds/time_variants/lodge/daytime.png") center/cover;
+      filter: blur(3px) saturate(.9);
+      transform: scale(1.015);
+      opacity: 1;
+    }
+
+    .day-transition::after {
       background:
-        linear-gradient(180deg, rgba(13, 16, 14, .46), rgba(33, 20, 12, .72)),
-        rgba(8, 7, 5, .34);
-      backdrop-filter: blur(3px) saturate(.9);
-      transition: opacity .7s ease, visibility .7s ease;
+        linear-gradient(180deg, rgba(13, 16, 14, .18), rgba(33, 20, 12, .38)),
+        rgba(8, 7, 5, .08);
     }
 
     .day-transition.active {
@@ -816,6 +842,7 @@
       filter: none;
       position: relative;
       overflow: hidden;
+      z-index: 1;
     }
 
     .day-transition-card::before,
@@ -829,11 +856,11 @@
     }
 
     .day-transition.active .day-transition-card {
-      animation: day-card-enter .86s cubic-bezier(.18, 1, .22, 1) both;
+      animation: day-card-enter 1.2s cubic-bezier(.18, 1, .22, 1) both;
     }
 
     .day-transition.leaving .day-transition-card {
-      animation: day-card-exit .62s ease both;
+      animation: day-card-exit .9s ease both;
     }
 
     .day-transition-kicker {
@@ -1008,8 +1035,12 @@
       display: grid;
       place-items: center;
       padding: 20px;
-      background: url("assets/backgrounds/time_variants/checkIn/daytime.png") center/cover;
+      background: transparent;
       overflow: hidden;
+    }
+
+    .screen.active .setup {
+      animation: none;
     }
 
     .setup::before {
@@ -1017,8 +1048,8 @@
       position: absolute;
       inset: 0;
       background:
-        linear-gradient(180deg, rgba(13, 16, 14, .46), rgba(33, 20, 12, .72)),
-        rgba(8, 7, 5, .34);
+        linear-gradient(180deg, rgba(13, 16, 14, .18), rgba(33, 20, 12, .38)),
+        rgba(8, 7, 5, .08);
       backdrop-filter: blur(3px) saturate(.9);
       pointer-events: none;
     }
@@ -1051,7 +1082,7 @@
     }
 
     .screen.active .setup-card {
-      animation: setup-card-enter .86s cubic-bezier(.18, 1, .22, 1) both;
+      animation: setup-card-enter 1.15s cubic-bezier(.18, 1, .22, 1) both;
     }
 
     .screen.active .setup-card h2,
@@ -1059,13 +1090,13 @@
     .screen.active .setup-card label,
     .screen.active .setup-card input,
     .screen.active .setup-card .setup-actions {
-      animation: setup-content-enter .74s cubic-bezier(.18, 1, .22, 1) both;
+      animation: setup-content-enter .98s cubic-bezier(.18, 1, .22, 1) both;
     }
 
-    .screen.active .setup-card .checkin-copy { animation-delay: .08s; }
-    .screen.active .setup-card label { animation-delay: .15s; }
-    .screen.active .setup-card input { animation-delay: .18s; }
-    .screen.active .setup-card .setup-actions { animation-delay: .24s; }
+    .screen.active .setup-card .checkin-copy { animation-delay: .14s; }
+    .screen.active .setup-card label { animation-delay: .28s; }
+    .screen.active .setup-card input { animation-delay: .36s; }
+    .screen.active .setup-card .setup-actions { animation-delay: .48s; }
 
     .setup-card::before {
       display: none;
@@ -1172,6 +1203,11 @@
     .setup-card .setup-actions {
       grid-template-columns: 1fr;
       width: min(240px, 100%);
+    }
+
+    @keyframes setup-screen-enter {
+      from { opacity: 0; filter: blur(5px); }
+      to { opacity: 1; filter: blur(0); }
     }
 
     @keyframes setup-card-enter {
@@ -1697,6 +1733,6 @@
     <div class="toast" id="toast"></div>
   </main>
 
-  <script src="game.js?v=4"></script>
+  <script src="game.js?v=11"></script>
 </body>
 </html>

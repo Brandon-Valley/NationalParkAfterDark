@@ -26,7 +26,11 @@ The game is intentionally data-driven for quick LLM iteration:
 
 The app falls back to CSS backgrounds and character name cards if image assets are missing.
 
-## Audio Credits
+## Credits
+
+UI art:
+
+"Old Parchment Paper" by cron ([OpenGameArt](https://opengameart.org/content/old-parchment-paper)), CC0.
 
 Music:
 "Almost Bliss", "Clear Air", "Evening", "Windswept", "On My Way", "Morning", "Fireflies and Stardust", "Crowd Hammer", "There is Romance", "Anamalie", "Slow Burn", "Sardana", "Heartwarming", "Your Call", and "Volatile Reaction" by Kevin MacLeod ([Incompetech](https://incompetech.com/)), licensed under [CC BY 4.0](https://creativecommons.org/licenses/by/4.0/).

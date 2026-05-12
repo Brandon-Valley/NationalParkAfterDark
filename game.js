@@ -3247,6 +3247,7 @@ function renderCurrentLine() {
   const lines = resolveValue(scene.lines) || [];
   const line = lines[state.lineIndex] || ["narrator", ""];
   const lineOptions = line[3] || {};
+  const deferRevealEffects = shouldDeferLineRevealEffects(lineOptions);
   const deferTransitionPresentation = shouldDeferLineTransitionPresentation(lineOptions);
   const waitForAdvanceToStartTransition = shouldWaitForAdvanceToStartLineTransition(lineOptions);
   const speakerKey = line[0] || "narrator";
@@ -3261,10 +3262,13 @@ function renderCurrentLine() {
   els.speakerName.textContent = resolveName(speaker);
   els.speakerName.style.color = speaker.color || "#f3b85b";
   els.sceneLabel.textContent = resolveValue(scene.label) || state.sceneId;
-  applyLinePresentation(lineOptions, { deferTransitionEffects: deferTransitionPresentation });
+  applyLinePresentation(lineOptions, {
+    deferTransitionEffects: deferTransitionPresentation,
+    deferRevealEffects
+  });
   applyDialogueEntryAnimation(lineOptions);
-  playLineAudioCue(lineOptions);
   scheduleLineAmbientCue(lineOptions);
+  if (!deferRevealEffects) startLineRevealEffects(lineOptions);
   updateCopyControls();
   els.choices.innerHTML = "";
   els.choices.classList.remove("has-choices");
@@ -3273,6 +3277,7 @@ function renderCurrentLine() {
   revealDialogueLine(formatText(line[1] || ""), lineOptions, {
     speakerKey,
     onComplete: () => {
+      if (deferRevealEffects) startLineRevealEffects(lineOptions);
       if (deferTransitionPresentation && !waitForAdvanceToStartTransition) {
         startLineTransitionPresentation(lineOptions);
       }
@@ -3434,12 +3439,22 @@ function clearDialogueTypewriter() {
 
 function hasLineTransitionPresentation(options = {}) {
   return Boolean(
-    options.dialogueSlowFade ||
     options.dialogueFadeOut ||
     options.fadeOutSprite ||
     options.fadeOutProp ||
     options.fadeOutMusicUntilScene
   );
+}
+
+function hasLineRevealEffects(options = {}) {
+  return Boolean(
+    options.screenFlash ||
+    options.audio
+  );
+}
+
+function shouldDeferLineRevealEffects(options = {}) {
+  return !options.dialogueHidden && hasLineRevealEffects(options);
 }
 
 function shouldDeferLineTransitionPresentation(options = {}) {
@@ -3547,16 +3562,24 @@ function showNextDialogueLine(options = {}) {
 function applyLinePresentation(options = {}, config = {}) {
   els.gameScreen.classList.toggle("dialogue-hidden", Boolean(options.dialogueHidden));
   els.gameScreen.classList.remove("dialogue-slow-fade", "dialogue-fade-out", "sprite-drift-up", "sleeping-bag-rise");
+  els.gameScreen.classList.toggle("dialogue-slow-fade", Boolean(options.dialogueSlowFade));
   if (!config.deferTransitionEffects) startLineTransitionPresentation(options);
   els.gameScreen.classList.remove("screen-flash");
-  if (options.screenFlash) {
+  if (!config.deferRevealEffects && options.screenFlash) {
     void els.gameScreen.offsetWidth;
     els.gameScreen.classList.add("screen-flash");
   }
 }
 
+function startLineRevealEffects(options = {}) {
+  if (options.screenFlash) {
+    void els.gameScreen.offsetWidth;
+    els.gameScreen.classList.add("screen-flash");
+  }
+  playLineAudioCue(options);
+}
+
 function startLineTransitionPresentation(options = {}) {
-  els.gameScreen.classList.toggle("dialogue-slow-fade", Boolean(options.dialogueSlowFade));
   els.gameScreen.classList.toggle("dialogue-fade-out", Boolean(options.dialogueFadeOut));
   els.gameScreen.classList.toggle("sprite-drift-up", Boolean(options.spriteDriftUp));
   els.gameScreen.classList.toggle("sleeping-bag-rise", Boolean(options.sleepingBagRise));

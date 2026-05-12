@@ -2051,7 +2051,7 @@ const scenes = {
         flags: { sierraFullLoveGood: true }
       },
       {
-        label: "Say, 'So this is your meadow situationship era.'",
+        label: "Say, 'Wow, the vulnerable rizz is crazy. Big content moment.'",
         next: "full_love_sierra_bad_pause",
         feelings: { sierra: -6 },
         fadeOutMusicUntilScene: { sceneId: "day_wake", fadeOutMs: 2400, resumeFadeMs: 5600 }
@@ -2108,17 +2108,15 @@ const scenes = {
     music: "sierraFullLoveMeadow",
     lines: [
       ["narrator", "", "sierra:stargazingStep4", { dialogueHidden: true, spriteDriftUp: true, autoAdvanceMs: 4300 }],
-      ["narrator", "Sierra goes still. Not angry, not theatrical, just suddenly farther away than the few inches of grass between you should allow."],
-      ["sierra", "Right.", "sierra:stargazingStep4"],
-      ["player", "Sierra, wait. I did not mean to make it sound small.", "sierra:stargazingStep4"],
-      ["sierra", "I know.", "sierra:stargazingStep4"],
-      ["narrator", "She stands and brushes grass from her sleeves with careful hands. The meadow remains beautiful, which somehow makes it worse."],
-      ["sierra", "That is the problem, I think. You did not mean to.", "sierra:stargazingStep4"],
-      ["narrator", "She walks you back to the main trail in silence. At the route marker, her flashlight pauses on the path toward the lodge.", null, walkingAmbient()],
-      ["sierra", "You can find your way from here.", "sierra:grumpy"],
-      ["player", "I can.", "sierra:grumpy"],
-      ["narrator", "She nods once and leaves before either of you can make the night kinder than it was."],
-      ["player", "The walk back feels longer than it should.", null, walkingAmbient()]
+      ["narrator", "Sierra does not say anything. This is worse than anger. Anger would have shape. Anger would be an event. This is simply the meadow deciding you have become a cautionary object lesson."],
+      ["narrator", "She got up slowly, with the silent precision of someone removing herself from a haunted group chat, and walked away without once looking back."],
+      ["player", "Oh no."],
+      ["narrator", "The words you chose remain in the grass behind you, faintly radioactive. Nearby wildflowers appear to be reevaluating the concept of language."],
+      ["player", "I said 'vulnerable rizz' to a woman trusting me under the stars."],
+      ["narrator", "You have never felt more embarrassed. Not publicly. Not privately. Possibly not metaphysically."],
+      ["narrator", "You sit in the meadow and contemplate what this means about you as a person. Are you a person? Would a person say that? Is the soul a real thing, and if so, can it file a noise complaint against the mouth?"],
+      ["narrator", "Yosemite offers no answer. It has cliffs to be and dignity to preserve."],
+      ["player", "I should go back to the lodge before the stars start unfollowing me."]
     ],
     nextAction: completeFullLoveScene
   },

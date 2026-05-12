@@ -2118,6 +2118,74 @@ const scenes = {
       ["narrator", "Yosemite offers no answer. It has cliffs to be and dignity to preserve."],
       ["player", "I should go back to the lodge before the stars start unfollowing me."]
     ],
+    next: "full_love_sierra_bad_departure_line_fade"
+  },
+  full_love_sierra_bad_departure_line_fade: {
+    label: "Yosemite Meadow",
+    background: () => ({ location: "yosemiteMeadowNight", time: "night" }),
+    music: "sierraFullLoveMeadow",
+    lines: [
+      ["player", "I should go back to the lodge before the stars start unfollowing me.", null, { dialogueFadeOut: true, autoAdvanceMs: 1150, suppressAdvanceSfx: true }]
+    ],
+    next: "full_love_sierra_bad_meadow_fade_to_black"
+  },
+  full_love_sierra_bad_meadow_fade_to_black: {
+    label: "Trail Back",
+    background: () => ({ location: "black", time: "night" }),
+    music: "sierraFullLoveMeadow",
+    character: null,
+    suppressSceneSfx: true,
+    lines: [
+      ["narrator", "", null, { dialogueHidden: true, autoAdvanceMs: 1350, suppressAdvanceSfx: true }]
+    ],
+    next: "full_love_sierra_bad_walk_back"
+  },
+  full_love_sierra_bad_walk_back: {
+    label: "Trail Back",
+    background: () => ({ location: "black", time: "night" }),
+    music: "sierraFullLoveMeadow",
+    character: null,
+    suppressSceneSfx: true,
+    lines: [
+      ["narrator", "You start walking back through the dark, each step crunching like the earth is subtweeting you.", null, { dialogueSlowFade: true, startOverlayAmbient: "dryGrassWalk", startOverlayAmbientAfterMs: 1700 }],
+      ["player", "I should apologize. With words from before the internet found a blender and climbed inside."],
+      ["narrator", "The trail is mercifully empty, which is good, because your aura currently has the texture of a notes-app apology drafted by a haunted influencer."],
+      ["player", "Tomorrow I will be normal. Quiet. Mysterious, even. A person with no catchphrases and indoor thoughts."],
+      ["narrator", "The lodge door appears at last, warm light around the frame like civilization is reluctantly reopening your tab.", null, { stopOverlayAmbientOnAdvance: true }]
+    ],
+    next: "full_love_sierra_bad_door_line_fade"
+  },
+  full_love_sierra_bad_door_line_fade: {
+    label: "Lodge Door",
+    background: () => ({ location: "black", time: "night" }),
+    music: "sierraFullLoveMeadow",
+    character: null,
+    suppressSceneSfx: true,
+    lines: [
+      ["narrator", "You put one hand on the handle and prepare to re-enter society as a cautionary screenshot.", null, { dialogueFadeOut: true, autoAdvanceMs: 1150, suppressAdvanceSfx: true }]
+    ],
+    next: "full_love_sierra_bad_open_lodge_door"
+  },
+  full_love_sierra_bad_open_lodge_door: {
+    label: "Lodge Door",
+    background: () => ({ location: "black", time: "night" }),
+    music: "sierraFullLoveMeadow",
+    character: null,
+    suppressSceneSfx: true,
+    lines: [
+      ["narrator", "", null, { dialogueHidden: true, audio: "door", autoAdvanceMs: 850, suppressAdvanceSfx: true }]
+    ],
+    next: "full_love_sierra_bad_lodge_fade_in"
+  },
+  full_love_sierra_bad_lodge_fade_in: {
+    label: "Lodge Lobby",
+    background: () => ({ location: "lodge", time: "night" }),
+    music: "sierraFullLoveMeadow",
+    character: null,
+    suppressSceneSfx: true,
+    lines: [
+      ["narrator", "", null, { dialogueHidden: true, autoAdvanceMs: 950, suppressAdvanceSfx: true }]
+    ],
     nextAction: completeFullLoveScene
   },
   full_love_natai_start: {

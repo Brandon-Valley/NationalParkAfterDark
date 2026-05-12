@@ -30,6 +30,7 @@ const defaultState = {
   devEasyCopy: true,
   devBackButton: true,
   devSkipButton: true,
+  devQuickRestoreInputs: true,
   feelings: {
     jack: 5,
     caleb: 5,
@@ -51,6 +52,34 @@ let choiceAutoSelectTimer = null;
 let choiceCountdownTimer = null;
 const DEV_HISTORY_LIMIT = 100;
 let devHistory = [];
+let quickRestoreInputTimer = null;
+
+const QUICK_RESTORE_PREFIX = "NPAD1:";
+const QUICK_RESTORE_STATE_KEYS = [
+  "playerName",
+  "sceneId",
+  "lineIndex",
+  "selectedRoute",
+  "day",
+  "timeOfDay",
+  "returnTime",
+  "pendingDestination",
+  "pendingEncounter",
+  "pendingFullLoveScene",
+  "visitTime",
+  "visitBeat",
+  "visitStartMood",
+  "visitLastChoice",
+  "visitLastReaction",
+  "choiceReactionLines",
+  "choiceReactionNext",
+  "choiceReactionBackground",
+  "choiceReactionLabel",
+  "introReturnScene",
+  "feelings",
+  "flags",
+  "unlockedCG"
+];
 
 const characters = {
   player: { name: () => state.playerName, sprite: "", color: "#7b2f24" },
@@ -2660,6 +2689,10 @@ const els = {
   devEasyCopy: document.getElementById("devEasyCopy"),
   devBackButton: document.getElementById("devBackButton"),
   devSkipButton: document.getElementById("devSkipButton"),
+  devQuickRestoreInputs: document.getElementById("devQuickRestoreInputs"),
+  quickRestorePanel: document.getElementById("quickRestorePanel"),
+  quickRestoreCopyBtn: document.getElementById("quickRestoreCopyBtn"),
+  quickRestoreInput: document.getElementById("quickRestoreInput"),
   dialogueCopyBtn: document.getElementById("dialogueCopyBtn"),
   dayTransition: document.getElementById("dayTransition"),
   dayTransitionButton: document.getElementById("dayTransitionButton")
@@ -2741,6 +2774,22 @@ function bindEvents() {
   els.devSkipButton.addEventListener("change", () => {
     state.devSkipButton = els.devSkipButton.checked;
     updateDevPanel();
+  });
+  els.devQuickRestoreInputs.addEventListener("change", () => {
+    state.devQuickRestoreInputs = els.devQuickRestoreInputs.checked;
+    updateDevPanel();
+  });
+  els.quickRestoreCopyBtn.addEventListener("click", event => {
+    event.stopPropagation();
+    copyQuickRestoreString();
+  });
+  els.quickRestoreInput.addEventListener("paste", () => {
+    window.clearTimeout(quickRestoreInputTimer);
+    quickRestoreInputTimer = window.setTimeout(() => restoreQuickRestoreInput({ showInvalidToast: true }), 0);
+  });
+  els.quickRestoreInput.addEventListener("input", () => {
+    window.clearTimeout(quickRestoreInputTimer);
+    quickRestoreInputTimer = window.setTimeout(() => restoreQuickRestoreInput(), 160);
   });
   els.devScores.addEventListener("input", event => {
     const input = event.target.closest("[data-dev-feeling-key]");
@@ -3112,6 +3161,54 @@ function copyCurrentDialogueLine() {
   const line = lines[state.lineIndex] || ["narrator", ""];
   const speaker = characters[line[0]] || characters.narrator;
   copyText(`${resolveName(speaker)}: ${formatText(line[1] || "")}`);
+}
+
+function copyQuickRestoreString() {
+  copyText(buildQuickRestoreString());
+}
+
+function buildQuickRestoreString() {
+  const quickState = {};
+  QUICK_RESTORE_STATE_KEYS.forEach(key => {
+    quickState[key] = state[key] === undefined ? null : clone(state[key]);
+  });
+  quickState.sceneId = normalizeSceneId(quickState.sceneId || defaultState.sceneId);
+  quickState.lineIndex = Math.max(0, Number(quickState.lineIndex) || 0);
+  return `${QUICK_RESTORE_PREFIX}${base64UrlEncode(JSON.stringify({
+    version: 1,
+    state: quickState
+  }))}`;
+}
+
+function restoreQuickRestoreInput(options = {}) {
+  const value = els.quickRestoreInput.value.trim();
+  if (!value) return;
+  if (!value.startsWith(QUICK_RESTORE_PREFIX)) {
+    if (options.showInvalidToast) toast("Quick restore string not recognized.");
+    return;
+  }
+  if (restoreQuickRestoreString(value)) {
+    els.quickRestoreInput.value = "";
+  } else if (options.showInvalidToast) {
+    toast("Quick restore string could not be restored.");
+  }
+}
+
+function restoreQuickRestoreString(value) {
+  try {
+    const raw = String(value || "").trim();
+    if (!raw.startsWith(QUICK_RESTORE_PREFIX)) return false;
+    const decoded = JSON.parse(base64UrlDecode(raw.slice(QUICK_RESTORE_PREFIX.length)));
+    const quickState = decoded?.state && typeof decoded.state === "object" ? decoded.state : decoded;
+    restoreStateSnapshot(quickState, {
+      successToast: "Quick restore loaded.",
+      failureToast: "Quick restore string could not be restored.",
+      preserveDevSettings: true
+    });
+    return true;
+  } catch (error) {
+    return false;
+  }
 }
 
 function copyText(text) {
@@ -3856,6 +3953,8 @@ function updateDevPanel() {
   els.devEasyCopy.checked = Boolean(state.devEasyCopy);
   els.devBackButton.checked = Boolean(state.devBackButton);
   els.devSkipButton.checked = Boolean(state.devSkipButton);
+  els.devQuickRestoreInputs.checked = Boolean(state.devQuickRestoreInputs);
+  els.quickRestorePanel.classList.toggle("active", Boolean(state.devQuickRestoreInputs));
   els.backBtn.hidden = !state.devBackButton;
   els.backBtn.disabled = devHistory.length === 0;
   els.skipBtn.hidden = !state.devSkipButton;
@@ -4172,6 +4271,66 @@ function updateBeginButton() {
   button.disabled = input.value.trim().length === 0;
 }
 
+function normalizeStateSnapshot(saved, options = {}) {
+  const migrated = migrateLegacyCharacterKeys(saved);
+  const previousDevSettings = options.preserveDevSettings ? {
+    devPanelOpen: state.devPanelOpen,
+    devChoicePreview: state.devChoicePreview,
+    devEasyCopy: state.devEasyCopy,
+    devBackButton: state.devBackButton,
+    devSkipButton: state.devSkipButton,
+    devQuickRestoreInputs: state.devQuickRestoreInputs
+  } : null;
+
+  const nextState = Object.assign(clone(defaultState), migrated);
+  nextState.playerName = String(nextState.playerName || "").trim() || defaultState.playerName;
+  nextState.sceneId = normalizeSceneId(nextState.sceneId || defaultState.sceneId);
+  nextState.lineIndex = Math.max(0, Number(nextState.lineIndex) || 0);
+  nextState.feelings = sanitizeFeelings(migrated.feelings);
+  nextState.flags = nextState.flags && typeof nextState.flags === "object" ? nextState.flags : {};
+  nextState.unlockedCG = Array.isArray(nextState.unlockedCG) ? nextState.unlockedCG : [];
+  nextState.audioEnabled = nextState.audioEnabled !== false;
+  nextState.devChoicePreview = migrated.devChoicePreview !== false;
+  nextState.devEasyCopy = migrated.devEasyCopy !== false;
+  nextState.devBackButton = migrated.devBackButton !== false;
+  nextState.devSkipButton = migrated.devSkipButton !== false;
+  nextState.devQuickRestoreInputs = migrated.devQuickRestoreInputs !== false;
+  nextState.timeOfDay = TIMES.includes(nextState.timeOfDay) ? nextState.timeOfDay : "daytime";
+  nextState.day = Math.max(1, Number(nextState.day) || 1);
+
+  if (previousDevSettings) {
+    Object.assign(nextState, previousDevSettings);
+  }
+
+  return nextState;
+}
+
+function restoreStateSnapshot(saved, options = {}) {
+  state = normalizeStateSnapshot(saved, options);
+  audioEngine.enabled = state.audioEnabled;
+  clearDevHistory();
+  window.clearTimeout(lineAutoAdvanceTimer);
+  window.clearTimeout(lineAmbientTimer);
+  window.clearTimeout(establishingPauseTimer);
+  window.clearTimeout(startDayFromTransition.timer);
+  clearChoiceTimers();
+  showDayTransition.onStart = null;
+  stopMusicLoop();
+  if (els.dayTransition) {
+    els.dayTransition.classList.remove("active", "leaving");
+    els.dayTransition.setAttribute("aria-hidden", "true");
+  }
+  els.gameScreen.classList.remove("day-transitioning", "establishing-pause");
+  ensureAudio();
+  showScreen("gameScreen");
+  renderScene(state.sceneId, {
+    keepLine: true,
+    skipEstablishingPause: true,
+    suppressSceneSfx: true
+  });
+  if (options.successToast) toast(options.successToast);
+}
+
 function saveGame() {
   state.audioEnabled = audioEngine.enabled;
   localStorage.setItem(SAVE_KEY, JSON.stringify(state));
@@ -4186,25 +4345,7 @@ function loadGame() {
     return;
   }
   try {
-    const saved = migrateLegacyCharacterKeys(JSON.parse(raw));
-    state = Object.assign(clone(defaultState), saved);
-    state.playerName = String(state.playerName || "").trim() || defaultState.playerName;
-    state.feelings = sanitizeFeelings(saved.feelings);
-    state.flags = state.flags || {};
-    state.unlockedCG = state.unlockedCG || [];
-    state.audioEnabled = state.audioEnabled !== false;
-    state.devChoicePreview = saved.devChoicePreview !== false;
-    state.devEasyCopy = saved.devEasyCopy !== false;
-    state.devBackButton = saved.devBackButton !== false;
-    state.devSkipButton = saved.devSkipButton !== false;
-    state.timeOfDay = TIMES.includes(state.timeOfDay) ? state.timeOfDay : "daytime";
-    state.day = Math.max(1, Number(state.day) || 1);
-    audioEngine.enabled = state.audioEnabled;
-    clearDevHistory();
-    ensureAudio();
-    showScreen("gameScreen");
-    renderScene(normalizeSceneId(state.sceneId || "intro_bus_ride"), { keepLine: true });
-    toast("Save loaded.");
+    restoreStateSnapshot(JSON.parse(raw), { successToast: "Save loaded." });
   } catch (error) {
     toast("Save could not be loaded.");
   }
@@ -4722,6 +4863,28 @@ function escapeHtml(value) {
 
 function clamp(value, min, max) {
   return Math.max(min, Math.min(max, value));
+}
+
+function base64UrlEncode(text) {
+  let binary = "";
+  if (window.TextEncoder) {
+    const bytes = new TextEncoder().encode(text);
+    bytes.forEach(byte => { binary += String.fromCharCode(byte); });
+  } else {
+    binary = unescape(encodeURIComponent(text));
+  }
+  return btoa(binary).replaceAll("+", "-").replaceAll("/", "_").replace(/=+$/, "");
+}
+
+function base64UrlDecode(text) {
+  const normalized = String(text || "").replaceAll("-", "+").replaceAll("_", "/");
+  const padded = normalized.padEnd(Math.ceil(normalized.length / 4) * 4, "=");
+  const binary = atob(padded);
+  if (window.TextDecoder) {
+    const bytes = Uint8Array.from(binary, char => char.charCodeAt(0));
+    return new TextDecoder().decode(bytes);
+  }
+  return decodeURIComponent(escape(binary));
 }
 
 function clone(value) {

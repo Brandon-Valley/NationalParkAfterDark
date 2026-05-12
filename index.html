@@ -1190,6 +1190,58 @@
 
     .dev-panel.active { display: block; }
 
+    .quick-restore-panel {
+      position: absolute;
+      top: calc(max(12px, env(safe-area-inset-top)) + 52px);
+      left: 12px;
+      z-index: 8;
+      display: none;
+      gap: 8px;
+      align-items: center;
+      width: min(420px, calc(100vw - 24px));
+      pointer-events: auto;
+    }
+
+    .quick-restore-panel.active {
+      display: flex;
+    }
+
+    .quick-restore-copy {
+      flex: 0 0 auto;
+      min-height: 34px;
+      padding: 0 10px;
+      border-radius: 8px;
+      border: 1px solid var(--line);
+      background: linear-gradient(180deg, rgba(255, 246, 218, .96), rgba(222, 184, 114, .96));
+      box-shadow: 0 12px 32px rgba(0, 0, 0, .24);
+      color: #2f2015;
+      font-size: 12px;
+      font-weight: 900;
+    }
+
+    .quick-restore-input {
+      flex: 1 1 auto;
+      min-width: 0;
+      min-height: 34px;
+      padding: 7px 10px;
+      border-radius: 8px;
+      border: 1px solid rgba(255, 242, 208, .56);
+      background: rgba(32, 24, 20, .72);
+      box-shadow: 0 12px 32px rgba(0, 0, 0, .24), inset 0 1px 0 rgba(255, 255, 255, .08);
+      color: #fff7e8;
+      font-size: 12px;
+      font-weight: 800;
+    }
+
+    .quick-restore-input::placeholder {
+      color: rgba(255, 247, 232, .68);
+    }
+
+    .quick-restore-input:focus {
+      border-color: rgba(255, 228, 164, .78);
+      box-shadow: 0 0 0 3px rgba(255, 228, 164, .18), 0 12px 32px rgba(0, 0, 0, .24);
+    }
+
     .dev-panel h3 {
       margin: 0 0 8px;
       font-size: 14px;
@@ -1345,6 +1397,9 @@
       .dev-panel {
         top: calc(max(12px, env(safe-area-inset-top)) + 92px);
       }
+      .quick-restore-panel {
+        top: calc(max(12px, env(safe-area-inset-top)) + 92px);
+      }
       .sprite {
         height: min(56vh, 520px);
         max-width: min(92vw, 430px);
@@ -1471,6 +1526,10 @@
           <button class="text-btn" id="resetBtn">Reset</button>
         </div>
       </header>
+      <div class="quick-restore-panel" id="quickRestorePanel" aria-label="Quick restore tools">
+        <button class="quick-restore-copy" id="quickRestoreCopyBtn" type="button">Copy Restore</button>
+        <input class="quick-restore-input" id="quickRestoreInput" type="text" spellcheck="false" autocomplete="off" placeholder="Paste quick restore string">
+      </div>
       <aside class="dev-panel" id="devPanel" aria-label="Developer panel">
         <h3>Feelings</h3>
         <div id="devScores"></div>
@@ -1489,6 +1548,10 @@
         <label class="dev-toggle" for="devSkipButton">
           <input type="checkbox" id="devSkipButton">
           Add Skip Button
+        </label>
+        <label class="dev-toggle" for="devQuickRestoreInputs">
+          <input type="checkbox" id="devQuickRestoreInputs" checked>
+          Add Quick Restore String Inputs
         </label>
         <div class="dev-audio-status" id="devAudioStatus" aria-live="polite"></div>
       </aside>

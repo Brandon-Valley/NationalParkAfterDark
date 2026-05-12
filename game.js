@@ -3010,6 +3010,7 @@ function renderScene(sceneId, options = {}) {
   clearDialogueTypewriter();
   clearChoiceTimers();
   els.gameScreen.classList.remove("establishing-pause");
+  els.gameScreen.classList.remove("dev-skip-picker-active");
   state.sceneId = sceneId;
   state.lineIndex = options.keepLine ? state.lineIndex : 0;
   if (!options.keepLine) state.lineAudioCueKey = null;
@@ -3584,16 +3585,70 @@ function showDevSkipToPicker() {
   pushDevHistory();
   state.choiceReactionBackground = resolveValue(scenes[state.sceneId]?.background) || { location: "lodge", time: state.timeOfDay };
   playSfx("advance");
-  renderScene("dev_skip_to_picker");
+  renderDevSkipToPicker();
+}
+
+function renderDevSkipToPicker() {
+  const scene = scenes.dev_skip_to_picker;
+  const background = resolveValue(scene.background);
+  window.clearTimeout(lineAutoAdvanceTimer);
+  window.clearTimeout(lineAmbientTimer);
+  window.clearTimeout(establishingPauseTimer);
+  window.clearTimeout(establishingRenderTimer);
+  window.clearTimeout(dialogueEntryTimer);
+  clearDialogueTypewriter();
+  clearChoiceTimers();
+  state.sceneId = "dev_skip_to_picker";
+  state.lineIndex = 0;
+  updateBackdrop(background);
+  updateAmbient(scene.ambient || null);
+  updateAudioTheme(background?.location || "lodge", null, { suppressSfx: true });
+  updateSprite(null);
+  updatePropSprite(null);
+  els.gameScreen.classList.remove("establishing-pause", "dialogue-slow-fade", "dialogue-fade-out", "sprite-drift-up", "sleeping-bag-rise");
+  els.gameScreen.classList.add("dev-skip-picker-active");
+  els.dialogueBox.classList.remove("dialogue-first-enter", "dialogue-entry-pending", "ready-to-advance");
+  els.lineText.textContent = "";
+  els.lineText.style.removeProperty("min-height");
+  els.sceneLabel.textContent = resolveValue(scene.label);
+  updateCopyControls();
+  updateDevPanel();
+  renderChoices(resolveValue(scene.choices) || []);
 }
 
 function buildDevSkipToChoices() {
-  return Object.keys(backgroundCatalog)
+  const storyTargets = [
+    { label: "Player Name Enter", action: startDevSkipToPlayerNameEntry },
+    { label: "Sleep", action: startDevSkipToSleep }
+  ];
+  const locationTargets = Object.keys(backgroundCatalog)
     .filter(location => location !== "black")
     .flatMap(location => TIMES.map(time => ({
       label: `${SKIP_TO_LOCATION_LABELS[location] || location} - ${TIME_LABELS[time]}`,
       action: () => startDevSkipToSetting(location, time)
     })));
+  return [...storyTargets, ...locationTargets];
+}
+
+function startDevSkipToPlayerNameEntry() {
+  resetDevSkipToTransientState("daytime");
+  state.day = 1;
+  state.playerName = defaultState.playerName;
+  state.sceneId = "intro_checkin_arrival";
+  state.lineIndex = Math.max(0, (resolveValue(scenes.intro_checkin_arrival.lines) || []).length - 1);
+  showScreen("gameScreen");
+  renderScene("intro_checkin_arrival", { keepLine: true, skipEstablishingPause: true, suppressSceneSfx: true });
+  toast("Skipped to player name entry.");
+}
+
+function startDevSkipToSleep() {
+  resetDevSkipToTransientState("night");
+  state.day = Math.max(1, Number(state.day) || 1);
+  state.sceneId = "intro_first_night_lodge";
+  state.lineIndex = Math.max(0, (resolveValue(scenes.intro_first_night_lodge.lines) || []).length - 1);
+  showScreen("gameScreen");
+  renderScene("intro_first_night_lodge", { keepLine: true, skipEstablishingPause: true, suppressSceneSfx: true });
+  toast("Skipped to sleep.");
 }
 
 function startDevSkipToSetting(location, time) {
@@ -3638,7 +3693,7 @@ function startDevSkipToSetting(location, time) {
   }
 
   state.choiceReactionBackground = { location, time };
-  renderScene("dev_skip_to_picker");
+  renderDevSkipToPicker();
 }
 
 function resetDevSkipToTransientState(time) {

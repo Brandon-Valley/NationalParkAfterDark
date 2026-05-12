@@ -31,6 +31,7 @@ const defaultState = {
   devBackButton: true,
   devSkipButton: true,
   devQuickRestoreInputs: true,
+  devDisableTypewriter: false,
   feelings: {
     jack: 5,
     caleb: 5,
@@ -53,6 +54,28 @@ let choiceCountdownTimer = null;
 const DEV_HISTORY_LIMIT = 100;
 let devHistory = [];
 let quickRestoreInputTimer = null;
+let dialogueTypewriterTimer = null;
+let dialogueTypewriterState = null;
+let shouldAnimateNextDialogueEntry = false;
+let nextDialogueEntryDelayMs = 0;
+let nextDialogueRevealDelayMs = 0;
+let startGameTransitionTimer = null;
+let dialogueEntryTimer = null;
+
+const DIALOGUE_TYPEWRITER = {
+  startDelayMs: 110,
+  baseDelayMs: 38,
+  longLineBaseDelayMs: 30,
+  spaceDelayMs: 13,
+  commaPauseMs: 125,
+  semicolonPauseMs: 170,
+  sentencePauseMs: 270,
+  questionPauseMs: 295,
+  dashPauseMs: 160,
+  ellipsisStepMs: 58,
+  ellipsisPauseMs: 430,
+  newlinePauseMs: 270
+};
 
 const QUICK_RESTORE_PREFIX = "NPAD1:";
 const QUICK_RESTORE_STATE_KEYS = [
@@ -2665,6 +2688,7 @@ const els = {
   startScreen: document.getElementById("startScreen"),
   setupScreen: document.getElementById("setupScreen"),
   gameScreen: document.getElementById("gameScreen"),
+  startGameTransition: document.getElementById("startGameTransition"),
   backdrop: document.getElementById("backdrop"),
   backdropNext: document.getElementById("backdropNext"),
   sprite: document.getElementById("sprite"),
@@ -2690,6 +2714,7 @@ const els = {
   devBackButton: document.getElementById("devBackButton"),
   devSkipButton: document.getElementById("devSkipButton"),
   devQuickRestoreInputs: document.getElementById("devQuickRestoreInputs"),
+  devDisableTypewriter: document.getElementById("devDisableTypewriter"),
   quickRestorePanel: document.getElementById("quickRestorePanel"),
   quickRestoreCopyBtn: document.getElementById("quickRestoreCopyBtn"),
   quickRestoreInput: document.getElementById("quickRestoreInput"),
@@ -2779,6 +2804,11 @@ function bindEvents() {
     state.devQuickRestoreInputs = els.devQuickRestoreInputs.checked;
     updateDevPanel();
   });
+  els.devDisableTypewriter.addEventListener("change", () => {
+    state.devDisableTypewriter = els.devDisableTypewriter.checked;
+    renderCurrentLine();
+    updateDevPanel();
+  });
   els.quickRestoreCopyBtn.addEventListener("click", event => {
     event.stopPropagation();
     copyQuickRestoreString();
@@ -2841,6 +2871,7 @@ function bindEvents() {
     if (els.dayTransition.classList.contains("active")) return;
     if (event.target.closest("button, input, select, textarea, a, .dev-panel")) return;
     if (els.galleryOverlay.classList.contains("active")) return;
+    if (completeDialogueTypewriter()) return;
     showNextDialogueLine();
   });
   document.addEventListener("pointerdown", () => { if (audioEngine.enabled) ensureAudio(); });
@@ -2849,7 +2880,9 @@ function bindEvents() {
       if (event.key === " " || event.key === "Enter") startDayFromTransition();
       return;
     }
-    if (event.key === " " || event.key === "Enter") showNextDialogueLine();
+    if (event.key === " " || event.key === "Enter") {
+      if (!completeDialogueTypewriter()) showNextDialogueLine();
+    }
     if (event.key === "Escape") els.galleryOverlay.classList.remove("active");
   });
 }
@@ -2879,12 +2912,29 @@ function isContinuationScene(sceneId) {
 }
 
 function startGame() {
+  if (els.startGameTransition?.classList.contains("active")) return;
+  els.startGameTransition.classList.remove("leaving");
+  els.startGameTransition.classList.add("active");
+  window.clearTimeout(startGameTransitionTimer);
+  startGameTransitionTimer = window.setTimeout(() => {
+    beginNewGameAfterStartFade();
+  }, 760);
+}
+
+function beginNewGameAfterStartFade() {
   state = clone(defaultState);
   clearDevHistory();
   audioEngine.enabled = state.audioEnabled;
   ensureAudio();
+  shouldAnimateNextDialogueEntry = true;
+  nextDialogueEntryDelayMs = 720;
+  nextDialogueRevealDelayMs = 1540;
   showScreen("gameScreen");
-  renderScene("intro_bus_ride", { suppressSceneSfx: true });
+  renderScene("intro_bus_ride", { skipEstablishingPause: true, suppressSceneSfx: true });
+  els.startGameTransition.classList.add("leaving");
+  startGameTransitionTimer = window.setTimeout(() => {
+    els.startGameTransition.classList.remove("active", "leaving");
+  }, 720);
 }
 
 function completeLegacySetup() {
@@ -2897,6 +2947,9 @@ function completeLegacySetup() {
   state.playerName = name;
   audioEngine.enabled = state.audioEnabled;
   ensureAudio();
+  shouldAnimateNextDialogueEntry = true;
+  nextDialogueEntryDelayMs = 0;
+  nextDialogueRevealDelayMs = 820;
   showScreen("gameScreen");
   renderScene("intro_natai_checkin");
 }
@@ -2915,6 +2968,9 @@ function renderScene(sceneId, options = {}) {
   window.clearTimeout(lineAutoAdvanceTimer);
   window.clearTimeout(lineAmbientTimer);
   window.clearTimeout(establishingPauseTimer);
+  window.clearTimeout(startGameTransitionTimer);
+  window.clearTimeout(dialogueEntryTimer);
+  clearDialogueTypewriter();
   clearChoiceTimers();
   els.gameScreen.classList.remove("establishing-pause");
   state.sceneId = sceneId;
@@ -2944,6 +3000,7 @@ function renderScene(sceneId, options = {}) {
 function renderCurrentLine() {
   window.clearTimeout(lineAutoAdvanceTimer);
   window.clearTimeout(lineAmbientTimer);
+  clearDialogueTypewriter();
   clearChoiceTimers();
   const scene = scenes[state.sceneId];
   const lines = resolveValue(scene.lines) || [];
@@ -2961,8 +3018,8 @@ function renderCurrentLine() {
   els.speakerName.textContent = resolveName(speaker);
   els.speakerName.style.color = speaker.color || "#f3b85b";
   els.sceneLabel.textContent = resolveValue(scene.label) || state.sceneId;
-  els.lineText.textContent = formatText(line[1] || "");
   applyLinePresentation(lineOptions);
+  applyDialogueEntryAnimation(lineOptions);
   playLineAudioCue(lineOptions);
   scheduleLineAmbientCue(lineOptions);
   updateCopyControls();
@@ -2970,16 +3027,182 @@ function renderCurrentLine() {
   els.choices.classList.remove("has-choices");
   els.choices.style.removeProperty("--choices-bottom");
   els.gameScreen.classList.remove("choices-active");
-  if (state.lineIndex >= lines.length - 1) renderChoices(resolveValue(scene.choices) || []);
-  if (lineOptions.autoAdvanceMs) {
-    lineAutoAdvanceTimer = window.setTimeout(() => showNextDialogueLine({ suppressSfx: Boolean(lineOptions.suppressAdvanceSfx) }), lineOptions.autoAdvanceMs);
+  revealDialogueLine(formatText(line[1] || ""), lineOptions, {
+    speakerKey,
+    onComplete: () => {
+      if (state.lineIndex >= lines.length - 1) renderChoices(resolveValue(scene.choices) || []);
+      if (lineOptions.autoAdvanceMs) {
+        lineAutoAdvanceTimer = window.setTimeout(() => showNextDialogueLine({ suppressSfx: Boolean(lineOptions.suppressAdvanceSfx) }), lineOptions.autoAdvanceMs);
+      }
+    }
+  });
+}
+
+function applyDialogueEntryAnimation(lineOptions = {}) {
+  window.clearTimeout(dialogueEntryTimer);
+  els.dialogueBox.classList.remove("dialogue-first-enter", "dialogue-entry-pending");
+  if (!shouldAnimateNextDialogueEntry) return;
+  shouldAnimateNextDialogueEntry = false;
+  if (lineOptions.dialogueHidden) return;
+  const entryDelay = nextDialogueEntryDelayMs;
+  nextDialogueEntryDelayMs = 0;
+  if (entryDelay > 0) {
+    els.dialogueBox.classList.add("dialogue-entry-pending");
+    dialogueEntryTimer = window.setTimeout(() => {
+      els.dialogueBox.classList.remove("dialogue-entry-pending");
+      void els.dialogueBox.offsetWidth;
+      els.dialogueBox.classList.add("dialogue-first-enter");
+    }, entryDelay);
+    return;
   }
+  void els.dialogueBox.offsetWidth;
+  els.dialogueBox.classList.add("dialogue-first-enter");
+}
+
+function revealDialogueLine(text, lineOptions = {}, options = {}) {
+  const fullText = String(text || "");
+  reserveDialogueLineHeight(fullText, lineOptions);
+  const shouldType = !state.devDisableTypewriter && !lineOptions.dialogueHidden && fullText.length > 0;
+  if (!shouldType) {
+    els.lineText.textContent = fullText;
+    finishDialogueReveal(options.onComplete, lineOptions);
+    return;
+  }
+
+  const glyphs = Array.from(fullText);
+  dialogueTypewriterState = {
+    characters: glyphs,
+    glyphNodes: renderPendingDialogueGlyphs(glyphs),
+    fullText,
+    index: 0,
+    complete: false,
+    speakerKey: options.speakerKey || "narrator",
+    lineOptions,
+    onComplete: options.onComplete
+  };
+  const revealDelay = nextDialogueRevealDelayMs;
+  nextDialogueRevealDelayMs = 0;
+  dialogueTypewriterTimer = window.setTimeout(tickDialogueTypewriter, revealDelay + DIALOGUE_TYPEWRITER.startDelayMs);
+}
+
+function renderPendingDialogueGlyphs(glyphs) {
+  els.lineText.replaceChildren();
+  return glyphs.map(glyph => {
+    const span = document.createElement("span");
+    span.className = "dialogue-glyph pending";
+    span.textContent = glyph;
+    els.lineText.appendChild(span);
+    return span;
+  });
+}
+
+function reserveDialogueLineHeight(fullText, lineOptions = {}) {
+  if (lineOptions.dialogueHidden || !fullText) {
+    els.lineText.style.removeProperty("min-height");
+    return;
+  }
+
+  const previousText = els.lineText.textContent;
+  const previousVisibility = els.lineText.style.visibility;
+  els.lineText.style.visibility = "hidden";
+  els.lineText.textContent = fullText;
+  const finalHeight = Math.ceil(els.lineText.scrollHeight);
+  els.lineText.style.minHeight = `${Math.max(82, finalHeight)}px`;
+  els.lineText.textContent = previousText;
+  els.lineText.style.visibility = previousVisibility;
+}
+
+function tickDialogueTypewriter() {
+  const typewriter = dialogueTypewriterState;
+  if (!typewriter || typewriter.complete) return;
+  if (typewriter.index >= typewriter.characters.length) {
+    finishDialogueReveal(typewriter.onComplete, typewriter.lineOptions);
+    return;
+  }
+
+  const character = typewriter.characters[typewriter.index];
+  const glyphNode = typewriter.glyphNodes[typewriter.index];
+  typewriter.index += 1;
+  if (glyphNode) glyphNode.classList.remove("pending");
+  dialogueTypewriterTimer = window.setTimeout(tickDialogueTypewriter, dialogueCharacterDelay(typewriter, character));
+}
+
+function dialogueCharacterDelay(typewriter, character) {
+  const previousCharacter = typewriter.characters[typewriter.index - 2] || "";
+  const nextCharacter = typewriter.characters[typewriter.index] || "";
+  if (character === "\n") return DIALOGUE_TYPEWRITER.newlinePauseMs;
+  if (character === " ") return DIALOGUE_TYPEWRITER.spaceDelayMs;
+  if (character === "." && (previousCharacter === "." || nextCharacter === ".")) {
+    return nextCharacter === "." ? DIALOGUE_TYPEWRITER.ellipsisStepMs : DIALOGUE_TYPEWRITER.ellipsisPauseMs;
+  }
+  if (character === ",") return DIALOGUE_TYPEWRITER.commaPauseMs;
+  if (character === ";" || character === ":") return DIALOGUE_TYPEWRITER.semicolonPauseMs;
+  if (character === "-" || character === "–" || character === "—") return DIALOGUE_TYPEWRITER.dashPauseMs;
+  if (character === "?" || character === "!") return DIALOGUE_TYPEWRITER.questionPauseMs;
+  if (character === ".") return DIALOGUE_TYPEWRITER.sentencePauseMs;
+  if (character === ")" || character === "]" || character === "}" || character === "\"" || character === "'") return 16;
+  return dialogueLetterDelay(typewriter);
+}
+
+function dialogueLetterDelay(typewriter) {
+  const longLineAdjustment = typewriter.characters.length > 130 ? DIALOGUE_TYPEWRITER.longLineBaseDelayMs : DIALOGUE_TYPEWRITER.baseDelayMs;
+  const speakerAdjustment = typewriter.speakerKey === "narrator" ? -2 : typewriter.speakerKey === "player" ? 1 : 0;
+  const cadence = ((typewriter.index * 7) + typewriter.characters.length) % 9;
+  const jitter = cadence < 2 ? -4 : cadence > 6 ? 5 : 0;
+  return Math.max(12, longLineAdjustment + speakerAdjustment + jitter);
+}
+
+function completeDialogueTypewriter() {
+  const typewriter = dialogueTypewriterState;
+  if (!typewriter || typewriter.complete) return false;
+  window.clearTimeout(dialogueTypewriterTimer);
+  revealAllDialogueGlyphs(typewriter);
+  typewriter.index = typewriter.characters.length;
+  finishDialogueReveal(typewriter.onComplete, typewriter.lineOptions);
+  return true;
+}
+
+function revealAllDialogueGlyphs(typewriter) {
+  typewriter.glyphNodes.forEach(glyphNode => glyphNode.classList.remove("pending"));
+}
+
+function finishDialogueReveal(onComplete, lineOptions = {}) {
+  const typewriter = dialogueTypewriterState;
+  if (typewriter) typewriter.complete = true;
+  window.clearTimeout(dialogueTypewriterTimer);
+  dialogueTypewriterTimer = null;
+  if (onComplete) onComplete();
+  setDialogueReadyMarker(shouldShowDialogueAdvanceMarker(lineOptions));
+}
+
+function clearDialogueTypewriter() {
+  window.clearTimeout(dialogueTypewriterTimer);
+  dialogueTypewriterTimer = null;
+  dialogueTypewriterState = null;
+  setDialogueReadyMarker(false);
+}
+
+function setDialogueReadyMarker(isReady) {
+  els.dialogueBox.classList.toggle("ready-to-advance", Boolean(isReady));
+}
+
+function shouldShowDialogueAdvanceMarker(lineOptions = {}) {
+  if (lineOptions.dialogueHidden || lineOptions.autoAdvanceMs) return false;
+  const scene = scenes[state.sceneId];
+  if (!scene) return false;
+  const lines = resolveValue(scene.lines) || [];
+  if ((lines[state.lineIndex] || [])[1] === "") return false;
+  if (state.lineIndex < lines.length - 1) return true;
+  const choices = resolveValue(scene.choices) || [];
+  return choices.length === 0 && Boolean(scene.nextAction || scene.next);
 }
 
 function showNextDialogueLine(options = {}) {
   if (els.gameScreen.classList.contains("establishing-pause")) return;
+  if (!options.forceAdvance && completeDialogueTypewriter()) return;
   window.clearTimeout(lineAutoAdvanceTimer);
   window.clearTimeout(lineAmbientTimer);
+  clearDialogueTypewriter();
   const scene = scenes[state.sceneId];
   if (!scene) return;
   const lines = resolveValue(scene.lines) || [];
@@ -3247,6 +3470,9 @@ function goBackOneStep() {
   window.clearTimeout(lineAutoAdvanceTimer);
   window.clearTimeout(establishingPauseTimer);
   window.clearTimeout(startDayFromTransition.timer);
+  window.clearTimeout(startGameTransitionTimer);
+  window.clearTimeout(dialogueEntryTimer);
+  clearDialogueTypewriter();
   clearChoiceTimers();
   showDayTransition.onStart = null;
   stopMusicLoop();
@@ -3282,6 +3508,7 @@ function skipCurrentInteraction() {
     return;
   }
   if (els.gameScreen.classList.contains("establishing-pause")) return;
+  clearDialogueTypewriter();
   const startingBackground = currentBackgroundKey();
   pushDevHistory();
   playSfx("advance");
@@ -3954,6 +4181,7 @@ function updateDevPanel() {
   els.devBackButton.checked = Boolean(state.devBackButton);
   els.devSkipButton.checked = Boolean(state.devSkipButton);
   els.devQuickRestoreInputs.checked = Boolean(state.devQuickRestoreInputs);
+  els.devDisableTypewriter.checked = Boolean(state.devDisableTypewriter);
   els.quickRestorePanel.classList.toggle("active", Boolean(state.devQuickRestoreInputs));
   els.backBtn.hidden = !state.devBackButton;
   els.backBtn.disabled = devHistory.length === 0;
@@ -4279,7 +4507,8 @@ function normalizeStateSnapshot(saved, options = {}) {
     devEasyCopy: state.devEasyCopy,
     devBackButton: state.devBackButton,
     devSkipButton: state.devSkipButton,
-    devQuickRestoreInputs: state.devQuickRestoreInputs
+    devQuickRestoreInputs: state.devQuickRestoreInputs,
+    devDisableTypewriter: state.devDisableTypewriter
   } : null;
 
   const nextState = Object.assign(clone(defaultState), migrated);
@@ -4295,6 +4524,7 @@ function normalizeStateSnapshot(saved, options = {}) {
   nextState.devBackButton = migrated.devBackButton !== false;
   nextState.devSkipButton = migrated.devSkipButton !== false;
   nextState.devQuickRestoreInputs = migrated.devQuickRestoreInputs !== false;
+  nextState.devDisableTypewriter = migrated.devDisableTypewriter === true;
   nextState.timeOfDay = TIMES.includes(nextState.timeOfDay) ? nextState.timeOfDay : "daytime";
   nextState.day = Math.max(1, Number(nextState.day) || 1);
 
@@ -4313,6 +4543,9 @@ function restoreStateSnapshot(saved, options = {}) {
   window.clearTimeout(lineAmbientTimer);
   window.clearTimeout(establishingPauseTimer);
   window.clearTimeout(startDayFromTransition.timer);
+  window.clearTimeout(startGameTransitionTimer);
+  window.clearTimeout(dialogueEntryTimer);
+  clearDialogueTypewriter();
   clearChoiceTimers();
   showDayTransition.onStart = null;
   stopMusicLoop();
@@ -4320,7 +4553,9 @@ function restoreStateSnapshot(saved, options = {}) {
     els.dayTransition.classList.remove("active", "leaving");
     els.dayTransition.setAttribute("aria-hidden", "true");
   }
+  els.startGameTransition.classList.remove("active", "leaving");
   els.gameScreen.classList.remove("day-transitioning", "establishing-pause");
+  els.dialogueBox.classList.remove("dialogue-first-enter", "dialogue-entry-pending");
   ensureAudio();
   showScreen("gameScreen");
   renderScene(state.sceneId, {
@@ -4357,6 +4592,11 @@ function resetGame() {
   localStorage.removeItem("parkAfterDarkSaveV1");
   state = clone(defaultState);
   clearDevHistory();
+  clearDialogueTypewriter();
+  window.clearTimeout(startGameTransitionTimer);
+  window.clearTimeout(dialogueEntryTimer);
+  els.startGameTransition.classList.remove("active", "leaving");
+  els.dialogueBox.classList.remove("dialogue-first-enter", "dialogue-entry-pending");
   audioEngine.enabled = state.audioEnabled;
   els.galleryOverlay.classList.remove("active");
   updateAmbient(null);

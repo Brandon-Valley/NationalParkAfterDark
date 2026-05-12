@@ -65,6 +65,25 @@
 
     .screen.active { display: block; }
 
+    .start-game-transition {
+      position: fixed;
+      inset: 0;
+      z-index: 50;
+      background: #000;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity .7s ease;
+    }
+
+    .start-game-transition.active {
+      opacity: 1;
+      pointer-events: auto;
+    }
+
+    .start-game-transition.leaving {
+      opacity: 0;
+    }
+
     .backdrop {
       position: absolute;
       inset: 0;
@@ -440,11 +459,87 @@
       transition: opacity .9s ease, visibility .9s ease;
     }
 
+    .dialogue.dialogue-first-enter {
+      animation: dialogueFirstEnter .72s ease both;
+    }
+
+    .dialogue.dialogue-entry-pending {
+      opacity: 0;
+      transform: translateX(-50%) translateY(14px);
+      visibility: hidden;
+    }
+
+    @keyframes dialogueFirstEnter {
+      from {
+        opacity: 0;
+        transform: translateX(-50%) translateY(14px);
+      }
+      to {
+        opacity: 1;
+        transform: translateX(-50%) translateY(0);
+      }
+    }
+
     .dialogue-copy {
       position: absolute;
       right: 18px;
       bottom: 14px;
       z-index: 2;
+    }
+
+    .dialogue-advance-marker {
+      position: absolute;
+      right: 24px;
+      bottom: 19px;
+      width: 13px;
+      height: 13px;
+      border: 2px solid rgba(74, 43, 24, .62);
+      background: rgba(243, 184, 91, .44);
+      box-shadow: 0 0 0 3px rgba(255, 246, 218, .28), 0 3px 8px rgba(74, 43, 24, .18);
+      transform: rotate(45deg);
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity .22s ease;
+    }
+
+    .dialogue-advance-marker::after {
+      content: "";
+      position: absolute;
+      inset: 3px;
+      background: rgba(74, 43, 24, .48);
+    }
+
+    .dialogue.ready-to-advance .dialogue-advance-marker {
+      animation: dialogueMarkerFadeIn .95s ease-out forwards, dialogueAdvanceBounce 1.8s ease-in-out infinite;
+    }
+
+    .dialogue.ready-to-advance .dialogue-copy:not([hidden]) + .dialogue-advance-marker {
+      right: 60px;
+    }
+
+    @keyframes dialogueAdvanceBounce {
+      0%, 100% {
+        transform: translateY(0) rotate(45deg) scale(1);
+      }
+      50% {
+        transform: translateY(4px) rotate(45deg) scale(.94);
+      }
+    }
+
+    @keyframes dialogueMarkerFadeIn {
+      0% {
+        opacity: 0;
+      }
+      45% {
+        opacity: .42;
+      }
+      100% {
+        opacity: 1;
+      }
+    }
+
+    .dialogue-glyph.pending {
+      visibility: hidden;
     }
 
     .copy-btn {
@@ -1462,6 +1557,7 @@
 </head>
 <body>
   <main id="app" aria-live="polite">
+    <div class="start-game-transition" id="startGameTransition" aria-hidden="true"></div>
     <section id="startScreen" class="screen active">
       <div class="start">
         <div class="start-hero" aria-hidden="true">
@@ -1553,6 +1649,10 @@
           <input type="checkbox" id="devQuickRestoreInputs" checked>
           Add Quick Restore String Inputs
         </label>
+        <label class="dev-toggle" for="devDisableTypewriter">
+          <input type="checkbox" id="devDisableTypewriter">
+          Disable Dialogue Typewriter
+        </label>
         <div class="dev-audio-status" id="devAudioStatus" aria-live="polite"></div>
       </aside>
       <div class="stage">
@@ -1571,6 +1671,7 @@
           <button class="copy-btn dialogue-copy" id="dialogueCopyBtn" title="Copy dialogue" aria-label="Copy dialogue">
             <svg viewBox="0 0 24 24" aria-hidden="true"><rect x="9" y="9" width="11" height="11" rx="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg>
           </button>
+          <span class="dialogue-advance-marker" aria-hidden="true"></span>
         </section>
       </div>
     </section>

@@ -1772,6 +1772,28 @@ const scenes = {
     ],
     nextAction: completeJackFullLoveNight
   },
+  full_love_jack_sleep_line_fade: {
+    label: "Jack's Cabin",
+    background: () => ({ location: "jackCabinNight", time: "night" }),
+    music: "jackFullLoveGood",
+    ambient: "rainRoof",
+    suppressSceneSfx: true,
+    lines: [
+      ["narrator", "You answer him softly. The rain keeps its rhythm overhead until words become breathing, and breathing becomes sleep.", null, { dialogueFadeOut: true, fadeOutMusicUntilScene: { sceneId: "full_love_jack_morning_black", fadeOutMs: 2800, resumeFadeMs: 5600 }, autoAdvanceMs: 1250, suppressAdvanceSfx: true }]
+    ],
+    next: "full_love_jack_morning_black"
+  },
+  full_love_jack_morning_black: {
+    label: "Morning",
+    background: () => ({ location: "black", time: "daytime" }),
+    silenceMusic: true,
+    suppressSceneSfx: true,
+    character: null,
+    lines: [
+      ["narrator", "", null, { dialogueHidden: true, autoAdvanceMs: 2100, suppressAdvanceSfx: true }]
+    ],
+    next: "full_love_jack_morning_wake"
+  },
   full_love_jack_bad: {
     label: "Jack's Cabin",
     background: () => ({ location: "jackCabinNight", time: "night" }),
@@ -1843,17 +1865,119 @@ const scenes = {
   full_love_jack_morning_wake: {
     label: "Jack's Cabin",
     background: () => ({ location: "jackCabinDay", time: "daytime" }),
-    music: "jack",
-    ambient: "morningBirds",
+    silenceMusic: true,
     onEnter: () => { state.timeOfDay = "daytime"; },
     lines: [
-      ["narrator", "Morning finds Jack's cabin washed in quiet gray light. The rain has stopped. Somewhere outside, birds test the day with small, bright notes."],
+      ["narrator", "Morning finds Jack's cabin washed in quiet gray light. The rain has stopped. Outside, the day takes its time arriving.", null, { dialogueSlowFade: true, startAmbient: "morningBirds" }],
       ["narrator", "Jack is awake beside you, hair impossible, expression impossibly soft.", "jack:blushing"],
       ["jack", "Hi.", "jack:blushing"],
       ["player", "Hi.", "jack:blushing"],
       ["jack", "I was going to make breakfast sound casual, but I am too happy and I think the eggs would know.", "jack:laughing"],
-      ["narrator", "He walks you back to the lodge through clean morning air, hand warm around yours until the lobby doors come into view.", null, walkingAmbient()],
-      ["narrator", "By the time you step inside Viral Vista Lodge, the normal morning rhythm is waiting, though nothing in your chest feels normal at all."]
+      ["player", "The eggs are very perceptive.", "jack:laughing"],
+      ["jack", "Right? Terrifying breakfast instincts.", "jack:laughing"],
+      ["narrator", "He gets up carefully, like he is afraid one wrong move will wake the part of the world that still thinks this is impossible.", "jack:blushing"],
+      ["narrator", "At the little stove, Jack makes breakfast with comic seriousness: coffee measured like a field sample, toast rescued from dramatic danger, eggs folded soft and golden into a skillet that has clearly seen things.", "jack:laughing"],
+      ["jack", "I wanted to do pancakes, but the cabin pantry contains flour, salt, and one mysterious jar I am choosing not to emotionally investigate.", "jack:grumpy"],
+      ["player", "Eggs are perfect.", "jack:blushing"],
+      ["narrator", "You eat at the small table while sunlight gathers on the floorboards. Jack keeps brushing your knee under the table by accident, then smiling like the accident has a long-term plan.", "jack:blushing"],
+      ["jack", "I promised I would get you back at first light.", "jack:blushing"],
+      ["player", "This is technically light.", "jack:blushing"],
+      ["jack", "Technically is Caleb's department. My department is walking you back before the lodge starts inventing search parties with emotional paperwork.", "jack:laughing"],
+      ["narrator", "The morning lingers anyway: one more sip of coffee, one more soft look, one more quiet moment where being loved feels less like a cliff edge and more like a trail you can actually follow.", "jack:blushing"]
+    ],
+    next: "full_love_jack_morning_goodbye"
+  },
+  full_love_jack_morning_goodbye: {
+    label: "Jack's Cabin",
+    background: () => ({ location: "jackCabinDay", time: "daytime" }),
+    ambient: "morningBirds",
+    silenceMusic: true,
+    lines: [
+      ["narrator", "Eventually Jack walks you to the cabin door, hand warm at the small of your back like he is guiding something precious through the morning.", "jack:blushing"],
+      ["jack", "I know I said first light. Apparently I meant first light plus breakfast plus me discovering I am bad at ending a perfect morning.", "jack:blushing"],
+      ["player", "That is a very specific wilderness skill gap.", "jack:blushing"],
+      ["jack", "I contain multitudes. Most of them are currently standing in this doorway hoping you do not leave yet.", "jack:blushing"],
+      ["narrator", "Sunlight spills across the porch boards. Jack's fingers catch on yours, reluctant and earnest all at once.", "jack:blushing"],
+      ["jack", "If I walk you all the way to the lodge, I am going to look at you like I personally invented mornings, and I would like to survive breakfast gossip.", "jack:laughing"],
+      ["player", "Then say goodbye here.", "jack:blushing"],
+      ["narrator", "You catch him by the front of his flannel and kiss him at the cabin door. Jack makes a startled, happy sound against your mouth, then kisses you back like he has been trying to behave and finally gives up on the project.", "jack:blushing"],
+      ["narrator", "When you part, he is pink-cheeked, smiling, and visibly one strong breeze away from forgetting his own name.", "jack:blushing"],
+      ["jack", "Okay. I can work with that. I mean, not immediately. Immediately I am going to stand here and recover in a very heroic way.", "jack:laughing"],
+      ["player", "Meet me at the lodge when your face remembers how to be normal.", "jack:laughing"],
+      ["jack", "Bold of you to assume that has ever happened, but yes. Give me a minute.", "jack:blushing"],
+      ["narrator", "You steal one last quick kiss anyway, because he is right there and the morning is feeling generous.", "jack:blushing"]
+    ],
+    next: "full_love_jack_morning_line_fade"
+  },
+  full_love_jack_morning_line_fade: {
+    label: "Jack's Cabin",
+    background: () => ({ location: "jackCabinDay", time: "daytime" }),
+    ambient: "morningBirds",
+    silenceMusic: true,
+    suppressSceneSfx: true,
+    lines: [
+      ["narrator", "You head down the path alone a minute later, still smiling hard enough to feel it.", null, { dialogueFadeOut: true, autoAdvanceMs: 1150, suppressAdvanceSfx: true }]
+    ],
+    next: "full_love_jack_walk_fade_to_black"
+  },
+  full_love_jack_walk_fade_to_black: {
+    label: "Trail Back",
+    background: () => ({ location: "black", time: "daytime" }),
+    ambient: "morningBirds",
+    silenceMusic: true,
+    suppressSceneSfx: true,
+    character: null,
+    lines: [
+      ["narrator", "", null, { dialogueHidden: true, autoAdvanceMs: 1250, suppressAdvanceSfx: true }]
+    ],
+    next: "full_love_jack_walk_back"
+  },
+  full_love_jack_walk_back: {
+    label: "Trail Back",
+    background: () => ({ location: "black", time: "daytime" }),
+    ambient: "morningBirds",
+    silenceMusic: true,
+    suppressSceneSfx: true,
+    character: null,
+    lines: [
+      ["narrator", "You make your way back through the clean morning woods alone, the path still damp from last night's rain and your mouth still warm from kissing Jack goodbye at the cabin door.", null, { dialogueSlowFade: true, startOverlayAmbient: "dryGrassWalk", startOverlayAmbientAfterMs: 1700 }],
+      ["player", "Okay. I can absolutely be normal about that for the next five minutes."],
+      ["narrator", "The forest smells like wet cedar and fresh coffee. Behind you somewhere, Jack is probably still leaning in his doorway, smiling at nothing like it personally deserves him.", null, { stopOverlayAmbientOnAdvance: true }],
+      ["narrator", "By the time the lodge comes into view between the trees, morning has settled in properly, bright and gold-edged and impossible to resent."],
+      ["narrator", "You take a breath, square your shoulders, and reach for the lodge door."]
+    ],
+    next: "full_love_jack_door_line_fade"
+  },
+  full_love_jack_door_line_fade: {
+    label: "Lodge Door",
+    background: () => ({ location: "black", time: "daytime" }),
+    silenceMusic: true,
+    suppressSceneSfx: true,
+    character: null,
+    lines: [
+      ["narrator", "You take one last steadying breath, still smiling, and open the lodge door.", null, { dialogueFadeOut: true, autoAdvanceMs: 1150, suppressAdvanceSfx: true }]
+    ],
+    next: "full_love_jack_open_lodge_door"
+  },
+  full_love_jack_open_lodge_door: {
+    label: "Lodge Door",
+    background: () => ({ location: "black", time: "daytime" }),
+    silenceMusic: true,
+    suppressSceneSfx: true,
+    character: null,
+    lines: [
+      ["narrator", "", null, { dialogueHidden: true, audio: "door", autoAdvanceMs: 850, suppressAdvanceSfx: true }]
+    ],
+    next: "full_love_jack_lodge_fade_in"
+  },
+  full_love_jack_lodge_fade_in: {
+    label: "Lodge Door",
+    background: () => ({ location: "black", time: "daytime" }),
+    silenceMusic: true,
+    suppressSceneSfx: true,
+    character: null,
+    lines: [
+      ["narrator", "", null, { dialogueHidden: true, autoAdvanceMs: 1900, suppressAdvanceSfx: true }]
     ],
     nextAction: completeJackFullLoveMorning
   },
@@ -3365,6 +3489,13 @@ function applyLinePresentation(options = {}) {
 }
 
 function scheduleLineAmbientCue(options = {}) {
+  if (options.startAmbient) {
+    const delay = Number(options.startAmbientAfterMs) || 0;
+    lineAmbientTimer = window.setTimeout(() => {
+      updateAmbient(options.startAmbient);
+    }, delay);
+    return;
+  }
   if (!options.startOverlayAmbient) return;
   const delay = Number(options.startOverlayAmbientAfterMs) || 0;
   lineAmbientTimer = window.setTimeout(() => {
@@ -4015,11 +4146,7 @@ function completeBrotherReconciliation() {
 
 function completeJackFullLoveNight() {
   state.day += 1;
-  showDayTransition(state.day, {
-    kicker: "Morning in Jack's Cabin",
-    caption: "The storm has passed, the cabin is brightening, and the lodge morning is waiting just down the trail.",
-    onStart: () => renderScene("full_love_jack_morning_wake", { suppressSceneSfx: true })
-  });
+  renderScene("full_love_jack_sleep_line_fade", { suppressSceneSfx: true });
 }
 
 function completeJackFullLoveMorning() {
@@ -4030,7 +4157,7 @@ function completeJackFullLoveMorning() {
   state.visitStartMood = null;
   state.visitLastChoice = null;
   state.visitLastReaction = null;
-  renderScene("day_wake");
+  startNewDay();
 }
 
 function completeVisit() {

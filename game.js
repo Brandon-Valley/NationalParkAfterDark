@@ -48,8 +48,6 @@ let state = clone(defaultState);
 let spriteLoadToken = 0;
 let lineAutoAdvanceTimer = null;
 let lineAmbientTimer = null;
-let establishingPauseTimer = null;
-let establishingRenderTimer = null;
 let choiceAutoSelectTimer = null;
 let choiceCountdownTimer = null;
 const DEV_HISTORY_LIMIT = 100;
@@ -78,10 +76,6 @@ const DIALOGUE_TYPEWRITER = {
   ellipsisPauseMs: 430,
   newlinePauseMs: 270
 };
-
-const ESTABLISHING_PAUSE_MS = 1080;
-const ESTABLISHING_DIALOGUE_RENDER_MS = 920;
-const ESTABLISHING_DIALOGUE_REVEAL_EXTRA_MS = 760;
 const DAY_TRANSITION_EXIT_MS = 980;
 const DAY_TRANSITION_EXIT_WITH_SCENE_MS = 1250;
 
@@ -3194,13 +3188,10 @@ function renderScene(sceneId, options = {}) {
   if (!scene) throw new Error("Missing scene: " + sceneId);
   window.clearTimeout(lineAutoAdvanceTimer);
   window.clearTimeout(lineAmbientTimer);
-  window.clearTimeout(establishingPauseTimer);
-  window.clearTimeout(establishingRenderTimer);
   window.clearTimeout(startGameTransitionTimer);
   window.clearTimeout(dialogueEntryTimer);
   clearDialogueTypewriter();
   clearChoiceTimers();
-  els.gameScreen.classList.remove("establishing-pause");
   els.gameScreen.classList.remove("dev-skip-picker-active");
   state.sceneId = sceneId;
   state.lineIndex = options.keepLine ? state.lineIndex : 0;
@@ -3211,29 +3202,13 @@ function renderScene(sceneId, options = {}) {
     updatePropSprite(null);
   }
   const background = resolveValue(scene.background) || { location: "lodge", time: state.timeOfDay };
-  const backgroundChanged = updateBackdrop(background);
-  const shouldPauseForEstablishing = backgroundChanged && !options.keepLine && !options.skipEstablishingPause;
-  if (shouldPauseForEstablishing) {
-    els.gameScreen.classList.add("establishing-pause");
-  }
+  updateBackdrop(background);
   updateAmbient(scene.ambient || null);
   updateAudioTheme(background.location, null, {
     musicKey: resolveValue(scene.music) || null,
-    silenceMusic: Boolean(scene.silenceMusic),
-    suppressSfx: options.suppressSceneSfx || Boolean(scene.suppressSceneSfx)
+    silenceMusic: Boolean(scene.silenceMusic)
   });
   updateDevPanel();
-  if (shouldPauseForEstablishing) {
-    const revealDelay = Math.max(nextDialogueRevealDelayMs, ESTABLISHING_DIALOGUE_REVEAL_EXTRA_MS);
-    establishingRenderTimer = window.setTimeout(() => {
-      nextDialogueRevealDelayMs = revealDelay;
-      renderCurrentLine();
-    }, ESTABLISHING_DIALOGUE_RENDER_MS);
-    establishingPauseTimer = window.setTimeout(() => {
-      els.gameScreen.classList.remove("establishing-pause");
-    }, ESTABLISHING_PAUSE_MS);
-    return;
-  }
   renderCurrentLine();
 }
 
@@ -3526,7 +3501,6 @@ function shouldShowDialogueAdvanceMarker(lineOptions = {}) {
 }
 
 function showNextDialogueLine(options = {}) {
-  if (els.gameScreen.classList.contains("establishing-pause")) return;
   if (!options.forceAdvance && completeDialogueTypewriter()) return;
   if (!options.transitionAutoAdvance && startQueuedLineTransition(options)) return;
   window.clearTimeout(lineAutoAdvanceTimer);
@@ -3819,8 +3793,6 @@ function goBackOneStep() {
   }
 
   window.clearTimeout(lineAutoAdvanceTimer);
-  window.clearTimeout(establishingPauseTimer);
-  window.clearTimeout(establishingRenderTimer);
   window.clearTimeout(startDayFromTransition.timer);
   window.clearTimeout(startGameTransitionTimer);
   window.clearTimeout(dialogueEntryTimer);
@@ -3832,13 +3804,9 @@ function goBackOneStep() {
     els.dayTransition.classList.remove("active", "leaving");
     els.dayTransition.setAttribute("aria-hidden", "true");
   }
-  els.gameScreen.classList.remove("day-transitioning", "establishing-pause");
+  els.gameScreen.classList.remove("day-transitioning");
   state = previousState;
-  renderScene(normalizeSceneId(state.sceneId || "intro_bus_ride"), {
-    keepLine: true,
-    skipEstablishingPause: true,
-    suppressSceneSfx: true
-  });
+  renderScene(normalizeSceneId(state.sceneId || "intro_bus_ride"), { keepLine: true });
   playSfx("advance");
 }
 
@@ -3859,7 +3827,6 @@ function skipCurrentInteraction() {
     startDayFromTransition();
     return;
   }
-  if (els.gameScreen.classList.contains("establishing-pause")) return;
   clearDialogueTypewriter();
   const startingBackground = currentBackgroundKey();
   pushDevHistory();
@@ -3882,7 +3849,6 @@ function showDevSkipToPicker() {
     startDayFromTransition();
     return;
   }
-  if (els.gameScreen.classList.contains("establishing-pause")) return;
   pushDevHistory();
   state.choiceReactionBackground = resolveValue(scenes[state.sceneId]?.background) || { location: "lodge", time: state.timeOfDay };
   playSfx("advance");
@@ -3894,8 +3860,6 @@ function renderDevSkipToPicker() {
   const background = resolveValue(scene.background);
   window.clearTimeout(lineAutoAdvanceTimer);
   window.clearTimeout(lineAmbientTimer);
-  window.clearTimeout(establishingPauseTimer);
-  window.clearTimeout(establishingRenderTimer);
   window.clearTimeout(dialogueEntryTimer);
   clearDialogueTypewriter();
   clearChoiceTimers();
@@ -3903,10 +3867,10 @@ function renderDevSkipToPicker() {
   state.lineIndex = 0;
   updateBackdrop(background);
   updateAmbient(scene.ambient || null);
-  updateAudioTheme(background?.location || "lodge", null, { suppressSfx: true });
+  updateAudioTheme(background?.location || "lodge", null);
   updateSprite(null);
   updatePropSprite(null);
-  els.gameScreen.classList.remove("establishing-pause", "dialogue-slow-fade", "dialogue-fade-out", "sprite-drift-up", "sleeping-bag-rise");
+  els.gameScreen.classList.remove("dialogue-slow-fade", "dialogue-fade-out", "sprite-drift-up", "sleeping-bag-rise");
   els.gameScreen.classList.add("dev-skip-picker-active");
   els.dialogueBox.classList.remove("dialogue-first-enter", "dialogue-entry-pending", "ready-to-advance");
   els.lineText.textContent = "";
@@ -4943,8 +4907,6 @@ function restoreStateSnapshot(saved, options = {}) {
   clearDevHistory();
   window.clearTimeout(lineAutoAdvanceTimer);
   window.clearTimeout(lineAmbientTimer);
-  window.clearTimeout(establishingPauseTimer);
-  window.clearTimeout(establishingRenderTimer);
   window.clearTimeout(startDayFromTransition.timer);
   window.clearTimeout(startGameTransitionTimer);
   window.clearTimeout(dialogueEntryTimer);
@@ -4957,15 +4919,11 @@ function restoreStateSnapshot(saved, options = {}) {
     els.dayTransition.setAttribute("aria-hidden", "true");
   }
   els.startGameTransition.classList.remove("active", "leaving");
-  els.gameScreen.classList.remove("day-transitioning", "establishing-pause");
+  els.gameScreen.classList.remove("day-transitioning");
   els.dialogueBox.classList.remove("dialogue-first-enter", "dialogue-entry-pending");
   ensureAudio();
   showScreen("gameScreen");
-  renderScene(state.sceneId, {
-    keepLine: true,
-    skipEstablishingPause: true,
-    suppressSceneSfx: true
-  });
+  renderScene(state.sceneId, { keepLine: true });
   if (options.successToast) toast(options.successToast);
 }
 
@@ -5254,14 +5212,10 @@ function updateAudioTheme(locationKey, characterCue, options = {}) {
     audioEngine.musicSuppressedUntilSceneId = null;
     ensureAudio();
     fadeOutCurrentMusic(900);
-    if (options.suppressSfx) return;
-    playSfx(characterCue ? "character" : "scene");
     return;
   }
   ensureAudio();
   if (!audioEngine.musicSuppressedLocationKey) restartMusicLoop();
-  if (options.suppressSfx) return;
-  playSfx(characterCue ? "character" : "scene");
 }
 
 function restartMusicLoop() {

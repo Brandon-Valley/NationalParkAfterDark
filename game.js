@@ -4793,9 +4793,9 @@ function updatePropSprite(propCue) {
   const { key: characterKey, expression } = parseCharacterCue(propCue);
   const character = characters[characterKey];
   const sprite = character && resolveSprite(character, expression);
-  els.gameScreen.classList.toggle("prop-visible", Boolean(sprite));
   if (!sprite) {
     els.propSprite.classList.add("hidden");
+    els.gameScreen.classList.remove("prop-visible");
     window.setTimeout(() => {
       if (els.gameScreen.classList.contains("prop-visible")) return;
       els.propSprite.removeAttribute("src");
@@ -4810,11 +4810,13 @@ function updatePropSprite(propCue) {
   const spriteUrl = new URL(sprite, window.location.href).href;
   const characterName = resolveName(character);
   if (els.propSprite.dataset.spriteUrl === spriteUrl && !els.propSprite.classList.contains("hidden")) {
+    els.gameScreen.classList.add("prop-visible");
     els.propSprite.alt = characterName;
     return;
   }
 
   els.propSprite.classList.add("hidden");
+  els.gameScreen.classList.remove("prop-visible");
   els.propSprite.alt = characterName;
   els.propSprite.decoding = "async";
   els.propSprite.loading = "eager";
@@ -4822,7 +4824,10 @@ function updatePropSprite(propCue) {
     els.propSprite.dataset.spriteUrl = spriteUrl;
     els.propSprite.src = spriteUrl;
     void els.propSprite.offsetWidth;
-    requestAnimationFrame(() => requestAnimationFrame(() => els.propSprite.classList.remove("hidden")));
+    requestAnimationFrame(() => requestAnimationFrame(() => {
+      els.gameScreen.classList.add("prop-visible");
+      els.propSprite.classList.remove("hidden");
+    }));
   };
   if (els.propSprite.src === spriteUrl) {
     window.setTimeout(revealProp, 120);
@@ -4831,7 +4836,10 @@ function updatePropSprite(propCue) {
   const preload = new Image();
   preload.decoding = "async";
   preload.onload = () => window.setTimeout(revealProp, 120);
-  preload.onerror = () => els.propSprite.classList.add("hidden");
+  preload.onerror = () => {
+    els.gameScreen.classList.remove("prop-visible");
+    els.propSprite.classList.add("hidden");
+  };
   preload.src = spriteUrl;
 }
 

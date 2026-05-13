@@ -4720,6 +4720,14 @@ function setBackdropInstant(backgroundInput) {
   els.backdropNext.dataset.key = key;
 }
 
+function applyMainSpriteVariantClasses(characterKey, expression) {
+  els.sprite.classList.toggle("sierra-stargazing-sprite", characterKey === "sierra" && String(expression || "").startsWith("stargazingStep"));
+  els.sprite.classList.toggle("sierra-stargazing-close", characterKey === "sierra" && expression === "stargazingStep4");
+  els.sprite.classList.toggle("natai-sleeping-bag-romantic", characterKey === "natai" && expression === "sleepingBagRomantic");
+  els.sprite.classList.toggle("natai-empty-sleeping-bag", characterKey === "natai" && expression === "emptySleepingBag");
+  els.sprite.classList.toggle("dakota-natai-reconciliation", characterKey === "dakotaNatai");
+}
+
 function updateSprite(characterCue) {
   const { key: characterKey, expression } = parseCharacterCue(characterCue);
   const character = characters[characterKey];
@@ -4734,18 +4742,14 @@ function updateSprite(characterCue) {
       els.sprite.removeAttribute("src");
       els.sprite.alt = "";
       els.sprite.dataset.spriteUrl = "";
-      els.sprite.classList.remove("sierra-stargazing-sprite", "sierra-stargazing-close", "natai-sleeping-bag-romantic", "natai-empty-sleeping-bag", "dakota-natai-reconciliation");
+      applyMainSpriteVariantClasses(null, null);
     }, 620);
     return;
   }
-  els.sprite.classList.toggle("sierra-stargazing-sprite", characterKey === "sierra" && String(expression || "").startsWith("stargazingStep"));
-  els.sprite.classList.toggle("sierra-stargazing-close", characterKey === "sierra" && expression === "stargazingStep4");
-  els.sprite.classList.toggle("natai-sleeping-bag-romantic", characterKey === "natai" && expression === "sleepingBagRomantic");
-  els.sprite.classList.toggle("natai-empty-sleeping-bag", characterKey === "natai" && expression === "emptySleepingBag");
-  els.sprite.classList.toggle("dakota-natai-reconciliation", characterKey === "dakotaNatai");
   const spriteUrl = new URL(sprite, window.location.href).href;
   const characterName = resolveName(character);
   if (els.sprite.dataset.spriteUrl === spriteUrl && !els.sprite.classList.contains("hidden")) {
+    applyMainSpriteVariantClasses(characterKey, expression);
     els.sprite.alt = characterName;
     return;
   }
@@ -4760,6 +4764,7 @@ function updateSprite(characterCue) {
   els.placeholderSprite.querySelector("strong").textContent = characterName;
   const revealSprite = () => {
     if (loadToken !== spriteLoadToken) return;
+    applyMainSpriteVariantClasses(characterKey, expression);
     els.sprite.dataset.spriteUrl = spriteUrl;
     els.sprite.src = spriteUrl;
     void els.sprite.offsetWidth;

@@ -4798,6 +4798,12 @@ function updateSprite(characterCue) {
   if (!character || !sprite) {
     const hideToken = spriteLoadToken + 1;
     spriteLoadToken = hideToken;
+    const hadVisibleSprite = Boolean(els.sprite.dataset.spriteUrl) && !els.sprite.classList.contains("hidden");
+    if (hadVisibleSprite) {
+      els.sprite.dataset.pendingFadeSwap = "true";
+    } else {
+      delete els.sprite.dataset.pendingFadeSwap;
+    }
     els.sprite.classList.add("hidden");
     els.placeholderSprite.classList.remove("visible");
     window.setTimeout(() => {
@@ -4805,6 +4811,7 @@ function updateSprite(characterCue) {
       els.sprite.removeAttribute("src");
       els.sprite.alt = "";
       els.sprite.dataset.spriteUrl = "";
+      delete els.sprite.dataset.pendingFadeSwap;
       applyMainSpriteVariantClasses(null, null);
     }, 620);
     return;
@@ -4812,13 +4819,14 @@ function updateSprite(characterCue) {
   const spriteUrl = new URL(sprite, window.location.href).href;
   const characterName = resolveName(character);
   if (els.sprite.dataset.spriteUrl === spriteUrl && !els.sprite.classList.contains("hidden")) {
+    delete els.sprite.dataset.pendingFadeSwap;
     applyMainSpriteVariantClasses(characterKey, expression);
     els.sprite.alt = characterName;
     return;
   }
   const loadToken = spriteLoadToken + 1;
   spriteLoadToken = loadToken;
-  const hadVisibleSprite = Boolean(els.sprite.dataset.spriteUrl) && !els.sprite.classList.contains("hidden");
+  const hadVisibleSprite = (Boolean(els.sprite.dataset.spriteUrl) && !els.sprite.classList.contains("hidden")) || els.sprite.dataset.pendingFadeSwap === "true";
   els.sprite.classList.add("hidden");
   els.sprite.alt = characterName;
   els.sprite.decoding = "async";
@@ -4827,6 +4835,7 @@ function updateSprite(characterCue) {
   els.placeholderSprite.querySelector("strong").textContent = characterName;
   const revealSprite = () => {
     if (loadToken !== spriteLoadToken) return;
+    delete els.sprite.dataset.pendingFadeSwap;
     applyMainSpriteVariantClasses(characterKey, expression);
     els.sprite.dataset.spriteUrl = spriteUrl;
     els.sprite.src = spriteUrl;
@@ -4838,6 +4847,7 @@ function updateSprite(characterCue) {
   };
   const showMissingSprite = () => {
     if (loadToken !== spriteLoadToken) return;
+    delete els.sprite.dataset.pendingFadeSwap;
     els.sprite.classList.add("hidden");
     els.placeholderSprite.classList.add("visible");
   };

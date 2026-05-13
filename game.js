@@ -3186,6 +3186,61 @@ function showNameEntry() {
   window.setTimeout(() => input.focus(), 980);
 }
 
+function getSceneLine(sceneId, lineIndex = 0) {
+  const scene = scenes[sceneId];
+  if (!scene) return ["narrator", ""];
+  const lines = resolveValue(scene.lines) || [];
+  return lines[lineIndex] || ["narrator", ""];
+}
+
+function getLineVisualState(line) {
+  const lineOptions = line[3] || {};
+  return {
+    characterCue: line.length > 2 ? line[2] : null,
+    propCue: lineOptions.propCue || null,
+    lineOptions
+  };
+}
+
+function getCueSpriteIdentity(cue) {
+  const { key, expression } = parseCharacterCue(cue);
+  const character = characters[key];
+  const sprite = character && resolveSprite(character, expression);
+  if (!character || !sprite) return null;
+  return new URL(sprite, window.location.href).href;
+}
+
+function shouldPreserveVisualAcrossSceneChange(currentCue, nextCue, lineOptions, element, fadeOutOptionKey) {
+  if (!element || element.classList.contains("hidden")) return false;
+  if (lineOptions?.[fadeOutOptionKey]) return false;
+  const currentIdentity = getCueSpriteIdentity(currentCue);
+  if (!currentIdentity) return false;
+  return currentIdentity === getCueSpriteIdentity(nextCue);
+}
+
+function getSceneVisualContinuity(previousSceneId, previousLineIndex, nextSceneId) {
+  const previousLine = getSceneLine(previousSceneId, previousLineIndex);
+  const nextLine = getSceneLine(nextSceneId, 0);
+  const previousVisualState = getLineVisualState(previousLine);
+  const nextVisualState = getLineVisualState(nextLine);
+  return {
+    preserveSprite: shouldPreserveVisualAcrossSceneChange(
+      previousVisualState.characterCue,
+      nextVisualState.characterCue,
+      previousVisualState.lineOptions,
+      els.sprite,
+      "fadeOutSprite"
+    ),
+    preserveProp: shouldPreserveVisualAcrossSceneChange(
+      previousVisualState.propCue,
+      nextVisualState.propCue,
+      previousVisualState.lineOptions,
+      els.propSprite,
+      "fadeOutProp"
+    )
+  };
+}
+
 function renderScene(sceneId, options = {}) {
   const scene = scenes[sceneId];
   if (!scene) throw new Error("Missing scene: " + sceneId);
@@ -3196,13 +3251,16 @@ function renderScene(sceneId, options = {}) {
   clearDialogueTypewriter();
   clearChoiceTimers();
   els.gameScreen.classList.remove("dev-skip-picker-active");
+  const previousSceneId = state.sceneId;
+  const previousLineIndex = state.lineIndex;
   state.sceneId = sceneId;
   state.lineIndex = options.keepLine ? state.lineIndex : 0;
   if (!options.keepLine) state.lineAudioCueKey = null;
   if (scene.onEnter && !options.keepLine) scene.onEnter();
   if (!options.keepLine) {
-    updateSprite(null);
-    updatePropSprite(null);
+    const continuity = getSceneVisualContinuity(previousSceneId, previousLineIndex, sceneId);
+    if (!continuity.preserveSprite) updateSprite(null);
+    if (!continuity.preserveProp) updatePropSprite(null);
   }
   const background = resolveValue(scene.background) || { location: "lodge", time: state.timeOfDay };
   updateBackdrop(background);
@@ -3517,8 +3575,6 @@ function showNextDialogueLine(options = {}) {
   const currentLineOptions = currentLine[3] || {};
   if (currentLineOptions.stopOverlayAmbientOnAdvance) stopOverlayAmbient();
   if (state.lineIndex >= lines.length - 1) {
-    updateSprite(null);
-    updatePropSprite(null);
     if (scene.nextAction) {
       pushDevHistory();
       if (!options.suppressSfx) playSfx("advance");
@@ -3590,7 +3646,6 @@ function renderChoices(choices) {
   els.choices.classList.toggle("has-choices", choices.length > 0);
   els.gameScreen.classList.toggle("choices-active", choices.length > 0);
   if (choices.length > 0) {
-    updateSprite(null);
     updatePropSprite(null);
     const dialogueHeight = els.dialogueBox.getBoundingClientRect().height;
     els.choices.style.setProperty("--choices-bottom", `${Math.ceil(dialogueHeight + 28)}px`);

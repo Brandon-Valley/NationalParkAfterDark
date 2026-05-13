@@ -46,6 +46,7 @@ const defaultState = {
 
 let state = clone(defaultState);
 let spriteLoadToken = 0;
+let propLoadToken = 0;
 let lineAutoAdvanceTimer = null;
 let lineAmbientTimer = null;
 let choiceAutoSelectTimer = null;
@@ -4867,13 +4868,26 @@ function updatePropSprite(propCue) {
   const character = characters[characterKey];
   const sprite = character && resolveSprite(character, expression);
   if (!sprite) {
+    const hideToken = propLoadToken + 1;
+    propLoadToken = hideToken;
+    const hadVisibleProp = Boolean(els.propSprite.dataset.spriteUrl) && !els.propSprite.classList.contains("hidden");
+    if (hadVisibleProp) {
+      els.propSprite.dataset.pendingFadeSwap = "true";
+      requestAnimationFrame(() => {
+        if (hideToken === propLoadToken) els.gameScreen.classList.remove("prop-visible");
+      });
+    } else {
+      delete els.propSprite.dataset.pendingFadeSwap;
+      els.gameScreen.classList.remove("prop-visible");
+    }
     els.propSprite.classList.add("hidden");
-    els.gameScreen.classList.remove("prop-visible");
     window.setTimeout(() => {
+      if (hideToken !== propLoadToken) return;
       if (els.gameScreen.classList.contains("prop-visible")) return;
       els.propSprite.removeAttribute("src");
       els.propSprite.alt = "";
       els.propSprite.dataset.spriteUrl = "";
+      delete els.propSprite.dataset.pendingFadeSwap;
       els.propSprite.className = "prop-sprite hidden";
     }, 520);
     return;
@@ -4883,21 +4897,34 @@ function updatePropSprite(propCue) {
   const spriteUrl = new URL(sprite, window.location.href).href;
   const characterName = resolveName(character);
   if (els.propSprite.dataset.spriteUrl === spriteUrl && !els.propSprite.classList.contains("hidden")) {
+    delete els.propSprite.dataset.pendingFadeSwap;
     els.gameScreen.classList.add("prop-visible");
     els.propSprite.alt = characterName;
     return;
   }
 
+  const loadToken = propLoadToken + 1;
+  propLoadToken = loadToken;
+  const hadVisibleProp = (Boolean(els.propSprite.dataset.spriteUrl) && !els.propSprite.classList.contains("hidden")) || els.propSprite.dataset.pendingFadeSwap === "true";
   els.propSprite.classList.add("hidden");
-  els.gameScreen.classList.remove("prop-visible");
+  if (hadVisibleProp) {
+    requestAnimationFrame(() => {
+      if (loadToken === propLoadToken) els.gameScreen.classList.remove("prop-visible");
+    });
+  } else {
+    els.gameScreen.classList.remove("prop-visible");
+  }
   els.propSprite.alt = characterName;
   els.propSprite.decoding = "async";
   els.propSprite.loading = "eager";
   const revealProp = () => {
+    if (loadToken !== propLoadToken) return;
+    delete els.propSprite.dataset.pendingFadeSwap;
     els.propSprite.dataset.spriteUrl = spriteUrl;
     els.propSprite.src = spriteUrl;
     void els.propSprite.offsetWidth;
     requestAnimationFrame(() => requestAnimationFrame(() => {
+      if (loadToken !== propLoadToken) return;
       els.gameScreen.classList.add("prop-visible");
       els.propSprite.classList.remove("hidden");
     }));
@@ -4910,6 +4937,8 @@ function updatePropSprite(propCue) {
   preload.decoding = "async";
   preload.onload = () => window.setTimeout(revealProp, 120);
   preload.onerror = () => {
+    if (loadToken !== propLoadToken) return;
+    delete els.propSprite.dataset.pendingFadeSwap;
     els.gameScreen.classList.remove("prop-visible");
     els.propSprite.classList.add("hidden");
   };

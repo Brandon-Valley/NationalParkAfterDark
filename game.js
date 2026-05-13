@@ -2972,6 +2972,10 @@ const audioEngine = {
   overlayAmbientPlayer: null,
   overlayAmbientFadeTimerId: null,
   overlayAmbientToken: 0,
+  sfxContext: null,
+  advanceBuffer: null,
+  advanceBufferPromise: null,
+  advancePlayer: null,
   activeSfxPlayers: [],
   sfxChannels: {},
   enabled: true
@@ -3091,7 +3095,8 @@ function bindEvents() {
     goBackOneStep();
   });
   els.dayTransitionButton.addEventListener("click", startDayFromTransition);
-  document.getElementById("gameScreen").addEventListener("click", event => {
+  document.getElementById("gameScreen").addEventListener("pointerdown", event => {
+    if (event.button !== 0) return;
     if (els.dayTransition.classList.contains("active")) return;
     if (event.target.closest("button, input, select, textarea, a, .dev-panel")) return;
     if (els.galleryOverlay.classList.contains("active")) return;
@@ -5253,13 +5258,41 @@ function playLineAudioCue(cue) {
 function ensureAudio() {
   updateAudioButton();
   if (!audioEngine.enabled) return;
-  if (audioEngine.musicPlayers.length) return;
-  audioEngine.musicPlayers = [new Audio(), new Audio()];
-  audioEngine.musicPlayers.forEach(player => {
-    player.preload = "auto";
-    player.loop = false;
-    player.volume = 0;
-  });
+  if (!audioEngine.sfxContext) {
+    const AudioContextCtor = window.AudioContext || window.webkitAudioContext;
+    if (AudioContextCtor) audioEngine.sfxContext = new AudioContextCtor();
+  }
+  if (audioEngine.sfxContext?.state === "suspended") {
+    audioEngine.sfxContext.resume().catch(() => {});
+  }
+  if (audioEngine.sfxContext && !audioEngine.advanceBuffer && !audioEngine.advanceBufferPromise) {
+    audioEngine.advanceBufferPromise = fetch(sfxTracks.advance.src)
+      .then(response => response.arrayBuffer())
+      .then(buffer => audioEngine.sfxContext.decodeAudioData(buffer))
+      .then(decodedBuffer => {
+        audioEngine.advanceBuffer = decodedBuffer;
+        return decodedBuffer;
+      })
+      .catch(() => null)
+      .finally(() => {
+        audioEngine.advanceBufferPromise = null;
+      });
+  }
+  if (!audioEngine.advancePlayer) {
+    const advancePlayer = new Audio(sfxTracks.advance.src);
+    advancePlayer.preload = "auto";
+    advancePlayer.volume = sfxTracks.advance.volume;
+    advancePlayer.load();
+    audioEngine.advancePlayer = advancePlayer;
+  }
+  if (!audioEngine.musicPlayers.length) {
+    audioEngine.musicPlayers = [new Audio(), new Audio()];
+    audioEngine.musicPlayers.forEach(player => {
+      player.preload = "auto";
+      player.loop = false;
+      player.volume = 0;
+    });
+  }
   if (!els.startScreen.classList.contains("active") && !audioEngine.musicSuppressedLocationKey) restartMusicLoop();
 }
 
@@ -5363,6 +5396,29 @@ function playSfx(type) {
   if (!audioEngine.enabled) return;
   const config = sfxTracks[type];
   if (!config) return;
+  if (type === "advance" && audioEngine.sfxContext && audioEngine.advanceBuffer) {
+    const source = audioEngine.sfxContext.createBufferSource();
+    const gainNode = audioEngine.sfxContext.createGain();
+    gainNode.gain.value = config.volume;
+    source.buffer = audioEngine.advanceBuffer;
+    source.connect(gainNode);
+    gainNode.connect(audioEngine.sfxContext.destination);
+    source.addEventListener("ended", () => {
+      source.disconnect();
+      gainNode.disconnect();
+    }, { once: true });
+    source.start(0);
+    updateDevPanel();
+    return;
+  }
+  if (type === "advance" && audioEngine.advancePlayer) {
+    const effect = audioEngine.advancePlayer;
+    effect.pause();
+    try { effect.currentTime = 0; } catch (error) {}
+    effect.volume = config.volume;
+    effect.play().then(updateDevPanel).catch(() => {});
+    return;
+  }
   if (config.channel && audioEngine.sfxChannels[config.channel]) {
     stopSfxChannel(config.channel);
   }

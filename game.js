@@ -387,7 +387,10 @@ function addWalkingAmbientToLine(line) {
 }
 
 function addWalkingAmbientForCharacter(character, line) {
-  return shouldUseDryGrassWalk(character) && lineSuggestsWalking(line) ? addWalkingAmbientToLine(line) : line;
+  const background = resolveBackground(resolveValue(scenes[state.sceneId]?.background));
+  return background.location === "black" && shouldUseDryGrassWalk(character) && lineSuggestsWalking(line)
+    ? addWalkingAmbientToLine(line)
+    : line;
 }
 
 const cgLibrary = {
@@ -1322,7 +1325,7 @@ const scenes = {
     label: "Yosemite",
     background: () => ({ location: "yosemite", time: "sunset" }),
     lines: [
-      ["narrator", "Sierra leads you toward a small overlook where waterfall mist turns gold at the edges, checking over her shoulder like she knows exactly what that does to you.", "sierra", walkingAmbient()],
+      ["narrator", "Sierra leads you toward a small overlook where waterfall mist turns gold at the edges, checking over her shoulder like she knows exactly what that does to you.", "sierra"],
       ["sierra", "Most people aim at the biggest thing in front of them. Yosemite rewards peripheral vision. I reward eye contact.", "sierra:sly"],
       ["player", "That sounds suspiciously like life advice.", "sierra:laughing"]
     ],
@@ -1337,7 +1340,7 @@ const scenes = {
     label: "Yosemite",
     background: () => ({ location: "yosemite", time: "sunset" }),
     lines: [
-      ["narrator", "The trail steepens for one last push. Sierra stops at the top and waits, pretending not to check whether you are winded or flustered.", "sierra", walkingAmbient()],
+      ["narrator", "The trail steepens for one last push. Sierra stops at the top and waits, pretending not to check whether you are winded or flustered.", "sierra"],
       ["sierra", "Final test. What do you do when a place is bigger than your ability to describe it? Careful. I am judging the answer and the delivery.", "sierra:sly"],
       ["player", "That feels like a trap with excellent scenery.", "sierra:laughing"]
     ],
@@ -1351,7 +1354,7 @@ const scenes = {
     label: "Yosemite",
     background: () => ({ location: "yosemite", time: "sunset" }),
     lines: [
-      ["narrator", "Sierra walks you back down as sunset thins along the trail, her pace finally easy enough to feel companionable and still deliberately hard to ignore.", "sierra", walkingAmbient()],
+      ["narrator", "Sierra walks you back down as sunset thins along the trail, her pace finally easy enough to feel companionable and still deliberately hard to ignore.", "sierra"],
       ["sierra", "That is the Yosemite sampler. Cliffs, water, humility, and one charming guide making heroic sacrifices for your character development.", "sierra:sly"],
       ["player", "And cardio.", "sierra:laughing"],
       ["sierra", "Cardio is how the park knows you meant it. Blushing is how I know you were listening.", "sierra:sly"]
@@ -1412,7 +1415,7 @@ const scenes = {
     label: "Red Rock",
     background: () => ({ location: "zion", time: "night" }),
     lines: [
-      ["narrator", "Natai leads you along a pale ribbon of trail where the canyon walls hold the day's heat like a memory.", "natai", walkingAmbient()],
+      ["narrator", "Natai leads you along a pale ribbon of trail where the canyon walls hold the day's heat like a memory.", "natai"],
       ["natai", "People call deserts empty when they do not know how to read quiet.", "natai:grumpy"],
       ["player", "And you read it fluently?", "natai"]
     ],
@@ -1438,7 +1441,7 @@ const scenes = {
     label: "Red Rock",
     background: () => ({ location: "zion", time: "night" }),
     lines: [
-      ["narrator", "Natai walks you back through the dark with the quiet confidence of someone who knows every stone by reputation.", "natai", walkingAmbient()],
+      ["narrator", "Natai walks you back through the dark with the quiet confidence of someone who knows every stone by reputation.", "natai"],
       ["natai", "That is enough canyon for a first night. Any more and you will start assigning symbolism to boulders.", "natai:grumpy"],
       ["player", "This one does look judgmental.", "natai"],
       ["natai", "It is. It also has better timing than most people.", "natai:grumpy"]
@@ -2096,7 +2099,7 @@ const scenes = {
       ["player", "Like what?", "sierra:blushing"],
       ["sierra", "Like it was easy.", "sierra:blushing"],
       ["narrator", "She turns her flashlight toward a narrow side trail and offers you her hand.", "sierra"],
-      ["sierra", "Come on. I want to show you the place I go when Yosemite gets too big to explain.", "sierra", walkingAmbient()]
+      ["sierra", "Come on. I want to show you the place I go when Yosemite gets too big to explain.", "sierra"]
     ],
     next: "full_love_sierra_meadow"
   },
@@ -2105,7 +2108,7 @@ const scenes = {
     background: () => ({ location: "yosemiteMeadowNight", time: "night" }),
     music: "sierraFullLoveMeadow",
     lines: [
-      ["narrator", "The trail opens into a high meadow washed in moonlight. Wildflowers silver at the edges. Grass bends softly under the night air. Far across the valley, cliffs rise huge and quiet, and the waterfall glows pale against the dark.", null, walkingAmbient()],
+      ["narrator", "The trail opens into a high meadow washed in moonlight. Wildflowers silver at the edges. Grass bends softly under the night air. Far across the valley, cliffs rise huge and quiet, and the waterfall glows pale against the dark."],
       ["player", "Oh."],
       ["player", "This is beautiful."],
       ["narrator", "The meadow seems to make room around you: grass, stars, cold stone, warm breath, and the impossible feeling of being somewhere meant to be kept quiet."],
@@ -2207,7 +2210,7 @@ const scenes = {
       ["narrator", "Morning comes softly, and the meadow stays behind the dark a little longer."],
       ["narrator", "Sierra is still asleep beside you, one hand tucked in your sleeve, peaceful in a way that makes your chest go quiet."],
       ["player", "You do not wake her. You brush the grass from her hair, kiss her forehead, and leave her resting under the first warm light of Yosemite."],
-      ["narrator", "By the time you reach the lodge lobby, morning has fully arrived, and something tender has followed you back with it.", null, walkingAmbient()]
+      ["narrator", "By the time you reach the lodge lobby, morning has fully arrived, and something tender has followed you back with it."]
     ],
     nextAction: completeSierraFullLoveMorning
   },
@@ -2332,7 +2335,7 @@ const scenes = {
     background: () => ({ location: "zionClearingNight", time: "night" }),
     music: "nataiFullLoveCanyon",
     lines: [
-      ["narrator", "Natai leads you off the main route, lantern low, through a narrow turn in the brush where the canyon suddenly opens into a sheltered shelf of sand and stone.", null, walkingAmbient()],
+      ["narrator", "Natai leads you off the main route, lantern low, through a narrow turn in the brush where the canyon suddenly opens into a sheltered shelf of sand and stone."],
       ["narrator", "The clearing waits under moonlight: flat ground, warm lanterns, two enamel cups on a rock, and enough sky overhead to make the stars feel close."],
       ["player", "Did you make a romantic checklist?", "natai"],
       ["natai", "No.", "natai"],
@@ -2481,7 +2484,7 @@ const scenes = {
       ["narrator", "Morning comes pale and warm over Zion, but the sleeping bag keeps the last of the night tucked close a little longer.", null, { dialogueSlowFade: true }],
       ["narrator", "Natai is still asleep beside you, hair loose and face unguarded in a way they would probably call a security breach."],
       ["player", "You let them sleep. You leave the checklist weighted under the thermos with one note: Route decision approved."],
-      ["narrator", "By the time you reach the lodge lobby, morning has fully arrived, and the desert seems to have sent some warmth back with you.", null, walkingAmbient()]
+      ["narrator", "By the time you reach the lodge lobby, morning has fully arrived, and the desert seems to have sent some warmth back with you."]
     ],
     nextAction: completeNataiFullLoveMorning
   },
@@ -2510,7 +2513,7 @@ const scenes = {
       ["narrator", "Natai does not get up. They remain exactly where they are, half inside the first sleeping bag, watching you process the arrival of the second one with painful composure.", "natai:sleepingBagRomantic", { propCue: "natai:emptySleepingBag" }],
       ["natai", "The route marker is downhill. The path is lit.", "natai:sleepingBagRomantic", { propCue: "natai:emptySleepingBag" }],
       ["player", "Great. Perfect. Love a well-lit retreat.", "natai:sleepingBagRomantic", { propCue: "natai:emptySleepingBag" }],
-      ["narrator", "You go home to the lodge lobby embarrassed, a little mad, and newly suspicious of all rolled camping gear.", "natai:sleepingBagRomantic", walkingAmbient({ propCue: "natai:emptySleepingBag" })]
+      ["narrator", "You go home to the lodge lobby embarrassed, a little mad, and newly suspicious of all rolled camping gear.", "natai:sleepingBagRomantic", { propCue: "natai:emptySleepingBag" }]
     ],
     next: "full_love_natai_bad_exit"
   },
@@ -2733,7 +2736,7 @@ const scenes = {
       ["dakota", "I am human enough to be a little disappointed and bear enough to survive it with dignity.", "dakota:flattered"],
       ["player", "You found your shirt again.", "dakota"],
       ["dakota", "A miracle almost as impressive as emotional maturity.", "dakota:laughing"],
-      ["narrator", "He walks you back laughing softly, free in a way that does not depend on what you choose next.", "dakota:laughing", walkingAmbient()]
+      ["narrator", "He walks you back laughing softly, free in a way that does not depend on what you choose next.", "dakota:laughing"]
     ],
     nextAction: completeFullLoveScene
   },
@@ -4428,7 +4431,7 @@ function buildVisitWrapupLines(character) {
     }[mood];
     return [
       ["narrator", timeExit, characterExpression(character, mood)],
-      ["narrator", sierraMoodLine, characterExpression(character, mood), walkingAmbient()],
+      ["narrator", sierraMoodLine, characterExpression(character, mood)],
       ["sierra", sierraExitLine, "sierra:sly"],
       ["player", `You leave ${place} with mist on your skin, Yosemite still enormous behind you, and Sierra's grin following closer than expected.`, mood === "low" ? "sierra:grumpy" : "sierra:blushing"]
     ];

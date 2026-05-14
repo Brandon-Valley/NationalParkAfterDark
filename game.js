@@ -451,133 +451,133 @@ const parkFlavor = {
     place: "the rain cabin",
     visit: {
       daytime: {
-        low: ["Jack walks beside you like he has since the old volunteer trail days: broad shoulders, gentle voice, and one boot ready to block any terrible idea.", "The rainforest is silver-green and dripping. He points out nurse logs, elk tracks, and a mushroom he confidently calls a 'forest pancake.'"],
-        neutral: ["Jack walks you through Olympic rain with the easy warmth of an old friend, explaining which boards are slick and which puddles are secretly lakes with ambition.", "He makes the forest feel familiar without making it smaller."],
-        high: ["Jack meets you under the cedar eaves with two coffees, remembers exactly how you take yours, and nearly walks into a post while smiling at you.", "The old-growth trail smells like moss, coffee, and feelings that have apparently been waiting years to become inconvenient."]
+        low: ["Jack walks beside you like old volunteer days: gentle voice, broad shoulders, ready boot.", "The rainforest drips green. He points out nurse logs, elk tracks, and a forest pancake."],
+        neutral: ["Jack guides you through Olympic rain with old-friend warmth and a list of slick boards.", "He makes the forest feel familiar without making it smaller."],
+        high: ["Jack meets you under the cedar eaves with two coffees and a smile that ruins his balance.", "The trail smells like moss, coffee, and feelings that waited years to become inconvenient."]
       },
       sunset: {
-        low: ["At sunset, Jack's cabin windows glow warm, and even when he is disappointed, he still saves you the dry side of the porch.", "He corrects your footing twice, then apologizes to the mud for blaming it out loud."],
-        neutral: ["Gold light catches the rain in thin bright threads while Jack checks the trail markers and forgets whether east is left if he is facing south.", "He laughs at himself, then admits Olympic is best when the weather looks dramatic enough to need a hug."],
-        high: ["Sunset turns the wet cedar trunks copper. Jack watches you watch them with the same open, baffled tenderness he used to save for stray dogs and broken camp chairs.", "He says the forest only gets this pretty for people who listen, then blushes because he clearly meant you."]
+        low: ["Jack's cabin windows glow warm. Even disappointed, he still saves you the dry side.", "He corrects your footing twice, then apologizes to the mud."],
+        neutral: ["Gold light threads through the rain while Jack checks trail markers and forgets directions.", "He says Olympic looks best when the weather seems dramatic enough to need a hug."],
+        high: ["Sunset turns the wet cedars copper. Jack watches you watch them with helpless tenderness.", "He says the forest gets pretty for people who listen, then blushes because he means you."]
       },
       night: {
-        low: ["Night folds around the cabin. Jack gives you the brighter lantern because he still cannot stop taking care of you, even when his feelings look bruised.", "Somewhere in the trees, water moves over stone like it has better secrets."],
-        neutral: ["Jack leads a short lantern walk through the rain-dark forest, voice low, hand hovering near your elbow whenever the boardwalk shines wet.", "He points out how the trail changes after dark, then admits he once got turned around for ten minutes because two cedars looked 'emotionally identical.'"],
-        high: ["By lantern light, Jack's grin is all rain and helpless honesty. He walks close enough that your sleeves brush and then looks amazed by sleeves as a concept.", "Olympic at night feels less like a park and more like a friendship finally saying the quiet part out loud."]
+        low: ["Night folds around the cabin. Jack hands you the brighter lantern before you can ask.", "Somewhere in the trees, water moves over stone like it has better secrets."],
+        neutral: ["Jack leads a short lantern walk, voice low, hand hovering near your elbow on slick boards.", "He admits he once got lost because two cedars looked 'emotionally identical.'"],
+        high: ["By lantern light, Jack grins like rain and honesty learned the same face.", "Olympic at night feels like friendship finally saying the quiet part out loud."]
       }
     },
     surprise: {
-      low: ["Jack is at check-in, frowning at a damp stack of maps like they personally betrayed him. He notices you and says, 'Hey. Please do not make me worry in three directions at once.'"],
-      neutral: ["Jack is taping down a rain-smudged route card. 'The kiosk works better if you do not insult it where it can hear you. I think. I have never proved ears are not involved.'"],
-      high: ["Jack leans against the check-in kiosk, rain in his hair and affection all over his face. 'I was going to say be careful, but then I saw you and forgot the other half of the sentence.'"]
+      low: ["Jack frowns at a damp stack of maps. 'Hey. Please do not make me worry in three directions.'"],
+      neutral: ["Jack smooths a rain-smudged route card. 'The kiosk works better if you do not insult it.'"],
+      high: ["Jack leans on the kiosk, rain in his hair. 'I had a warning ready. You ruined it.'"]
     }
   },
   caleb: {
     place: "the Yellowstone boardwalk",
     visit: {
       daytime: {
-        low: ["Caleb waits beside the Yellowstone boardwalk with three maps, two laminated diagrams, and the brittle calm of a man trying not to explain a caldera to someone who may not listen.", "Steam rolls over the thermal pools. He still points out the microbial mats, because being hurt has not cured him of wanting the place understood."],
-        neutral: ["Caleb walks you past turquoise pools and hissing vents, narrating the route like Yellowstone is a beloved fantasy saga with footnotes.", "He starts with safety, detours into supervolcano history, and somehow makes both sound like flirting."],
-        high: ["Caleb saves you the best view of the boardwalk, where the steam curls around him and his whole face lights up before he says the words 'hydrothermal plumbing.'", "He says your name softly, then blushes because he has written three mental fun facts about this exact moment and none of them are socially normal."]
+        low: ["Caleb waits by the boardwalk with maps, laminated diagrams, and visible restraint.", "Steam rolls over the pools. Hurt or not, he still wants the place understood."],
+        neutral: ["Caleb walks you past turquoise pools and hissing vents like Yellowstone has footnotes.", "He starts with safety, detours into supervolcano history, and somehow makes both flirt."],
+        high: ["Caleb saves you the best boardwalk view, steam curling around him before he speaks.", "He says your name softly, then blushes like he prepared notes for this exact moment."]
       },
       sunset: {
-        low: ["Sunset stains the geyser steam orange. Caleb's patience is present, but currently organized into bullet points.", "He asks whether you know why the colors around hot springs change by temperature, then looks wounded when he realizes he made it sound like a quiz."],
-        neutral: ["Yellowstone glows at sunset, all mineral color and long shadows. Caleb relaxes when you stay behind the rail without being asked.", "He tells you the park has more than half the world's active geysers, then admits he was saving that fact for someone he wanted to impress."]
+        low: ["Sunset stains the geyser steam orange. Caleb's patience is present, but sorted into bullets.", "He asks about hot spring colors, then looks wounded that it sounded like a quiz."],
+        neutral: ["Yellowstone glows at sunset, all mineral color and long shadows.", "Caleb relaxes when you stay behind the rail without being asked.", "He says the park holds more than half the world's active geysers.", "Then he admits he saved that fact for someone he wanted to impress."]
       ,
-        high: ["At sunset, Caleb's smile appears through the steam like a rare thermal feature with a safety railing and excellent timing.", "He admits he likes showing you the park because you ask the kind of questions that make his whole brain sit up straighter."]
+        high: ["At sunset, Caleb's smile appears through the steam with impeccable timing.", "He likes showing you the park because your questions make his whole brain sit up straighter."]
       },
       night: {
-        low: ["The boardwalk is quiet at night. Caleb gives you a flashlight and a very exact history of why people should not underestimate quiet ground.", "A distant geyser exhales. He does not soften much, but when a coyote calls far off, he still whispers the fact he thinks you would like."],
-        neutral: ["Night settles over Yellowstone in cool blue layers. Caleb points out the stars between columns of steam, then the steam, then the old eruption records he has memorized by season.", "His voice gets gentler when the crowds disappear, like trivia is the path he trusts toward tenderness."],
-        high: ["Under the night sky, Caleb stands close while the hot springs breathe around you.", "He says Yellowstone is dangerous, gorgeous, full of patterns, and the first thing in years that has made him brave enough to be this obvious about liking someone."]
+        low: ["The boardwalk is quiet at night. Caleb gives you a flashlight and exact warnings.", "A distant geyser exhales. He still whispers the one fact he thinks you would like."],
+        neutral: ["Night settles over Yellowstone in cool blue layers.", "Caleb points out stars, steam, and eruption records he memorized by season.", "His voice gentles when the crowds disappear, like trivia is his safest road to tenderness."],
+        high: ["Under the night sky, Caleb stands close while the hot springs breathe around you.", "He calls Yellowstone dangerous, gorgeous, patterned, and the reason he risks being obvious."]
       }
     },
     surprise: {
-      low: ["Caleb is correcting a tiny typo on a Yellowstone fact card. 'If you are about to visit someone, please try not to call geysers hot-spring fountains where I can hear you.'"],
-      neutral: ["Caleb is refilling the emergency sunscreen basket while explaining that Yellowstone was established in 1872. He gives you one and says, 'Prepared is romantic in several climates.'"],
-      high: ["Caleb catches you at check-in and presses a trail snack into your hand. 'For later. Also, did you know Old Faithful is not the largest geyser, only the most punctual celebrity? I am pretending both statements are logistics.'"]
+      low: ["Caleb fixes a typo on a fact card. 'Do not call geysers hot-spring fountains near me.'"],
+      neutral: ["Caleb refills the sunscreen basket. 'Prepared is romantic in several climates.'"],
+      high: ["Caleb presses a trail snack into your hand. 'Old Faithful is punctual, not the biggest.'"]
     }
   },
   sierra: {
     place: "the Yosemite waterfall trail",
     visit: {
       daytime: {
-        low: ["Sierra bounds ahead on the Yosemite trail, then stops to make sure you are actually looking at the overlook.", "Granite cliffs rise clean and enormous behind her. She says they are hard to impress, but you are welcome to keep trying on both of them."],
-        neutral: ["Sierra leads you toward a waterfall throwing mist into the sun. She moves like the trail is a dance floor with consequences.", "She teases you into looking up from the obvious view to the better one, then adds that your focusing face is trouble."],
-        high: ["Sierra waits at the waterfall overlook, bright-eyed and wind-tossed, like Yosemite personally gave her good lighting.", "She grins when mist catches in your hair and says Yosemite is showing off for you. Then she says it has excellent taste."]
+        low: ["Sierra bounds ahead, then checks that you are actually looking at the overlook.", "Granite cliffs rise behind her. She says both of them are hard to impress."],
+        neutral: ["Sierra leads you toward a waterfall turning mist into sunlight.", "She moves like the trail is a dance floor with consequences.", "She teases you past the obvious view, then says your focused face is trouble."],
+        high: ["Sierra waits at the overlook, bright-eyed and wind-tossed, like Yosemite gave her lighting.", "Mist catches in your hair. She says Yosemite is showing off for you.", "Then she adds that the park has excellent taste."]
       },
       sunset: {
-        low: ["Sunset paints the granite pink. Sierra loves the view too much to stay annoyed, but she gives you no free points.", "She asks whether you can appreciate a cliff without making it about yourself, then smiles like she might grade the answer on charm."],
-        neutral: ["The Yosemite cliffs warm to gold as Sierra slows down for once.", "She says sunset is when the park stops showing off and starts telling the truth, which is also her favorite time to make people blush."],
-        high: ["Sierra pulls you to a viewpoint just as the granite catches fire with sunset.", "For a second she is quiet. Then she ruins the solemnity beautifully by saying the view is almost as distracting as you."]
+        low: ["Sunset paints the granite pink. Sierra loves the view too much to stay annoyed.", "She still gives you no free points.", "She asks if you can admire a cliff without making it about yourself.", "Then she smiles like charm might still salvage the answer."],
+        neutral: ["The Yosemite cliffs warm to gold as Sierra slows down for once.", "She says sunset is when the park stops showing off and starts telling the truth.", "Apparently it is also her favorite time to make people blush."],
+        high: ["Sierra pulls you to a viewpoint just as the granite catches fire with sunset.", "She goes quiet for one precious second.", "Then she says the view is almost as distracting as you."]
       },
       night: {
-        low: ["The waterfall is a pale line in the dark. Sierra keeps the pace brisk and the conversation sharper.", "She is still impossible to ignore, even when every smile arrives with a point on it."],
-        neutral: ["At night, Yosemite turns spare and echoing. Sierra points out the sound of water before you can see it.", "She likes that you listen, and she tells you so in a voice designed to make listening difficult."],
-        high: ["Moonlight turns the waterfall silver. Sierra takes your hand for one tricky step and does not immediately let go.", "She says some views work better when nobody is trying to caption them, then almost mentions another place before deciding you have not earned that secret yet."]
+        low: ["The waterfall is a pale line in the dark. Sierra keeps the pace brisk and sharp.", "She is still impossible to ignore, even when every smile arrives with a point on it."],
+        neutral: ["At night, Yosemite turns spare and echoing.", "Sierra points out the water before you can see it.", "She likes that you listen, and says so in a voice built to ruin concentration."],
+        high: ["Moonlight turns the waterfall silver. Sierra takes your hand for one tricky step.", "She does not let go immediately.", "She says some views work better when nobody is trying to caption them.", "Then she swallows another secret."]
       }
     },
     surprise: {
-      low: ["Sierra is perched near check-in, lacing her boots. 'Going somewhere? Try not to make the landscape carry the conversation. I have high standards for trail banter.'"],
-      neutral: ["Sierra jogs past check-in, then doubles back. 'Hydrate. Also, if you see a dramatic cliff, say hello for me. If it tries to impress you, I taught it everything.'"],
-      high: ["Sierra appears at check-in with waterfall mist still in her hair. 'I was not waiting for you. I just happened to choose the most obvious place to be found.'"]
+      low: ["Sierra laces her boots by check-in. 'Going somewhere? Bring better trail banter this time.'"],
+      neutral: ["Sierra jogs past, then points at your bottle. 'Hydrate. Cliffs need alert witnesses.'"],
+      high: ["Sierra arrives with mist in her hair. 'I was not waiting. I was simply easy to find.'"]
     }
   },
   dakota: {
     place: "the Sequoia grove",
     visit: {
       daytime: {
-        low: ["Dakota stands among the giant trees with a rake over one shoulder and a careful, distant expression.", "The sequoias make even awkward silence feel ancient."],
-        neutral: ["Dakota shows you the grove slowly, choosing every word like he is afraid one wrong sentence could start a fire.", "He talks about shade, patience, and how some mistakes keep following long after the smoke is gone."],
-        high: ["Dakota waits under the giant trees with a soft, guarded smile.", "He has saved you a quiet path through the grove, but even happy, he keeps part of himself just out of reach."]
+        low: ["Dakota stands among the giant trees with a rake and a careful, distant expression.", "The sequoias make even awkward silence feel ancient."],
+        neutral: ["Dakota shows you the grove slowly, choosing each word like one wrong one could start a fire.", "He talks about shade, patience, and how some mistakes keep following after the smoke."],
+        high: ["Dakota waits under the giant trees with a soft, guarded smile.", "He saved you a quiet path through the grove, but even happy he keeps part of himself back."]
       },
       sunset: {
-        low: ["Sunset filters through the trees. Dakota keeps the conversation gentle, but he does not hand you trust like a souvenir.", "He checks an old fire ring with careful, practiced hands and a sadness too practiced to be only professional."],
-        neutral: ["The grove deepens to amber while Dakota talks about keeping old things alive without pretending damage never happened.", "It should sound heavy. From him, it sounds like someone trying to earn a gentler future one quiet task at a time."],
-        high: ["Sunset makes the sequoias glow, and Dakota looks at you like he wants to step closer before old shame pulls him back.", "He admits he likes when you visit because the grove feels less quiet after, then immediately pretends the bark needs inspection."]
+        low: ["Sunset filters through the trees. Dakota stays gentle, but he does not hand you trust.", "He checks an old fire ring with practiced hands and a sadness too worn to be only work."],
+        neutral: ["The grove deepens to amber while Dakota talks about keeping old things alive.", "He never pretends damage did not happen.", "From him, even the heavy parts sound like a bid for a gentler future."],
+        high: ["Sunset makes the sequoias glow, and Dakota looks ready to step closer.", "Then old shame pulls him back.", "He admits the grove feels less quiet after your visits.", "Then he pretends the bark needs inspection."]
       },
       night: {
-        low: ["At night, Dakota's lantern swings low between the tree trunks. He is polite, watchful, and hard to fool.", "The grove absorbs your footsteps while he keeps glancing toward the dark as if something there once knew his name."],
-        neutral: ["Dakota leads you through the night grove, where the giant trunks vanish upward into stars.", "He tells a soft joke about trees being excellent listeners, then falls quiet when the wind sounds almost like an old voice."],
-        high: ["The sequoias stand black against the stars. Dakota offers his hand without fanfare, steady as a railing.", "With him, the dark feels less empty and more held, though he still lets go first."]
+        low: ["At night, Dakota's lantern swings low between the trunks. He is polite and hard to fool.", "The grove swallows your footsteps while he glances into the dark like it once knew his name."],
+        neutral: ["Dakota leads you through the night grove, where the trunks vanish upward into stars.", "He jokes that trees are excellent listeners.", "Then the wind says something old, and he goes quiet."],
+        high: ["The sequoias stand black against the stars. Dakota offers his hand without fanfare.", "It is steady as a railing.", "With him, the dark feels less empty and more held, though he still lets go first."]
       }
     },
     surprise: {
-      low: ["Dakota is at check-in replacing a lantern wick. 'Even small fires need attention,' he says, not quite looking at you."],
-      neutral: ["Dakota is arranging trail snacks by allergy label. 'Take one. Caring is easier when nobody is hungry.' His paw lingers on the food basket a second too long."],
-      high: ["Dakota brightens when he sees you and offers a warm biscuit wrapped in a napkin. 'Road fuel. Strictly professional biscuiting.' Then he catches sight of a Zion route card and goes quiet."]
+      low: ["Dakota replaces a lantern wick. 'Even small fires need attention,' he says softly."],
+      neutral: ["Dakota arranges snacks by allergy label. 'Take one. Caring works better fed.'"],
+      high: ["Dakota offers you a warm biscuit. 'Road fuel.' Then he spots a Zion card and goes quiet."]
     }
   },
   natai: {
     place: "the Zion canyon route",
     visit: {
       daytime: {
-        low: ["Natai waits beneath red canyon walls, checking the permit board with surgical calm.", "The desert light is sharp. So are they, though the anger underneath looks older than the morning."],
-        neutral: ["Natai guides you through Zion's sandstone corridor, naming hazards like old rivals.", "They are dry, exact, and quietly pleased when you keep up, but they go silent at any mention of brothers."],
-        high: ["Natai stands in desert light bright enough to turn every edge honest.", "They glance at you and say, 'Good. You made the canyon less smug,' then ruins the warmth by pretending they said nothing vulnerable."]
+        low: ["Natai waits beneath red canyon walls, checking the permit board with surgical calm.", "The desert light is sharp. So are they.", "The anger underneath looks older than the morning."],
+        neutral: ["Natai guides you through Zion's sandstone corridor, naming hazards like old rivals.", "They are dry and exact, and any mention of brothers makes them go quiet."],
+        high: ["Natai stands in desert light bright enough to turn every edge honest.", "They say, 'Good. You made the canyon less smug.'", "Then they pretend they said nothing vulnerable."]
       },
       sunset: {
-        low: ["Sunset sets the sandstone burning. Natai lets the view do the heavy lifting and keeps their answers spare.", "You get the sense they are listening for an apology that has been years late."],
-        neutral: ["Zion at sunset is all copper walls and cooling air. Natai slows beside you without announcing it.", "They say the canyon has excellent taste in dramatic timing, then looks furious with themself for sounding wistful."],
-        high: ["The canyon glows red around Natai, and their usual reserve thins into something almost tender.", "They tell you the desert keeps what matters and burns off the rest. Some things, apparently, refuse to burn."]
+        low: ["Sunset sets the sandstone burning. Natai lets the view do the heavy lifting.", "Their answers stay spare.", "You get the sense they are listening for an apology years late."],
+        neutral: ["Zion at sunset is all copper walls and cooling air.", "Natai slows beside you without announcing it.", "They say the canyon has excellent taste in dramatic timing.", "Then they look furious for sounding wistful."],
+        high: ["The canyon glows red around Natai, and their reserve thins into something almost tender.", "They say the desert keeps what matters and burns off the rest.", "Some things, apparently, refuse to burn."]
       },
       night: {
-        low: ["At night, Natai's route becomes shadow, stars, and firm boundaries.", "They do not dislike the silence. They may currently prefer it to any question that sounds like forgiveness."],
-        neutral: ["Natai takes you to a night-sky overlook where Zion becomes shape and hush.", "They point out constellations with the same precision they use for permits, then admit they once knew someone reckless enough to name them wrong on purpose."],
-        high: ["Under the dark Zion sky, Natai lets the silence stretch until it feels chosen.", "They stand close enough for warmth and say, 'Do not make me say this is nice,' which from Natai is basically a campfire."]
+        low: ["At night, Natai's route becomes shadow, stars, and firm boundaries.", "They may currently prefer silence to anything that sounds like forgiveness."],
+        neutral: ["Natai takes you to a night-sky overlook where Zion becomes shape and hush.", "They point out constellations with permit-level precision.", "Then they admit someone once named them all wrong on purpose."],
+        high: ["Under the dark Zion sky, Natai lets the silence stretch until it feels chosen.", "They stand close enough for warmth and mutter, 'Do not make me say this is nice.'", "From Natai, that is basically a campfire."]
       }
     },
     surprise: {
-      low: ["Natai is at check-in arguing with the kiosk in a voice too calm to be safe. 'It has more routing confidence than judgment.'"],
-      neutral: ["Natai studies the check-in map, then taps your destination. 'Efficient. Emotionally suspicious, but efficient.' Their finger avoids Sequoia entirely."],
-      high: ["Natai catches you at check-in and silently adjusts your route card. 'There. Better odds of surviving your own charm.' Then they notice Dakota's handwriting on a supply tag and their expression shuts."]
+      low: ["Natai argues with the kiosk too calmly. 'It has confidence, not judgment.'"],
+      neutral: ["Natai taps your route on the map. 'Efficient. Emotionally suspicious, but efficient.'"],
+      high: ["Natai adjusts your route card. 'There. Better odds of surviving your own charm.'"]
     }
   }
 };
 
 const checkInFlavor = {
   daytime: [
-    ["narrator", "The check-in kiosk chirps, prints nothing, then proudly displays a tiny loading icon shaped like a pinecone."],
+    ["narrator", "The check-in kiosk chirps, prints nothing, then shows a tiny pinecone loading icon."],
     ["player", "I am choosing to respect whatever this is."]
   ],
   sunset: [
@@ -585,7 +585,7 @@ const checkInFlavor = {
     ["player", "Honestly, fair."]
   ],
   night: [
-    ["narrator", "The kiosk glows softly in the dark like it knows too much about geography and refuses to apologize."],
+    ["narrator", "The kiosk glows softly in the dark, like it knows too much about geography."],
     ["player", "I am not asking follow-up questions after bedtime."]
   ]
 };
@@ -593,87 +593,102 @@ const checkInFlavor = {
 const arrivalFlavor = {
   jack: {
     daytime: [
-      ["narrator", "Olympic opens in layers of wet green: ferns slick with rain, cedar trunks vanishing upward, a cabin roof ticking softly under the weather."],
-      ["player", "The air smells like moss, coffee, and Jack pretending he did not plan this reunion down to the mug."],
-      ["narrator", "A porch board creaks. Jack steps out from under the eaves, broad-shouldered and bright-eyed, like the forest has been hiding your oldest friend for dramatic timing.", "jack"]
+      ["narrator", "Olympic opens in wet green layers: ferns, cedars, and a cabin roof ticking in rain."],
+      ["player", "The air smells like moss, coffee, and Jack pretending this reunion was not planned."],
+      ["narrator", "A porch board creaks.", "jack"],
+      ["narrator", "Jack steps out from the eaves, bright-eyed and impossible to miss.", "jack"]
     ],
     sunset: [
       ["narrator", "Sunset catches in the Olympic rain until every drop looks briefly lit from inside."],
-      ["player", "This is unfairly pretty. Even the puddles have emotional range. Jack is going to call one of them majestic."],
-      ["narrator", "Jack waits beside the cabin steps, sleeves rolled, watching the trail with the loyal focus of someone who has always looked for you first.", "jack"]
+      ["player", "This is unfairly pretty. Even the puddles have emotional range."],
+      ["player", "Jack is absolutely going to call one of them majestic."],
+      ["narrator", "Jack waits by the cabin steps, sleeves rolled, already watching for you.", "jack"]
     ],
     night: [
-      ["narrator", "At night, the Olympic route narrows to lantern glow, black cedar shapes, and rain whispering in the dark."],
-      ["player", "This is either romantic or how a cautionary tale gets excellent production design. With Jack, honestly, it could be both by accident."],
+      ["narrator", "At night, the Olympic route narrows to lantern glow, black cedars, and rain in the dark."],
+      ["player", "This is either romantic or a cautionary tale with excellent production design."],
+      ["player", "With Jack, honestly, it could be both by accident."],
       ["narrator", "Jack lifts a lantern from the porch rail, his smile soft and immediate when he sees you.", "jack"]
     ]
   },
   caleb: {
     daytime: [
-      ["narrator", "Yellowstone arrives in steam and mineral color, the boardwalk cutting a careful line through beautiful danger."],
+      ["narrator", "Yellowstone arrives in steam and mineral color, with the boardwalk cutting through danger."],
       ["player", "Everything here looks like it could kill me and then be photogenic about it."],
-      ["narrator", "Caleb appears at the rail with a clipboard, a pocket field guide, and the bright, helpless focus of a man one question away from explaining the whole park.", "caleb"]
+      ["narrator", "Caleb appears at the rail with a clipboard and a pocket field guide.", "caleb"],
+      ["narrator", "He looks one question away from explaining the whole park.", "caleb"]
     ],
     sunset: [
       ["narrator", "Sunset turns the geyser steam peach and gold, softening everything except the warning signs."],
-      ["player", "The park is glowing. The signs are still yelling. Somewhere Caleb is probably delighted by both."],
-      ["narrator", "Caleb checks the boardwalk gate, then looks up from a notebook labeled 'Things Yellowstone Is Doing Today' like he knew exactly when you would arrive.", "caleb"]
+      ["player", "The park is glowing. The signs are still yelling. Caleb is probably delighted."],
+      ["narrator", "Caleb checks the boardwalk gate, then looks up from a notebook.", "caleb"],
+      ["narrator", "It is labeled 'Things Yellowstone Is Doing Today.'", "caleb"]
     ],
     night: [
-      ["narrator", "Yellowstone after dark is blue steam, low boardwalk lights, and distant thermal breaths in the cold."],
+      ["narrator", "Yellowstone after dark is blue steam, boardwalk lights, and distant thermal breaths."],
       ["player", "The hot springs sound alive. That is gorgeous and deeply not reassuring."],
-      ["narrator", "Caleb steps into the light with a flashlight, a star chart folded into his pocket, and a very serious expression doing a poor job hiding relief.", "caleb"]
+      ["narrator", "Caleb steps into the light with a flashlight and a star chart in his pocket.", "caleb"],
+      ["narrator", "His serious expression does a poor job hiding relief.", "caleb"]
     ]
   },
   sierra: {
     daytime: [
-      ["narrator", "Yosemite rises around you in granite, pine, and waterfall mist that catches the sun in a thousand small flashes."],
-      ["player", "Okay. I understand why people write poems and then pretend they did not. Also why Sierra would absolutely catch me doing it."],
-      ["narrator", "Sierra jogs down from the overlook, bright as the spray behind her and already smiling like she has decided you are the fun part of the trail.", "sierra"]
+      ["narrator", "Yosemite rises in granite, pine, and waterfall mist that catches the sun in quick flashes."],
+      ["player", "Okay. I understand why people write poems and then pretend they did not."],
+      ["player", "I also understand why Sierra would catch me doing it.", "sierra"],
+      ["narrator", "Sierra jogs down from the overlook, already smiling like you are the fun part.", "sierra"]
     ],
     sunset: [
-      ["narrator", "Sunset slides across Yosemite's granite faces, turning the cliffs warm enough to look impossible."],
-      ["player", "The whole valley is showing off. Honestly, respect. Sierra is going to make that competitive somehow."],
-      ["narrator", "Sierra leans against a trail sign, wind in her hair and a slow, dangerous grin aimed directly at you.", "sierra"]
+      ["narrator", "Sunset slides across Yosemite's granite faces, warming the cliffs into impossibility."],
+      ["player", "The whole valley is showing off. Honestly, respect."],
+      ["player", "Sierra is going to make that competitive somehow."],
+      ["narrator", "Sierra leans against a trail sign, wind in her hair and a slow grin aimed right at you.", "sierra"]
     ],
     night: [
       ["narrator", "At night, Yosemite becomes a shape of cliffs and water sounds, huge and close in the dark."],
-      ["player", "The waterfall is louder when I cannot see all of it. Sierra is probably going to tell me that was the point."],
-      ["narrator", "Sierra's flashlight bobs along the trail before she appears, already moving like the dark is another path she knows by heart.", "sierra"]
+      ["player", "The waterfall is louder when I cannot see all of it."],
+      ["player", "Sierra is probably going to tell me that is the point."],
+      ["narrator", "Sierra's flashlight bobs along the trail before she appears.", "sierra"],
+      ["narrator", "She moves like the dark is another path she knows by heart.", "sierra"]
     ]
   },
   dakota: {
     daytime: [
-      ["narrator", "The Sequoia grove receives you in shade and quiet, each giant trunk making the world feel slower and older."],
+      ["narrator", "The Sequoia grove receives you in shade and quiet, making the world feel slower."],
       ["player", "I am suddenly aware that I have never been patient enough for a tree to approve of me."],
-      ["narrator", "Dakota steps from behind a massive trunk carrying a coil of rope and a smile that arrives carefully, like it asked permission first.", "dakota"]
+      ["narrator", "Dakota steps from behind a massive trunk carrying a coil of rope.", "dakota"],
+      ["narrator", "His smile arrives carefully, like it asked permission first.", "dakota"]
     ],
     sunset: [
-      ["narrator", "Sunset filters through the Sequoia canopy in long amber shafts, turning dust motes into tiny sparks."],
+      ["narrator", "Sunset filters through the Sequoia canopy in amber shafts, turning dust into sparks."],
       ["player", "This place makes ordinary breathing feel like a respectful activity."],
-      ["narrator", "Dakota kneels by an old fire ring, checking it with gentle seriousness before he notices you and hides something sad behind a polite nod.", "dakota"]
+      ["narrator", "Dakota kneels by an old fire ring, checking it with gentle seriousness.", "dakota"],
+      ["narrator", "Then he notices you and hides something sad behind a polite nod.", "dakota"]
     ],
     night: [
       ["narrator", "The night grove is quiet enough to make every footstep ask permission."],
       ["player", "The trees disappear upward into the stars. I feel very small, but not in a bad way."],
-      ["narrator", "A lantern glow rounds one trunk, and Dakota follows it, steady as a promise he still does not think he deserves to make.", "dakota"]
+      ["narrator", "A lantern glow rounds one trunk, and Dakota follows it.", "dakota"],
+      ["narrator", "He is steady as a promise he still does not think he deserves to make.", "dakota"]
     ]
   },
   natai: {
     daytime: [
-      ["narrator", "Zion's canyon walls rise red and clean around the trail, the desert light sharpening every edge."],
-      ["player", "The whole place looks like it was carved by someone with excellent taste and no interest in subtlety."],
-      ["narrator", "Natai stands by the permit board, marking a route with the precision of a person who has opinions about shortcuts and unresolved wars with them.", "natai"]
+      ["narrator", "Zion's canyon walls rise red and clean, the desert light sharpening every edge."],
+      ["player", "The whole place looks carved by someone with excellent taste and no patience for subtlety."],
+      ["narrator", "Natai stands by the permit board, marking a route with exacting precision.", "natai"],
+      ["narrator", "They look like they have opinions about shortcuts and old wars with them.", "natai"]
     ],
     sunset: [
-      ["narrator", "Sunset sets Zion's sandstone glowing copper, cooling the air while the canyon keeps the heat of the day."],
+      ["narrator", "Sunset turns Zion's sandstone copper, cooling the air while the canyon keeps the day's heat."],
       ["player", "This view is extremely rude. It knows exactly what it is doing."],
-      ["narrator", "Natai waits at the trail split, arms folded, watching the light change like it owes them an answer and has refused to pay for years.", "natai"]
+      ["narrator", "Natai waits at the trail split, arms folded, watching the light change.", "natai"],
+      ["narrator", "It looks like the canyon owes them an answer and still has not paid.", "natai"]
     ],
     night: [
       ["narrator", "At night, Zion becomes dark stone, pale trail dust, and a sky crowded with stars."],
       ["player", "The canyon is quieter now. Or maybe it is just making me listen harder."],
-      ["narrator", "Natai's silhouette appears against the starlit route sign, still enough to seem carved there.", "natai"]
+      ["narrator", "Natai's silhouette stands against the starlit sign, still enough to seem carved there.", "natai"]
     ]
   }
 };
@@ -682,9 +697,9 @@ const visitBeats = {
   jack: [
     {
       prompt: {
-        low: ["jack", "Before we go anywhere, best-friend question with ranger muscles attached: are you going to treat the trail like a trail today?", "jack:grumpy"],
-        neutral: ["jack", "First rule out here: the forest gets a vote. Second rule: I am still bad at pretending I am normal around you.", "jack"],
-        high: ["jack", "I was hoping you would show up. I practiced saying that casually and then forgot what casual means.", "jack:blushing"]
+        low: ["jack", "Before we go, ranger question: trail today or terrible decision today?", "jack:grumpy"],
+        neutral: ["jack", "First rule: the forest gets a vote. Second: I am still bad at normal near you.", "jack"],
+        high: ["jack", "I hoped you'd show up. I practiced casual, then lost my cool.", "jack:blushing"]
       },
       choices: [
         { label: "Promise him you will follow the marked trail like old times.", feelings: { jack: 1 }, tone: "warm" },
@@ -697,16 +712,16 @@ const visitBeats = {
         ]
       },
       reactions: {
-        warm: [["jack", "Good. I like our adventures best when nobody has to carry anybody unless it is romantic or you twist an ankle. Wait. Not hoping for the ankle part.", "jack:laughing"], ["narrator", "He laughs at himself, warm and embarrassed, then offers his hand over the slick first step.", "jack"]],
-        flirt: [["jack", "Careful. That is dangerously close to making me forget all my trail facts except 'wow.'", "jack:blushing"], ["narrator", "He holds your gaze for one rain-bright second before pointing at a fern like it just saved him.", "jack:blushing"]],
-        bad: [["jack", "Stories are better when everyone gets home to tell them. Also when my chest does not do the scary drum thing.", "jack:grumpy"], ["narrator", "He is not trying to scold you. That somehow makes it worse.", "jack:grumpy"]]
+        warm: [["jack", "Good. I like our adventures best when nobody has to carry anybody.", "jack:laughing"], ["jack", "Unless it is romantic or somebody twists an ankle. Ignore that second part.", "jack:laughing"], ["narrator", "He laughs at himself, warm and embarrassed, then offers his hand over the slick first step.", "jack"]],
+        flirt: [["jack", "Careful. That is dangerously close to making me forget all my trail facts except 'wow.'", "jack:blushing"], ["narrator", "He holds your gaze one rain-bright second before pointing at a fern like it saved him.", "jack:blushing"]],
+        bad: [["jack", "Stories are better when everyone gets home to tell them.", "jack:grumpy"], ["jack", "Also when my chest does not do the scary drum thing.", "jack:grumpy"], ["narrator", "He is not trying to scold you. That somehow makes it worse.", "jack:grumpy"]]
       }
     },
     {
       prompt: {
-        low: ["narrator", "The trail bends through sword ferns and dripping cedar. Jack stops beside a mossy side path, blocking it with one boot and the worried patience you know too well.", "jack:grumpy"],
-        neutral: ["narrator", "Rain beads on the cedar rail while Jack points out elk tracks, then briefly loses the word for hoof and calls them 'moose fingerprints.'", "jack"],
-        high: ["narrator", "Jack slows where the old-growth canopy turns the rain into a soft, private percussion, his hand close enough to yours to make years of friendship feel suddenly delicate.", "jack:blushing"]
+        low: ["narrator", "Jack blocks a mossy side path with one boot and a worried look.", "jack:grumpy"],
+        neutral: ["narrator", "Rain beads on the rail while Jack points out elk tracks, then guesses moose.", "jack"],
+        high: ["narrator", "Under the old-growth canopy, Jack slows until your sleeves brush.", "jack:blushing"]
       },
       choices: [
         { label: "Notice the tiny seedlings because he taught you to look for them.", feelings: { jack: 2 }, tone: "warm" },
@@ -720,15 +735,15 @@ const visitBeats = {
       },
       reactions: {
         warm: [["jack", "You remembered. I mean, of course you remembered. You remember the good stuff.", "jack:blushing"], ["narrator", "His voice softens with pride so plain it makes the rain feel like privacy.", "jack:blushing"]],
-        flirt: [["jack", "I contain multitudes. Some of them know how to read a trail closure. Some of them are currently thinking about your face and cannot be trusted with navigation.", "jack:laughing"], ["player", "A devastating combination.", "jack:laughing"]],
+        flirt: [["jack", "I contain multitudes. Some of them can read a trail closure.", "jack:laughing"], ["jack", "Some are thinking about your face and cannot be trusted with navigation.", "jack:laughing"], ["player", "A devastating combination.", "jack:laughing"]],
         bad: [["jack", "Nope. Nope with love. A strong, respectful nope.", "jack:grumpy"], ["narrator", "He says it gently and still somehow becomes an entire locked gate.", "jack:grumpy"]]
       }
     },
     {
       prompt: {
-        low: ["jack", "We are heading back before the weather decides to make a point. Weather points are wet and I do not know how to argue with clouds.", "jack:grumpy"],
-        neutral: ["jack", "There is a viewpoint ahead, then I should get you back before the route changes mood. Routes have moods. I learned that after losing to one.", "jack"],
-        high: ["jack", "One more overlook. Then I return you to the impossible kiosk like a responsible adult, which I am approximately seventy percent of the time around you.", "jack:blushing"]
+        low: ["jack", "We are heading back before the weather proves a point. Its points are wet.", "jack:grumpy"],
+        neutral: ["jack", "One viewpoint ahead, then I get you back before the trail changes mood.", "jack"],
+        high: ["jack", "One more overlook, then I return you to the kiosk like an adult for once.", "jack:blushing"]
       },
       choices: [
         { label: "Thank him for showing you the park the way he always promised.", feelings: { jack: 2 }, tone: "warm" },
@@ -742,7 +757,7 @@ const visitBeats = {
         ]
       },
       reactions: {
-        warm: [["jack", "I did promise. I also promised I would learn the banjo, but this one worked out better for everybody.", "jack:laughing"], ["narrator", "He walks you back slowly, happy and bashful in a way friendship alone never used to explain.", "jack:laughing"]],
+        warm: [["jack", "I did promise. I also promised I'd learn banjo, but this worked out better for everyone.", "jack:laughing"], ["narrator", "He walks you back slowly, happy and bashful in a way friendship alone never used to explain.", "jack:laughing"]],
         flirt: [["jack", "To me. Right. I heard that. My brain is waving a tiny flag and falling down.", "jack:blushing"], ["narrator", "His smile follows you all the way back to the route marker, helpless and shining.", "jack:blushing"]],
         bad: [["jack", "The rain is the aesthetic. Also it worked really hard today. Probably.", "jack:grumpy"], ["narrator", "He turns toward the return trail, still kind, but quieter than before.", "jack:grumpy"]]
       }
@@ -751,9 +766,9 @@ const visitBeats = {
   caleb: [
     {
       prompt: {
-        low: ["caleb", "Before we start, I need verbal confirmation that you understand the boardwalk is not decorative, and also that Yellowstone is not a volcano joke with scenery attached.", "caleb:grumpy"],
-        neutral: ["caleb", "Boardwalk rule first. Beautiful things can still be dangerous. Second rule: if I say 'quick fact,' nobody in staff believes me, but I mean it with hope.", "caleb"],
-        high: ["caleb", "I am glad you came. I prepared one safety reminder, one charming fact about microbial mats, and zero normal ways to arrange my face around you.", "caleb:blushing"]
+        low: ["caleb", "Before we start, remember the boardwalk matters and the park is serious.", "caleb:grumpy"],
+        neutral: ["caleb", "Boardwalk rule first: beauty can still be dangerous. 'Quick fact' means well.", "caleb"],
+        high: ["caleb", "Glad you came. I brought one safety note, one microbe fact, and nerves.", "caleb:blushing"]
       },
       choices: [
         { label: "Promise both feet stay on the boardwalk and ask for the quick fact.", feelings: { caleb: 2 }, tone: "warm" },
@@ -766,16 +781,16 @@ const visitBeats = {
         ]
       },
       reactions: {
-        warm: [["caleb", "Excellent. Quick fact: those orange edges are heat-loving microbes, not mineral paint, which means the pretty colors are basically a living temperature chart. Sorry. That was... almost quick.", "caleb:laughing"], ["narrator", "He gestures you forward, visibly pleased that you asked for the part of him that keeps spilling over.", "caleb"]],
-        flirt: [["caleb", "No. Sometimes I make it sound terrifying. Depends who is listening. You listening is statistically damaging to my composure.", "caleb:blushing"], ["player", "I am listening very respectfully.", "caleb:blushing"]],
+        warm: [["caleb", "Excellent. Quick fact: those orange edges are heat-loving microbes, not mineral paint.", "caleb:laughing"], ["caleb", "So the colors are basically a living temperature chart.", "caleb:laughing"], ["caleb", "Sorry. That was almost quick.", "caleb:laughing"], ["narrator", "He gestures you forward, pleased you asked for the part of him that keeps spilling over.", "caleb"]],
+        flirt: [["caleb", "No. Sometimes I make it sound terrifying.", "caleb:blushing"], ["caleb", "You listening is statistically damaging to my composure.", "caleb:blushing"], ["player", "I am listening very respectfully.", "caleb:blushing"]],
         bad: [["caleb", "Then the mood can file a complaint with hydrothermal reality.", "caleb:grumpy"], ["narrator", "The steam hisses behind him like Yellowstone has prepared a peer-reviewed rebuttal.", "caleb:grumpy"]]
       }
     },
     {
       prompt: {
-        low: ["narrator", "Caleb stops near a milky blue pool, leaving enough space between you and the rail to imply he has measured it and resented the need.", "caleb:grumpy"],
-        neutral: ["narrator", "Steam drifts across the boardwalk. Caleb names each pool with careful affection, like introducing complicated friends who have published several papers.", "caleb"],
-        high: ["narrator", "At the overlook, Caleb lowers his voice so the steam, the hot spring, and the two of you share the same small world of facts he trusts enough to make intimate.", "caleb:blushing"]
+        low: ["narrator", "Caleb stops by a milky pool, keeping space between you and the rail.", "caleb:grumpy"],
+        neutral: ["narrator", "Steam drifts across the boardwalk while Caleb names pools like stern friends.", "caleb"],
+        high: ["narrator", "At the overlook, Caleb lowers his voice as steam closes around you.", "caleb:blushing"]
       },
       choices: [
         { label: "Ask what first made him fall for Yellowstone.", feelings: { caleb: 2 }, tone: "warm" },
@@ -789,16 +804,16 @@ const visitBeats = {
         ]
       },
       reactions: {
-        warm: [["caleb", "The first geyser I saw. It looked chaotic, but it was following a pattern older than me. I think I fell for the idea that wonder could have mechanics.", "caleb"], ["narrator", "He sounds almost shy about the sincerity of it, like he has just handed you the annotated edition of his heart.", "caleb:blushing"]],
-        flirt: [["caleb", "Castle Geyser. Obviously. It has a cone that looks like a ruined fortress, eruptions that can last half an hour, and absolutely no idea how attractive commitment to structure can be.", "caleb:laughing"], ["narrator", "He realizes halfway through that he may not be talking only about geysers, and the blush is immediate.", "caleb:blushing"]],
+        warm: [["caleb", "The first geyser I saw looked chaotic, but it followed a pattern older than me.", "caleb"], ["caleb", "I think I fell for the idea that wonder could have mechanics.", "caleb"], ["narrator", "He sounds almost shy about it, like he just handed you the annotated edition of his heart.", "caleb:blushing"]],
+        flirt: [["caleb", "Castle Geyser. Obviously.", "caleb:laughing"], ["caleb", "It lasts half an hour and makes commitment look attractive.", "caleb:laughing"], ["narrator", "He realizes halfway through he may not be talking only about geysers, and blushes at once.", "caleb:blushing"]],
         bad: [["caleb", "Back. Now. Curiosity does not require trespassing.", "caleb:grumpy"], ["narrator", "His hand catches your sleeve, firm and frightened under the anger.", "caleb:grumpy"]]
       }
     },
     {
       prompt: {
-        low: ["caleb", "I am walking you back before my emotional regulation becomes a ranger program called So You Dismissed A Man's Special Interest.", "caleb:grumpy"],
-        neutral: ["caleb", "Last stop. Then I should get you back before the light changes the route markers. Also before I explain the entire 1988 fire season unprompted.", "caleb"],
-        high: ["caleb", "One more view. Then I release you back into the wild, reluctantly, with snacks, and with only the top five Yellowstone facts I have restrained myself from saying.", "caleb:blushing"]
+        low: ["caleb", "I am walking you back before this becomes a ranger talk called Ignore Me.", "caleb:grumpy"],
+        neutral: ["caleb", "Last stop. Then I get you back before the light shifts and I mention 1988.", "caleb"],
+        high: ["caleb", "One more view, then snacks and two restrained facts.", "caleb:blushing"]
       },
       choices: [
         { label: "Tell him his facts make the park easier to love.", feelings: { caleb: 2 }, tone: "warm" },
@@ -812,18 +827,18 @@ const visitBeats = {
         ]
       },
       reactions: {
-        warm: [["caleb", "That is... exactly why I do this. Not the romance part. I mean, possibly the romance part. Statistically emerging.", "caleb:blushing"], ["narrator", "For once, Caleb has no clean citation ready. Just a smile he cannot file away.", "caleb:blushing"]],
-        flirt: [["caleb", "It can. The top five list has subcategories, but I can make eye contact through at least forty percent of it.", "caleb:laughing"], ["narrator", "He hands you the snack like it is evidence and looks absurdly pleased when your fingers brush.", "caleb:laughing"]],
-        bad: [["caleb", "Then I have not explained them well enough, or you have decided not to hear me. I can only fix one of those.", "caleb:grumpy"], ["narrator", "He guides you back with professional precision and personal disappointment.", "caleb:grumpy"]]
+        warm: [["caleb", "That is exactly why I do this.", "caleb:blushing"], ["caleb", "Not the romance part.", "caleb:blushing"], ["caleb", "Possibly the romance part. Statistically emerging.", "caleb:blushing"], ["narrator", "For once, Caleb has no clean citation ready. Just a smile he cannot file away.", "caleb:blushing"]],
+        flirt: [["caleb", "It can. The top five list has subcategories.", "caleb:laughing"], ["caleb", "I can also make eye contact through forty percent of it.", "caleb:laughing"], ["narrator", "He hands you the snack like evidence and looks absurdly pleased when your fingers brush.", "caleb:laughing"]],
+        bad: [["caleb", "Then I have not explained them well enough, or you decided not to hear me.", "caleb:grumpy"], ["caleb", "I can only fix one of those.", "caleb:grumpy"], ["narrator", "He guides you back with professional precision and personal disappointment.", "caleb:grumpy"]]
       }
     }
   ],
   sierra: [
     {
       prompt: {
-        low: ["sierra", "Tell me you came here to actually see Yosemite, not just use it as proof you went somewhere. Lie prettily if you must; I will still know.", "sierra:sly"],
-        neutral: ["sierra", "Rule one: look up. Yosemite hates being treated like wallpaper, and I hate competing with wallpaper for your eyes.", "sierra:sly"],
-        high: ["sierra", "You made it. Good. The waterfall was getting impatient, and so was I. Mine is cuter. Do not let either of us catch you only looking at the loud part.", "sierra:sly"]
+        low: ["sierra", "Tell me you came for Yosemite, not just proof. Lie nicely if needed.", "sierra:sly"],
+        neutral: ["sierra", "Rule one: look up. Yosemite hates wallpaper, and I hate competing with it.", "sierra:sly"],
+        high: ["sierra", "You made it. Good. Mine is cuter. Do not stare only at the cliff.", "sierra:sly"]
       },
       choices: [
         { label: "Look up before answering and let the view land.", feelings: { sierra: 2 }, tone: "warm" },
@@ -838,16 +853,16 @@ const visitBeats = {
         ]
       },
       reactions: {
-        warm: [["sierra", "There. That pause? That is the good stuff.", "sierra"], ["sierra", "See, I knew you could let the place get to you if you stopped arguing with it.", "sierra:sly"], ["narrator", "She smiles like you found a trail marker hidden in plain sight, then looks away before the smile can tell on her.", "sierra"]],
-        flirt: [["sierra", "Oh, that was smooth.", "sierra:blushing"], ["sierra", "Complicated is my best angle. Keep looking up, though. I want Yosemite to think it still has a chance.", "sierra:sly"], ["player", "I respect the terrain.", "sierra:blushing"]],
+        warm: [["sierra", "There. That pause? That is the good stuff.", "sierra"], ["sierra", "See, I knew you could let the place get to you if you stopped arguing with it.", "sierra:sly"], ["narrator", "She smiles like you found a trail marker, then looks away before it tells on her.", "sierra"]],
+        flirt: [["sierra", "Oh, that was smooth.", "sierra:blushing"], ["sierra", "Complicated is my best angle. Keep looking up. I want Yosemite to think it still has a shot.", "sierra:sly"], ["player", "I respect the terrain.", "sierra:blushing"]],
         bad: [["sierra", "Oh, we are doing this the hard way. Fine. I look incredible when I am right.", "sierra:sly"], ["narrator", "She steps between you and the shot with athletic precision.", "sierra:grumpy"]]
       }
     },
     {
       prompt: {
-        low: ["narrator", "Sierra leads you up the trail at a pace that suggests forgiveness has cardio requirements and you are currently behind on both.", "sierra:grumpy"],
-        neutral: ["narrator", "The waterfall throws cool mist across the trail. Sierra slows just enough for you to catch the rainbow in it, and maybe the way she checks your reaction.", "sierra"],
-        high: ["narrator", "Sierra takes the steep steps two at a time, then waits at the top pretending she did not check whether you followed, whether you enjoyed the view, or whether you noticed the quiet after her laugh.", "sierra:blushing"]
+        low: ["narrator", "Sierra leads uphill at a pace that suggests forgiveness has cardio.", "sierra:grumpy"],
+        neutral: ["narrator", "Cool mist crosses the trail while Sierra slows so you can catch the rainbow.", "sierra"],
+        high: ["narrator", "Sierra bounds up the steps, then waits at the top, smug and fine.", "sierra:blushing"]
       },
       choices: [
         { label: "Ask her what part of the trail most people miss.", feelings: { sierra: 2 }, tone: "warm" },
@@ -862,16 +877,16 @@ const visitBeats = {
         ]
       },
       reactions: {
-        warm: [["sierra", "The sound. Everyone photographs the water. Fewer people listen to it arrive.", "sierra"], ["sierra", "I like people who notice before the proof shows up. Very inconvenient for my whole mysterious act.", "sierra:blushing"], ["sierra", "Fewer still look that good doing it.", "sierra:sly"], ["narrator", "For a moment, she lets the trail go quiet around you.", "sierra"]],
+        warm: [["sierra", "The sound. Everyone photographs the water. Fewer people listen to it arrive.", "sierra"], ["sierra", "I like people who notice before the proof shows up. Bad for my mysterious act.", "sierra:blushing"], ["sierra", "Fewer still look that good doing it.", "sierra:sly"], ["narrator", "For a moment, she lets the trail go quiet around you.", "sierra"]],
         flirt: [["sierra", "A mountain?", "sierra:laughing"], ["sierra", "Please. Mountains are subtle compared to me.", "sierra:sly"], ["narrator", "She laughs and darts ahead, daring you to keep up.", "sierra:laughing"]],
-        bad: [["sierra", "The view is not a vending machine. You do have to move toward it. Same rule applies to me, inconveniently.", "sierra:sly"], ["narrator", "Her expression could cut switchbacks.", "sierra:grumpy"]]
+        bad: [["sierra", "The view is not a vending machine.", "sierra:sly"], ["sierra", "You do have to move toward it. Same rule applies to me.", "sierra:sly"], ["narrator", "Her expression could cut switchbacks.", "sierra:grumpy"]]
       }
     },
     {
       prompt: {
-        low: ["sierra", "We are almost done. Try to leave with one genuine memory. Bonus points if it involves me being unfairly memorable.", "sierra:sly"],
-        neutral: ["sierra", "Last overlook. Then I return you before the trail decides we are part of it. Though I do like the sound of being difficult to leave.", "sierra:sly"],
-        high: ["sierra", "One more overlook. No captions. Just us, an unreasonable amount of granite, and me behaving with almost heroic restraint. If I ever show you my favorite quiet place, act natural.", "sierra:sly"]
+        low: ["sierra", "We are almost done. Leave with one real memory. Bonus if I am in it.", "sierra:sly"],
+        neutral: ["sierra", "Last overlook. Then I return you before the trail decides we belong to it.", "sierra:sly"],
+        high: ["sierra", "One more overlook. No captions. Just us, too much granite, and restraint.", "sierra:sly"]
       },
       choices: [
         { label: "Thank her for making you slow down.", feelings: { sierra: 2 }, tone: "warm" },
@@ -887,8 +902,8 @@ const visitBeats = {
       },
       reactions: {
         warm: [["sierra", "Do not make it weird, but... you are welcome.", "sierra:blushing"], ["sierra", "Actually, make it a little weird. I enjoy evidence of impact.", "sierra:sly"], ["narrator", "She looks away at the waterfall, smiling where you can still see it.", "sierra:blushing"]],
-        flirt: [["sierra", "Careful.", "sierra:blushing"], ["sierra", "Talk like that and I will start believing you have taste.", "sierra:sly"], ["narrator", "She bumps your shoulder with hers before starting down, slow enough that it feels intentional.", "sierra"]],
-        bad: [["sierra", "That is a sad little sentence, and I reject it on behalf of the cliff. Also on behalf of my cheekbones.", "sierra:sly"], ["narrator", "She heads back with the pace of someone outrunning disappointment.", "sierra:grumpy"]]
+        flirt: [["sierra", "Careful.", "sierra:blushing"], ["sierra", "Talk like that and I will start believing you have taste.", "sierra:sly"], ["narrator", "She bumps your shoulder before starting down, slow enough to feel intentional.", "sierra"]],
+        bad: [["sierra", "That is a sad little sentence, and I reject it for the cliff and for my cheekbones.", "sierra:sly"], ["narrator", "She heads back with the pace of someone outrunning disappointment.", "sierra:grumpy"]]
       }
     }
   ],
@@ -897,7 +912,7 @@ const visitBeats = {
       prompt: {
         low: ["dakota", "The grove is quiet today. I would like to keep it that way.", "dakota:grumpy"],
         neutral: ["dakota", "Walk slow here. The trees have been patient longer than any of us.", "dakota"],
-        high: ["dakota", "I saved you the shaded path. It is the one that makes people whisper without being asked.", "dakota:flattered"]
+        high: ["dakota", "I saved you the shaded path. It is the one that makes people hush.", "dakota:flattered"]
       },
       choices: [
         { label: "Lower your voice and match his pace.", feelings: { dakota: 1 }, tone: "warm" },
@@ -918,9 +933,9 @@ const visitBeats = {
     },
     {
       prompt: {
-        low: ["narrator", "Dakota stops by an old fire ring and checks the stones with careful hands.", "dakota:grumpy"],
-        neutral: ["narrator", "The trail opens around a sequoia so wide it makes the air feel ceremonial. Dakota rests one paw near an old scorch mark and goes still.", "dakota"],
-        high: ["narrator", "Dakota pauses beside a giant trunk, resting one hand against the bark like greeting an old friend who knows too much.", "dakota:flattered"]
+        low: ["narrator", "Dakota stops by an old fire ring, checking stones with calm hands.", "dakota:grumpy"],
+        neutral: ["narrator", "The trail opens around a sequoia. Dakota rests a paw near a scorch mark.", "dakota"],
+        high: ["narrator", "Dakota pauses by a trunk, one hand on bark like greeting a friend.", "dakota:flattered"]
       },
       choices: [
         { label: "Ask him to teach you the fire-safety check.", feelings: { dakota: 1 }, tone: "warm" },
@@ -934,7 +949,7 @@ const visitBeats = {
         ]
       },
       reactions: {
-        warm: [["dakota", "Gladly. Caring is easier when your hands know what to do.", "dakota:laughing"], ["narrator", "He guides you through the check with patient pride, but his attention keeps returning to the blackened stones.", "dakota:laughing"]],
+        warm: [["dakota", "Gladly. Caring is easier when your hands know what to do.", "dakota:laughing"], ["narrator", "He guides you through the check with patient pride, glancing at the blackened stones.", "dakota:laughing"]],
         flirt: [["dakota", "Yes.", "dakota:sadExplaining"], ["narrator", "The answer is so quiet it feels pulled out of him by the trees.", "dakota:sadExplaining"], ["dakota", "A long time ago. Someone younger than me thought anger could solve danger. It did not.", "dakota:sadExplaining"], ["player", "Someone you knew?", "dakota:sadExplaining"], ["dakota", "Someone I was responsible for remembering honestly.", "dakota:sadExplaining"]],
         bad: [["dakota", "Every big fire starts by being small enough to ignore.", "dakota:grumpy"], ["narrator", "His voice stays gentle, but the grove seems to hold its breath.", "dakota:grumpy"]]
       }
@@ -943,7 +958,7 @@ const visitBeats = {
       prompt: {
         low: ["dakota", "I should walk you back. The grove has had enough noise for one visit.", "dakota:grumpy"],
         neutral: ["dakota", "We should head back while the route is easy to read.", "dakota"],
-        high: ["dakota", "One last quiet minute, then I will stop selfishly keeping you under my favorite trees.", "dakota:flattered"]
+        high: ["dakota", "One last quiet minute, then I stop keeping you here by dear trees.", "dakota:flattered"]
       },
       choices: [
         { label: "Tell him the grove feels safer because he cares for it.", feelings: { dakota: 1 }, tone: "warm" },
@@ -957,8 +972,8 @@ const visitBeats = {
         ]
       },
       reactions: {
-        warm: [["dakota", "That means more than you know.", "dakota:flattered"], ["narrator", "He walks you back with a shy smile and the steady glow of the lantern, still careful not to let the moment become too easy.", "dakota:flattered"]],
-        flirt: [["dakota", "They are very discreet. Terrible at gossip.", "dakota:flattered"], ["narrator", "His laugh rolls through the grove, warm and low, then folds back into quiet like he is afraid joy might ask questions.", "dakota:flattered"]],
+        warm: [["dakota", "That means more than you know.", "dakota:flattered"], ["narrator", "He walks you back with a shy smile and lantern glow, careful not to let the moment go easy.", "dakota:flattered"]],
+        flirt: [["dakota", "They are very discreet. Terrible at gossip.", "dakota:flattered"], ["narrator", "His laugh rolls through the grove, warm and low, then retreats like joy asked too much.", "dakota:flattered"]],
         bad: [["dakota", "Then I hope one day it does not.", "dakota:grumpy"], ["narrator", "He leads the way back, quiet settling between you like fallen needles.", "dakota:grumpy"]]
       }
     }
@@ -968,7 +983,7 @@ const visitBeats = {
       prompt: {
         low: ["natai", "Before we begin, are you here to follow the route or argue with geology?", "natai:grumpy"],
         neutral: ["natai", "The canyon is simple if you respect it. People complicate things.", "natai"],
-        high: ["natai", "You came. Good. The canyon was becoming insufferable without competition.", "natai:blushing"]
+        high: ["natai", "You came. Good. The canyon was getting smug without competition.", "natai:blushing"]
       },
       choices: [
         { label: "Tell them you will respect the route without requiring applause.", feelings: { natai: 1 }, tone: "warm" },
@@ -990,9 +1005,9 @@ const visitBeats = {
     },
     {
       prompt: {
-        low: ["narrator", "Natai stops where the canyon narrows, letting the silence make its own argument.", "natai:grumpy"],
-        neutral: ["narrator", "The sandstone walls hold the day's warmth while Natai traces the route with one precise finger.", "natai"],
-        high: ["narrator", "Natai slows at a bend where the canyon light turns deep red and private.", "natai:blushing"]
+        low: ["narrator", "Natai stops where the canyon narrows and lets silence speak for them.", "natai:grumpy"],
+        neutral: ["narrator", "Warm sandstone walls hold the day while Natai traces the route with a finger.", "natai"],
+        high: ["narrator", "Natai slows at a bend where the canyon light turns red and private.", "natai:blushing"]
       },
       choices: [
         { label: "Ask what the desert taught them to notice first.", feelings: { natai: 1 }, tone: "warm" },
@@ -1008,7 +1023,7 @@ const visitBeats = {
       },
       reactions: {
         warm: [["natai", "Water. Even when it is absent, it explains the shape of everything.", "natai"], ["narrator", "They say it softly, then look annoyed that softness escaped.", "natai"]],
-        flirt: [["natai", "That question has teeth.", "natai:angryExplaining"], ["player", "You do not have to answer.", "natai:angryExplaining"], ["natai", "I had two brothers. One was brave. One was young enough to confuse pride with courage. I am still deciding what to call the person I became after both of them left.", "natai:angryExplaining"]],
+        flirt: [["natai", "That question has teeth.", "natai:angryExplaining"], ["player", "You do not have to answer.", "natai:angryExplaining"], ["natai", "I had two brothers.", "natai:angryExplaining"], ["natai", "One was brave. One was young enough to confuse pride with courage.", "natai:angryExplaining"], ["natai", "I am still deciding who I became after they left.", "natai:angryExplaining"]],
         bad: [["natai", "Do not make gravity responsible for your boredom.", "natai:grumpy"], ["narrator", "The stone clicks into silence. Natai waits until you feel every click.", "natai:grumpy"]]
       }
     },
@@ -1032,7 +1047,7 @@ const visitBeats = {
       },
       reactions: {
         warm: [["natai", "Good. The loud side gets enough attention.", "natai"], ["narrator", "They walk you back slowly, as if you have earned one unhurried thing.", "natai"]],
-        flirt: [["natai", "Wise. I know where all the difficult switchbacks are.", "natai:blushing"], ["narrator", "Their shoulder almost brushes yours, then does not. Natai makes even restraint feel deliberate.", "natai:blushing"], ["natai", "For what it is worth, I do miss him. That changes nothing, which is why feelings are such poor administrators.", "natai:angryExplaining"]],
+        flirt: [["natai", "Wise. I know where all the difficult switchbacks are.", "natai:blushing"], ["narrator", "Their shoulder almost brushes yours, then doesn't. Even restraint feels deliberate.", "natai:blushing"], ["natai", "For what it is worth, I do miss him.", "natai:angryExplaining"], ["natai", "That changes nothing. Feelings are poor administrators.", "natai:angryExplaining"]],
         bad: [["natai", "And people are mostly water. Reduction is a boring hobby.", "natai:grumpy"], ["narrator", "They turn toward the return route with magnificent restraint.", "natai:grumpy"]]
       }
     }
@@ -1045,15 +1060,33 @@ const scenes = {
     background: () => ({ location: "black", time: "daytime" }),
     ambient: "bus",
     lines: [
-      ["player", "The bus is dark enough that the window only gives me my own face back."],
-      ["player", "Somewhere beyond the glass, a country road keeps unspooling under the tires. Fence posts. Pines. The occasional mailbox leaning like it has survived gossip."],
-      ["player", "Two weeks ago, I was editing a sunrise video at three in the morning and arguing with strangers about whether a cliff looked better in vertical or horizontal."],
-      ["player", "Then one of my posts went viral for all the wrong reasons: one careless shortcut, one badly framed apology, and one comment section that turned into a controlled burn."],
-      ["player", "That is when Jack called. My Jack, technically. Old friend, Olympic route lead, human campfire with biceps, once asked me whether email needed stamps."],
-      ["player", "He said the retreat had one open spot, that I needed somewhere kinder than the internet to learn from the mistake, and that he would be there if I wanted a familiar face."],
-      ["player", "He did not say he missed me. Jack is good-hearted enough to carry three coolers at once and bad enough at subtext to trip over a feeling in broad daylight."],
-      ["player", "So now I am on a bus to Viral Vista Lodge, where five national park route leads are apparently going to teach me how to look at a place without turning it into a backdrop."],
-      ["player", "A creator retreat. A second chance. A very scenic consequence. And Jack, waiting somewhere ahead, which is somehow the comforting part and the terrifying part."]
+      ["player", "The bus is dark enough that the window mostly gives me my own face back."],
+      ["player", "Beyond the glass, the road keeps unspooling under the tires."],
+      ["player", "Fence posts flick past."],
+      ["player", "Pines smear into shadow."],
+      ["player", "One mailbox leans like it survived years of neighborhood gossip."],
+      ["player", "Two weeks ago, I was editing a sunrise video at three in the morning."],
+      ["player", "I was also arguing online about whether a cliff looked better vertical or horizontal."],
+      ["player", "Then one post went viral for all the wrong reasons."],
+      ["player", "One careless shortcut did it."],
+      ["player", "So did one bad apology and a comment section that turned into a brush fire."],
+      ["player", "That is when Jack called."],
+      ["player", "My Jack, technically."],
+      ["player", "Old friend. Olympic route lead. Human campfire with biceps."],
+      ["player", "He once asked whether email needed stamps."],
+      ["player", "He said the retreat had one open spot."],
+      ["player", "He said I needed somewhere kinder than the internet to learn from the mistake."],
+      ["player", "He said he would be there if I wanted one familiar face."],
+      ["player", "He never said he missed me."],
+      ["player", "Jack is kind enough to carry three coolers at once."],
+      ["player", "He is also bad enough at subtext to trip over a feeling in broad daylight."],
+      ["player", "So now I am on a bus to Viral Vista Lodge."],
+      ["player", "Five route leads are going to teach me how to see a place without using it as a backdrop."],
+      ["player", "A creator retreat."],
+      ["player", "A second chance."],
+      ["player", "A very scenic consequence."],
+      ["player", "And Jack is waiting somewhere ahead."],
+      ["player", "That is somehow the comforting part and the terrifying part."]
     ],
     next: "intro_bus_arrival"
   },
@@ -1066,7 +1099,9 @@ const scenes = {
       ["narrator", "For a moment, everything is brakes, gravel, and the low idle of the engine.", null, { audio: "busIdle" }],
       ["player", "It seems we've arrived."],
       ["narrator", "The bus door folds open. You step down into cool mountain air."],
-      ["narrator", "Behind you, the engine rises again. The bus pulls away, fading down the road until the quiet has room to move back in.", null, { audio: "busDeparture" }],
+      ["narrator", "Behind you, the engine rises again.", null, { audio: "busDeparture" }],
+      ["narrator", "The bus pulls away."],
+      ["narrator", "By the time it fades down the road, the quiet has room to move back in."],
       ["player", "No easy ride back now. Maybe that is the point."],
       ["player", "Okay, Jack. Please let this be one of your good ideas. Statistically, you are due."]
     ],
@@ -1077,12 +1112,17 @@ const scenes = {
     background: () => ({ location: "checkIn", time: "daytime" }),
     suppressSceneSfx: true,
     lines: [
-      ["narrator", "Daylight spills across the outdoor check-in desk, all pine shadows, fresh coffee, and a kiosk humming with suspicious confidence."],
+      ["narrator", "Daylight spills across the outdoor check-in desk."],
+      ["narrator", "Pine shadows stretch over fresh coffee and a kiosk humming with suspicious confidence."],
       ["player", "Hello? Retreat person? Person who knows where retreat people go?"],
-      ["narrator", "No one answers. The lodge beyond the trees looks awake, but the check-in desk has been left to fend for itself."],
+      ["narrator", "No one answers."],
+      ["narrator", "The lodge beyond the trees looks awake."],
+      ["narrator", "The check-in desk has been left to fend for itself."],
       ["player", "Cool. Love a welcome experience with abandonment as a design principle."],
-      ["narrator", "A neat card waits on the table beside a stack of blank badges: Please fill out your name badge before proceeding to the lodge lobby."],
-      ["player", "A badge. Right. If I am going to be emotionally reforested, I should probably label myself first."]
+      ["narrator", "A neat card waits beside a stack of blank badges."],
+      ["narrator", "Please fill out your name badge before proceeding to the lodge lobby."],
+      ["player", "A badge. Right."],
+      ["player", "If I am going to be emotionally reforested, I should probably label myself first."]
     ],
     nextAction: showNameEntry
   },
@@ -1092,19 +1132,23 @@ const scenes = {
     character: "natai",
     lines: [
       ["narrator", "The badge printer spits out your name with a tiny mechanical cough."],
-      ["narrator", "Before you can pin it on straight, someone steps out from the shade beside the route map, arms folded, expression already disappointed in several things.", "natai:grumpy"],
-      ["natai", "{playerName}. That is either your name or the kiosk has begun inventing evidence. Neither outcome comforts me.", "natai:grumpy"],
-      ["player", "Nice to meet you too. I usually wait until the third sentence before accusing office supplies of crimes.", "natai:grumpy"],
+      ["narrator", "Before you can pin it on straight, someone steps from the shade by the route map.", "natai:grumpy"],
+      ["narrator", "Their arms are folded, and their expression is disappointed in several things.", "natai:grumpy"],
+      ["natai", "{playerName}. That is either your name or the kiosk has started inventing evidence.", "natai:grumpy"],
+      ["natai", "Neither option comforts me.", "natai:grumpy"],
+      ["player", "Nice to meet you too. I usually wait three sentences before accusing supplies of crimes.", "natai:grumpy"],
       ["natai", "That was not an accusation. That was pattern recognition.", "natai:grumpy"],
       ["player", "Ah. A data-driven grudge. Very professional.", "natai:grumpy"],
       ["natai", "Hah.", "natai:laughing"],
       ["narrator", "It escapes them before they can stop it: one short laugh, sharp and unwillingly real.", "natai:laughing"],
       ["natai", "No. Do not look pleased. I am not encouraging this.", "natai:grumpy"],
       ["player", "Too late. I have been encouraged at a dangerously low threshold.", "natai:grumpy"],
-      ["natai", "Natai. Zion route lead. Sandstone, permits, heat, flash floods, and the part where charm does not improve your odds.", "natai:grumpy"],
+      ["natai", "Natai. Zion route lead.", "natai:grumpy"],
+      ["natai", "Sandstone, permits, heat, flash floods, and no faith in charm as survival gear.", "natai:grumpy"],
       ["player", "Noted. Charm filed under non-essential survival gear.", "natai"],
       ["natai", "File it under litter if it gets in the way.", "natai:grumpy"],
-      ["narrator", "They adjust one corner of the route map by half an inch, glare at the kiosk like it personally lowered standards, and walk off toward the canyon trail.", "natai:grumpy"]
+      ["narrator", "They square one corner of the route map by half an inch.", "natai:grumpy"],
+      ["narrator", "Then they glare at the kiosk and head toward the canyon trail.", "natai:grumpy"]
     ],
     next: "intro_after_natai_checkin"
   },
@@ -1114,8 +1158,10 @@ const scenes = {
     lines: [
       ["player", "That was weird."],
       ["player", "Informative. Hostile. Weird."],
-      ["player", "Jack once said Natai was 'friendly like a locked shed with snacks inside.' I thought that was Jack being Jack. Apparently, no. Field note confirmed."],
-      ["player", "I guess I better head over to the lodge lobby next, before the badge printer tells someone I have been loitering."]
+      ["player", "Jack once said Natai was friendly like a locked shed with snacks inside."],
+      ["player", "I thought that was Jack being Jack."],
+      ["player", "Apparently not. Field note confirmed."],
+      ["player", "I should head to the lodge lobby before the badge printer reports me for loitering."]
     ],
     next: "intro_lodge_walk"
   },
@@ -1124,15 +1170,21 @@ const scenes = {
     background: () => ({ location: "black", time: "daytime" }),
     lines: [
       ["narrator", "The path from check-in slips under the trees and keeps going longer than you expect.", null, walkingAmbient()],
-      ["narrator", "Gravel gives way to packed earth, then to wide stone steps softened by moss at the edges."],
-      ["player", "For a place built around first impressions, this retreat is really making me earn the front door."],
-      ["narrator", "At last, the trees open around a broad timber lodge with cedar siding, a deep wraparound porch, and tall windows glowing warm behind green-painted trim."],
-      ["narrator", "A stone chimney climbs one side of the building, big enough to explain the fireplace you can already smell in the air."],
+      ["narrator", "Gravel gives way to packed earth."],
+      ["narrator", "Then it becomes wide stone steps softened by moss."],
+      ["player", "For a place built around first impressions, this retreat is making me earn the front door."],
+      ["narrator", "At last the trees open around a broad timber lodge."],
+      ["narrator", "Cedar siding. Deep porch. Tall windows glowing behind green trim."],
+      ["narrator", "A stone chimney climbs one side, and you can already smell the fireplace."],
       ["player", "Okay. That looks like the kind of building where someone either hands you cocoa or a quest."],
-      ["player", "Jack would absolutely try to do both and spill the cocoa while explaining the quest."],
-      ["narrator", "You look around for a welcome committee. The porch is empty. The rocking chairs are still. Even the hanging ferns seem sworn to secrecy."],
+      ["player", "Jack would absolutely try to do both."],
+      ["player", "He would also spill the cocoa while explaining the quest."],
+      ["narrator", "You look around for a welcome committee."],
+      ["narrator", "The porch is empty."],
+      ["narrator", "The rocking chairs are still."],
+      ["narrator", "Even the hanging ferns seem sworn to secrecy."],
       ["player", "Right. Cool. More mysterious hospitality."],
-      ["narrator", "You climb the porch steps, take the heavy brass handle, and open the lodge door.", null, { audio: "door" }]
+      ["narrator", "You climb the porch steps and pull the heavy brass door.", null, { audio: "door" }]
     ],
     next: "intro_lodge_lobby"
   },
@@ -1141,59 +1193,82 @@ const scenes = {
     background: () => ({ location: "lodge", time: "daytime" }),
     character: "jack",
     lines: [
-      ["narrator", "Inside the lodge lobby, cedar beams glow over a stone fireplace and a wall map crowded with impossible route pins."],
-      ["narrator", "The whole place feels like summer camp if summer camp had better lighting and one unresolved friendship standing near the check-in table."],
-      ["narrator", "Jack looks up from a welcome packet, red flannel stretched across shoulders that once moved an entire fallen log because a kid lost a hat under it.", "jack"],
-      ["jack", "{playerName}. Hey. You made it. I mean, obviously you made it, you are standing there. Unless I am hallucinating, which would be rude of my brain.", "jack:blushing"],
+      ["narrator", "Inside the lodge lobby, cedar beams glow over a stone fireplace and a wall of route pins."],
+      ["narrator", "The place feels like summer camp with better lighting."],
+      ["narrator", "It also has one unresolved friendship near the check-in table."],
+      ["narrator", "Jack looks up from a welcome packet.", "jack"],
+      ["narrator", "Red flannel, broad shoulders, same impossible sincerity.", "jack"],
+      ["jack", "{playerName}. Hey. You made it.", "jack:blushing"],
+      ["jack", "I mean, obviously. You are standing there.", "jack:blushing"],
+      ["jack", "Unless I am hallucinating, which would be rude of my brain.", "jack:blushing"],
       ["player", "Still you, then.", "jack"],
-      ["jack", "Still me. Bigger beard, same amount of map confidence, which Caleb says is 'less reliable than an unsourced geyser prediction.' I do not know what that means, but he looked proud.", "jack:laughing"],
-      ["narrator", "He pulls you into a hug before either of you can overthink it. Jack hugs like shelter: warm, solid, and completely unaware of subtlety.", "jack"],
+      ["jack", "Still me. Bigger beard. Same amount of map confidence.", "jack:laughing"],
+      ["jack", "Caleb says my instincts are less reliable than an unsourced geyser prediction.", "jack:laughing"],
+      ["jack", "I still do not know what that means, but he looked proud.", "jack:laughing"],
+      ["narrator", "He pulls you into a hug before either of you can overthink it.", "jack"],
+      ["narrator", "Jack hugs like shelter: warm, solid, and oblivious to subtlety.", "jack"],
       ["player", "Thanks for inviting me. I was not sure I deserved a soft landing.", "jack"],
-      ["jack", "Everybody deserves somewhere to do better. Also I missed you, which is not professional retreat language but is true language.", "jack:blushing"],
+      ["jack", "Everybody deserves somewhere to do better.", "jack:blushing"],
+      ["jack", "Also I missed you.", "jack:blushing"],
+      ["jack", "That is not professional retreat language, but it is true.", "jack:blushing"],
       ["player", "Before I cry in the lobby, is Natai always like that?", "jack"],
-      ["jack", "Like a storm cloud learned policy enforcement? Yeah. Natai's heart is in the right place; they just keep it behind three locked gates and a permit form. A nice permit form. Probably laminated.", "jack:laughing"],
+      ["jack", "Like a storm cloud learned policy enforcement? Yeah.", "jack:laughing"],
+      ["jack", "Natai's heart is in the right place.", "jack:laughing"],
+      ["jack", "They just keep it behind three locked gates and a permit form.", "jack:laughing"],
+      ["jack", "Probably laminated.", "jack:laughing"],
       ["player", "They laughed at one joke and then looked furious about the paperwork of enjoying it.", "jack"],
       ["jack", "That means it went well. Natai laughing is like seeing a comet with cheekbones.", "jack:laughing"],
       ["player", "Comforting. I think.", "jack"],
-      ["jack", "You'll get used to them. Or you will develop better posture from bracing yourself. Either way, growth. I learned that word in a staff meeting and I am using it responsibly.", "jack"],
+      ["jack", "You'll get used to them.", "jack"],
+      ["jack", "Or you will develop better posture from bracing yourself.", "jack"],
+      ["jack", "Either way, growth.", "jack"],
+      ["jack", "I learned that word in a staff meeting, and I am using it responsibly.", "jack"],
       ["player", "I thought there would be a check-in packet.", "jack"],
-      ["jack", "There is. It says welcome, hydrate, do not wander off trail, and if a sign says no, take it personally because signs are boundaries with tiny hats.", "jack:laughing"],
+      ["jack", "There is.", "jack:laughing"],
+      ["jack", "It says welcome, hydrate, do not wander off trail, and take signs personally.", "jack:laughing"],
+      ["jack", "Signs are boundaries with tiny hats.", "jack:laughing"],
       ["player", "Signs do not have hats.", "jack"],
       ["jack", "Some of them do in spirit. Which brings us to your first important choice of the retreat.", "jack"]
     ],
     choices: [
-      { label: "Tell him no means no, even from a trail sign in an invisible hat.", next: "intro_lodge_jack_two", feelings: { jack: 2 }, reaction: [["jack", "That is the kind of sentence that makes my whole chest do a high five.", "jack:laughing"], ["narrator", "He taps your welcome packet against his palm, smiling at you with years of affection and absolutely no poker face.", "jack:laughing"]] },
-      { label: "Say rules are flexible if the shot is good enough.", next: "intro_lodge_jack_two", feelings: { jack: -2 }, reaction: [["jack", "No shot is good enough to make a rescue team hate your name. I like your name. I would like it absent from incident reports.", "jack:grumpy"], ["narrator", "The warmth in his face stays, but worry steps in front of it.", "jack:grumpy"]] }
+      { label: "Tell him no means no, even from a trail sign in an invisible hat.", next: "intro_lodge_jack_two", feelings: { jack: 2 }, reaction: [["jack", "That is the kind of sentence that makes my whole chest do a high five.", "jack:laughing"], ["narrator", "He taps your packet against his palm, smiling with years of affection and no poker face.", "jack:laughing"]] },
+      { label: "Say rules are flexible if the shot is good enough.", next: "intro_lodge_jack_two", feelings: { jack: -2 }, reaction: [["jack", "No shot is worth a rescue team cursing your name. I like your name off incident reports.", "jack:grumpy"], ["narrator", "The warmth in his face stays, but worry steps in front of it.", "jack:grumpy"]] }
     ]
   },
   intro_lodge_jack_two: {
     label: "Lodge Lobby",
     background: () => ({ location: "lodge", time: "daytime" }),
     lines: [
-      ["narrator", "Jack walks you past the lobby map, where pins mark parks that should not fit on the same afternoon.", "jack"],
-      ["jack", "Each route lead gets protective of their place. Occupational hazard of loving something visitors keep trying to simplify. I practiced that sentence three times and only said occupational wrong twice.", "jack"],
+      ["narrator", "Jack walks you past the lobby map, where pins mark parks that should not fit one afternoon.", "jack"],
+      ["jack", "Each route lead gets protective of their place.", "jack"],
+      ["jack", "It is an occupational hazard of loving something people keep trying to simplify.", "jack"],
+      ["jack", "I practiced that sentence three times and only said occupational wrong twice.", "jack"],
       ["player", "And you? Protective or hazard?", "jack"],
       ["jack", "Both, on a good day. Also strong enough to move the snack crates, which is why they keep me.", "jack:laughing"],
       ["player", "They keep you because you are kind.", "jack"],
       ["jack", "That too. I forget that one because it is not a muscle group.", "jack:blushing"]
     ],
     choices: [
-      { label: "Ask what Olympic means to him after all these years.", next: "intro_lodge_jack_three", feelings: { jack: 2 }, reaction: [["jack", "Rain, mostly. Then trees old enough to make your problems feel badly scheduled. And the place I kept wanting to show you properly.", "jack"], ["narrator", "He says it like a joke, but there is devotion under the weather report and your name tucked inside it.", "jack:blushing"]] },
-      { label: "Joke that visitors keep parks relevant.", next: "intro_lodge_jack_three", feelings: { jack: -2 }, reaction: [["jack", "Parks were relevant before any of us learned to point a camera at them. Sorry. That came out stern. My brain put on Caleb's debate cardigan.", "jack:grumpy"], ["narrator", "He looks apologetic immediately, but the correction still lands.", "jack:grumpy"]] }
+      { label: "Ask what Olympic means to him after all these years.", next: "intro_lodge_jack_three", feelings: { jack: 2 }, reaction: [["jack", "Rain, mostly. Then trees old enough to humble your problems. And the place I saved for you.", "jack"], ["narrator", "He says it like a joke, but devotion sits under the forecast and your name.", "jack:blushing"]] },
+      { label: "Joke that visitors keep parks relevant.", next: "intro_lodge_jack_three", feelings: { jack: -2 }, reaction: [["jack", "Parks mattered before cameras did. Sorry. My brain borrowed Caleb's debate cardigan.", "jack:grumpy"], ["narrator", "He looks apologetic immediately, but the correction still lands.", "jack:grumpy"]] }
     ]
   },
   intro_lodge_jack_three: {
     label: "Lodge Lobby",
     background: () => ({ location: "lodge", time: "daytime" }),
     lines: [
-      ["narrator", "The lobby settles around you: low fire, old beams, route cards fanned across the desk like invitations with consequences.", "jack"],
-      ["jack", "Before I hand you to the kiosk, one more thing. What are you actually hoping to get from this retreat?", "jack"],
+      ["narrator", "The lobby settles around you." , "jack"],
+      ["narrator", "Low fire. Old beams. Route cards fanned across the desk like invitations with consequences.", "jack"],
+      ["jack", "Before I hand you to the kiosk, what are you actually hoping to get from this retreat?", "jack"],
       ["player", "Besides surviving the welcome packet and your sign theology?", "jack"],
-      ["jack", "Ambitious. I like it. I also like you. As a person. Historically. Currently. Wow, this sentence has too many branches.", "jack:laughing"]
+      ["jack", "Ambitious. I like it.", "jack:laughing"],
+      ["jack", "I also like you.", "jack:laughing"],
+      ["jack", "As a person. Historically. Currently.", "jack:laughing"],
+      ["jack", "Wow. This sentence has too many branches.", "jack:laughing"]
     ],
     choices: [
-      { label: "Say you want to learn how to make people care without flattening the place.", next: "intro_lodge_jack_wrap", feelings: { jack: 2 }, reaction: [["jack", "That is... yeah. That is you when you let yourself be brave instead of loud.", "jack:blushing"], ["narrator", "He looks at you like he knows the old version of you and is already rooting for the next one.", "jack:blushing"]] },
-      { label: "Say you mostly want better numbers and better views.", next: "intro_lodge_jack_wrap", feelings: { jack: -2 }, reaction: [["jack", "Then I hope the views do some work on you before the numbers do. I mean that kindly. The sentence is wearing work boots, but kindly.", "jack:grumpy"], ["narrator", "He gathers the route cards carefully, trying not to look as worried as he is.", "jack:grumpy"]] }
+      { label: "Say you want to learn how to make people care without flattening the place.", next: "intro_lodge_jack_wrap", feelings: { jack: 2 }, reaction: [["jack", "That is... yeah. That is you when you let yourself be brave instead of loud.", "jack:blushing"], ["narrator", "He looks at you like he knows the old you and is already rooting for the next one.", "jack:blushing"]] },
+      { label: "Say you mostly want better numbers and better views.", next: "intro_lodge_jack_wrap", feelings: { jack: -2 }, reaction: [["jack", "I hope the views work on you before the numbers do. Kindly. It sounded better in my head.", "jack:grumpy"], ["narrator", "He gathers the route cards carefully, trying not to look as worried as he is.", "jack:grumpy"]] }
     ]
   },
   intro_lodge_jack_wrap: {
@@ -1201,7 +1276,7 @@ const scenes = {
     background: () => ({ location: "lodge", time: "daytime" }),
     lines: [
       ["narrator", "Jack slides a route card into your welcome packet, then nods toward the lobby doors.", "jack"],
-      ["jack", "Come on. The real check-in desk is outside, and if I leave the kiosk alone too long, it gets theatrical.", "jack"],
+      ["jack", "Come on. The real check-in desk is outside, and the kiosk gets theatrical if I neglect it.", "jack"],
       ["player", "That sounds like a joke I am going to understand too late.", "jack"],
       ["jack", "Almost definitely. I only understand it halfway and I work here.", "jack:laughing"]
     ],
@@ -1212,12 +1287,16 @@ const scenes = {
     background: () => ({ location: "checkIn", time: "daytime" }),
     character: "jack",
     lines: [
-      ["narrator", "Outside again, the check-in kiosk waits under the trees, cheerful and unbothered by normal geography."],
+      ["narrator", "Outside again, the check-in kiosk waits under the trees, cheerful and immune to geography."],
       ["narrator", "Jack taps the route map with the corner of his clipboard.", "jack"],
-      ["jack", "This desk is the center point between all the park routes. You come here, pick a direction, and the kiosk handles the rest.", "jack"],
-      ["jack", "There is also the part where it bends space and time so you can jump between parks that are thousands of miles apart almost instantly. I asked how. They gave me a binder. I chose peace.", "jack:laughing"],
+      ["jack", "This desk is the center point between all the park routes.", "jack"],
+      ["jack", "You come here, pick a direction, and the kiosk handles the rest.", "jack"],
+      ["jack", "It also bends space and time so you can jump between parks almost instantly.", "jack:laughing"],
+      ["jack", "I asked how. They gave me a binder. I chose peace.", "jack:laughing"],
       ["player", "Wait, what?", "jack"],
-      ["jack", "Anyway. Caleb is waiting at Yellowstone. Boardwalk rules, geothermal hazards, very handsome encyclopedia energy. Ask him one question and he starts glowing like a ranger station with Wi-Fi.", "jack"],
+      ["jack", "Anyway. Caleb is waiting at Yellowstone.", "jack"],
+      ["jack", "Boardwalk rules, geothermal hazards, very handsome encyclopedia energy.", "jack"],
+      ["jack", "Ask him one question and he glows like a ranger station with Wi-Fi.", "jack"],
       ["player", "We are just moving on from the space-time thing?", "jack"],
       ["jack", "Already did. One foot in front of the other. That is how I survive both hiking and concepts.", "jack:laughing"]
     ],
@@ -1230,17 +1309,21 @@ const scenes = {
     label: "Yellowstone",
     background: () => ({ location: "yellowstone", time: "daytime" }),
     lines: [
-      ["narrator", "Yellowstone opens around you in steam, boardwalk rails, and blue pools that look too pretty to be allowed near human foolishness."],
+      ["narrator", "Yellowstone opens in steam, boardwalk rails, and blue pools too pretty for foolishness."],
       ["player", "The air smells like minerals, heat, and a warning label someone made scenic."],
-      ["narrator", "A ranger at the rail turns as you approach, one hand on the nearest safety sign and the other holding a notebook bristling with color-coded tabs.", "caleb"],
-      ["caleb", "Welcome to the boardwalk. It exists because the crust here can be thin, hot, and wildly uninterested in human confidence. Also because hydrothermal areas are basically Yellowstone's dramatic circulatory system.", "caleb"],
+      ["narrator", "A ranger turns at the rail, one hand on a safety sign and one on a tabbed notebook.", "caleb"],
+      ["caleb", "Welcome to the boardwalk.", "caleb"],
+      ["caleb", "The crust here can be thin, hot, and deeply unimpressed by human confidence.", "caleb"],
+      ["caleb", "Also, hydrothermal areas are Yellowstone's dramatic circulatory system.", "caleb"],
       ["player", "That was two warnings and a metaphor before hello.", "caleb"],
       ["caleb", "Hello. Sorry. I start in the middle when I am excited.", "caleb:blushing"],
-      ["caleb", "Jack asked me to be nice to you. His exact words were, 'Be normal nice, not Yellowstone TED Talk nice.' I chose to interpret that as a challenge.", "caleb"],
+      ["caleb", "Jack asked me to be nice to you.", "caleb"],
+      ["caleb", "He said, 'Be normal nice, not Yellowstone TED Talk nice.'", "caleb"],
+      ["caleb", "I chose to hear that as a challenge.", "caleb"],
       ["player", "That sounds painfully Jack and dangerously you.", "caleb"]
     ],
     choices: [
-      { label: "Promise Caleb both feet are staying on the boardwalk and ask for a fact.", next: "intro_yellowstone_caleb_two", feelings: { caleb: 2 }, reaction: [["caleb", "Good. Fact: Yellowstone has more geysers than the rest of the world combined. Also, I like you already for asking, which is premature data but compelling.", "caleb:laughing"], ["narrator", "His smile is quick, bright, and almost immediately embarrassed by itself.", "caleb:laughing"]] },
+      { label: "Promise Caleb both feet are staying on the boardwalk and ask for a fact.", next: "intro_yellowstone_caleb_two", feelings: { caleb: 2 }, reaction: [["caleb", "Good. Yellowstone has more geysers than anywhere else. I liked that question.", "caleb:laughing"], ["narrator", "His smile is quick, bright, and almost immediately embarrassed by itself.", "caleb:laughing"]] },
       { label: "Joke that you came for views, not a science lecture.", next: "intro_yellowstone_caleb_two", feelings: { caleb: -2 }, reaction: [["caleb", "Then I will make the lecture scenic and tragically concise.", "caleb:grumpy"], ["narrator", "The look he gives you could laminate a safety poster and annotate it in the margins.", "caleb:grumpy"]] }
     ]
   },
@@ -1248,14 +1331,18 @@ const scenes = {
     label: "Yellowstone",
     background: () => ({ location: "yellowstone", time: "daytime" }),
     lines: [
-      ["narrator", "Caleb leads you a few careful steps down the boardwalk, where steam curls over the rail and vanishes into the sun.", "caleb"],
-      ["caleb", "People think Yellowstone is trying to impress them. It is not. It is busy being itself, which includes sitting on one of the largest active volcanic systems on Earth like that is a reasonable personality trait.", "caleb"],
+      ["narrator", "Caleb leads you a few careful steps down the boardwalk.", "caleb"],
+      ["narrator", "Steam curls over the rail and vanishes into the sun.", "caleb"],
+      ["caleb", "People think Yellowstone is trying to impress them.", "caleb"],
+      ["caleb", "It is not.", "caleb"],
+      ["caleb", "It is busy being itself.", "caleb"],
+      ["caleb", "That includes sitting on a huge active volcanic system like that is a normal trait.", "caleb"],
       ["player", "You admire it for being dramatic and well-documented.", "caleb"]
     ],
     choices: [
-      { label: "Ask what first made him love the park.", next: "intro_yellowstone_caleb_three", feelings: { caleb: 2 }, reaction: [["caleb", "A geyser eruption when I was twelve. It scared me half to death, then made everything else feel too small. I went home and memorized the map instead of admitting I had feelings.", "caleb:blushing"], ["narrator", "He looks embarrassed by how honest that was, which makes it worse in the best way.", "caleb:blushing"]] },
-      { label: "Ask whether he has always been this nerdy about Yellowstone.", next: "intro_yellowstone_caleb_three", feelings: { caleb: 2 }, reaction: [["caleb", "No. As a child I was worse. I made my family observe Old Faithful predictions during dinner. Indoors. In Ohio.", "caleb:laughing"], ["narrator", "He laughs like he has chosen to find himself endearing and is only slightly surprised you seem to agree.", "caleb:laughing"]] },
-      { label: "Ask whether every rule really matters.", next: "intro_yellowstone_caleb_three", feelings: { caleb: -2 }, reaction: [["caleb", "Here? Yes. Also I can provide a short historical appendix titled People Who Learned This Incorrectly.", "caleb:grumpy"], ["narrator", "The answer is short enough to leave steam hissing into the silence after it. The appendix, somehow, is implied.", "caleb:grumpy"]] }
+      { label: "Ask what first made him love the park.", next: "intro_yellowstone_caleb_three", feelings: { caleb: 2 }, reaction: [["caleb", "A geyser erupted when I was twelve. It terrified me. I went home and memorized the map.", "caleb:blushing"], ["narrator", "He looks embarrassed by how honest that was, which makes it worse in the best way.", "caleb:blushing"]] },
+      { label: "Ask whether he has always been this nerdy about Yellowstone.", next: "intro_yellowstone_caleb_three", feelings: { caleb: 2 }, reaction: [["caleb", "No. As a child I was worse. I made my family track Old Faithful at dinner. In Ohio.", "caleb:laughing"], ["narrator", "He laughs like he has decided to find himself endearing and is mildly shocked you agree.", "caleb:laughing"]] },
+      { label: "Ask whether every rule really matters.", next: "intro_yellowstone_caleb_three", feelings: { caleb: -2 }, reaction: [["caleb", "Here? Yes. Also I can provide a short appendix called People Who Learned This Incorrectly.", "caleb:grumpy"], ["narrator", "The answer is short enough to leave steam hissing after it. The appendix is implied.", "caleb:grumpy"]] }
     ]
   },
   intro_yellowstone_caleb_three: {
@@ -1263,12 +1350,14 @@ const scenes = {
     background: () => ({ location: "yellowstone", time: "daytime" }),
     lines: [
       ["narrator", "The boardwalk opens to one last pool, blue at the center and ringed with impossible color.", "caleb"],
-      ["caleb", "This is usually where people stop talking. I support quiet, but I also need you to know the blue means it is absorbing every color except blue because of depth and clarity, not because nature owns a drama department.", "caleb"],
+      ["caleb", "This is usually where people stop talking.", "caleb"],
+      ["caleb", "I support quiet.", "caleb"],
+      ["caleb", "But I need you to know the blue comes from depth and clarity, not a drama department.", "caleb"],
       ["player", "You are physically incapable of leaving wonder unexplained.", "caleb"]
     ],
     choices: [
       { label: "Tell him the explanation makes the wonder better.", next: "intro_yellowstone_wrap", feelings: { caleb: 2 }, reaction: [["caleb", "That is a very unfair thing to say to a man trying to remain professionally composed.", "caleb:blushing"], ["narrator", "He says it softly, like you just found the main trail into him.", "caleb:blushing"]] },
-      { label: "Ask him to stand quietly with you anyway.", next: "intro_yellowstone_wrap", feelings: { caleb: 1 }, reaction: [["caleb", "I can do quiet. I may think loudly, but I can do quiet.", "caleb"], ["narrator", "For a few breaths, he lets the pool be itself beside you, and the restraint feels like trust.", "caleb:blushing"]] },
+      { label: "Ask him to stand quietly with you anyway.", next: "intro_yellowstone_wrap", feelings: { caleb: 1 }, reaction: [["caleb", "I can do quiet. I may think loudly, but I can do quiet.", "caleb"], ["narrator", "For a few breaths, he lets the pool be itself beside you, and it feels like trust.", "caleb:blushing"]] },
       { label: "Admit you still want one closer picture.", next: "intro_yellowstone_wrap", feelings: { caleb: -2 }, reaction: [["caleb", "Then I am walking you back before wanting becomes doing.", "caleb:grumpy"], ["narrator", "He is not cruel about it. Somehow that makes disappointing him worse.", "caleb:grumpy"]] }
     ]
   },
@@ -1276,8 +1365,11 @@ const scenes = {
     label: "Yellowstone",
     background: () => ({ location: "yellowstone", time: "daytime" }),
     lines: [
-      ["narrator", "Caleb checks the route card, then tucks his notebook under one arm like he is trying to look casual about the tabs.", "caleb"],
-      ["caleb", "That is your Yellowstone introduction. Short enough to keep you safe, long enough that I hope you remember the microbes, the caldera, and at least one emotionally significant geyser.", "caleb"],
+      ["narrator", "Caleb checks the route card and tucks his notebook under one arm.", "caleb"],
+      ["narrator", "He is trying very hard to look casual about the tabs.", "caleb"],
+      ["caleb", "That is your Yellowstone introduction.", "caleb"],
+      ["caleb", "Short enough to keep you safe.", "caleb"],
+      ["caleb", "Long enough that you remember microbes, the caldera, and one emotional geyser.", "caleb"],
       ["player", "I will. The facts had excellent cheekbones.", "caleb"],
       ["narrator", "He laughs despite himself, and the sound follows you back through the steam."]
     ],
@@ -1297,8 +1389,9 @@ const scenes = {
     label: "Check-In",
     background: () => ({ location: "checkIn", time: "sunset" }),
     lines: [
-      ["narrator", "When the kiosk returns you to check-in, sunset has poured itself over the roofline in apricot and rose."],
-      ["player", "Okay. That is ridiculously pretty. Also getting late, which feels like the universe politely tapping its watch."],
+      ["narrator", "When the kiosk returns you to check-in, sunset has painted the roofline apricot and rose."],
+      ["player", "Okay. That is ridiculously pretty."],
+      ["player", "It is also getting late, which feels like the universe tapping its watch."],
       ["player", "Move quickly. Admire efficiently."]
     ],
     next: "intro_yosemite_sierra"
@@ -1307,13 +1400,18 @@ const scenes = {
     label: "Yosemite",
     background: () => ({ location: "yosemite", time: "sunset" }),
     lines: [
-      ["narrator", "Yosemite greets you with waterfall mist, huge granite walls, and sunset light doing absolutely nothing subtle."],
+      ["narrator", "Yosemite greets you with waterfall mist, huge granite walls, and sunset with no subtlety."],
       ["player", "The whole valley looks like it knows it is the main character."],
-      ["narrator", "A woman jogs down from the overlook as if gravity signed a waiver for her, then slows with a grin that feels personally illegal.", "sierra"],
-      ["sierra", "You made it. Good. The cliff was starting to think you were intimidated. I told it to wait until you saw me.", "sierra:sly"],
+      ["narrator", "A woman jogs down from the overlook as if gravity signed a waiver for her.", "sierra"],
+      ["narrator", "Then she slows with a grin that feels personally illegal.", "sierra"],
+      ["sierra", "You made it. Good.", "sierra:sly"],
+      ["sierra", "The cliff was starting to think you were intimidated.", "sierra:sly"],
+      ["sierra", "I told it to wait until you saw me.", "sierra:sly"],
       ["player", "I am intimidated. I am just being stylish about it.", "sierra:laughing"],
       ["sierra", "Excellent. Brave enough to admit it, stylish enough to survive it. Keep up, pretty thing.", "sierra:sly"],
-      ["sierra", "Also, Jack told me not to let you undersell yourself. He said it with his whole face, which is how Jack says everything. Cute, but exhausting.", "sierra:sly"],
+      ["sierra", "Also, Jack told me not to let you undersell yourself.", "sierra:sly"],
+      ["sierra", "He said it with his whole face.", "sierra:sly"],
+      ["sierra", "That is how Jack says everything. Cute, but exhausting.", "sierra:sly"],
       ["player", "He has never owned a subtle expression in his life.", "sierra:laughing"]
     ],
     choices: [
@@ -1326,13 +1424,17 @@ const scenes = {
     label: "Yosemite",
     background: () => ({ location: "yosemite", time: "sunset" }),
     lines: [
-      ["narrator", "Sierra leads you toward a small overlook where waterfall mist turns gold at the edges, checking over her shoulder like she knows exactly what that does to you.", "sierra"],
-      ["sierra", "Most people aim at the biggest thing in front of them. Yosemite rewards peripheral vision. I reward eye contact.", "sierra:sly"],
+      ["narrator", "Sierra leads you toward a small overlook.", "sierra"],
+      ["narrator", "Waterfall mist turns gold at the edges.", "sierra"],
+      ["narrator", "She checks over her shoulder like she knows exactly what that does to you.", "sierra"],
+      ["sierra", "Most people aim at the biggest thing in front of them.", "sierra:sly"],
+      ["sierra", "Yosemite rewards peripheral vision.", "sierra:sly"],
+      ["sierra", "I reward eye contact.", "sierra:sly"],
       ["player", "That sounds suspiciously like life advice.", "sierra:laughing"]
     ],
     choices: [
-      { label: "Ask what most people miss here.", next: "intro_yosemite_sierra_three", feelings: { sierra: 2 }, reaction: [["sierra", "The sound before the view. The water announces itself, and everyone still waits for proof.", "sierra"], ["sierra", "Same mistake people make with chemistry. Same mistake they make with people who joke too fast.", "sierra:blushing"], ["narrator", "She says it lightly, but the answer has roots and a wink at the end.", "sierra"]] },
-      { label: "Tell her she notices things like someone in love with the place.", next: "intro_yosemite_sierra_three", feelings: { sierra: 1 }, reaction: [["sierra", "Obviously. Have you seen it?", "sierra:laughing"], ["sierra", "I am loyal to beauty. Present company included, if you keep behaving.", "sierra:sly"], ["narrator", "She laughs, but there is a blush tucked into the edge of it, quick enough that she hopes you missed it.", "sierra:blushing"]] },
+      { label: "Ask what most people miss here.", next: "intro_yosemite_sierra_three", feelings: { sierra: 2 }, reaction: [["sierra", "The sound before the view. The water announces itself, and everyone still waits for proof.", "sierra"], ["sierra", "Same mistake people make with chemistry. Same mistake they make with people who joke fast.", "sierra:blushing"], ["narrator", "She says it lightly, but the answer has roots and a wink at the end.", "sierra"]] },
+      { label: "Tell her she notices things like someone in love with the place.", next: "intro_yosemite_sierra_three", feelings: { sierra: 1 }, reaction: [["sierra", "Obviously. Have you seen it?", "sierra:laughing"], ["sierra", "I am loyal to beauty. Present company included, if you keep behaving.", "sierra:sly"], ["narrator", "She laughs, but a blush catches at the edge of it before she can hide it.", "sierra:blushing"]] },
       { label: "Tell her eye contact sounds like a dangerous reward.", next: "intro_yosemite_sierra_three", feelings: { sierra: 2 }, reaction: [["sierra", "Mm.", "sierra:blushing"], ["sierra", "It is. Yosemite has cliffs; I have follow-through.", "sierra:sly"], ["narrator", "She says it without missing a step, devastatingly casual.", "sierra"]] },
       { label: "Say the biggest thing is usually the best shot.", next: "intro_yosemite_sierra_three", feelings: { sierra: -2 }, reaction: [["sierra", "That is how people come home with twelve identical photos and no memory.", "sierra:grumpy"], ["sierra", "Tragic, especially when I am standing right here making your day more interesting.", "sierra:sly"], ["player", "Point taken.", "sierra:grumpy"]] }
     ]
@@ -1341,8 +1443,12 @@ const scenes = {
     label: "Yosemite",
     background: () => ({ location: "yosemite", time: "sunset" }),
     lines: [
-      ["narrator", "The trail steepens for one last push. Sierra stops at the top and waits, pretending not to check whether you are winded or flustered.", "sierra"],
-      ["sierra", "Final test. What do you do when a place is bigger than your ability to describe it? Careful. I am judging the answer and the delivery.", "sierra:sly"],
+      ["narrator", "The trail steepens for one last push.", "sierra"],
+      ["narrator", "Sierra stops at the top and waits.", "sierra"],
+      ["narrator", "She pretends not to check whether you are winded or flustered.", "sierra"],
+      ["sierra", "Final test.", "sierra:sly"],
+      ["sierra", "What do you do when a place is bigger than your words?", "sierra:sly"],
+      ["sierra", "Careful. I am grading the answer and the delivery.", "sierra:sly"],
       ["player", "That feels like a trap with excellent scenery.", "sierra:laughing"]
     ],
     choices: [
@@ -1355,8 +1461,11 @@ const scenes = {
     label: "Yosemite",
     background: () => ({ location: "yosemite", time: "sunset" }),
     lines: [
-      ["narrator", "Sierra walks you back down as sunset thins along the trail, her pace finally easy enough to feel companionable and still deliberately hard to ignore.", "sierra"],
-      ["sierra", "That is the Yosemite sampler. Cliffs, water, humility, and one charming guide making heroic sacrifices for your character development.", "sierra:sly"],
+      ["narrator", "Sierra walks you back as sunset thins along the trail.", "sierra"],
+      ["narrator", "Her pace finally eases into something companionable.", "sierra"],
+      ["narrator", "It is still very hard to ignore.", "sierra"],
+      ["sierra", "That is the Yosemite sampler.", "sierra:sly"],
+      ["sierra", "Cliffs, water, humility, and one heroic guide shaping your character.", "sierra:sly"],
       ["player", "And cardio.", "sierra:laughing"],
       ["sierra", "Cardio is how the park knows you meant it. Blushing is how I know you were listening.", "sierra:sly"]
     ],
@@ -1366,7 +1475,8 @@ const scenes = {
     label: "Check-In",
     background: () => ({ location: "checkIn", time: "sunset" }),
     lines: [
-      ["narrator", "The kiosk brings you back to the check-in desk again. The last of sunset clings to the sign like it is reluctant to leave."],
+      ["narrator", "The kiosk brings you back to the check-in desk again."],
+      ["narrator", "The last of sunset clings to the sign like it does not want to leave."],
       ["player", "Two parks down. One more before I become a person who says 'big day' and means it."]
     ],
     next: "intro_to_night_return"
@@ -1386,7 +1496,8 @@ const scenes = {
     background: () => ({ location: "checkIn", time: "night" }),
     lines: [
       ["narrator", "By the next blink of impossible kiosk travel, night has settled over check-in."],
-      ["player", "It is officially late. If this kiosk starts glowing any harder, I am charging it rent for living in my nerves."],
+      ["player", "It is officially late."],
+      ["player", "If this kiosk glows any harder, I am charging it rent for living in my nerves."],
       ["player", "Last visit, then sleep. That is a responsible sentence, probably."]
     ],
     next: "intro_zion_natai"
@@ -1395,7 +1506,8 @@ const scenes = {
     label: "Red Rock",
     background: () => ({ location: "zion", time: "night" }),
     lines: [
-      ["narrator", "The red rock route waits under a sky packed with stars. Canyon walls rise around you like the dark has architecture."],
+      ["narrator", "The red rock route waits under a sky packed with stars."],
+      ["narrator", "Canyon walls rise around you like the dark has architecture."],
       ["player", "The desert is quieter than I expected. Not empty. Just extremely selective."],
       ["narrator", "Someone stands beside the route sign, still as sandstone until they turn their head.", "natai:grumpy"],
       ["natai", "You are late.", "natai:grumpy"],
@@ -1403,7 +1515,9 @@ const scenes = {
       ["natai", "I do not grade excuses on a curve.", "natai:grumpy"],
       ["player", "Is this your welcome speech?", "natai:grumpy"],
       ["natai", "No. That was me deciding whether to have one.", "natai:grumpy"],
-      ["natai", "Jack vouched for you. He used the phrase 'good person, temporarily on fire.' I assume he meant metaphorically, because even Jack understands some nouns.", "natai:grumpy"],
+      ["natai", "Jack vouched for you.", "natai:grumpy"],
+      ["natai", "He called you 'a good person, temporarily on fire.'", "natai:grumpy"],
+      ["natai", "I assume he meant metaphorically. Even Jack understands some nouns.", "natai:grumpy"],
       ["player", "Some nouns is generous.", "natai"]
     ],
     choices: [
@@ -1416,7 +1530,7 @@ const scenes = {
     label: "Red Rock",
     background: () => ({ location: "zion", time: "night" }),
     lines: [
-      ["narrator", "Natai leads you along a pale ribbon of trail where the canyon walls hold the day's heat like a memory.", "natai"],
+      ["narrator", "Natai leads you along a pale trail where the canyon walls keep the day's heat like memory.", "natai"],
       ["natai", "People call deserts empty when they do not know how to read quiet.", "natai:grumpy"],
       ["player", "And you read it fluently?", "natai"]
     ],
@@ -1429,8 +1543,10 @@ const scenes = {
     label: "Red Rock",
     background: () => ({ location: "zion", time: "night" }),
     lines: [
-      ["narrator", "The route reaches a night-sky overlook. Above the canyon, stars crowd the dark until the silence feels deliberate.", "natai"],
-      ["natai", "Last stop. After this, you go back to the lodge before exhaustion makes you poetic in a legally concerning way.", "natai:grumpy"],
+      ["narrator", "The route reaches a night-sky overlook.", "natai"],
+      ["narrator", "Above the canyon, stars crowd the dark until the silence feels deliberate.", "natai"],
+      ["natai", "Last stop.", "natai:grumpy"],
+      ["natai", "After this, you go back to the lodge before exhaustion makes you legally poetic.", "natai:grumpy"],
       ["player", "Too late, probably.", "natai"]
     ],
     choices: [
@@ -1442,8 +1558,8 @@ const scenes = {
     label: "Red Rock",
     background: () => ({ location: "zion", time: "night" }),
     lines: [
-      ["narrator", "Natai walks you back through the dark with the quiet confidence of someone who knows every stone by reputation.", "natai"],
-      ["natai", "That is enough canyon for a first night. Any more and you will start assigning symbolism to boulders.", "natai:grumpy"],
+      ["narrator", "Natai walks you back through the dark with the confidence of someone who knows every stone.", "natai"],
+      ["natai", "That is enough canyon for a first night. Any more and you will give boulders motives.", "natai:grumpy"],
       ["player", "This one does look judgmental.", "natai"],
       ["natai", "It is. It also has better timing than most people.", "natai:grumpy"]
     ],
@@ -1456,23 +1572,43 @@ const scenes = {
     lines: () => {
       const mood = relationshipState("jack");
       const jackReply = {
-        low: ["jack", "You will. I am still going to show you the good moss. I am just... worried at you right now, which is different from mad. I think.", "jack:grumpy"],
-        neutral: ["jack", "You will. Olympic is not going anywhere, and neither is the rain. I am also not going anywhere, unless I trip over that rug again.", "jack"],
-        high: ["jack", "You will see it later. I have been saving my favorite trail for you for years, which sounds normal until I hear it outside my head.", "jack:blushing"]
+        low: [
+          ["jack", "You will.", "jack:grumpy"],
+          ["jack", "I still want to show you the good moss.", "jack:grumpy"],
+          ["jack", "I am just worried at you right now. That is different from mad. I think.", "jack:grumpy"]
+        ],
+        neutral: [
+          ["jack", "You will.", "jack"],
+          ["jack", "Olympic is not going anywhere, and neither is the rain.", "jack"],
+          ["jack", "I am also not going anywhere, unless I trip over that rug again.", "jack"]
+        ],
+        high: [
+          ["jack", "You will see it later.", "jack:blushing"],
+          ["jack", "I have been saving my favorite trail for you for years.", "jack:blushing"],
+          ["jack", "That sounds normal until I hear it out loud.", "jack:blushing"]
+        ]
       }[mood];
       return [
-        ["narrator", "The lodge lobby is quiet when you return, fireplace low, windows dark, the whole building smelling like cedar and sleep."],
-        ["narrator", "Jack is by the fireplace, stacking route cards into a tidy pile that immediately leans sideways. He frowns at it with heroic commitment.", "jack"],
+        ["narrator", "The lodge lobby is quiet when you return."],
+        ["narrator", "The fireplace is low, the windows are dark, and the whole building smells like cedar."],
+        ["narrator", "Jack is by the fire, stacking route cards into a tidy pile.", "jack"],
+        ["narrator", "The pile immediately leans sideways.", "jack"],
+        ["narrator", "He frowns at it with heroic commitment.", "jack"],
         ["player", "I am a little sad I did not get to see your park tonight.", "jack"],
-        jackReply,
+        ...jackReply,
         ["player", "I did meet Natai.", "jack"],
         ["jack", "Ah. Zion's most scenic locked gate.", "jack:laughing"],
         ["player", "So it is not just me?", "jack:laughing"],
-        ["jack", "Natai thinks warm welcomes are how people get complacent. Do not take the first frost personally. Do take the route rules personally. I am very pro-rule when rules keep you intact.", "jack"],
+        ["jack", "Natai thinks warm welcomes are how people get complacent.", "jack"],
+        ["jack", "Do not take the first frost personally.", "jack"],
+        ["jack", "Do take the route rules personally.", "jack"],
+        ["jack", "I am very pro-rule when rules keep you intact.", "jack"],
         ["player", "You sound like you rehearsed that.", "jack"],
         ["jack", "I did. Into a spoon because it looked reflective enough to be eye contact.", "jack:laughing"],
-        ["jack", "Go sleep, {playerName}. Tomorrow gives you three chances to make something happen. Maybe four, if one of the things is breakfast.", "jack"],
-        ["narrator", "You climb the lodge stairs with park dust on your shoes and too many voices still bright in your head."]
+        ["jack", "Go sleep, {playerName}.", "jack"],
+        ["jack", "Tomorrow gives you three chances to make something happen.", "jack"],
+        ["jack", "Maybe four, if one of them is breakfast.", "jack"],
+        ["narrator", "You climb the lodge stairs with park dust on your shoes and bright voices in your head."]
       ];
     },
     next: "sleep_to_day"
@@ -1484,7 +1620,7 @@ const scenes = {
     onEnter: () => { state.day = 2; },
     lines: [
       ["narrator", "Sleep takes you fast."],
-      ["narrator", "Somewhere below, the lodge settles. Somewhere outside, the impossible kiosk keeps its secrets."]
+      ["narrator", "Somewhere below, the lodge settles. Outside, the impossible kiosk keeps its secrets."]
     ],
     nextAction: startNewDay
   },
@@ -1504,7 +1640,7 @@ const scenes = {
     label: () => `${TIME_LABELS[state.timeOfDay]} Check-In`,
     background: () => ({ location: "checkIn", time: state.timeOfDay }),
     lines: () => [
-      ["narrator", `${TIME_LABELS[state.timeOfDay]} settles over the check-in desk. The kiosk waits with cheerful, physics-violating patience.`],
+      ["narrator", `${TIME_LABELS[state.timeOfDay]} settles over the check-in desk. The kiosk waits with cheerful impossible patience.`],
       ["player", state.timeOfDay === "sunset" ? "One more visit before night, unless I cash out early." : "It is night now. One more visit, or I can call it and sleep."]
     ],
     choices: () => [
@@ -1516,7 +1652,7 @@ const scenes = {
     label: "Skip To",
     background: () => state.choiceReactionBackground || { location: "lodge", time: state.timeOfDay },
     lines: [
-      ["narrator", "Choose a setting and time of day. The route marker will put you there with the normal scene flow active."]
+      ["narrator", "Choose a setting and time of day. The route marker will drop you into the normal scene flow."]
     ],
     choices: () => buildDevSkipToChoices()
   },
@@ -1524,7 +1660,7 @@ const scenes = {
     label: () => `${TIME_LABELS[state.timeOfDay]} Check-In`,
     background: () => ({ location: "checkIn", time: state.timeOfDay }),
     lines: () => [
-      ["narrator", `${TIME_LABELS[state.timeOfDay]} settles over the check-in desk. The kiosk waits with cheerful, physics-violating patience.`],
+      ["narrator", `${TIME_LABELS[state.timeOfDay]} settles over the check-in desk. The kiosk waits with cheerful impossible patience.`],
       ["player", state.timeOfDay === "daytime" ? "Okay. Normal check-in desk. Normal route cards. Extremely normal impossible choices." : "One more route, unless I cash out early."]
     ],
     choices: () => [
@@ -1536,7 +1672,7 @@ const scenes = {
     label: () => `${TIME_LABELS[state.timeOfDay]} Lodge Lobby`,
     background: () => ({ location: "lodge", time: state.timeOfDay }),
     lines: () => [
-      ["narrator", `${TIME_LABELS[state.timeOfDay]} fills the lodge lobby. The route cards wait by the desk like they know exactly how strange this is.`],
+      ["narrator", `${TIME_LABELS[state.timeOfDay]} fills the lodge lobby. The route cards wait by the desk like they know too much.`],
       ["player", "All right. Where are we going from here?"]
     ],
     choices: () => [
@@ -1586,36 +1722,36 @@ const scenes = {
       const first = state.flags.brotherGoodFirst || (state.flags.dakotaFullLoveGood ? "dakota" : "natai");
       const dakotaFirst = first === "dakota";
       return [
-        ["narrator", "The day-transition card clears, and the check-in desk comes into focus with morning light across the maps."],
+        ["narrator", "Morning light settles across the check-in desk as the day-transition card clears."],
         ["player", "Okay. New day. Normal kiosk. Please let normal be available in the drop-down menu."],
-        ["narrator", "Two route cards print at once. Sequoia. Zion. The kiosk chirps like it has orchestrated something and expects applause."],
+        ["narrator", "Two route cards print at once: Sequoia and Zion. The kiosk chirps like it expects applause."],
         ["narrator", "Dakota steps in from the lodge path at the same moment Natai arrives from the canyon route.", "dakota"],
         ["natai", "No.", "natai:grumpy"],
         ["dakota", "Natai.", "dakota:sadExplaining"],
         ["natai", "Do not say my name like you are testing whether it still belongs to me.", "natai:angryExplaining"],
-        ["narrator", "Dakota lowers his head. Natai looks ready to cut the morning in half just to avoid how much it hurts.", "dakota:sadExplaining"],
+        ["narrator", "Dakota lowers his head. Natai looks ready to split the morning open before showing hurt.", "dakota:sadExplaining"],
         ...(dakotaFirst ? [
           ["dakota", "{playerName} helped me understand that shame was not responsibility. It was just another way to keep running.", "dakota:sadExplaining"],
           ["dakota", "I am done running from you. I am sorry I left you alone with the ashes, with our brother's absence, with all the anger I was too cowardly to face.", "dakota:sadExplaining"],
           ["natai", "I wanted to hate you forever.", "natai:angryExplaining"],
           ["natai", "It was efficient. It gave the grief a job.", "natai:angryExplaining"]
         ] : [
-          ["natai", "{playerName} helped me understand that anger was not loyalty. It was just grief with its fists up.", "natai:angryExplaining"],
-          ["natai", "I am still furious you ran. I am also tired of pretending fury is the only evidence I loved our brother.", "natai:angryExplaining"],
+          ["natai", "{playerName} helped me see that anger was not loyalty. It was grief with its fists up.", "natai:angryExplaining"],
+          ["natai", "I am still furious you ran. I am tired of acting like fury is the only proof I loved him.", "natai:angryExplaining"],
           ["dakota", "I deserved your anger.", "dakota:sadExplaining"],
           ["natai", "Yes. And I deserved more than being left alone with it.", "natai:angryExplaining"]
         ]),
         ["dakota", "You did.", "dakota:sadExplaining"],
-        ["dakota", "I cannot give back what the fire took. I can stand here now. I can tell the truth. I can be your brother if you will have me, and keep trying if you cannot yet.", "dakota:sadExplaining"],
-        ["narrator", "Natai's face changes by inches. Anger does not vanish. It steps aside just far enough for love to be seen behind it.", "natai:angryExplaining"],
+        ["dakota", "I cannot give back what the fire took. I can tell the truth. I can still be your brother.", "dakota:sadExplaining"],
+        ["narrator", "Natai's face changes by inches. The anger stays, but love becomes visible behind it.", "natai:angryExplaining"],
         ["natai", "Do not make me regret this by becoming sentimental in public.", "natai:grumpy"],
         ["dakota", "I will be tastefully sentimental.", "dakota:flattered"],
         ["natai", "Impossible standard. Proceed anyway.", "natai:blushing"],
         ["narrator", "Dakota reaches out. Natai stares at his hand like it is both a bridge and an accusation."],
         ["narrator", "Then Natai takes it.", "dakotaNatai"],
-        ["narrator", "The handshake is fierce, ridiculous, and trembling at the edges. Two brothers, years late and still somehow on time.", "dakotaNatai"],
-        ["player", "The kiosk prints a tiny receipt that says RECONCILIATION PROCESSED. I hate that I am emotionally moved by office equipment.", "dakotaNatai"],
-        ["narrator", "Something in the morning opens. Both Dakota and Natai look lighter, not healed all at once, but finally facing the same direction.", "dakotaNatai"]
+        ["narrator", "The handshake is fierce and trembling. Two brothers, years late and somehow still on time.", "dakotaNatai"],
+        ["player", "The kiosk prints RECONCILIATION PROCESSED. I hate that office equipment moved me.", "dakotaNatai"],
+        ["narrator", "Something opens in the morning. Dakota and Natai are not healed, but they face the same way.", "dakotaNatai"]
       ];
     },
     nextAction: completeBrotherReconciliation
@@ -1653,16 +1789,16 @@ const scenes = {
     background: () => ({ location: "olympic", time: "night" }),
     onEnter: () => { state.visitTime = "night"; state.pendingDestination = "jack"; state.pendingFullLoveScene = "jack"; },
     lines: [
-      ["narrator", "The heart on Jack's route card warms under your thumb. The kiosk hums, thinks about being normal, and declines."],
-      ["narrator", "Olympic opens around you in the usual night-dark hush: cedar silhouettes, wet ferns silvered by lantern light, Jack's cabin tucked beyond the trail like a secret the forest has been keeping."],
+      ["narrator", "Jack's route card warms under your thumb. The kiosk hums, considers normal, and declines."],
+      ["narrator", "Olympic opens in night hush: cedar silhouettes, wet ferns, and Jack's cabin past the trail."],
       ["player", "Jack?"],
-      ["narrator", "The porch lantern lifts. Jack steps into view with his familiar grin already arriving before the rest of him.", "jack"],
-      ["jack", "{playerName}. Hey. You made it. I was going to say something smooth, but then I saw you and all my sentences put on hiking boots and ran away.", "jack:blushing"],
+      ["narrator", "The porch lantern lifts. Jack steps out with his grin arriving before the rest of him.", "jack"],
+      ["jack", "{playerName}. Hey. You made it. I had something smooth prepared, then saw you and lost it.", "jack:blushing"],
       ["player", "That is pretty normal for us.", "jack:blushing"],
-      ["jack", "Yeah. Good normal, though. The kind where I know where to stand, and you know I will pretend not to worry while absolutely worrying.", "jack"],
-      ["narrator", "He offers the lantern handle. Your fingers brush around the warm metal, and the tiny contact rearranges the night more than it has any right to.", "jack:blushing"],
-      ["jack", "I thought we could take the short loop. Nothing heroic. Just trees, rain smell, and maybe me finally saying one sincere thing without tripping over a fern.", "jack:blushing"],
-      ["narrator", "White light cracks across the forest. For one instant every cedar branch turns sharp and silver.", null, { screenFlash: true, audio: "thunderFlash" }],
+      ["jack", "Yeah. Good normal, though. The kind where I pretend not to worry while absolutely worrying.", "jack"],
+      ["narrator", "He offers the lantern handle. Your fingers brush, and the tiny contact rearranges the night.", "jack:blushing"],
+      ["jack", "I thought we could take the short loop. Nothing heroic. Just trees and one sincere sentence.", "jack:blushing"],
+      ["narrator", "Lightning cracks across the forest. Every cedar branch turns sharp and silver.", null, { screenFlash: true, audio: "thunderFlash" }],
       ["player", "That was new."],
       ["narrator", "Rain arrives hard enough to sound like applause with an agenda."]
     ],
@@ -1675,9 +1811,9 @@ const scenes = {
     lines: [
       ["jack", "Oh no. Okay. That is not short-loop rain. That is cabin-now rain.", "jack:grumpy"],
       ["player", "Cabin-now rain sounds official.", "jack:grumpy"],
-      ["jack", "Very official. Ranger-adjacent. Also I promised myself I would not let you get soaked on the night I finally worked up courage, so... please take cover in my cabin?", "jack:blushing"],
+      ["jack", "Very official. Ranger-adjacent. I found courage, so please take cover in my cabin?", "jack:blushing"],
       ["player", "Lead the way, Jack.", "jack:blushing"],
-      ["narrator", "He shields the lantern with one big hand and keeps the other near your elbow as you cross the slick porch boards. The rain follows you right up to the door."]
+      ["narrator", "He shields the lantern with one hand and keeps the other near your elbow on the slick porch."]
     ],
     next: "full_love_jack_cabin"
   },
@@ -1687,18 +1823,18 @@ const scenes = {
     music: "jackFullLoveCabin",
     ambient: "rainRoof",
     lines: [
-      ["narrator", "Inside, Jack's cabin glows with lantern light and stove warmth. Rain drums against the roof in a steady, intimate rhythm."],
-      ["narrator", "Jack shuts the door behind you, then immediately looks apologetic, like the weather is a guest he invited by mistake.", "jack:grumpy"],
-      ["jack", "I am sorry. This was supposed to be romantic in a competent way, not romantic in a weather-emergency way.", "jack:grumpy"],
+      ["narrator", "Inside, Jack's cabin glows with lantern light and stove warmth. Rain drums on the roof."],
+      ["narrator", "Jack shuts the door, then looks apologetic, like the weather is a guest he invited.", "jack:grumpy"],
+      ["jack", "I am sorry. This was meant to be romantic, not a weather emergency with feelings.", "jack:grumpy"],
       ["player", "Jack. This is very you.", "jack"],
       ["jack", "That is either reassuring or a full performance review.", "jack:laughing"],
-      ["narrator", "He laughs, then softens. The rain on the roof fills the pause so neither of you has to run from it.", "jack:blushing"],
-      ["jack", "We were friends before any of this got complicated. Before the retreat, before the route cards, before I started looking at you and forgetting useful nouns.", "jack:blushing"],
-      ["jack", "I keep thinking friendship should feel smaller than this. Familiar, safe, easy to carry. But with you it feels like it grew rooms while I was not looking.", "jack:blushing"],
+      ["narrator", "He laughs, then softens. Rain fills the pause so neither of you has to run from it.", "jack:blushing"],
+      ["jack", "We were friends before this got complicated. Then I started looking at you and going blank.", "jack:blushing"],
+      ["jack", "I keep thinking friendship should feel smaller. With you it just grew rooms.", "jack:blushing"],
       ["player", "Rooms?", "jack:blushing"],
       ["jack", "Yeah. Places I want to stay. Places I did not know I was allowed to want.", "jack:blushing"],
-      ["narrator", "A wet chill finally catches up with you. You shiver before you can hide it, and Jack notices like noticing you is the oldest habit he has.", "jack:grumpy"],
-      ["jack", "You're cold. Hold on. I have dry blankets, but my clean flannel is warmer than it has any right to be.", "jack:grumpy"],
+      ["narrator", "A wet chill catches up with you. Jack notices like noticing you is muscle memory.", "jack:grumpy"],
+      ["jack", "You're cold. Hold on. I have dry blankets, but my clean flannel is warmer than it should be.", "jack:grumpy"],
       ["player", "You do not have to give me your shirt.", "jack:grumpy"],
       ["jack", "I know. That is why I want to.", "jack:blushing"]
     ],
@@ -1710,11 +1846,11 @@ const scenes = {
     music: "jackFullLoveCabin",
     ambient: "rainRoof",
     lines: [
-      ["narrator", "Jack turns away just enough to be polite and unbuttons the red flannel. When he faces you again, he is blushing, bare-chested, and holding the shirt out with both hands like it matters.", "jack:offeringShirt"],
-      ["jack", "Here. It is dry. It smells like cedar smoke and probably me being nervous, but it will keep you warm.", "jack:offeringShirt"],
+      ["narrator", "Jack turns just enough to be polite and unbuttons the flannel. He offers it back, blushing.", "jack:offeringShirt"],
+      ["jack", "Here. It is dry. It smells like cedar smoke and nerves, but it will keep you warm.", "jack:offeringShirt"],
       ["player", "Jack...", "jack:offeringShirt"],
-      ["jack", "I know this is a lot. I know we have been friends long enough that changing the shape of it feels like stepping off a trail we both memorized.", "jack:offeringShirt"],
-      ["jack", "But I do not want to pretend the old trail is all there is. Not when being near you feels like coming home and getting lost at the same time.", "jack:offeringShirt"],
+      ["jack", "I know this is a lot. Changing this feels like stepping off a trail we both memorized.", "jack:offeringShirt"],
+      ["jack", "But I do not want to pretend that old trail is all there is. Not with you.", "jack:offeringShirt"],
       ["narrator", "The shirt is warm from him. The rain keeps tapping overhead, patient as a heartbeat.", "jack:offeringShirt"]
     ],
     next: "full_love_jack_prompt"
@@ -1725,7 +1861,7 @@ const scenes = {
     music: "jackFullLoveCabin",
     ambient: "rainRoof",
     lines: [
-      ["jack", "If you take it, I need you to know what I mean. Not pressure. Not a joke. Just... me choosing to be brave with someone who already knows where all my clumsiest parts live.", "jack:offeringShirt"],
+      ["jack", "If you take it, know what I mean. Not pressure. Just me trying to be brave with you.", "jack:offeringShirt"],
       ["jack", "Is this okay?", "jack:offeringShirt"]
     ],
     choices: [
@@ -1748,26 +1884,26 @@ const scenes = {
     music: "jackFullLoveGood",
     ambient: "rainRoof",
     lines: [
-      ["narrator", "You take the flannel. Jack watches your hands close around it like he is trying very hard to remember how breathing works.", "jack:offeringShirt"],
-      ["player", "I want this. The friendship. The history. The part where it turns into more and we get to learn that slowly, messily, together.", "jack:offeringShirt"],
+      ["narrator", "You take the flannel. Jack watches like he is trying to remember how breathing works.", "jack:offeringShirt"],
+      ["player", "I want this. The friendship, the history, and whatever more becomes.", "jack:offeringShirt"],
       ["jack", "Together is my favorite plan. I did not know plans could have favorites until right now.", "jack:offeringShirt"],
-      ["narrator", "You slip into his shirt. It is too big in the sleeves, warm at the collar, and unfairly full of him.", "jack:offeringShirt"],
+      ["narrator", "You slip into his shirt. It is too big in the sleeves, warm at the collar, and full of him.", "jack:offeringShirt"],
       ["jack", "Oh.", "jack:offeringShirt"],
       ["player", "Good oh?", "jack:offeringShirt"],
-      ["jack", "Historically good. Possibly ranger-report good, except I would set the report on fire before letting Caleb edit it.", "jack:offeringShirt"],
-      ["narrator", "He steps closer. Slowly. Carefully. Giving you every chance to stop him and hoping with his whole face that you will not need to.", "jack:offeringShirt"],
+      ["jack", "Historically good. Report good, except I would burn that report before Caleb edited it.", "jack:offeringShirt"],
+      ["narrator", "He steps closer, careful, giving you every chance to stop him and hoping you will not.", "jack:offeringShirt"],
       ["player", "Jack."],
-      ["narrator", "The kiss starts as a question and becomes an answer both of you already knew by heart. His hands settle at your waist over the borrowed flannel, reverent and shaking a little, and the cabin seems to draw warm around you.", "jack:offeringShirt"],
+      ["narrator", "The kiss starts as a question and becomes an answer you both already knew.", "jack:offeringShirt"],
       ["jack", "I have wanted to do that for a very long time.", "jack:offeringShirt"],
       ["player", "How long?", "jack:offeringShirt"],
       ["jack", "Long enough that the honest answer needs its own trail map.", "jack:offeringShirt"],
-      ["narrator", "The rest of the night unfolds in rain-soft pieces: another kiss by the stove, laughter against his shoulder, his shirt slipping from one shared warmth into another, Jack murmuring your name like he is still amazed he is allowed to.", "jack:offeringShirt"],
-      ["narrator", "There is heat, and tenderness, and the deep relief of wanting someone who wants you back without making either of you smaller.", "jack:offeringShirt"],
-      ["narrator", "At some point the storm refuses to let up. Jack pulls a blanket over both of you on the narrow cabin bed and promises, sleepily, to get you back to the lodge at first light.", "jack:offeringShirt"],
+      ["narrator", "The rest of the night unfolds in rain-soft pieces: stove warmth, laughter, and your name.", "jack:offeringShirt"],
+      ["narrator", "There is heat, tenderness, and the relief of wanting someone who wants you back.", "jack:offeringShirt"],
+      ["narrator", "The storm never lets up. Jack pulls a blanket over both of you and promises first light.", "jack:offeringShirt"],
       ["jack", "For the record, I am still your friend.", "jack:offeringShirt"],
       ["player", "Good.", "jack:offeringShirt"],
       ["jack", "And also wildly, inconveniently, cabin-roof-rain-level in love with you.", "jack:offeringShirt"],
-      ["narrator", "You answer him softly. The rain keeps its rhythm overhead until words become breathing, and breathing becomes sleep."]
+      ["narrator", "You answer softly. Rain keeps time until words become breathing, then sleep."]
     ],
     nextAction: completeJackFullLoveNight
   },
@@ -1778,7 +1914,7 @@ const scenes = {
     ambient: "rainRoof",
     suppressSceneSfx: true,
     lines: [
-      ["narrator", "You answer him softly. The rain keeps its rhythm overhead until words become breathing, and breathing becomes sleep.", null, { dialogueFadeOut: true, fadeOutMusicUntilScene: { sceneId: "full_love_jack_morning_black", fadeOutMs: 2800, resumeFadeMs: 5600 }, autoAdvanceMs: 1250, suppressAdvanceSfx: true }]
+      ["narrator", "You answer softly. Rain keeps time until words become breathing, then sleep.", null, { dialogueFadeOut: true, fadeOutMusicUntilScene: { sceneId: "full_love_jack_morning_black", fadeOutMs: 2800, resumeFadeMs: 5600 }, autoAdvanceMs: 1250, suppressAdvanceSfx: true }]
     ],
     next: "full_love_jack_morning_black"
   },
@@ -1799,16 +1935,16 @@ const scenes = {
     music: "jack",
     ambient: "rainRoof",
     lines: [
-      ["narrator", "Jack listens all the way through. The shirt stays offered between you, but his face does not close. If anything, it gets gentler.", "jack:offeringShirt"],
+      ["narrator", "Jack listens all the way through. The shirt stays offered, but his face only grows gentler.", "jack:offeringShirt"],
       ["player", "I love you, Jack. I do. But I think tonight I need that love to stay friendship-shaped.", "jack:offeringShirt"],
       ["jack", "Okay.", "jack:offeringShirt"],
       ["player", "Okay?", "jack:offeringShirt"],
       ["jack", "Yeah. Okay. Thank you for trusting me with the real answer.", "jack:offeringShirt"],
-      ["narrator", "There is a flicker of disappointment, because Jack is honest enough to feel things when they happen. But he folds it carefully into kindness instead of making it your job.", "jack:offeringShirt"],
-      ["jack", "Friendship-shaped is not a consolation prize. It is us. It is years of bad jokes and trail snacks and you knowing I say 'left' when I mean 'the other left.'", "jack:offeringShirt"],
-      ["jack", "Also, I should probably put this back on before I try to be emotionally mature and catch a cold at the same time.", "jack:laughing"],
-      ["narrator", "He pulls the flannel back on, cheeks pink, smile real. The cabin feels a little less charged and a lot more familiar.", "jack"],
-      ["jack", "Since the rain has us trapped, do you want to play a board game? I have one about identifying mushrooms. Caleb says it is not a game because there is no scoring system. Caleb has clearly never experienced the thrill of correctly naming a fungus.", "jack:laughing"]
+      ["narrator", "Disappointment flickers, but he folds it into kindness instead of making it your job.", "jack:offeringShirt"],
+      ["jack", "Friendship-shaped is not a consolation prize. It is us, bad jokes, and trail snacks.", "jack:offeringShirt"],
+      ["jack", "Also, I should put this back on before I try maturity and catch a cold.", "jack:laughing"],
+      ["narrator", "He pulls the flannel back on, cheeks pink, smile real. The cabin feels familiar again.", "jack"],
+      ["jack", "Since the rain trapped us, want to play a mushroom game? Caleb disputes the word game.", "jack:laughing"]
     ],
     next: "full_love_jack_friend_cabin"
   },
@@ -1818,14 +1954,14 @@ const scenes = {
     music: "jack",
     ambient: "rainRoof",
     lines: [
-      ["narrator", "So you sit at Jack's little table while rain drums over the cabin roof and he deals a stack of illustrated mushroom cards with the solemnity of a wilderness judge.", "jack"],
+      ["narrator", "You sit at Jack's little table while rain drums overhead and he deals mushroom cards.", "jack"],
       ["player", "This mushroom looks fake.", "jack"],
       ["jack", "That is exactly what the mushroom wants you to think.", "jack:laughing"],
-      ["narrator", "The game is ridiculous. Jack is delighted. You lose three rounds in a row to a man who keeps apologizing to the cards when he shuffles too aggressively.", "jack:laughing"],
+      ["narrator", "The game is ridiculous. Jack is delighted. You lose three rounds to a man who apologizes.", "jack:laughing"],
       ["jack", "For the record, I am really glad you are here.", "jack:blushing"],
       ["player", "Even like this?", "jack:blushing"],
-      ["jack", "Especially like this. Safe is not boring with you. Safe is... the place where I get to keep knowing you.", "jack:blushing"],
-      ["narrator", "The night relaxes around that. No performance, no hard feelings, no pretending the friendship was ever small. Just the stove, the rain, and Jack laughing when you accuse a mushroom of emotional fraud.", "jack:laughing"]
+      ["jack", "Especially like this. Safe is not boring with you. Safe is where I get to keep knowing you.", "jack:blushing"],
+      ["narrator", "The night relaxes: no hard feelings, just the stove, the rain, and Jack laughing.", "jack:laughing"]
     ],
     next: "full_love_jack_friend_rain_stop"
   },
@@ -1834,11 +1970,11 @@ const scenes = {
     background: () => ({ location: "jackCabinNight", time: "night" }),
     music: "jack",
     lines: [
-      ["narrator", "Eventually the rain on the roof thins from a steady rush to a soft patter, then to a few last taps that fade into the cabin quiet."],
+      ["narrator", "Eventually the rain thins from a rush to a patter, then fades into cabin quiet."],
       ["jack", "Hear that? The storm is letting up.", "jack"],
       ["player", "So the mushroom tournament ends in a draw?", "jack"],
       ["jack", "A dignified pause. The mushrooms and I are both very secure about it.", "jack:laughing"],
-      ["narrator", "He checks the porch, then comes back with your jacket and that practical Jack warmth that has always known how to get you home.", "jack"],
+      ["narrator", "He checks the porch, then returns with your jacket and Jack's practical warmth.", "jack"],
       ["jack", "Path's safe now. I will walk you out to the trail light.", "jack"]
     ],
     next: "full_love_jack_friend_goodbye"
@@ -1847,13 +1983,13 @@ const scenes = {
     label: "Olympic After Dark",
     background: () => ({ location: "olympic", time: "night" }),
     lines: [
-      ["narrator", "Outside, Olympic is wet and shining under the night sky. The cabin glows behind Jack, warm in the trees, while the forest exhales after the storm."],
-      ["narrator", "Jack stands with you by the porch steps, hands tucked into his flannel pockets, smile soft and steady.", "jack"],
+      ["narrator", "Outside, Olympic shines under the night sky. The cabin glows behind Jack in the trees."],
+      ["narrator", "Jack stands by the porch steps, hands in his flannel pockets, smile soft and steady.", "jack"],
       ["jack", "Tonight was still good, right?", "jack"],
       ["player", "Really good.", "jack"],
-      ["jack", "Good. Because I am counting mushroom night as a success. Possibly my finest work as a host and amateur fungus referee.", "jack:laughing"],
+      ["jack", "Good. I am counting mushroom night as a success. Possibly my finest hosting.", "jack:laughing"],
       ["player", "Thank you for being you about it.", "jack:blushing"],
-      ["jack", "Always. I mean, I will still be awkward in new and surprising ways, but the important parts are steady.", "jack:blushing"],
+      ["jack", "Always. I will still be awkward in new ways, but the important parts are steady.", "jack:blushing"],
       ["narrator", "He hugs you before you go. It is warm, familiar, and easy to trust.", "jack"],
       ["jack", "Get back safe, {playerName}. I will see you at the lodge tomorrow.", "jack"],
       ["player", "Goodnight, Jack.", "jack"],
@@ -1867,22 +2003,22 @@ const scenes = {
     silenceMusic: true,
     onEnter: () => { state.timeOfDay = "daytime"; },
     lines: [
-      ["narrator", "Morning finds Jack's cabin washed in quiet gray light. The rain has stopped. Outside, the day takes its time arriving.", null, { dialogueSlowFade: true, startAmbient: "morningBirds" }],
+      ["narrator", "Morning finds Jack's cabin washed in quiet gray light. Outside, the day takes its time.", null, { dialogueSlowFade: true, startAmbient: "morningBirds" }],
       ["narrator", "Jack is awake beside you, hair impossible, expression impossibly soft.", "jack:blushing"],
       ["jack", "Hi.", "jack:blushing"],
       ["player", "Hi.", "jack:blushing"],
-      ["jack", "I was going to make breakfast sound casual, but I am too happy and I think the eggs would know.", "jack:laughing"],
+      ["jack", "I was going to make breakfast sound casual, but I am too happy and the eggs would know.", "jack:laughing"],
       ["player", "The eggs are very perceptive.", "jack:laughing"],
       ["jack", "Right? Terrifying breakfast instincts.", "jack:laughing"],
-      ["narrator", "He gets up carefully, like he is afraid one wrong move will wake the part of the world that still thinks this is impossible.", "jack:blushing"],
-      ["narrator", "At the little stove, Jack makes breakfast with comic seriousness: coffee measured like a field sample, toast rescued from dramatic danger, eggs folded soft and golden into a skillet that has clearly seen things.", "jack:laughing"],
-      ["jack", "I wanted to do pancakes, but the cabin pantry contains flour, salt, and one mysterious jar I am choosing not to emotionally investigate.", "jack:grumpy"],
+      ["narrator", "He gets up carefully, like one wrong move could wake the part still calling this impossible.", "jack:blushing"],
+      ["narrator", "At the stove, Jack makes breakfast with comic seriousness: coffee, toast, and soft eggs.", "jack:laughing"],
+      ["jack", "I wanted pancakes, but the pantry contains flour, salt, and one mysterious jar.", "jack:grumpy"],
       ["player", "Eggs are perfect.", "jack:blushing"],
-      ["narrator", "You eat at the small table while sunlight gathers on the floorboards. Jack keeps brushing your knee under the table by accident, then smiling like the accident has a long-term plan.", "jack:blushing"],
+      ["narrator", "You eat while sunlight gathers on the floorboards. Jack keeps brushing your knee by mistake.", "jack:blushing"],
       ["jack", "I promised I would get you back at first light.", "jack:blushing"],
       ["player", "This is technically light.", "jack:blushing"],
-      ["jack", "Technically is Caleb's department. My department is walking you back before the lodge starts inventing search parties with emotional paperwork.", "jack:laughing"],
-      ["narrator", "The morning lingers anyway: one more sip of coffee, one more soft look, one more quiet moment where being loved feels less like a cliff edge and more like a trail you can actually follow.", "jack:blushing"]
+      ["jack", "Technically is Caleb's department. Mine is walking you back before the lodge invents forms.", "jack:laughing"],
+      ["narrator", "The morning lingers: one more sip, one more look, one more quiet moment of being loved.", "jack:blushing"]
     ],
     next: "full_love_jack_morning_goodbye"
   },
@@ -1892,19 +2028,19 @@ const scenes = {
     ambient: "morningBirds",
     silenceMusic: true,
     lines: [
-      ["narrator", "Eventually Jack walks you to the cabin door, hand warm at the small of your back like he is guiding something precious through the morning.", "jack:blushing"],
-      ["jack", "I know I said first light. Apparently I meant first light plus breakfast plus me discovering I am bad at ending a perfect morning.", "jack:blushing"],
+      ["narrator", "Jack walks you to the cabin door, hand warm at your back like he is guiding treasure.", "jack:blushing"],
+      ["jack", "I know I said first light. Apparently I meant first light plus breakfast plus denial.", "jack:blushing"],
       ["player", "That is a very specific wilderness skill gap.", "jack:blushing"],
-      ["jack", "I contain multitudes. Most of them are currently standing in this doorway hoping you do not leave yet.", "jack:blushing"],
-      ["narrator", "Sunlight spills across the porch boards. Jack's fingers catch on yours, reluctant and earnest all at once.", "jack:blushing"],
-      ["jack", "If I walk you all the way to the lodge, I am going to look at you like I personally invented mornings, and I would like to survive breakfast gossip.", "jack:laughing"],
+      ["jack", "I contain multitudes. Most are standing in this doorway hoping you do not leave yet.", "jack:blushing"],
+      ["narrator", "Sunlight spills across the porch boards. Jack's fingers catch yours, reluctant and earnest.", "jack:blushing"],
+      ["jack", "If I walk you to the lodge, I will look at you like I invented mornings.", "jack:laughing"],
       ["player", "Then say goodbye here.", "jack:blushing"],
-      ["narrator", "You catch him by the front of his flannel and kiss him at the cabin door. Jack makes a startled, happy sound against your mouth, then kisses you back like he has been trying to behave and finally gives up on the project.", "jack:blushing"],
-      ["narrator", "When you part, he is pink-cheeked, smiling, and visibly one strong breeze away from forgetting his own name.", "jack:blushing"],
-      ["jack", "Okay. I can work with that. I mean, not immediately. Immediately I am going to stand here and recover in a very heroic way.", "jack:laughing"],
+      ["narrator", "You catch his flannel and kiss him at the door. He gives up on behaving at once.", "jack:blushing"],
+      ["narrator", "When you part, he is pink-cheeked, smiling, and one breeze from forgetting his name.", "jack:blushing"],
+      ["jack", "Okay. I can work with that. Not immediately. Immediately I am going to recover heroically.", "jack:laughing"],
       ["player", "Meet me at the lodge when your face remembers how to be normal.", "jack:laughing"],
       ["jack", "Bold of you to assume that has ever happened, but yes. Give me a minute.", "jack:blushing"],
-      ["narrator", "You steal one last quick kiss anyway, because he is right there and the morning is feeling generous.", "jack:blushing"]
+      ["narrator", "You steal one last quick kiss anyway, because he is right there and morning feels generous.", "jack:blushing"]
     ],
     next: "full_love_jack_morning_line_fade"
   },
@@ -1939,10 +2075,10 @@ const scenes = {
     suppressSceneSfx: true,
     character: null,
     lines: [
-      ["narrator", "You make your way back through the clean morning woods alone, the path still damp from last night's rain and your mouth still warm from kissing Jack goodbye at the cabin door.", null, { dialogueSlowFade: true, startOverlayAmbient: "dryGrassWalk", startOverlayAmbientAfterMs: 1700 }],
+      ["narrator", "You head back through the clean morning woods alone, mouth still warm from kissing Jack.", null, { dialogueSlowFade: true, startOverlayAmbient: "dryGrassWalk", startOverlayAmbientAfterMs: 1700 }],
       ["player", "Okay. I can absolutely be normal about that for the next five minutes."],
-      ["narrator", "The forest smells like wet cedar and fresh coffee. Behind you somewhere, Jack is probably still leaning in his doorway, smiling at nothing like it personally deserves him.", null, { stopOverlayAmbientOnAdvance: true }],
-      ["narrator", "By the time the lodge comes into view between the trees, morning has settled in properly, bright and gold-edged and impossible to resent."],
+      ["narrator", "The forest smells like wet cedar and coffee. Somewhere behind you, Jack is still smiling.", null, { stopOverlayAmbientOnAdvance: true }],
+      ["narrator", "By the time the lodge comes into view, morning has settled in bright and gold-edged."],
       ["narrator", "You take a breath, square your shoulders, and reach for the lodge door."]
     ],
     next: "full_love_jack_door_line_fade"
@@ -1986,15 +2122,15 @@ const scenes = {
     music: "calebFullLoveRomantic",
     onEnter: () => { state.visitTime = "night"; state.pendingDestination = "caleb"; state.pendingFullLoveScene = "caleb"; },
     lines: [
-      ["narrator", "The heart on Caleb's route card glows warm under your thumb, and the kiosk responds by printing a ticket that simply reads: AFTER DARK. VERY SCIENTIFIC."],
-      ["narrator", "Yellowstone opens around you in blue-black mist. The boardwalk shines with dew, steam sliding low over the rails like the park is trying to keep a secret."],
+      ["narrator", "Caleb's route card glows under your thumb. The kiosk prints: AFTER DARK. VERY SCIENTIFIC."],
+      ["narrator", "Yellowstone opens in blue-black mist. The boardwalk gleams with dew and low steam."],
       ["player", "Caleb?"],
-      ["narrator", "A shape moves through the steam. Caleb steps into the boardwalk light shirtless, soaked, scuffed with ash, and smiling like he has just survived a peer-reviewed miracle.", "caleb:fullLoveRomantic"],
+      ["narrator", "A shape moves through the steam. Caleb steps into the light shirtless, soaked, and smiling.", "caleb:fullLoveRomantic"],
       ["player", "What happened to you?"],
-      ["caleb", "Short version: geyser. Heroic version: I rescued a tourist's engagement ring from a very bad boardwalk bounce, redirected a rolling backpack away from a thermal runoff channel, and then Castle Geyser expressed an opinion about my timing.", "caleb:fullLoveRomantic"],
+      ["caleb", "Short version: geyser. Heroic version: I rescued a ring, saved a pack, and lost to steam.", "caleb:fullLoveRomantic"],
       ["player", "You got hit by a geyser while saving romance jewelry and defeating luggage?"],
-      ["caleb", "Recovering romance jewelry. Stabilizing luggage. I am choosing precise verbs because my shirt is gone and I need structure.", "caleb:fullLoveRomantic"],
-      ["player", "I am trying very hard to be sympathetic, but you are wet, shirtless, a little bit on fire, and the story has a backpack villain."],
+      ["caleb", "Recovering romance jewelry. Stabilizing luggage. I need precise verbs. My shirt is gone.", "caleb:fullLoveRomantic"],
+      ["player", "I am trying to be sympathetic, but you are wet, shirtless, singed, and beaten by a backpack."],
       ["caleb", "Tiny controlled hair flame. Mostly symbolic.", "caleb:fullLoveRomantic"]
     ],
     next: "full_love_caleb_two"
@@ -2005,17 +2141,17 @@ const scenes = {
     music: "calebFullLoveRomantic",
     lines: [
       ["narrator", "He pats at the little flame in his hair. It refuses to surrender with theatrical dignity."],
-      ["caleb", "I should be embarrassed. I planned a careful walk. A clean shirt. One, maybe two, facts delivered with emotional restraint.", "caleb:fullLoveRomantic"],
+      ["caleb", "I should be embarrassed. I planned a clean shirt, a careful walk, and restrained facts.", "caleb:fullLoveRomantic"],
       ["player", "Instead you arrived like Yellowstone wrote a romance novel and forgot workplace safety."],
       ["caleb", "Yellowstone would never forget workplace safety. It would include an appendix.", "caleb:fullLoveRomantic"],
-      ["narrator", "You laugh, and Caleb's expression changes. The brilliant, frantic part of him softens into something quieter than steam."],
-      ["caleb", "I wanted tonight to matter. Not because you got the score high enough, although I noticed, statistically and personally.", "caleb:fullLoveRomantic"],
+      ["narrator", "You laugh, and Caleb softens. The frantic brilliance eases into something gentler."],
+      ["caleb", "I wanted tonight to matter. Not because of the score. Though I noticed the score.", "caleb:fullLoveRomantic"],
       ["caleb", "Because you kept listening. You made room for the facts, and somehow that made room for me.", "caleb:fullLoveRomantic"],
       ["player", "Caleb."],
-      ["caleb", "I am damp, lightly singed, and having a sincere moment on a boardwalk. Please do not say my name like that unless you intend to damage me further.", "caleb:fullLoveRomantic"],
+      ["caleb", "I am damp, singed, and sincere on a boardwalk. Do not say my name unless you mean damage.", "caleb:fullLoveRomantic"],
       ["player", "What if I do?"],
-      ["narrator", "The mist curls around his shoulders. His eyes drop to your mouth, then back up, careful and wanting all at once."],
-      ["caleb", "Then I would like to be damaged responsibly. Behind the rail. With enthusiastic consent. And possibly after confirming you remember one extremely important Yellowstone fact.", "caleb:fullLoveRomantic"]
+      ["narrator", "Mist curls around his shoulders. His eyes drop to your mouth, then back up."],
+      ["caleb", "Then damage me responsibly. Behind the rail. With consent. After one key Yellowstone fact.", "caleb:fullLoveRomantic"]
     ],
     next: "full_love_caleb_prompt"
   },
@@ -2025,7 +2161,7 @@ const scenes = {
     music: "calebFullLoveRomantic",
     lines: [
       ["player", "There is a quiz right now."],
-      ["caleb", "A small one. Emotionally load-bearing. Old Faithful has celebrity status, but what have I told you about Yellowstone's geysers?", "caleb:fullLoveRomantic"]
+      ["caleb", "A small one. Emotionally important. Old Faithful is famous, but what did I tell you?", "caleb:fullLoveRomantic"]
     ],
     choices: [
       {
@@ -2048,17 +2184,17 @@ const scenes = {
     lines: [
       ["narrator", "Caleb goes very still. For one suspended second, even the steam seems to behave."],
       ["caleb", "More than half. Yes.", "caleb:fullLoveRomantic"],
-      ["player", "Old Faithful is famous, not the biggest. A punctual celebrity, if I remember the exact Caleb phrasing."],
+      ["player", "Old Faithful is famous, not the biggest. A punctual celebrity, in exact Caleb terms."],
       ["caleb", "You remembered the phrasing.", "caleb:fullLoveRomantic"],
-      ["narrator", "His smile breaks open, warm enough to make the night feel less cold. He steps closer, every movement careful, asking without making you carry all the words."],
+      ["narrator", "His smile opens warm enough to blunt the cold. He steps closer, careful and quietly hopeful."],
       ["player", "I remembered because it was you saying it."],
       ["caleb", "That is unfairly effective.", "caleb:fullLoveRomantic"],
-      ["narrator", "He kisses you like he is still astonished that wonder can have mechanics and still become magic. The boardwalk, the mist, the little stubborn flame in his hair: all of it narrows to warmth, laughter, and the sweet pressure of being chosen."],
+      ["narrator", "He kisses you like wonder learned structure and still became magic. The mist narrows."],
       ["caleb", "For the record, this is not how I expected tonight to go.", "caleb:fullLoveRomantic"],
       ["player", "Too much geyser?"],
       ["caleb", "An irresponsible amount. But the result is... compelling.", "caleb:fullLoveRomantic"],
-      ["narrator", "The rest of the night stays private in the way good things sometimes deserve: hands linked behind the rail, soft jokes against damp skin, Caleb's facts turning tender whenever his courage needs somewhere to stand."],
-      ["player", "You leave Yellowstone with steam in your hair, Caleb's smile burned bright in your chest, and the powerful knowledge that correct trivia can be extremely romantic."]
+      ["narrator", "The rest of the night stays private: linked hands, soft jokes, and Caleb making facts sweet."],
+      ["player", "You leave Yellowstone with steam in your hair, Caleb's smile in your chest, and soft facts."]
     ],
     nextAction: completeFullLoveScene
   },
@@ -2070,14 +2206,14 @@ const scenes = {
       ["narrator", "Caleb's face changes so fast it should come with a weather advisory."],
       ["caleb", "Old Faithful is WHAT.", "caleb:fullLoveRage"],
       ["player", "The largest geyser in Yellowstone?"],
-      ["caleb", "NO. No. Absolutely not. I am shirtless, emotionally available, damp in a narratively significant way, and you choose this moment to slander Steamboat Geyser?", "caleb:fullLoveRage"],
+      ["caleb", "No. Absolutely not. I am shirtless, damp, vulnerable, and you slander Steamboat now?", "caleb:fullLoveRage"],
       ["player", "I am sorry, did you say slander?"],
-      ["caleb", "Steamboat is the tallest active geyser in the world. Old Faithful is famous because it is regular, not because it is the biggest. We have covered this. My heart made flashcards.", "caleb:fullLoveRage"],
-      ["narrator", "The tiny flame in his hair flares as if it, too, has strong feelings about hydrothermal accuracy."],
-      ["caleb", "I had a sentimental speech. There was going to be hand-holding. Possibly a respectful amount of shirt-related escalation. Now I have to go stare into the dark and recover as a scientist and as a man.", "caleb:fullLoveRage"],
+      ["caleb", "Steamboat is the tallest active geyser. Old Faithful is only the famous one.", "caleb:fullLoveRage"],
+      ["narrator", "The tiny flame in his hair flares like it also has strong feelings about geyser accuracy."],
+      ["caleb", "I had a speech. There was hand-holding. Now I must recover as a scientist and a man.", "caleb:fullLoveRage"],
       ["player", "That feels a little dramatic."],
       ["caleb", "Yellowstone is dramatic. I am being locally appropriate.", "caleb:fullLoveRage"],
-      ["narrator", "He marches you back toward the route marker with wet, furious dignity, still staying between you and every unsafe edge because even betrayed Caleb is professionally incapable of letting you wander into boiling ground."],
+      ["narrator", "He marches you back to the route marker, furious and wet, still steering you from danger."],
       ["player", "I really thought something steamy was going to happen."],
       ["narrator", "A geyser coughs in the distance."],
       ["player", "Not like that."]
@@ -2089,13 +2225,13 @@ const scenes = {
     background: () => ({ location: "yosemite", time: "night" }),
     onEnter: () => { state.visitTime = "night"; state.pendingDestination = "sierra"; state.pendingFullLoveScene = "sierra"; },
     lines: [
-      ["narrator", "The heart on Sierra's route card warms under your thumb, and the kiosk prints a ticket with one handwritten-looking note at the bottom: NO CAPTIONS AFTER MIDNIGHT."],
-      ["narrator", "Yosemite opens around you in night-blue granite and the distant voice of falling water. The familiar trail feels quieter now, like it has saved its best answer for last."],
+      ["narrator", "Sierra's route card warms under your thumb. The kiosk adds: NO CAPTIONS AFTER MIDNIGHT."],
+      ["narrator", "Yosemite opens in night-blue granite and falling water. The familiar trail feels hushed now."],
       ["player", "Sierra?"],
-      ["narrator", "A flashlight beam cuts softly across the trail, then lowers. Sierra steps out of the dark with wind in her hair, cheeks bright from cold, and a small smile waiting for you.", "sierra:laughing"],
+      ["narrator", "A flashlight beam lowers. Sierra steps from the dark with windblown hair and a waiting grin.", "sierra:laughing"],
       ["sierra", "You came.", "sierra:blushing"],
       ["player", "Of course I did.", "sierra:blushing"],
-      ["narrator", "She looks down at the trail for half a breath, pleased enough that she has to let the feeling pass before she can move.", "sierra:blushing"],
+      ["narrator", "She looks down for half a breath, too pleased to move right away.", "sierra:blushing"],
       ["sierra", "Good. I was hoping you would say it like that.", "sierra:blushing"],
       ["player", "Like what?", "sierra:blushing"],
       ["sierra", "Like it was easy.", "sierra:blushing"],
@@ -2109,13 +2245,13 @@ const scenes = {
     background: () => ({ location: "yosemiteMeadowNight", time: "night" }),
     music: "sierraFullLoveMeadow",
     lines: [
-      ["narrator", "The trail opens into a high meadow washed in moonlight. Wildflowers silver at the edges. Grass bends softly under the night air. Far across the valley, cliffs rise huge and quiet, and the waterfall glows pale against the dark."],
+      ["narrator", "The trail opens into a moonlit meadow. Wildflowers silver while the waterfall glows far off."],
       ["player", "Oh."],
       ["player", "This is beautiful."],
-      ["narrator", "The meadow seems to make room around you: grass, stars, cold stone, warm breath, and the impossible feeling of being somewhere meant to be kept quiet."],
+      ["narrator", "The meadow makes room around you: grass, stars, cold stone, warm breath, and hush."],
       ["sierra", "I know.", "sierra"],
       ["narrator", "Sierra sits in the grass and tips her face toward the sky.", "sierra:stargazingStep2"],
-      ["sierra", "That bright one over the ridge? I used to pretend it was watching the trail for me when I closed alone.", "sierra:stargazingStep2"],
+      ["sierra", "That bright one over the ridge? I used to pretend it watched the trail when I closed alone.", "sierra:stargazingStep2"],
       ["player", "You came here by yourself?", "sierra:stargazingStep2"],
       ["sierra", "Sometimes. It made the walk back feel shorter, knowing this was waiting up here.", "sierra:stargazingStep2"],
       ["narrator", "She pats the grass beside her, then leaves her hand there a moment longer than necessary.", "sierra:stargazingStep3"],
@@ -2128,16 +2264,16 @@ const scenes = {
     background: () => ({ location: "yosemiteMeadowNight", time: "night" }),
     music: "sierraFullLoveMeadow",
     lines: [
-      ["narrator", "You lower yourself into the grass beside her. The cold comes through your jacket. Sierra's shoulder nearly touches yours, close enough that the space between you starts to feel deliberate.", "sierra:stargazingStep3"],
+      ["narrator", "You lower into the grass beside her. Sierra's shoulder nears yours, and the gap sparks.", "sierra:stargazingStep3"],
       ["sierra", "When I first found this place, I thought I would bring people here all the time.", "sierra:stargazingStep3"],
       ["player", "But you did not.", "sierra:stargazingStep3"],
       ["sierra", "No. Turns out I am generous with trail advice and extremely selfish with silence.", "sierra:stargazingStep3"],
       ["narrator", "She smiles at that, a small smile, gone almost as soon as it appears.", "sierra:stargazingStep3"],
       ["sierra", "Most people want the waterfall. The big view. The story they can tell later.", "sierra:stargazingStep3"],
       ["player", "And you?", "sierra:stargazingStep3"],
-      ["sierra", "I wanted someone who would notice this part too. The cold. The little flowers. How loud your own breathing gets when nobody is filling the space for you.", "sierra:stargazingStep3"],
+      ["sierra", "I wanted someone who would notice this part too. The cold. The flowers. Your own breathing.", "sierra:stargazingStep3"],
       ["narrator", "The meadow holds the words gently. Even the waterfall feels farther away.", "sierra:stargazingStep3"],
-      ["sierra", "I did not know I was waiting for you until you kept showing up like the quiet parts mattered.", "sierra:stargazingStep3"]
+      ["sierra", "I did not know I was waiting for you until you kept showing up like quiet mattered.", "sierra:stargazingStep3"]
     ],
     next: "full_love_sierra_three"
   },
@@ -2146,15 +2282,15 @@ const scenes = {
     background: () => ({ location: "yosemiteMeadowNight", time: "night" }),
     music: "sierraFullLoveMeadow",
     lines: [
-      ["narrator", "Sierra turns toward you. In the moonlight, her eyes are bright and a little afraid, but she does not look away.", "sierra:stargazingStep3"],
+      ["narrator", "Sierra turns toward you. In the moonlight, her eyes are bright and a little afraid.", "sierra:stargazingStep3"],
       ["sierra", "I have been trying to think of something clever to say since the kiosk printed that ticket.", "sierra:stargazingStep3"],
       ["player", "Any luck?", "sierra:stargazingStep3"],
       ["sierra", "Terrible luck. Very humbling evening for my pride.", "sierra:stargazingStep3"],
-      ["narrator", "The joke lands softly, then gives way to the sound of her breathing. She reaches for your hand in the grass, and her fingers fit between yours with a careful certainty.", "sierra:stargazingStep4"],
+      ["narrator", "The joke lands softly. Then she reaches for your hand, fingers fitting with calm certainty.", "sierra:stargazingStep4"],
       ["sierra", "So I am going to say the true thing instead.", "sierra:stargazingStep4"],
       ["player", "Okay.", "sierra:stargazingStep4"],
       ["sierra", "I wanted you here. Not because the view is good, even though obviously I have taste.", "sierra:stargazingStep4"],
-      ["sierra", "Because when something beautiful happens, I keep wondering what your face would do if you saw it too.", "sierra:stargazingStep4"]
+      ["sierra", "Because when something beautiful happens, I wonder what your face would do beside it.", "sierra:stargazingStep4"]
     ],
     next: "full_love_sierra_prompt"
   },
@@ -2163,7 +2299,7 @@ const scenes = {
     background: () => ({ location: "yosemiteMeadowNight", time: "night" }),
     music: "sierraFullLoveMeadow",
     lines: [
-      ["narrator", "She stays close, and the whole meadow seems to tilt toward her. Her thumb moves once over your knuckles, almost too lightly to count.", "sierra:stargazingStep4"],
+      ["narrator", "She stays close, and the whole meadow seems to tilt toward her. Her thumb strokes your hand.", "sierra:stargazingStep4"],
       ["sierra", "I don't want this to end. I want to stay here a while and find out what happens next.", "sierra:stargazingStep4"]
     ],
     choices: [
@@ -2186,19 +2322,19 @@ const scenes = {
     background: () => ({ location: "yosemiteMeadowNight", time: "night" }),
     music: "sierraFullLoveGood",
     lines: [
-      ["narrator", "Sierra's expression changes so gently it almost hurts. Hope arrives first, then relief, then a warmth that makes the cold meadow feel suddenly survivable.", "sierra:stargazingStep4"],
+      ["narrator", "Sierra's expression shifts gently: hope, then relief, then warmth against the cold meadow.", "sierra:stargazingStep4"],
       ["player", "I want that too.", "sierra:stargazingStep4"],
-      ["player", "I want to stay. I want the quiet part, and the impossible view, and you beside me when the sky does something worth remembering.", "sierra:stargazingStep4"],
+      ["player", "I want to stay. I want the quiet part, the impossible view, and you beside me.", "sierra:stargazingStep4"],
       ["sierra", "You are very hard to act normal around.", "sierra:stargazingStep4"],
       ["player", "Good.", "sierra:stargazingStep4"],
-      ["narrator", "She laughs once, breathless and bright, then closes the distance. The kiss starts careful, a question asked against your mouth, and turns warmer when you answer with your hand at her waist.", "sierra:stargazingStep4"],
+      ["narrator", "She laughs once, breathless, then closes the distance. The kiss warms as you answer.", "sierra:stargazingStep4"],
       ["sierra", "Still here?", "sierra:stargazingStep4"],
       ["player", "Right here.", "sierra:stargazingStep4"],
-      ["narrator", "Her hand curls in your jacket. The stars blur at the edge of your vision as she kisses you again, slow enough that the whole night narrows to how close you can be and still want closer.", "sierra:stargazingStep4"],
-      ["narrator", "The meadow keeps the rest private. There is grass cool under your palms, Sierra warm against you, the soft shock of her laughter at your ear, and the clear, mutual decision to let the world get very small for a while.", "sierra:stargazingStep4"],
-      ["player", "Later, you will remember the stars in fragments: one over her shoulder, one above the ridge, one disappearing when she leans down to kiss you again.", "sierra:stargazingStep4"],
-      ["narrator", "Hours pass in pieces: constellations, whispered trail stories, your fingers in her hair, her cheek against your chest, the two of you forgetting to keep track of anything except each other.", "sierra:stargazingStep4"],
-      ["narrator", "At some point, the talking thins into silence. The silence becomes breathing. The breathing becomes sleep.", "sierra:stargazingStep4", { fadeOutSprite: true }]
+      ["narrator", "Her hand curls in your jacket. The stars blur as she kisses you again, slow and close.", "sierra:stargazingStep4"],
+      ["narrator", "The meadow keeps the rest private: cool grass, Sierra warm against you, and the world kind.", "sierra:stargazingStep4"],
+      ["player", "Later you remember the stars in fragments, each one lost when she leans in again.", "sierra:stargazingStep4"],
+      ["narrator", "Hours pass in pieces: whispered stories, her cheek on your chest, and no reason for time.", "sierra:stargazingStep4"],
+      ["narrator", "At some point, talking thins into silence, then breathing, then sleep.", "sierra:stargazingStep4", { fadeOutSprite: true }]
     ],
     next: "full_love_sierra_morning_return"
   },
@@ -2209,9 +2345,9 @@ const scenes = {
     character: null,
     lines: [
       ["narrator", "Morning comes softly, and the meadow stays behind the dark a little longer."],
-      ["narrator", "Sierra is still asleep beside you, one hand tucked in your sleeve, peaceful in a way that makes your chest go quiet."],
-      ["player", "You do not wake her. You brush the grass from her hair, kiss her forehead, and leave her resting under the first warm light of Yosemite."],
-      ["narrator", "By the time you reach the lodge lobby, morning has fully arrived, and something tender has followed you back with it."]
+      ["narrator", "Sierra still sleeps beside you, one hand tucked in your sleeve, peaceful enough to calm you."],
+      ["player", "You do not wake her. You brush grass from her hair, kiss her forehead, and leave."],
+      ["narrator", "By the time you reach the lodge, morning is fully here, and something tender came with you."]
     ],
     nextAction: completeSierraFullLoveMorning
   },
@@ -2231,13 +2367,13 @@ const scenes = {
     music: "sierraFullLoveMeadow",
     lines: [
       ["narrator", "", "sierra:stargazingStep4", { dialogueHidden: true, spriteDriftUp: true, autoAdvanceMs: 4300 }],
-      ["narrator", "Sierra does not say anything. This is worse than anger. Anger would have shape. Anger would be an event. This is simply the meadow deciding you have become a cautionary object lesson."],
-      ["narrator", "She got up slowly, with the silent precision of someone removing herself from a haunted group chat, and walked away without once looking back."],
+      ["narrator", "Sierra says nothing. That is worse than anger. It feels like the meadow filing you away."],
+      ["narrator", "She stands with haunted precision and walks away without looking back."],
       ["player", "Oh no."],
-      ["narrator", "The words you chose remain in the grass behind you, faintly radioactive. Nearby wildflowers appear to be reevaluating the concept of language."],
+      ["narrator", "Your words stay in the grass behind you, radioactive enough that wildflowers seem offended."],
       ["player", "I said 'vulnerable rizz' to a woman trusting me under the stars."],
-      ["narrator", "You have never felt more embarrassed. Not publicly. Not privately. Possibly not metaphysically."],
-      ["narrator", "You sit in the meadow and contemplate what this means about you as a person. Are you a person? Would a person say that? Is the soul a real thing, and if so, can it file a noise complaint against the mouth?"],
+      ["narrator", "You have never felt more embarrassed. Not publicly. Not privately. Maybe not metaphysically."],
+      ["narrator", "You sit in the meadow and wonder what this says about you. None of the answers help."],
       ["narrator", "Yosemite offers no answer. It has cliffs to be and dignity to preserve."],
       ["player", "I should go back to the lodge before the stars start unfollowing me."]
     ],
@@ -2270,11 +2406,11 @@ const scenes = {
     character: null,
     suppressSceneSfx: true,
     lines: [
-      ["narrator", "You start walking back through the dark, each step crunching like the earth is subtweeting you.", null, { dialogueSlowFade: true, startOverlayAmbient: "dryGrassWalk", startOverlayAmbientAfterMs: 1700 }],
+      ["narrator", "You start walking back through the dark, each step crunching like the earth is subtweeting.", null, { dialogueSlowFade: true, startOverlayAmbient: "dryGrassWalk", startOverlayAmbientAfterMs: 1700 }],
       ["player", "I should apologize. With words from before the internet found a blender and climbed inside."],
-      ["narrator", "The trail is mercifully empty, which is good, because your aura currently has the texture of a notes-app apology drafted by a haunted influencer."],
-      ["player", "Tomorrow I will be normal. Quiet. Mysterious, even. A person with no catchphrases and indoor thoughts."],
-      ["narrator", "The lodge door appears at last, warm light around the frame like civilization is reluctantly reopening your tab.", null, { stopOverlayAmbientOnAdvance: true }]
+      ["narrator", "The trail is mercifully empty, which helps, because your aura reads drafted apology."],
+      ["player", "Tomorrow I will be normal. Quiet. Mysterious, even. A person with no catchphrases at all."],
+      ["narrator", "The lodge door appears at last, warm light around the frame like civilization relenting.", null, { stopOverlayAmbientOnAdvance: true }]
     ],
     next: "full_love_sierra_bad_door_line_fade"
   },
@@ -2317,15 +2453,15 @@ const scenes = {
     music: "nataiFullLoveCanyon",
     onEnter: () => { state.visitTime = "night"; state.pendingDestination = "natai"; state.pendingFullLoveScene = "natai"; },
     lines: [
-      ["narrator", "The heart on Natai's route card warms under your thumb. The kiosk prints a ticket, pauses, and adds: NIGHT PERMIT APPROVED. DO NOT MAKE IT WEIRD."],
-      ["narrator", "Zion opens around you in moonlit sandstone and black sky. The canyon walls hold the day's last warmth like a secret they are not technically authorized to share."],
+      ["narrator", "Natai's route card warms under your thumb. The kiosk adds: NIGHT PERMIT APPROVED. BE NORMAL."],
+      ["narrator", "Zion opens in moonlit sandstone and black sky. The canyon still holds the day's last warmth."],
       ["player", "Natai?"],
-      ["narrator", "Natai steps out beside the route sign, familiar and composed, with a lantern in one hand and the look of someone who has already judged the kiosk's paperwork.", "natai"],
+      ["narrator", "Natai steps out beside the route sign with a lantern and a look already judging the kiosk.", "natai"],
       ["natai", "You are on time.", "natai"],
       ["player", "That sounded almost pleased.", "natai"],
       ["natai", "Do not become reckless with one data point.", "natai:blushing"],
-      ["narrator", "Their mouth almost gives them away. Almost. The lantern light finds the warm edge of their smile anyway.", "natai:blushing"],
-      ["natai", "I found a quieter place above the wash. Less traffic. Better stars. Flat ground, by some miracle, so the canyon cannot accuse us of poor planning.", "natai"],
+      ["narrator", "Their mouth almost gives them away. Lantern light catches the warm edge of their smile.", "natai:blushing"],
+      ["natai", "I found a quieter place above the wash. Better stars. Flat ground. A miracle of planning.", "natai"],
       ["player", "So this is a rescue mission for the stars.", "natai"],
       ["natai", "For the stars. For my patience. Possibly for you.", "natai:blushing"]
     ],
@@ -2336,28 +2472,28 @@ const scenes = {
     background: () => ({ location: "zionClearingNight", time: "night" }),
     music: "nataiFullLoveCanyon",
     lines: [
-      ["narrator", "Natai leads you off the main route, lantern low, through a narrow turn in the brush where the canyon suddenly opens into a sheltered shelf of sand and stone."],
-      ["narrator", "The clearing waits under moonlight: flat ground, warm lanterns, two enamel cups on a rock, and enough sky overhead to make the stars feel close."],
+      ["narrator", "Natai leads you off the main route through a narrow turn into a sheltered shelf of canyon."],
+      ["narrator", "The clearing waits under moonlight: flat ground, warm lanterns, two enamel cups, wide sky."],
       ["player", "Did you make a romantic checklist?", "natai"],
       ["natai", "No.", "natai"],
       ["natai", "It is a romantic-adjacent risk assessment.", "natai:blushing"],
       ["player", "That is somehow better.", "natai:blushing"],
-      ["narrator", "Natai pours tea from a thermos. The steam curls silver in the lantern light, and for a while the two of you sit with your shoulders nearly touching, watching the canyon turn into shape, shadow, and stars.", "natai"],
+      ["narrator", "Natai pours tea. Steam curls silver while you sit shoulder to shoulder and watch stars.", "natai"],
       ["natai", "The desert is honest at night. No glare. No performance. Just stone, air, distance.", "natai"],
       ["player", "And us?", "natai"],
       ["natai", "Us is more complicated.", "natai:blushing"],
       ["player", "I can handle complicated.", "natai:blushing"],
       ["natai", "Do not say heroic things. I will be forced to respect them.", "natai:blushing"],
       ["narrator", "They stare into the tea as if it might provide a less humiliating route through honesty.", "natai"],
-      ["natai", "I had brothers. An older brother who made safety look effortless. A younger one who thought danger was applause waiting to happen.", "natai:angryExplaining"],
-      ["natai", "There was a bear. A food cache. A fire set by someone too proud to think. Our oldest brother died getting us out.", "natai:angryExplaining"],
+      ["natai", "I had brothers. One made safety look effortless. One thought danger was applause.", "natai:angryExplaining"],
+      ["natai", "There was a bear. A food cache. A fire set by pride. Our oldest died getting us out.", "natai:angryExplaining"],
       ["player", "Natai...", "natai:angryExplaining"],
       ["natai", "The youngest blamed the bear. I tried to stop him. He went after it anyway.", "natai:angryExplaining"],
-      ["natai", "Something happened in the woods. Something I still cannot make myself describe cleanly. He looked at me like he knew I had seen too much, and then he ran.", "natai:angryExplaining"],
-      ["natai", "Everyone wants anger to be ugly. Mine was practical. It kept me standing. It gave me somewhere to put a grief that would have eaten me hollow.", "natai:angryExplaining"],
+      ["natai", "Something happened in the woods. He looked at me like I had seen too much, and then he ran.", "natai:angryExplaining"],
+      ["natai", "Everyone wants anger to be ugly. Mine was practical. It kept me standing.", "natai:angryExplaining"],
       ["player", "And now?", "natai:angryExplaining"],
       ["natai", "Now it is tired.", "natai:angryExplaining"],
-      ["narrator", "They look at you then, and the usual sharpness is still there, but it has warmed into something careful enough to trust.", "natai:blushing"]
+      ["narrator", "They look at you, still sharp, but warm enough now to trust.", "natai:blushing"]
     ],
     next: "full_love_natai_sleeping_bag"
   },
@@ -2366,17 +2502,17 @@ const scenes = {
     background: () => ({ location: "zionClearingNight", time: "night" }),
     music: "nataiFullLoveCanyon",
     lines: [
-      ["narrator", "A cold wind moves over the stone. Natai rises with abrupt purpose and checks the camp bundle beside the lantern."],
+      ["narrator", "A cold wind moves over the stone. Natai checks the camp bundle beside the lantern."],
       ["natai", "Hm.", "natai:grumpy"],
       ["player", "That was an ominous hm.", "natai:grumpy"],
       ["natai", "It was a precise hm.", "natai:grumpy"],
-      ["narrator", "They unroll one sleeping bag. One. Singular. The canyon offers no comment, which feels unsporting.", "natai:sleepingBagRomantic"],
+      ["narrator", "They unroll one sleeping bag. One. Singular. The canyon offers no comment. Rude of it.", "natai:sleepingBagRomantic"],
       ["natai", "Oh no.", "natai:sleepingBagRomantic"],
       ["player", "Natai.", "natai:sleepingBagRomantic"],
       ["natai", "There is only one sleeping bag.", "natai:sleepingBagRomantic"],
       ["player", "You sound suspiciously calm about that.", "natai:sleepingBagRomantic"],
       ["natai", "Panic wastes heat.", "natai:sleepingBagRomantic"],
-      ["narrator", "They settle half inside the bag, hair loose over one shoulder, trying and failing to look like this is a normal piece of field logistics.", "natai:sleepingBagRomantic"],
+      ["narrator", "They settle half inside the bag, hair loose, trying and failing to make this look normal.", "natai:sleepingBagRomantic"],
       ["natai", "For warmth, proximity is the rational solution.", "natai:sleepingBagRomantic"],
       ["player", "Rational.", "natai:sleepingBagRomantic"],
       ["natai", "Do not make me say it twice. I am already using more eye contact than recommended.", "natai:sleepingBagRomantic"]
@@ -2388,7 +2524,7 @@ const scenes = {
     background: () => ({ location: "zionClearingNight", time: "night" }),
     music: "nataiFullLoveCanyon",
     lines: [
-      ["narrator", "The open sleeping bag waits in the lantern light, absurdly practical and suddenly impossible to ignore. Natai holds your gaze without retreating.", "natai:sleepingBagRomantic"],
+      ["narrator", "The open sleeping bag waits in the lantern light. Natai holds your gaze without retreating.", "natai:sleepingBagRomantic"],
       ["natai", "If you want to stay close, say it plainly. I will understand plainly.", "natai:sleepingBagRomantic"]
     ],
     choices: [
@@ -2419,29 +2555,29 @@ const scenes = {
       ["natai", "Good.", "natai:sleepingBagRomantic"],
       ["player", "That is all?", "natai:sleepingBagRomantic"],
       ["natai", "No. That is the part I can say without embarrassing both of us and possibly the moon.", "natai:sleepingBagRomantic"],
-      ["narrator", "Their hand finds yours at the edge of the sleeping bag. Warm. Certain. Less steady than Natai would ever admit.", "natai:sleepingBagRomantic"],
+      ["narrator", "Their hand finds yours at the bag's edge. Warm. Certain. Less steady than they would admit.", "natai:sleepingBagRomantic"],
       ["natai", "For years I thought letting anyone close meant giving up the anger that kept me alive.", "natai:sleepingBagRomantic"],
       ["player", "You do not have to give it up all at once.", "natai:sleepingBagRomantic"],
       ["natai", "No. But I can stop letting it choose every route.", "natai:sleepingBagRomantic"],
       ["natai", "Come here. Slowly.", "natai:sleepingBagRomantic"],
-      ["narrator", "The first kiss is careful enough to be a question. The second is not. Natai draws you closer, and the lantern light catches the exact moment their control gives way to hunger.", "natai:sleepingBagRomantic"],
-      ["narrator", "The sleeping bag rustles around both of you. It should be ridiculous. It is ridiculous. But Natai's hand settles at your back, firm and hot through your clothes, and suddenly the joke has no air left in it.", "natai:sleepingBagRomantic"],
+      ["narrator", "The first kiss is careful. The second is not. Natai draws you closer and lets control slip.", "natai:sleepingBagRomantic"],
+      ["narrator", "The sleeping bag rustles around you both. The joke dies when their hand finds your back.", "natai:sleepingBagRomantic"],
       ["player", "Still calling this proximity?", "natai:sleepingBagRomantic"],
       ["natai", "No.", "natai:sleepingBagRomantic"],
       ["natai", "Now I am calling it wanting you so badly I am grateful the canyon is too polite to comment.", "natai:sleepingBagRomantic"],
-      ["narrator", "They kiss you again, slower this time, like they are learning exactly how much patience makes wanting worse. Their thumb traces your wrist once, then again, and every measured touch feels less like restraint and more like a promise.", "natai:sleepingBagRomantic"],
+      ["narrator", "They kiss you again, slower now, each touch less restraint than promise.", "natai:sleepingBagRomantic"],
       ["player", "You are very quiet.", "natai:sleepingBagRomantic"],
       ["natai", "I am concentrating.", "natai:sleepingBagRomantic"],
       ["player", "On survival?", "natai:sleepingBagRomantic"],
       ["natai", "On not making a sound the canyon will remember.", "natai:sleepingBagRomantic"],
-      ["narrator", "The sleeping bag turns the cold night impossibly warm. There is the brush of hair against your cheek, the rough edge of Natai's breath, the startling softness of their mouth finding yours again and again.", "natai:sleepingBagRomantic"],
-      ["narrator", "Outside the circle of lantern light, Zion stays vast and ancient. Inside it, everything is close: your knees tangled together, Natai's laugh breaking low against your neck, the shared heat building until the night feels held in both hands.", "natai:sleepingBagRomantic"],
+      ["narrator", "The sleeping bag turns cold night warm: hair at your cheek, breath, their mouth on yours.", "natai:sleepingBagRomantic"],
+      ["narrator", "Outside the lantern light, Zion stays vast. Inside it, everything is close and warm.", "natai:sleepingBagRomantic"],
       ["natai", "Tell me if you want me to stop.", "natai:sleepingBagRomantic"],
       ["player", "I do not want you to stop.", "natai:sleepingBagRomantic"],
       ["natai", "Good.", "natai:sleepingBagRomantic"],
-      ["narrator", "That one word lands rougher than it should. Natai hears what it does to you, and their composure flickers into something openly pleased before their mouth finds yours again.", "natai:sleepingBagRomantic"],
-      ["narrator", "Everything narrows to heat and trust: hands learning permission, laughter breaking into quiet, Natai's voice low at your ear like restraint has finally lost the argument.", "natai:sleepingBagRomantic"],
-      ["narrator", "For a while there is no route, no checklist, no clever thing either of you needs to say. Only the soft drag of breath, the warmth of skin through shifting fabric, and Natai holding you like they have finally stopped pretending distance was safer.", "natai:sleepingBagRomantic"],
+      ["narrator", "That one word lands rougher than it should. Their composure flickers, then they kiss you.", "natai:sleepingBagRomantic"],
+      ["narrator", "Everything narrows to heat and trust: hands learning permission, laughter turning quiet.", "natai:sleepingBagRomantic"],
+      ["narrator", "For a while there is no route or checklist. Only breath, warmth, and Natai close.", "natai:sleepingBagRomantic"],
       ["natai", "For the record, this remains an excellent survival decision.", "natai:sleepingBagRomantic"],
       ["player", "Extremely practical.", "natai:sleepingBagRomantic"],
       ["natai", "There really is only one sleeping bag.", "natai:sleepingBagRomantic"]
@@ -2463,7 +2599,7 @@ const scenes = {
     background: () => ({ location: "zionClearingNight", time: "night" }),
     music: "nataiFullLoveGood",
     lines: [
-      ["narrator", "You fall asleep there because there is only one sleeping bag, after all, and because Natai's arm around you feels like the safest route through the dark.", null, { dialogueSlowFade: true }]
+      ["narrator", "You fall asleep there because there is only one sleeping bag, and Natai's arm feels safest.", null, { dialogueSlowFade: true }]
     ],
     next: "full_love_natai_sleep_fade"
   },
@@ -2482,10 +2618,10 @@ const scenes = {
     ambient: "nataiMorning",
     character: null,
     lines: [
-      ["narrator", "Morning comes pale and warm over Zion, but the sleeping bag keeps the last of the night tucked close a little longer.", null, { dialogueSlowFade: true }],
-      ["narrator", "Natai is still asleep beside you, hair loose and face unguarded in a way they would probably call a security breach."],
-      ["player", "You let them sleep. You leave the checklist weighted under the thermos with one note: Route decision approved."],
-      ["narrator", "By the time you reach the lodge lobby, morning has fully arrived, and the desert seems to have sent some warmth back with you."]
+      ["narrator", "Morning comes pale over Zion, but the sleeping bag keeps the last of the night close.", null, { dialogueSlowFade: true }],
+      ["narrator", "Natai still sleeps beside you, hair loose and face unguarded enough to count as a breach."],
+      ["player", "You let them sleep. You leave the checklist under the thermos with one note: Route approved."],
+      ["narrator", "By the time you reach the lodge, morning is fully here, and the desert sent warmth with you."]
     ],
     nextAction: completeNataiFullLoveMorning
   },
@@ -2511,10 +2647,10 @@ const scenes = {
       ["player", "Oh my god.", "natai:sleepingBagRomantic", { propCue: "natai:emptySleepingBag" }],
       ["natai", "The problem is solved. No one has to share anything they would rather interrogate.", "natai:sleepingBagRomantic", { propCue: "natai:emptySleepingBag" }],
       ["player", "I cannot believe I got stared down by an emergency backup sleeping bag.", "natai:sleepingBagRomantic", { propCue: "natai:emptySleepingBag" }],
-      ["narrator", "Natai does not get up. They remain exactly where they are, half inside the first sleeping bag, watching you process the arrival of the second one with painful composure.", "natai:sleepingBagRomantic", { propCue: "natai:emptySleepingBag" }],
+      ["narrator", "Natai does not get up. They watch you process the second bag with painful composure.", "natai:sleepingBagRomantic", { propCue: "natai:emptySleepingBag" }],
       ["natai", "The route marker is downhill. The path is lit.", "natai:sleepingBagRomantic", { propCue: "natai:emptySleepingBag" }],
       ["player", "Great. Perfect. Love a well-lit retreat.", "natai:sleepingBagRomantic", { propCue: "natai:emptySleepingBag" }],
-      ["narrator", "You go home to the lodge lobby embarrassed, a little mad, and newly suspicious of all rolled camping gear.", "natai:sleepingBagRomantic", { propCue: "natai:emptySleepingBag" }]
+      ["narrator", "You go back to the lodge embarrassed, irritated, and wary of rolled camping gear.", "natai:sleepingBagRomantic", { propCue: "natai:emptySleepingBag" }]
     ],
     next: "full_love_natai_bad_exit"
   },
@@ -2533,10 +2669,10 @@ const scenes = {
     music: "dakotaFullLoveTender",
     onEnter: () => { state.visitTime = "sunset"; state.pendingDestination = "dakota"; state.pendingFullLoveScene = "dakota"; },
     lines: [
-      ["narrator", "The heart on Dakota's route card warms under your thumb. The kiosk prints: SUNSET GROVE ACCESS. BE GENTLE WITH OLD TREES AND OLDER FEELINGS."],
-      ["narrator", "Sequoia opens around you in amber light. The trunks rise like quiet towers, and the air smells of bark, dust, and day cooling into evening."],
+      ["narrator", "Dakota's route card warms under your thumb. The kiosk prints: SUNSET GROVE ACCESS."],
+      ["narrator", "Sequoia opens in amber light. The trunks rise like towers while the day cools into evening."],
       ["player", "Dakota?"],
-      ["narrator", "Dakota waits by the old fire ring, hat in his hands, looking both glad you came and frightened by what gladness might ask of him.", "dakota:sadExplaining"],
+      ["narrator", "Dakota waits by the old fire ring, hat in hand, glad you came and scared of what that asks.", "dakota:sadExplaining"],
       ["dakota", "I was hoping you would come. That is already more honest than I planned to be.", "dakota:sadExplaining"],
       ["player", "I like honest. Even when it arrives looking nervous.", "dakota:sadExplaining"],
       ["dakota", "Then I should tell you why I keep stopping at this fire ring like it can sentence me again.", "dakota:sadExplaining"]
@@ -2550,23 +2686,23 @@ const scenes = {
     lines: [
       ["narrator", "The fire ring waits between you, all old stone and older memory."],
       ["dakota", "There were three brothers once.", "dakota:sadExplaining"],
-      ["dakota", "The oldest was wise. Protective in the way sunrise is protective. You did not notice how much he held back until he was gone.", "dakota:sadExplaining"],
-      ["dakota", "The middle one was sharp-tongued, fast to anger, impossible to fool. He could make you feel stupid and safe in the same breath.", "dakota:sadExplaining"],
+      ["dakota", "The oldest was wise and protective. You only saw how much he carried after he was gone.", "dakota:sadExplaining"],
+      ["dakota", "The middle one was sharp and impossible to fool. He could make you feel stupid and safe.", "dakota:sadExplaining"],
       ["player", "Natai.", "dakota:sadExplaining"],
       ["narrator", "Dakota closes his eyes. The name lands like a hand on a bruise.", "dakota:sadExplaining"],
       ["dakota", "Yes.", "dakota:sadExplaining"],
-      ["dakota", "And the youngest was proud. Reckless. So desperate to be strong that he mistook every warning for an insult.", "dakota:sadExplaining"],
+      ["dakota", "The youngest was proud and reckless. He heard every warning as an insult.", "dakota:sadExplaining"],
       ["player", "You.", "dakota:sadExplaining"],
       ["dakota", "Me.", "dakota:sadExplaining"],
-      ["dakota", "A bear came near our food. I was angry before I was afraid, which is a terrible order for a heart to put things in.", "dakota:sadExplaining"],
-      ["dakota", "I started a fire trying to kill it. The fire spread. My brothers followed to help. Our oldest brother got us out and did not make it out himself.", "dakota:sadExplaining"],
+      ["dakota", "A bear came near our food. I was angry before afraid, which is a terrible order for a heart.", "dakota:sadExplaining"],
+      ["dakota", "I started a fire to kill it. The fire spread. Our oldest brother died getting us out.", "dakota:sadExplaining"],
       ["narrator", "The grove seems to darken around the confession, not judging, only listening.", "dakota:sadExplaining"],
-      ["dakota", "I blamed the bear because blaming myself felt like drowning. Then I hunted it. Killed it. Called it justice because revenge sounded too small and too honest.", "dakota:sadExplaining"],
-      ["dakota", "The spirits saw hatred where responsibility should have been. They made my outside match the creature I had refused to understand.", "dakota:sadExplaining"],
+      ["dakota", "I blamed the bear because blaming myself felt like drowning. Revenge felt easier than truth.", "dakota:sadExplaining"],
+      ["dakota", "The spirits saw hatred where responsibility should have been. They made my outside match it.", "dakota:sadExplaining"],
       ["dakota", "Natai saw it happen. I looked at him. He knew. I knew he knew. And I ran.", "dakota:sadExplaining"],
       ["player", "Dakota...", "dakota:sadExplaining"],
-      ["dakota", "Years passed. Many new friends and new places were seen. I learned how to live like this. I never learned how to forgive the person who caused it.", "dakota:sadExplaining"],
-      ["dakota", "Then I saw Natai here. We locked eyes like the first time. I ran again, just slower and with a uniform.", "dakota:sadExplaining"],
+      ["dakota", "Years passed. I learned to live like this. I never learned to forgive the one who caused it.", "dakota:sadExplaining"],
+      ["dakota", "Then I saw Natai here. We locked eyes like the first time. I ran again, just slower.", "dakota:sadExplaining"],
       ["player", "You were ashamed.", "dakota:sadExplaining"],
       ["dakota", "I still am.", "dakota:sadExplaining"]
     ],
@@ -2577,17 +2713,17 @@ const scenes = {
     background: () => ({ location: "sequoia", time: "sunset" }),
     music: "dakotaFullLoveTender",
     lines: [
-      ["narrator", "Sunset lowers through the branches, turning every needle and stone soft around Dakota's confession."],
+      ["narrator", "Sunset lowers through the branches, softening the grove around Dakota's confession."],
       ["player", "Shame kept you alive, maybe. It does not get to keep owning you.", "dakota:sadExplaining"],
       ["dakota", "I do not know how to put it down.", "dakota:sadExplaining"],
       ["player", "Start smaller. Tell the truth without making it a cage.", "dakota:sadExplaining"],
-      ["dakota", "I was reckless. I was grieving. I did something unforgivable, and then I kept punishing everyone by disappearing.", "dakota:sadExplaining"],
-      ["dakota", "But I loved my brother. I loved both of them. I have spent years acting like that love died because I did not deserve it.", "dakota:sadExplaining"],
+      ["dakota", "I was reckless. I was grieving. I vanished, and kept punishing everyone for it.", "dakota:sadExplaining"],
+      ["dakota", "But I loved my brothers. I spent years pretending that love died with my worth.", "dakota:sadExplaining"],
       ["player", "It did not die.", "dakota:sadExplaining"],
       ["dakota", "No.", "dakota:sadExplaining"],
-      ["narrator", "Dakota breathes in. The first breath shakes. The second steadies. The third sounds like something locked inside him finally opening.", "dakota:sadExplaining"],
+      ["narrator", "Dakota breathes in. The first breath shakes. The second steadies. The third opens a lock.", "dakota:sadExplaining"],
       ["dakota", "I forgive the scared, angry boy who started the fire.", "dakota:sadExplaining"],
-      ["dakota", "I will still carry what happened. But I do not have to carry it like proof I should never be loved.", "dakota:sadExplaining"],
+      ["dakota", "I will still carry what happened. But not as proof I should never be loved.", "dakota:sadExplaining"],
       ["narrator", "The grove answers with sudden gold.", "dakota:transformationSequence", { screenFlash: true, audio: "magicTransform", fadeOutMusicUntilScene: { sceneId: "full_love_dakota_timed_prompt", fadeOutMs: 900, resumeFadeMs: 900 } }]
     ],
     next: "full_love_dakota_human"
@@ -2596,7 +2732,7 @@ const scenes = {
     label: "Sequoia Sunset",
     background: () => ({ location: "sequoia", time: "sunset" }),
     lines: [
-      ["narrator", "The light clears in a rush of gold, leaving Dakota staring down at himself with wide, disbelieving eyes.", "dakota:humanHappyShock", { screenFlash: true }],
+      ["narrator", "The light clears in gold, leaving Dakota staring at himself with disbelieving eyes.", "dakota:humanHappyShock", { screenFlash: true }],
       ["dakota", "I... have hands.", "dakota:humanHappyShock"],
       ["dakota", "Human hands. Human face. Human everything.", "dakota:humanHappyShock"],
       ["player", "Mostly everything. The magic seems to have made a bold shirt-related decision.", "dakota:humanHappyShock"],
@@ -2607,17 +2743,17 @@ const scenes = {
       ["dakota", "I feel... good. Not because I look human again. Because I can breathe around myself.", "dakota:humanHappyShock"],
       ["dakota", "Also, for the record, I look good.", "dakota:humanConfidentFlex"],
       ["player", "You were always beautiful. Inside and out.", "dakota:humanConfidentFlex"],
-      ["narrator", "The confidence falters into astonishment. Dakota looks at you like that sentence found the last locked door.", "dakota:humanConfidentFlex"],
+      ["narrator", "The confidence falters into astonishment. Dakota looks at you like you found his last door.", "dakota:humanConfidentFlex"],
       ["dakota", "You mean that.", "dakota:humanConfidentFlex"],
       ["player", "I do.", "dakota:humanConfidentFlex"],
-      ["narrator", "Another flash rolls through the grove, warmer this time, less like a verdict than a welcome home.", "dakota:bearTouchedFlex", { screenFlash: true, audio: "magicTransform" }],
+      ["narrator", "Another flash rolls through the grove, warmer now, less verdict than welcome home.", "dakota:bearTouchedFlex", { screenFlash: true, audio: "magicTransform" }],
       ["dakota", "Oh.", "dakota:bearTouchedFlex"],
       ["dakota", "I am still me.", "dakota:bearTouchedFlex"],
       ["player", "You are.", "dakota:bearTouchedFlex"],
       ["dakota", "And this is me too.", "dakota:bearTouchedFlex"],
-      ["narrator", "He blushes, surprised and victorious, holding the flex like a joke that became a blessing halfway through.", "dakota:bearTouchedFlex"],
-      ["narrator", "Then the joke changes shape. Dakota keeps the pose, but his smile sharpens, slow and warm, as if confidence has finally found somewhere honest to live.", "dakota:bearFlexSmolderBlush"],
-      ["dakota", "You keep looking at me like that and I am going to start believing I am allowed to want things.", "dakota:bearFlexSmolderBlush"],
+      ["narrator", "He blushes, surprised and victorious, holding the flex like a joke that became a blessing.", "dakota:bearTouchedFlex"],
+      ["narrator", "Then the joke changes. He keeps the pose, smiling like confidence found honest ground.", "dakota:bearFlexSmolderBlush"],
+      ["dakota", "You keep looking at me like that and I might believe I am allowed to want things.", "dakota:bearFlexSmolderBlush"],
       ["player", "Good. Belief looks very good on you.", "dakota:bearFlexSmolderBlush"]
     ],
     next: "full_love_dakota_timed_prompt"
@@ -2627,9 +2763,9 @@ const scenes = {
     background: () => ({ location: "sequoia", time: "sunset" }),
     music: "dakotaFullLoveDesire",
     lines: [
-      ["narrator", "Dakota's eyes stay on yours, no longer hiding. The shame is gone from his face, and what rushes in behind it is tender, hungry, and very sure.", "dakota:bearFlexSmolderBlush"],
+      ["narrator", "Dakota meets your eyes without hiding. What rushes in is tender, hungry, and certain.", "dakota:bearFlexSmolderBlush"],
       ["dakota", "I spent years running from what I wanted. I am done running.", "dakota:walkingCloserSmolder"],
-      ["narrator", "He starts walking toward you, slow enough to be a question and direct enough to make every answer in your body arrive early.", "dakota:walkingCloserSmolder"]
+      ["narrator", "He starts toward you, slow enough to be a question and direct enough to answer one.", "dakota:walkingCloserSmolder"]
     ],
     choices: [
       {
@@ -2658,17 +2794,17 @@ const scenes = {
     },
     lines: [
       ["narrator", "You do not move away."],
-      ["narrator", "Dakota reaches you, warm and solid and trembling with the relief of not being rejected by himself or by you."],
-      ["narrator", "The kiss starts soft, almost stunned. Then his arms close around you, and the whole grove seems to exhale into dark."],
-      ["narrator", "After that, the night turns private. There is laughter, heat, fur against your cheek, and Dakota learning that wanting can be gentle and still knock the breath out of both of you."],
-      ["narrator", "He keeps pausing like he expects the old shame to come back and punish him for wanting anything this much. Each time, you pull him close again until the lesson starts to stick."],
+      ["narrator", "Dakota reaches you, warm and trembling with the relief of not being refused."],
+      ["narrator", "The kiss starts soft, almost stunned. Then his arms close around you and the grove exhales."],
+      ["narrator", "After that, the night turns private: laughter, heat, fur, and wanting that stays gentle."],
+      ["narrator", "He keeps pausing as if shame will return. Each time, you pull him close until it doesn't."],
       ["dakota", "Tell me if I get too intense.", null],
       ["player", "Dakota, if anything, you have been holding back.", null],
-      ["narrator", "That breaks something open in him. A rough laugh catches in his chest, deepens, and rolls out through the trees as a roar that makes the dark shiver.", null, { audio: "dakotaRoar" }],
+      ["narrator", "That breaks something open in him. A rough laugh deepens into a roar that shakes the dark.", null, { audio: "dakotaRoar" }],
       ["dakota", "Sorry. That was... new.", null],
       ["player", "Do not apologize. I liked knowing the forest was impressed.", null],
-      ["narrator", "He laughs again, softer this time, then gathers you up with a careful strength that makes careful feel wildly unfair as a word."],
-      ["narrator", "The rest of the night finds its own rhythm: warm breath, low murmurs, your hands buried in his fur, his voice going gentle every time he checks that you are still with him."]
+      ["narrator", "He laughs again, softer, then gathers you close with careful strength."],
+      ["narrator", "The rest of the night finds its rhythm: warm breath, low murmurs, and gentle check-ins."]
     ],
     next: "full_love_dakota_rest_line_fade"
   },
@@ -2678,7 +2814,7 @@ const scenes = {
     music: "dakotaFullLoveDesire",
     suppressSceneSfx: true,
     lines: [
-      ["narrator", "The rest of the night finds its own rhythm: warm breath, low murmurs, your hands buried in his fur, his voice going gentle every time he checks that you are still with him.", null, { dialogueFadeOut: true, autoAdvanceMs: 1100, suppressAdvanceSfx: true }]
+      ["narrator", "The rest of the night finds its rhythm: warm breath, low murmurs, and gentle check-ins.", null, { dialogueFadeOut: true, autoAdvanceMs: 1100, suppressAdvanceSfx: true }]
     ],
     next: "full_love_dakota_sleep_line_fade_in"
   },
@@ -2688,7 +2824,7 @@ const scenes = {
     music: "dakotaFullLoveDesire",
     suppressSceneSfx: true,
     lines: [
-      ["narrator", "Somewhere between his low voice, the smell of bark, and the impossible comfort of being held by someone who finally came home to himself, you fall asleep.", null, { dialogueSlowFade: true, fadeOutMusicUntilScene: { sceneId: "day_wake", fadeOutMs: 2600, resumeFadeMs: 5600 } }]
+      ["narrator", "His low voice, the bark smell, and the comfort of being held pull you under.", null, { dialogueSlowFade: true, fadeOutMusicUntilScene: { sceneId: "day_wake", fadeOutMs: 2600, resumeFadeMs: 5600 } }]
     ],
     next: "full_love_dakota_sleep_line_fade"
   },
@@ -2698,7 +2834,7 @@ const scenes = {
     music: "dakotaFullLoveDesire",
     suppressSceneSfx: true,
     lines: [
-      ["narrator", "Somewhere between his low voice, the smell of bark, and the impossible comfort of being held by someone who finally came home to himself, you fall asleep.", null, { dialogueFadeOut: true, autoAdvanceMs: 1200, suppressAdvanceSfx: true }]
+      ["narrator", "His low voice, the bark smell, and the comfort of being held pull you under.", null, { dialogueFadeOut: true, autoAdvanceMs: 1200, suppressAdvanceSfx: true }]
     ],
     next: "full_love_dakota_morning_fade_in"
   },
@@ -2730,14 +2866,14 @@ const scenes = {
     background: () => ({ location: "sequoia", time: "sunset" }),
     lines: [
       ["player", "Dakota, I care about you. I really do. But I think tonight I need us to stay friends.", "dakota"],
-      ["narrator", "He stops immediately. The desire stays in his eyes, but so does respect, steady and unmistakable.", "dakota:walkingCloserSmolder"],
+      ["narrator", "He stops at once. Desire stays in his eyes, but so does respect, steady and unmistakable.", "dakota:walkingCloserSmolder"],
       ["dakota", "Friends is not a punishment.", "dakota"],
       ["dakota", "Especially not tonight.", "dakota:flattered"],
       ["player", "You are not disappointed?", "dakota:flattered"],
       ["dakota", "I am human enough to be a little disappointed and bear enough to survive it with dignity.", "dakota:flattered"],
       ["player", "You found your shirt again.", "dakota"],
       ["dakota", "A miracle almost as impressive as emotional maturity.", "dakota:laughing"],
-      ["narrator", "He walks you back laughing softly, free in a way that does not depend on what you choose next.", "dakota:laughing"]
+      ["narrator", "He walks you back laughing softly, free in a way that does not depend on your answer.", "dakota:laughing"]
     ],
     nextAction: completeFullLoveScene
   },
@@ -2749,9 +2885,9 @@ const scenes = {
     suppressSceneSfx: true,
     character: null,
     lines: [
-      ["narrator", "Morning comes green and gold through the Sequoia grove. No music, no kiosk, no dramatic thunder. Just birds, bark, and the slow return of your own thoughts.", null, { dialogueSlowFade: true }],
-      ["player", "Did I just get mauled by a bear? Is that a thing? Should I be honored or file a very confusing incident report?"],
-      ["narrator", "Dakota is still asleep nearby, enormous and peaceful, one paw tucked under his cheek like the world finally let him rest."],
+      ["narrator", "Morning comes green and gold through the grove. No kiosk, no thunder. Just bark and birds.", null, { dialogueSlowFade: true }],
+      ["player", "Did I just get mauled by a bear? Should I feel honored or file a baffling incident report?"],
+      ["narrator", "Dakota still sleeps nearby, enormous and peaceful, one paw tucked under his cheek."],
       ["player", "You do not wake him. Anyone who spent the night forgiving himself gets to sleep in."]
     ],
     next: "full_love_dakota_wake_line_fade"
@@ -2788,8 +2924,8 @@ const scenes = {
     suppressSceneSfx: true,
     character: null,
     lines: [
-      ["narrator", "You make your way back toward the lodge alone, taking care with every step until the grove gives way to the retreat path.", null, { dialogueSlowFade: true, startOverlayAmbient: "dryGrassWalk", startOverlayAmbientAfterMs: 1700 }],
-      ["narrator", "By the time the lodge comes into view, morning has fully arrived, and one suspiciously soft strand of fur is still clinging to your sleeve.", null, { stopOverlayAmbientOnAdvance: true }],
+      ["narrator", "You head back toward the lodge alone, careful as the grove gives way to the path.", null, { dialogueSlowFade: true, startOverlayAmbient: "dryGrassWalk", startOverlayAmbientAfterMs: 1700 }],
+      ["narrator", "By the time the lodge comes into view, morning is fully here, and soft fur still clings.", null, { stopOverlayAmbientOnAdvance: true }],
       ["narrator", "You take a deep breath and open the door, ready to take on the day."]
     ],
     next: "full_love_dakota_door_line_fade"
@@ -2856,7 +2992,7 @@ const scenes = {
     background: () => ({ location: "checkIn", time: "sunset" }),
     onEnter: () => { state.timeOfDay = "sunset"; state.pendingDestination = null; },
     lines: [
-      ["narrator", "By the time you return to check-in, sunset has warmed the desk, the route cards, and your questionable decision-making."],
+      ["narrator", "By the time you return to check-in, sunset has warmed the desk, the route cards, and you."],
       ["player", "Still enough day left to make one more choice."]
     ],
     choices: () => scenes.checkin_hub.choices()
@@ -2866,7 +3002,7 @@ const scenes = {
     background: () => ({ location: "checkIn", time: "night" }),
     onEnter: () => { state.timeOfDay = "night"; state.pendingDestination = null; },
     lines: [
-      ["narrator", "Night meets you at check-in. The kiosk glow looks softer now, or maybe you are just tired enough to forgive it."],
+      ["narrator", "Night meets you at check-in. The kiosk glow looks softer now, or maybe you are tired."],
       ["player", "One more route if I have it in me. Then the lodge. Then unconsciousness as a lifestyle."]
     ],
     choices: () => scenes.checkin_hub.choices()
@@ -2876,7 +3012,7 @@ const scenes = {
     background: () => ({ location: "lodge", time: "night" }),
     onEnter: () => { state.pendingDestination = null; },
     lines: [
-      ["narrator", "After the night visit, you return directly to the lodge. No check-in detour, no extra encounter, no pretending you are not tired."],
+      ["narrator", "After the night visit, you return straight to the lodge. No detour. No pretending now."],
       ["player", "Bed. Beautiful concept. Possibly humanity's finest invention."],
       ["narrator", "The lodge lights blur warm and low as you head upstairs."]
     ],
@@ -2889,7 +3025,7 @@ const scenes = {
     label: () => `${TIME_LABELS[state.timeOfDay]} Lodge Lobby`,
     background: () => ({ location: "lodge", time: state.timeOfDay }),
     lines: () => [
-      ["narrator", `You return to the lodge lobby in the ${state.timeOfDay === "sunset" ? "last light" : "night quiet"}. The fireplace looks like it has been waiting without making a big deal about it.`],
+      ["narrator", `You return to the lodge lobby in the ${state.timeOfDay === "sunset" ? "last light" : "night quiet"}. The fireplace waits quietly.`],
       ["player", "Today gets to end here."]
     ],
     choices: [
@@ -2902,7 +3038,7 @@ const scenes = {
     character: null,
     lines: [
       ["player", "Sleep takes me before I can turn the day into a story with clean edges."],
-      ["player", "By morning, the feelings are still there. Less organized, maybe, but definitely awake before I am."]
+      ["player", "By morning, the feelings are still there. Less organized, maybe, but awake before I am."]
     ],
     nextAction: startNewDay
   }
@@ -4458,13 +4594,13 @@ function buildVisitWrapupLines(character) {
   if (character === "jack") {
     const jackMoodLine = {
       low: "Jack walks you back with care, but the old ease between you has mud on its boots. He still watches every slick board before you step on it.",
-      neutral: "Jack walks beside you with that familiar, shoulder-bumping warmth, only now the quiet keeps catching on things neither of you has named yet.",
+      neutral: "Jack walks beside you with familiar warmth while the quiet catches on unnamed things.",
       high: "Jack lingers at the route marker like goodbye is a log he could lift if he just found the right grip. For once, even he knows this is not only friendship."
     }[mood];
     return [
       ["narrator", timeExit, characterExpression(character, mood)],
       ["narrator", jackMoodLine, characterExpression(character, mood)],
-      ["player", `You leave ${place} with Olympic rain on your sleeves and years of knowing Jack rearranging themselves into something brighter.`]
+      ["player", `You leave ${place} with Olympic rain on your sleeves and Jack bright in your mind.`]
     ];
   }
   if (character === "caleb") {

@@ -1,6 +1,6 @@
 # NationalParkAfterDark
 
-https://brandon-valley.github.io/NationalParkAfterDark/
+GitHub Page Link: https://brandon-valley.github.io/NationalParkAfterDark/
 
 Mobile-first browser prototype for **Park After Dark**, a fictional parody national park dating simulator.
 
